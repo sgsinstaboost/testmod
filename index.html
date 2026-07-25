@@ -654,7 +654,7 @@
             </div>
             <div class="flex items-center space-x-2">
                 <button id="admin-logout-btn" class="bg-rose-600 hover:bg-rose-500 border border-rose-500/40 px-3.5 py-1.5 rounded-xl text-xs font-bold text-white transition flex items-center space-x-1.5"><i class="fa-solid fa-power-off"></i><span>Logout</span></button>
-                <button id="admin-close-btn" class="bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-300 transition hidden">Close Console</button>
+                <button id="admin-close-btn" class="bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-300 transition">Close Console</button>
             </div>
         </header>
 
@@ -1088,9 +1088,6 @@
                     const drawerLink = document.getElementById('drawerAdminLink');
                     if (drawerLink) drawerLink.classList.remove('hidden');
                     
-                    // Hide regular user dashboard completely for Admin & Launch Console
-                    document.getElementById('appContainer').classList.add('hidden');
-                    document.getElementById('appContainer').classList.remove('flex');
                     window.launchAdminConsole();
                     window.hideGlobalLoadingScreen();
                 } else {
@@ -1100,8 +1097,6 @@
                             const drawerLink = document.getElementById('drawerAdminLink');
                             if (drawerLink) drawerLink.classList.remove('hidden');
 
-                            document.getElementById('appContainer').classList.add('hidden');
-                            document.getElementById('appContainer').classList.remove('flex');
                             window.launchAdminConsole();
                             window.hideGlobalLoadingScreen();
                         } else {
@@ -1882,9 +1877,12 @@
         document.getElementById('mbtn-refer').addEventListener('click', () => window.switchTab('refer'));
 
         document.getElementById('drawerAdminLink').addEventListener('click', () => window.launchAdminConsole());
+        
         document.getElementById('admin-close-btn').addEventListener('click', () => {
             document.getElementById('adminCoreConsole').classList.add('hidden');
             document.getElementById('adminCoreConsole').classList.remove('flex');
+            document.getElementById('appContainer').classList.remove('hidden');
+            document.getElementById('appContainer').classList.add('flex');
         });
 
         const adminLogoutBtn = document.getElementById('admin-logout-btn');
