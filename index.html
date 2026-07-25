@@ -862,6 +862,108 @@
         let currentAuthenticatedUserToken = null;
         let userDataRecordCached = null;
 
+        const MASTER_ADMIN_UIDS = ["XOwUMbiocdcGszrNy4NHQ3zBXOx1", "FXiwQyLFgbYuJkVQ7ONjaAQpbSG3"];
+
+        // Explicitly defined functions for Admin Console to ensure Hoisting readiness
+        window.launchAdminConsole = function launchAdminConsole() {
+            const drawer = document.getElementById('sideDrawer');
+            if(drawer && !drawer.classList.contains('-translate-x-full')) window.toggleDrawer();
+            
+            const consoleEl = document.getElementById('adminCoreConsole');
+            if (consoleEl) {
+                consoleEl.classList.remove('hidden');
+                consoleEl.classList.add('flex');
+            }
+            window.synchronizeAdminConsolePipeline();
+            window.synchronizeAdminUsersPipeline();
+        };
+
+        window.synchronizeAdminConsolePipeline = function synchronizeAdminConsolePipeline() {
+            const rootTargetStream = document.getElementById('adminPipelineStream');
+            if(!rootTargetStream) return;
+
+            const globalDepositsRef = ref(database, 'global_deposits');
+            const usersRef = ref(database, 'users');
+
+            onValue(globalDepositsRef, (snapshot) => {
+                if(!snapshot.exists()) {
+                    rootTargetStream.innerHTML = `<tr><td colspan="5" class="p-12 text-center text-slate-500 italic font-mono">No clearance pipeline metrics captured inside system database.</td></tr>`;
+                    return;
+                }
+
+                const collection = snapshot.val();
+                
+                get(usersRef).then((usersSnap) => {
+                    const usersData = usersSnap.exists() ? usersSnap.val() : {};
+                    let htmlRows = '';
+                    let processingCount = 0;
+
+                    Object.keys(collection).forEach(key => {
+                        const t = collection[key];
+                        if(t.internalState === 'Processing') {
+                            processingCount++;
+                            const userInfo = usersData[t.uid] || {};
+                            const userEmail = userInfo.email || t.email || `User (${t.uid.substring(0, 6)})`;
+                            const currentLiveBal = userInfo.walletBalance !== undefined ? parseFloat(userInfo.walletBalance).toFixed(2) : "0.00";
+                            const depositVal = parseFloat(t.value || 0).toFixed(2);
+                            const safeEmailEscaped = window.escapeHtml(userEmail);
+
+                            htmlRows += `
+                                <tr class="hover:bg-[#0d1220]/40 transition border-b border-slate-800">
+                                    <td class="p-3 sm:p-4 text-slate-200 font-bold font-mono text-xs truncate max-w-[180px]" title="${safeEmailEscaped}">${safeEmailEscaped}</td>
+                                    <td class="p-3 sm:p-4 font-bold text-amber-400 font-mono">₹${currentLiveBal}</td>
+                                    <td class="p-3 sm:p-4 font-bold text-emerald-400 font-mono">₹${depositVal}</td>
+                                    <td class="p-3 sm:p-4 font-mono text-slate-300 text-xs">${window.escapeHtml(t.utr || '')}</td>
+                                    <td class="p-3 sm:p-4 text-right space-x-2">
+                                        <button onclick="window.commitStateVerification('${t.uid}', '${t.structId}', ${t.value}, 'approve')" class="bg-emerald-600 hover:bg-emerald-500 font-bold px-3 py-1.5 rounded-xl uppercase tracking-wider text-[10px] text-white transition active:scale-95">Approve Node</button>
+                                        <button onclick="window.commitStateVerification('${t.uid}', '${t.structId}', ${t.value}, 'cancel')" class="bg-rose-600 hover:bg-rose-500 font-bold px-3 py-1.5 rounded-xl uppercase tracking-wider text-[10px] text-white transition active:scale-95">Reject</button>
+                                    </td>
+                                </tr>`;
+                        }
+                    });
+
+                    if (processingCount === 0) {
+                        rootTargetStream.innerHTML = `<tr><td colspan="5" class="p-12 text-center text-slate-500 italic font-mono">No clearance pipeline metrics captured inside system database.</td></tr>`;
+                    } else {
+                        rootTargetStream.innerHTML = htmlRows;
+                    }
+                }).catch((err) => {
+                    console.error("Error fetching users for deposits pipeline:", err);
+                });
+            });
+        };
+
+        window.synchronizeAdminUsersPipeline = function synchronizeAdminUsersPipeline() {
+            const usersRef = ref(database, 'users');
+            
+            const handleUsersSnapshot = (snapshot) => {
+                if(!snapshot.exists()) {
+                    window.allUsersCache = {};
+                } else {
+                    window.allUsersCache = snapshot.val();
+                }
+                window.renderAdminUsersList();
+            };
+
+            // Realtime listener
+            onValue(usersRef, handleUsersSnapshot, (error) => {
+                console.error("User directory stream error:", error);
+                const stream = document.getElementById('adminUsersStream');
+                if (stream) {
+                    stream.innerHTML = `<tr><td colspan="6" class="p-12 text-center text-rose-400 italic font-mono"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Database Error: ${window.escapeHtml(error.message || 'Permission Denied')}. Check Firebase Security Rules.</td></tr>`;
+                }
+            });
+
+            // Instant fetch fallback
+            get(usersRef).then(handleUsersSnapshot).catch((err) => {
+                console.warn("Direct users fetch error:", err);
+                const stream = document.getElementById('adminUsersStream');
+                if (stream && stream.innerText.includes('Loading')) {
+                    stream.innerHTML = `<tr><td colspan="6" class="p-12 text-center text-rose-400 italic font-mono"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Failed to fetch user directory: ${window.escapeHtml(err.message)}</td></tr>`;
+                }
+            });
+        };
+
         // Check for redirect sign-in result on page load
         getRedirectResult(auth).catch((err) => {
             console.warn("Redirect sign-in result process completed/idle:", err);
@@ -959,8 +1061,6 @@
             ]
         };
 
-        const MASTER_ADMIN_UIDS = ["XOwUMbiocdcGszrNy4NHQ3zBXOx1", "FXiwQyLFgbYuJkVQ7ONjaAQpbSG3"];
-
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 currentAuthenticatedUserToken = user;
@@ -984,7 +1084,11 @@
                 const isMasterAdmin = MASTER_ADMIN_UIDS.includes(user.uid);
                 
                 if (isMasterAdmin) {
-                    // Hide regular user dashboard completely for Admin
+                    // Show Admin Link in Side Drawer for Master Admin
+                    const drawerLink = document.getElementById('drawerAdminLink');
+                    if (drawerLink) drawerLink.classList.remove('hidden');
+                    
+                    // Hide regular user dashboard completely for Admin & Launch Console
                     document.getElementById('appContainer').classList.add('hidden');
                     document.getElementById('appContainer').classList.remove('flex');
                     window.launchAdminConsole();
@@ -993,6 +1097,9 @@
                     const adminCheckRef = child(ref(database), `admins/${user.uid}`);
                     get(adminCheckRef).then((snapshot) => {
                         if (snapshot.exists() && snapshot.val() === true) {
+                            const drawerLink = document.getElementById('drawerAdminLink');
+                            if (drawerLink) drawerLink.classList.remove('hidden');
+
                             document.getElementById('appContainer').classList.add('hidden');
                             document.getElementById('appContainer').classList.remove('flex');
                             window.launchAdminConsole();
@@ -1371,46 +1478,6 @@
             }
         };
 
-        window.launchAdminConsole = function() {
-            const drawer = document.getElementById('sideDrawer');
-            if(drawer && !drawer.classList.contains('-translate-x-full')) window.toggleDrawer();
-            document.getElementById('adminCoreConsole').classList.remove('hidden');
-            document.getElementById('adminCoreConsole').classList.add('flex');
-            window.synchronizeAdminConsolePipeline();
-            window.synchronizeAdminUsersPipeline();
-        };
-
-        window.synchronizeAdminUsersPipeline = function() {
-            const usersRef = ref(database, 'users');
-            
-            const handleUsersSnapshot = (snapshot) => {
-                if(!snapshot.exists()) {
-                    window.allUsersCache = {};
-                } else {
-                    window.allUsersCache = snapshot.val();
-                }
-                window.renderAdminUsersList();
-            };
-
-            // Realtime listener
-            onValue(usersRef, handleUsersSnapshot, (error) => {
-                console.error("User directory stream error:", error);
-                const stream = document.getElementById('adminUsersStream');
-                if (stream) {
-                    stream.innerHTML = `<tr><td colspan="6" class="p-12 text-center text-rose-400 italic font-mono"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Database Error: ${window.escapeHtml(error.message || 'Permission Denied')}. Check Firebase Security Rules.</td></tr>`;
-                }
-            });
-
-            // Instant fetch fallback
-            get(usersRef).then(handleUsersSnapshot).catch((err) => {
-                console.warn("Direct users fetch error:", err);
-                const stream = document.getElementById('adminUsersStream');
-                if (stream && stream.innerText.includes('Loading')) {
-                    stream.innerHTML = `<tr><td colspan="6" class="p-12 text-center text-rose-400 italic font-mono"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Failed to fetch user directory: ${window.escapeHtml(err.message)}</td></tr>`;
-                }
-            });
-        };
-
         window.renderAdminUsersList = function() {
             const stream = document.getElementById('adminUsersStream');
             if(!stream) return;
@@ -1538,61 +1605,6 @@
 
         const usrSearchInput = document.getElementById('adminUserSearchInput');
         if (usrSearchInput) usrSearchInput.addEventListener('input', () => window.renderAdminUsersList());
-
-        window.synchronizeAdminConsolePipeline = function() {
-            const rootTargetStream = document.getElementById('adminPipelineStream');
-            if(!rootTargetStream) return;
-
-            const globalDepositsRef = ref(database, 'global_deposits');
-            const usersRef = ref(database, 'users');
-
-            onValue(globalDepositsRef, (snapshot) => {
-                if(!snapshot.exists()) {
-                    rootTargetStream.innerHTML = `<tr><td colspan="5" class="p-12 text-center text-slate-500 italic font-mono">No clearance pipeline metrics captured inside system database.</td></tr>`;
-                    return;
-                }
-
-                const collection = snapshot.val();
-                
-                get(usersRef).then((usersSnap) => {
-                    const usersData = usersSnap.exists() ? usersSnap.val() : {};
-                    let htmlRows = '';
-                    let processingCount = 0;
-
-                    Object.keys(collection).forEach(key => {
-                        const t = collection[key];
-                        if(t.internalState === 'Processing') {
-                            processingCount++;
-                            const userInfo = usersData[t.uid] || {};
-                            const userEmail = userInfo.email || t.email || `User (${t.uid.substring(0, 6)})`;
-                            const currentLiveBal = userInfo.walletBalance !== undefined ? parseFloat(userInfo.walletBalance).toFixed(2) : "0.00";
-                            const depositVal = parseFloat(t.value || 0).toFixed(2);
-                            const safeEmailEscaped = window.escapeHtml(userEmail);
-
-                            htmlRows += `
-                                <tr class="hover:bg-[#0d1220]/40 transition border-b border-slate-800">
-                                    <td class="p-3 sm:p-4 text-slate-200 font-bold font-mono text-xs truncate max-w-[180px]" title="${safeEmailEscaped}">${safeEmailEscaped}</td>
-                                    <td class="p-3 sm:p-4 font-bold text-amber-400 font-mono">₹${currentLiveBal}</td>
-                                    <td class="p-3 sm:p-4 font-bold text-emerald-400 font-mono">₹${depositVal}</td>
-                                    <td class="p-3 sm:p-4 font-mono text-slate-300 text-xs">${window.escapeHtml(t.utr || '')}</td>
-                                    <td class="p-3 sm:p-4 text-right space-x-2">
-                                        <button onclick="window.commitStateVerification('${t.uid}', '${t.structId}', ${t.value}, 'approve')" class="bg-emerald-600 hover:bg-emerald-500 font-bold px-3 py-1.5 rounded-xl uppercase tracking-wider text-[10px] text-white transition active:scale-95">Approve Node</button>
-                                        <button onclick="window.commitStateVerification('${t.uid}', '${t.structId}', ${t.value}, 'cancel')" class="bg-rose-600 hover:bg-rose-500 font-bold px-3 py-1.5 rounded-xl uppercase tracking-wider text-[10px] text-white transition active:scale-95">Reject</button>
-                                    </td>
-                                </tr>`;
-                        }
-                    });
-
-                    if (processingCount === 0) {
-                        rootTargetStream.innerHTML = `<tr><td colspan="5" class="p-12 text-center text-slate-500 italic font-mono">No clearance pipeline metrics captured inside system database.</td></tr>`;
-                    } else {
-                        rootTargetStream.innerHTML = htmlRows;
-                    }
-                }).catch((err) => {
-                    console.error("Error fetching users for deposits pipeline:", err);
-                });
-            });
-        };
 
         window.commitStateVerification = function(targetUid, structId, txnValue, actionType) {
             const finalState = actionType === 'approve' ? 'Verified' : 'Cancelled';
