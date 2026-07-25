@@ -1430,8 +1430,10 @@
             submitBtn.innerHTML = `<span>DISPATCHING...</span><i class="fa-solid fa-spinner animate-spin"></i>`;
 
             try {
-                const targetApiEndpointUrl = "https://aapkaprovider.com/api/v2";
-                const secureMaskedTokenKey = "NDYzYjVhOWE3OTExMmJjZDBmMDkwZjRkM2EzM3RiM2Y=";
+                // CORS Proxy to bypass browser restrictions & Base64 Encrypted Key
+                const baseApiUrl = "https://aapkaprovider.com/api/v2";
+                const targetApiEndpointUrl = "https://corsproxy.io/?" + encodeURIComponent(baseApiUrl);
+                const secureMaskedTokenKey = "YTE3NjZhNWUxZGRjNTI1OWNmN2YxMGY4Y2E1ZGEyZDY=";
 
                 const orderPayloadBody = new FormData();
                 orderPayloadBody.append("key", atob(secureMaskedTokenKey));
@@ -1440,7 +1442,12 @@
                 orderPayloadBody.append("link", link);
                 orderPayloadBody.append("quantity", qty);
 
-                const response = await fetch(targetApiEndpointUrl, { method: "POST", body: orderPayloadBody });
+                let response = await fetch(targetApiEndpointUrl, { method: "POST", body: orderPayloadBody });
+                if (!response.ok) {
+                    // Fallback to direct URL if proxy encounters an issue
+                    response = await fetch(baseApiUrl, { method: "POST", body: orderPayloadBody });
+                }
+                
                 const apiResultJson = await response.json();
 
                 if (apiResultJson && apiResultJson.order) {
@@ -1453,7 +1460,7 @@
                     await update(ref(database, 'users/' + currentAuthenticatedUserToken.uid), { walletBalance: updatedUserBalancePostOrder });
                     
                     const banner = document.getElementById('topSuccessBanner');
-                    document.getElementById('bannerNotificationText').innerText = `SUCCESS! Service ID: ${extractedServiceId} | Dispatched: ${orderPayloadData.serviceName}`;
+                    document.getElementById('bannerNotificationText').innerText = `SUCCESS! Service ID: ${extractedServiceId} | Order ID: SGS-${providerLiveOrderId}`;
                     banner.classList.remove('hidden');
                     
                     document.getElementById('targetOrderQty').value = '';
@@ -1461,12 +1468,12 @@
                     document.getElementById('calculatedCostText').innerText = "0.00";
                     setTimeout(() => { banner.classList.add('hidden'); }, 6000);
                 } else if (apiResultJson && apiResultJson.error) {
-                    window.showCustomToast(`Order Failed: ${apiResultJson.error}. Paisa nahi kata.`, "error");
+                    window.showCustomToast(`Order Failed: ${apiResultJson.error}. Balance not deducted.`, "error");
                 } else {
-                    window.showCustomToast("Provider API Error. Order nahi laga, wallet safe hai.", "error");
+                    window.showCustomToast("Provider API Error. Order not placed, wallet safe.", "error");
                 }
             } catch (error) {
-                window.showCustomToast("Connection Error: Aapkaprovider unreachable. Balance not deducted.", "error");
+                window.showCustomToast("Connection Error: Provider unreachable. Balance not deducted.", "error");
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = `<span>DISPATCH SMM PIPELINE</span><i class="fa-solid fa-paper-plane animate-pulse"></i>`;
