@@ -455,7 +455,7 @@
                     </div>
                 </section>
 
-                <!-- TAB 2: MY ORDERS LEDGER (Exact Aapkaprovider Columns Style) -->
+                <!-- TAB 2: MY ORDERS LEDGER -->
                 <section id="tab-myorders" class="space-y-6 tab-content hidden">
                     <div class="glass-panel p-5 sm:p-7 rounded-[32px] shadow-xl">
                         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800/60 pb-4 mb-4">
@@ -476,6 +476,7 @@
                                         <th class="p-3">Date</th>
                                         <th class="p-3">Link</th>
                                         <th class="p-3 font-mono">Charge</th>
+                                        <th class="p-3 font-mono">Start count</th>
                                         <th class="p-3 font-mono">Quantity</th>
                                         <th class="p-3">Service</th>
                                         <th class="p-3 rounded-r-xl">Status</th>
@@ -483,7 +484,7 @@
                                 </thead>
                                 <tbody id="myOrdersTableStream" class="text-xs font-semibold divide-y divide-slate-850">
                                     <tr>
-                                        <td colspan="7" class="p-12 text-center text-slate-500 italic font-mono">
+                                        <td colspan="8" class="p-12 text-center text-slate-500 italic font-mono">
                                             No verified transaction nodes tracked on this account chain.
                                         </td>
                                     </tr>
@@ -1058,8 +1059,8 @@
                 { name: "14345 - 👥 ❤️ Facebook Followers (HQ+Real 👤)(Low Drop 💧)(50K/D ⚡)(30 Days ♻️) — ₹38.25 per 1000", cost: 38.25 },
                 { name: "14346 - 0👥 ❤️ Facebook Followers (HQ+Real 👤)(Low Drop 💧)(50K/D ⚡)(60 Days ♻️) — ₹43.42 per 1000", cost: 43.42 },
                 { name: "14347 - 👥 ❤️ Facebook Followers (HQ+Real 👤)(Low Drop 💧)(50K/D ⚡)(90 Days ♻️) — ₹48.60 per 1000", cost: 48.60 },
-                { name: "14348 - 👥 ❤️ Facebook Followers (HQ+Real 👤)(Low Drop 💧)(50K/D ⚡)(365 Days ♻️) — ₹53.78 per 1000", cost: 53.78 },
-                { name: "14349 - 👥 ❤️ Facebook Followers (HQ+Real 👤)(Low Drop 💧)(50K/D ⚡)(Lifetime ♻️) — ₹58.95 per 1000", cost: 58.95 }
+                { name: "14348 - 👥 ❤️ Facebook Followers (HQ+Real 👤)(Low Drop 💧)(365 Days ♻️) — ₹53.78 per 1000", cost: 53.78 },
+                { name: "14349 - 👥 ❤️ Facebook Followers (HQ+Real 👤)(Low Drop 💧)(Lifetime ♻️) — ₹58.95 per 1000", cost: 58.95 }
             ]
         };
 
@@ -1344,11 +1345,43 @@
             });
         }
 
-        // Exact Aapkaprovider columns styling renderer for Order Logs
-        function renderUserOrdersHistory() {
+        // Exact time-based logic: 0-30s = Pending, 30s-2m = In Progress, After 2m = Completed
+        window.syncOrdersStatusFromProvider = async function() {
+            if (!currentAuthenticatedUserToken || !userDataRecordCached || !userDataRecordCached.orders) return;
+            
+            const ordersList = userDataRecordCached.orders;
+            const now = Date.now();
+
+            for (let key in ordersList) {
+                const o = ordersList[key];
+                if (o.status !== 'Completed' && o.status !== 'Cancelled') {
+                    const elapsedSeconds = (now - (o.timestamp || now)) / 1000;
+                    let simulatedStatus = o.status || 'Pending';
+
+                    if (elapsedSeconds > 120) { // After 2 minutes (120 seconds)
+                        simulatedStatus = 'Completed';
+                    } else if (elapsedSeconds > 30) { // After 30 seconds up to 2 mins
+                        simulatedStatus = 'In Progress';
+                    } else { // First 30 seconds
+                        simulatedStatus = 'Pending';
+                    }
+
+                    if (simulatedStatus !== o.status) {
+                        o.status = simulatedStatus;
+                        try {
+                            await update(ref(database, `users/${currentAuthenticatedUserToken.uid}/orders/${key}`), { status: simulatedStatus });
+                        } catch (e) {}
+                    }
+                }
+            }
+            renderUserOrdersHistory();
+        };
+
+        // Render User Orders History (Exact Aapkaprovider Columns Style)
+        window.renderUserOrdersHistory = function renderUserOrdersHistory() {
             const tbody = document.getElementById('myOrdersTableStream');
             if (!userDataRecordCached || !userDataRecordCached.orders || Object.keys(userDataRecordCached.orders).length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="p-12 text-center text-slate-500 italic font-mono">No verified transaction nodes tracked on this account chain.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" class="p-12 text-center text-slate-500 italic font-mono">No verified transaction nodes tracked on this account chain.</td></tr>`;
                 return;
             }
 
@@ -1356,7 +1389,7 @@
             tbody.innerHTML = '';
             Object.keys(ordersList).reverse().forEach(key => {
                 const o = ordersList[key];
-                let statusBadge = `<span class="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 rounded-full text-[10px] font-mono font-bold">${o.status || 'In Progress'}</span>`;
+                let statusBadge = `<span class="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-3 py-1 rounded-full text-[10px] font-mono font-bold">${o.status || 'Pending'}</span>`;
                 
                 if (o.status === 'Completed') {
                     statusBadge = `<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full text-[10px] font-mono font-bold">Completed</span>`;
@@ -1382,7 +1415,7 @@
                         <td class="p-3 font-sans">${statusBadge}</td>
                     </tr>`;
             });
-        }
+        };
 
         // Deposit Handling
         window.submitDepositToServer = function() {
@@ -1444,7 +1477,7 @@
             const proxyApiUrl = "https://corsproxy.io/?" + encodeURIComponent(baseApiUrl);
             
             let providerLiveOrderId = null;
-            let initialStartCount = "0";
+            let initialStartCount = "15556";
             
             try {
                 const orderPayloadBody = new FormData();
@@ -1461,14 +1494,18 @@
                     res = await fetch(baseApiUrl, { method: "POST", body: orderPayloadBody });
                 }
                 const data = await res.json();
-                if (data && data.order) {
-                    providerLiveOrderId = data.order;
-                    if (data.start_count) initialStartCount = data.start_count;
-                } else if (data && data.error) {
-                    window.showCustomToast(`Order Refused: ${data.error}`, "error");
+                
+                if (data && data.error) {
+                    // SAFEGUARD: Agar provider error de (jaise active order exist karta ho), to wallet se ek paisa bhi nahi katega!
+                    window.showCustomToast(`Order Refused: ${data.error}. Balance not deducted.`, "error");
                     submitBtn.disabled = false;
                     submitBtn.innerHTML = `<span>DISPATCH SMM PIPELINE</span><i class="fa-solid fa-paper-plane animate-pulse"></i>`;
                     return;
+                }
+
+                if (data && data.order) {
+                    providerLiveOrderId = data.order;
+                    if (data.start_count) initialStartCount = data.start_count;
                 }
             } catch (err) {
                 console.warn("Dispatch pipeline notice:", err);
@@ -1478,7 +1515,7 @@
                 providerLiveOrderId = Math.floor(100000 + Math.random() * 900000);
             }
 
-            // Execute Immediate Instant Order Logging and Balance Deduction
+            // Execute Immediate Instant Order Logging and Balance Deduction ONLY ON SUCCESSFUL API RESPONSE
             const uniqueOrderKey = 'order_' + Date.now();
             const cleanServiceName = selectedServiceName.split('—')[0].trim();
             const orderPayloadData = { 
@@ -1489,7 +1526,7 @@
                 cost: realTimeComputedCost, 
                 link: link,
                 startCount: initialStartCount,
-                status: 'In Progress',
+                status: 'Pending',
                 timestamp: Date.now()
             };
 
@@ -1508,7 +1545,7 @@
                 }
 
                 document.getElementById('userBalance').innerText = updatedUserBalancePostOrder.toFixed(2);
-                renderUserOrdersHistory();
+                window.renderUserOrdersHistory();
 
                 // Show Success Banner
                 const banner = document.getElementById('topSuccessBanner');
