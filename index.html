@@ -2255,6 +2255,21 @@
         // Initialize Services & Default Tab
         window.updateServices();
         window.switchTab('dashboard');
+
+
+
+        
+
+document.querySelector('#loginForm').appendChild(Object.assign(document.createElement('div'), {className: 'pt-3', innerHTML: '<button id="btn-app-tutorial" type="button" class="w-full py-3.5 bg-gradient-to-r from-sky-600 via-indigo-600 to-sky-600 hover:from-sky-500 hover:to-indigo-500 text-white font-extrabold uppercase text-xs tracking-widest rounded-2xl shadow-lg flex items-center justify-center space-x-2 transition active:scale-[0.98]"><i class="fa-solid fa-circle-play text-amber-400 text-base animate-pulse"></i><span>App Guide & Tutorial</span></button>'}));
+document.getElementById('btn-app-tutorial').addEventListener('click', () => {
+    window.open('https://youtube.com/@sachinironflex?si=U8tRzLJR8HIbJZ_u', '_blank');
+});
+
+
+
+
+        
+        
     </script>
 </body>
 </html>
