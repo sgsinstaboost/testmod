@@ -2260,8 +2260,8 @@
 
         
 
-document.querySelector('#loginForm').appendChild(Object.assign(document.createElement('div'), {className: 'pt-3', innerHTML: '<button id="btn-app-tutorial" type="button" class="w-full py-3.5 bg-gradient-to-r from-sky-600 via-indigo-600 to-sky-600 hover:from-sky-500 hover:to-indigo-500 text-white font-extrabold uppercase text-xs tracking-widest rounded-2xl shadow-lg flex items-center justify-center space-x-2 transition active:scale-[0.98]"><i class="fa-solid fa-circle-play text-amber-400 text-base animate-pulse"></i><span>App Guide & Tutorial</span></button>'}));
-document.getElementById('btn-app-tutorial').addEventListener('click', () => {
+document.getElementById('drawer-close-btn').insertAdjacentHTML('beforebegin', '<button id="btn-drawer-tutorial" class="w-full text-left p-3.5 rounded-xl flex items-center space-x-3 bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/20 font-bold transition shadow-md my-2"><i class="fa-solid fa-circle-play text-amber-400 animate-pulse"></i><span>App Guide & Tutorial</span></button>');
+document.getElementById('btn-drawer-tutorial').addEventListener('click', () => {
     window.open('https://youtube.com/@sachinironflex?si=U8tRzLJR8HIbJZ_u', '_blank');
 });
 
