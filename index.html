@@ -2258,13 +2258,51 @@
 
 
 
+
         
+        
+// --- App Guide & Tutorial Injection ---
+(() => {
+    const openTutorial = () => {
+        window.open('https://youtube.com/@sachinironflex?si=U8tRzLJR8HIbJZ_u', '_blank');
+    };
 
-document.getElementById('drawer-close-btn').insertAdjacentHTML('beforebegin', '<button id="btn-drawer-tutorial" class="w-full text-left p-3.5 rounded-xl flex items-center space-x-3 bg-sky-500/10 hover:bg-sky-500/20 text-sky-300 border border-sky-500/20 font-bold transition shadow-md my-2"><i class="fa-solid fa-circle-play text-amber-400 animate-pulse"></i><span>App Guide & Tutorial</span></button>');
-document.getElementById('btn-drawer-tutorial').addEventListener('click', () => {
-    window.open('https://youtube.com/@sachinironflex?si=U8tRzLJR8HIbJZ_u', '_blank');
-});
+    const buttonHTML = (id) => `
+        <button id="${id}" type="button" class="w-full py-3.5 bg-gradient-to-r from-sky-600 via-indigo-600 to-sky-600 hover:from-sky-500 hover:to-indigo-500 text-white font-extrabold uppercase text-xs tracking-widest rounded-2xl shadow-lg flex items-center justify-center space-x-2 transition active:scale-[0.98]">
+            <i class="fa-solid fa-circle-play text-amber-400 text-base animate-pulse"></i>
+            <span>App Guide & Tutorial</span>
+        </button>
+    `;
 
+    // 1. Login Form check & append
+    const loginForm = document.querySelector('#loginForm');
+    if (loginForm && !document.getElementById('btn-app-tutorial-login')) {
+        const loginWrapper = document.createElement('div');
+        loginWrapper.className = 'pt-3';
+        loginWrapper.innerHTML = buttonHTML('btn-app-tutorial-login');
+        loginForm.appendChild(loginWrapper);
+        document.getElementById('btn-app-tutorial-login')?.addEventListener('click', openTutorial);
+    }
+
+    // 2. Drawer check & append (common drawer IDs aur classes automatically handles)
+    const drawer = document.querySelector('#drawerMenu') || 
+                   document.querySelector('#drawer') || 
+                   document.querySelector('.drawer') || 
+                   document.querySelector('#sidebar') || 
+                   document.querySelector('.sidebar-content');
+
+    if (drawer && !document.getElementById('btn-app-tutorial-drawer')) {
+        const drawerWrapper = document.createElement('div');
+        drawerWrapper.className = 'p-3';
+        drawerWrapper.innerHTML = buttonHTML('btn-app-tutorial-drawer');
+        drawer.appendChild(drawerWrapper);
+        document.getElementById('btn-app-tutorial-drawer')?.addEventListener('click', openTutorial);
+    }
+})();
+
+
+
+        
 
 
 
