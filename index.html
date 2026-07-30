@@ -2741,8 +2741,10 @@
 
 
 
-// =======================================================
-        // 🔔 LOGIN REFERRAL POPUP (HINDI TERMS) & USER DP SYNC
+
+
+        // =======================================================
+        // 🔔 RE-ENTRY REFERRAL POPUP & DYNAMIC EMAIL DP SYNC
         // =======================================================
 
         // 1. Inject Login Referral Popup Modal HTML dynamically
@@ -2786,14 +2788,26 @@
             document.body.appendChild(modalDiv);
         };
 
-        // 2. Open / Close Login Popup Functions
+        // 2. Open / Close Login Popup Functions (App Switching Supported)
         window.openLoginReferralPopup = function() {
             window.injectLoginReferralPopupUI();
             const modal = document.getElementById('loginReferralModalOverlay');
-            if (modal && !sessionStorage.getItem('sgs_refer_popup_shown')) {
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-                sessionStorage.setItem('sgs_refer_popup_shown', 'true');
+            if (modal) {
+                // Show global loading indicator brief flash before showing popup
+                const loader = document.getElementById('globalLoadingScreen');
+                if (loader) {
+                    loader.classList.remove('hidden');
+                    loader.style.opacity = '1';
+                    setTimeout(() => {
+                        loader.style.opacity = '0';
+                        setTimeout(() => loader.classList.add('hidden'), 300);
+                        modal.classList.remove('hidden');
+                        modal.classList.add('flex');
+                    }, 400);
+                } else {
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                }
             }
         };
 
@@ -2838,34 +2852,51 @@
             }
         };
 
-        // 4. User Profile Picture & Email Image Syncing Logic
+        // 4. Fixed Email Live Photo Sync (Gravatar + Fallback Avatar)
         window.syncUserProfilePicture = function(user) {
             const drawerLogoImg = document.getElementById('drawerUserLogo');
             if (!drawerLogoImg || !user) return;
 
-            // If Google/Firebase has user photo
-            if (user.photoURL && user.photoURL.trim() !== '') {
+            // If Google login provided photoURL
+            if (user.photoURL && user.photoURL.trim() !== '' && !user.photoURL.includes('dicebear')) {
                 drawerLogoImg.src = user.photoURL;
             } else {
-                // Generate high quality avatar based on user email or UID
-                const seedKey = user.email || user.uid || 'SGSUser';
-                drawerLogoImg.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(seedKey)}`;
+                // Generates dynamic profile picture for Email logins
+                const cleanEmail = (user.email || user.uid || 'sgsuser').trim().toLowerCase();
+                
+                // Primary: Dicebear Initial/Bot Identicon
+                const avatarUrl = `https://api.dicebear.com/7.x/identicon/svg?seed=${encodeURIComponent(cleanEmail)}&backgroundColor=0d1220`;
+                drawerLogoImg.src = avatarUrl;
+                
+                // Fallback image handler in case network blocks SVG
+                drawerLogoImg.onerror = function() {
+                    this.onerror = null;
+                    this.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(user.uid)}`;
+                };
             }
         };
 
-        // 5. Hook Profile Picture Sync & Popup into Auth State Listener
+        // 5. App State & App Resume Listener (Shows Pop-up every time user re-enters app)
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible' && auth.currentUser) {
+                setTimeout(() => {
+                    window.openLoginReferralPopup();
+                }, 500);
+            }
+        });
+
+        // 6. Auth State Listener Hook
         auth.onAuthStateChanged((user) => {
             if (user) {
-                // Sync User Profile Picture in Drawer
+                // Sync User Live Photo / Avatar in Drawer
                 window.syncUserProfilePicture(user);
 
-                // Show Login Referral Offer Popup (once per session)
+                // Show Popup on initial login
                 setTimeout(() => {
                     window.openLoginReferralPopup();
                 }, 800);
             }
         });
-
 
 
 
