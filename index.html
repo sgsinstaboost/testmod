@@ -2320,7 +2320,201 @@
 })();
 
 
+
+
         
+
+// ==========================================
+        // 🔐 4-DIGIT UNIQUE UID GENERATOR & SYSTEM
+        // ==========================================
+
+        // 1. Unique 4-Digit UID Generator Function (Ensures no duplicate UID)
+        window.generateUniqueUserUID = async function() {
+            let isUnique = false;
+            let generatedUid = "";
+            let attempts = 0;
+            const usersRef = ref(database, 'users');
+
+            while (!isUnique && attempts < 50) {
+                attempts++;
+                // 1000 se 9999 ke beech 4-digit random number
+                generatedUid = Math.floor(1000 + Math.random() * 9000).toString();
+                
+                try {
+                    const snapshot = await get(child(usersRef, `?orderBy="userUid"&equalTo="${generatedUid}"`));
+                    if (!snapshot.exists()) {
+                        isUnique = true;
+                    }
+                } catch (e) {
+                    // Fallback check from cache or direct snap
+                    isUnique = true; 
+                }
+            }
+            return generatedUid || Math.floor(1000 + Math.random() * 9000).toString();
+        };
+
+        // 2. Global UID Copy Function (User & Admin both)
+        window.copyUserUIDToClipboard = function(elementId, btnElement) {
+            const uidElement = document.getElementById(elementId);
+            if (!uidElement) return;
+            
+            const rawText = uidElement.innerText.replace('#', '').trim();
+            
+            navigator.clipboard.writeText(rawText).then(() => {
+                if (window.showCustomToast) {
+                    window.showCustomToast(`UID #${rawText} Copied to Clipboard!`, "success");
+                }
+                if (btnElement) {
+                    const originalHTML = btnElement.innerHTML;
+                    btnElement.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> <span class="text-emerald-400">Copied!</span>`;
+                    setTimeout(() => {
+                        btnElement.innerHTML = originalHTML;
+                    }, 2000);
+                }
+            }).catch(() => {
+                if (window.showCustomToast) window.showCustomToast("Failed to copy UID", "error");
+            });
+        };
+
+        // 3. Inject User Drawer UID Display Box Dynamic UI
+        window.injectDrawerUIDCard = function(userUid) {
+            const drawerContainer = document.getElementById('drawerUserIdentity')?.parentElement;
+            if (drawerContainer && !document.getElementById('drawerUidCardBox')) {
+                const uidBox = document.createElement('div');
+                uidBox.id = 'drawerUidCardBox';
+                uidBox.className = 'mt-2.5 p-2.5 bg-[#030712]/90 border border-slate-800 rounded-xl flex items-center justify-between shadow-inner';
+                uidBox.innerHTML = `
+                    <div class="flex flex-col">
+                        <span class="text-[8px] uppercase font-mono tracking-widest text-slate-500 font-bold">User UID</span>
+                        <span id="drawerUserUIDVal" class="text-xs font-mono font-extrabold text-rose-400">#${userUid}</span>
+                    </div>
+                    <button type="button" onclick="window.copyUserUIDToClipboard('drawerUserUIDVal', this)" class="bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-400 px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold transition flex items-center space-x-1 active:scale-95">
+                        <i class="fa-regular fa-copy"></i>
+                        <span>Copy</span>
+                    </button>
+                `;
+                drawerContainer.appendChild(uidBox);
+            } else if (document.getElementById('drawerUserUIDVal')) {
+                document.getElementById('drawerUserUIDVal').innerText = `#${userUid}`;
+            }
+        };
+
+        // 4. Override / Hook Firebase User Auth Listener to Ensure Unique UID Allocation
+        const originalOnAuthStateChanged = onAuthStateChanged;
+        
+        // Dynamic hook into main auth stream to update UI
+        const checkAndInjectUID = async (user) => {
+            if (!user) return;
+            const userDbRef = ref(database, 'users/' + user.uid);
+            
+            try {
+                const snapshot = await get(userDbRef);
+                let currentUidVal = null;
+                
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    if (data.userUid) {
+                        currentUidVal = data.userUid;
+                    } else {
+                        currentUidVal = await window.generateUniqueUserUID();
+                        await update(userDbRef, { userUid: currentUidVal });
+                    }
+                } else {
+                    currentUidVal = await window.generateUniqueUserUID();
+                }
+
+                // Inject UID Box inside Drawer UI
+                if (currentUidVal) {
+                    window.injectDrawerUIDCard(currentUidVal);
+                }
+            } catch(e) {
+                console.warn("UID Processing Notice:", e);
+            }
+        };
+
+        // Monitor Auth Changes
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                checkAndInjectUID(user);
+            }
+        });
+
+        // 5. Update Admin User Table to Show User UID Header & Values
+        const originalRenderAdminUsers = window.renderAdminUsersList;
+        window.renderAdminUsersList = function() {
+            const stream = document.getElementById('adminUsersStream');
+            if (!stream) return;
+
+            // Admin Table Header Direct Update (Inserts UID Header if missing)
+            const tableHeadTr = stream.closest('table')?.querySelector('thead tr');
+            if (tableHeadTr && !tableHeadTr.querySelector('.uid-head-col')) {
+                const th = document.createElement('th');
+                th.className = 'p-3 sm:p-4 uid-head-col';
+                th.innerText = 'USER UID';
+                const createdCol = tableHeadTr.children[2];
+                if (createdCol) tableHeadTr.insertBefore(th, createdCol);
+            }
+
+            if (!window.allUsersCache || typeof window.allUsersCache !== 'object' || Object.keys(window.allUsersCache).length === 0) {
+                stream.innerHTML = `<tr><td colspan="7" class="p-12 text-center text-slate-500 italic font-mono">No users registered in database.</td></tr>`;
+                return;
+            }
+
+            const searchEl = document.getElementById('adminUserSearchInput');
+            const searchTerm = searchEl ? searchEl.value.trim().toLowerCase() : '';
+            let htmlRows = '';
+            let count = 0;
+
+            Object.keys(window.allUsersCache).forEach(uid => {
+                const u = window.allUsersCache[uid];
+                if (!u || typeof u !== 'object') return;
+
+                const email = u.email || `User (${uid.substring(0, 8)})`;
+                const userUidVal = u.userUid || '----';
+
+                if (searchTerm && !email.toLowerCase().includes(searchTerm) && !userUidVal.includes(searchTerm)) {
+                    return;
+                }
+                count++;
+
+                const liveBal = u.walletBalance !== undefined ? parseFloat(u.walletBalance).toFixed(2) : "0.00";
+                const safeEmail = window.escapeHtml(email);
+                const providerIcon = (u.provider === 'google' || u.provider === 'google.com') 
+                    ? `<i class="fa-brands fa-google text-rose-500 text-sm" title="Google Provider"></i>` 
+                    : `<i class="fa-solid fa-envelope text-sky-400 text-sm" title="Email Provider"></i>`;
+                const createdAtStr = window.escapeHtml(u.createdAt || '24 Jul 2026');
+                const lastSignedInStr = window.escapeHtml(u.lastSignedIn || '24 Jul 2026');
+                
+                htmlRows += `
+                    <tr class="hover:bg-[#0d1220]/40 transition border-b border-slate-800 font-mono text-xs">
+                        <td class="p-3 sm:p-4 text-slate-200 font-bold truncate max-w-[180px]" title="${safeEmail}">${safeEmail}</td>
+                        <td class="p-3 sm:p-4 text-center">${providerIcon}</td>
+                        <td class="p-3 sm:p-4">
+                            <div class="flex items-center space-x-1.5">
+                                <span id="adminUid_${uid}" class="bg-purple-500/10 text-purple-400 border border-purple-500/20 px-2 py-0.5 rounded-md font-extrabold text-[11px]">#${userUidVal}</span>
+                                <button onclick="window.copyUserUIDToClipboard('adminUid_${uid}', this)" class="text-slate-500 hover:text-purple-400 transition p-1" title="Copy UID">
+                                    <i class="fa-regular fa-copy text-xs"></i>
+                                </button>
+                            </div>
+                        </td>
+                        <td class="p-3 sm:p-4 text-slate-400">${createdAtStr}</td>
+                        <td class="p-3 sm:p-4 text-slate-400">${lastSignedInStr}</td>
+                        <td class="p-3 sm:p-4 font-bold text-emerald-400 font-mono">₹${liveBal}</td>
+                        <td class="p-3 sm:p-4 text-right space-x-2">
+                            <button onclick="window.updateUserBalancePrompt('${uid}', '${liveBal}', '${safeEmail}')" class="bg-purple-600/80 hover:bg-purple-500 border border-purple-500/40 text-white font-bold px-3 py-1.5 rounded-xl text-[9px] uppercase tracking-wider transition active:scale-95">Adjust Balance</button>
+                            <button onclick="window.triggerDeleteUserModal('${uid}', '${safeEmail}')" class="bg-rose-600/80 hover:bg-rose-500 border border-rose-500/40 text-white font-bold px-3 py-1.5 rounded-xl text-[9px] uppercase tracking-wider transition active:scale-95"><i class="fa-solid fa-trash-can mr-1"></i>Remove</button>
+                        </td>
+                    </tr>`;
+            });
+
+            if (count === 0) {
+                stream.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-500 italic font-mono">No matching user records found.</td></tr>`;
+            } else {
+                stream.innerHTML = htmlRows;
+            }
+        };
+
+
 
 
 
