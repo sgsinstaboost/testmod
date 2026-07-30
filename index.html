@@ -2742,7 +2742,140 @@
 
 
 
+// =======================================================
+        // 🔔 LOGIN REFERRAL POPUP (HINDI TERMS) & USER DP SYNC
+        // =======================================================
 
+        // 1. Inject Login Referral Popup Modal HTML dynamically
+        window.injectLoginReferralPopupUI = function() {
+            if (document.getElementById('loginReferralModalOverlay')) return;
+
+            const modalDiv = document.createElement('div');
+            modalDiv.id = 'loginReferralModalOverlay';
+            modalDiv.className = 'fixed inset-0 bg-[#030712]/90 z-[110] hidden items-center justify-center p-4 backdrop-blur-md transition-all duration-300';
+            modalDiv.innerHTML = `
+                <div class="glass-panel max-w-sm w-full rounded-[28px] p-6 space-y-4 border-amber-500/40 shadow-glow-amber relative text-center overflow-hidden animate-fade-in">
+                    
+                    <!-- Close Button -->
+                    <button type="button" onclick="window.closeLoginReferralPopup()" class="absolute top-4 right-4 text-slate-400 hover:text-rose-500 p-1.5 hover:bg-slate-900 rounded-xl transition">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+
+                    <!-- Icon Banner -->
+                    <div class="w-16 h-16 bg-amber-500/10 text-amber-400 rounded-2xl border border-amber-500/30 flex items-center justify-center mx-auto text-3xl shadow-glow-amber">
+                        <i class="fa-solid fa-gift animate-bounce"></i>
+                    </div>
+
+                    <!-- Main Banner Text -->
+                    <div class="space-y-1">
+                        <span class="text-[9px] uppercase font-mono tracking-widest text-amber-400 font-bold">Offer Alert</span>
+                        <h3 class="text-lg font-black uppercase text-white tracking-tight">5 Dosto ko Share Kare Aur Paye ₹5.00!</h3>
+                        <p class="text-xs text-slate-300 font-medium">Apne dosto ko app refer karein aur wallet bonus paayein.</p>
+                    </div>
+
+                    <!-- Click to View Terms Button -->
+                    <button type="button" onclick="window.showHindiReferTermsModal()" class="w-full py-3 bg-gradient-to-r from-amber-500 via-rose-500 to-amber-500 hover:from-amber-400 hover:to-rose-400 text-slate-950 font-black uppercase text-xs tracking-widest rounded-xl shadow-md transition active:scale-95 flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>Niyam Aur Shartein (Terms) Dekhein</span>
+                    </button>
+
+                    <button type="button" onclick="window.closeLoginReferralPopup()" class="text-[11px] text-slate-400 hover:text-slate-200 font-mono underline block mx-auto pt-1">
+                        Abhi Nahi (Skip)
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(modalDiv);
+        };
+
+        // 2. Open / Close Login Popup Functions
+        window.openLoginReferralPopup = function() {
+            window.injectLoginReferralPopupUI();
+            const modal = document.getElementById('loginReferralModalOverlay');
+            if (modal && !sessionStorage.getItem('sgs_refer_popup_shown')) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                sessionStorage.setItem('sgs_refer_popup_shown', 'true');
+            }
+        };
+
+        window.closeLoginReferralPopup = function() {
+            const modal = document.getElementById('loginReferralModalOverlay');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        };
+
+        // 3. Display Hindi Terms & Conditions Modal
+        window.showHindiReferTermsModal = function() {
+            window.closeLoginReferralPopup();
+
+            const titleEl = document.getElementById('legalModalTitle');
+            const contentEl = document.getElementById('legalModalContent');
+            const modal = document.getElementById('legalModalOverlay');
+
+            if (titleEl && contentEl && modal) {
+                titleEl.innerHTML = `<i class="fa-solid fa-gift text-amber-400"></i><span>रेफरल ऑफर की नियम एवं शर्तें (Terms & Conditions)</span>`;
+                contentEl.innerHTML = `
+                    <div class="space-y-4 font-sans text-xs text-slate-300 leading-relaxed">
+                        <div class="bg-amber-500/10 border-l-4 border-amber-500 p-3 rounded text-amber-200 font-semibold">
+                            🎁 ₹5.00 का बोनस सीधे अपने वॉलेट में पाने के लिए नीचे दी गई शर्तों को पूरा करें:
+                        </div>
+
+                        <ol class="list-decimal pl-5 space-y-2.5 font-sans">
+                            <li><strong>खाता बनाएं (Sign Up):</strong> आपके 5 दोस्तों को आपके Referral Code या Referral Link का उपयोग करके नया अकाउंट बनाना होगा।</li>
+                            <li><strong>न्यूनतम डिपॉज़िट (Min Deposit):</strong> आपके पांचों दोस्तों को अपने वॉलेट में कम से कम <strong>₹10.00 या उससे अधिक</strong> ऐड (Deposit) करना होगा।</li>
+                            <li><strong>एडमिन वेरिफिकेशन (Admin Approval):</strong> जैसे ही आपके दोस्त का डिपॉज़िट एडमिन द्वारा अप्रूव हो जाएगा, आपकी रेफरल प्रोग्रेस (0/5 से 1/5) बढ़ जाएगी।</li>
+                            <li><strong>बोनस क्लेम करें (Claim ₹5):</strong> 5 दोस्तों के ₹10+ ऐड करते ही आपके 'Earn' सेक्शन में <strong>"Collect ₹5"</strong> का बटन आ जाएगा। बटन दबाते ही ₹5.00 तुरंत आपके वॉलेट में जुड़ जाएंगे।</li>
+                        </ol>
+
+                        <div class="bg-rose-500/10 p-2.5 rounded-xl border border-rose-500/20 text-[11px] text-rose-300">
+                            <strong>नोट:</strong> एक ही मोबाइल/डिवाइस से फर्जी अकाउंट बनाने पर बोनस नहीं मिलेगा।
+                        </div>
+                    </div>
+                `;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        };
+
+        // 4. User Profile Picture & Email Image Syncing Logic
+        window.syncUserProfilePicture = function(user) {
+            const drawerLogoImg = document.getElementById('drawerUserLogo');
+            if (!drawerLogoImg || !user) return;
+
+            // If Google/Firebase has user photo
+            if (user.photoURL && user.photoURL.trim() !== '') {
+                drawerLogoImg.src = user.photoURL;
+            } else {
+                // Generate high quality avatar based on user email or UID
+                const seedKey = user.email || user.uid || 'SGSUser';
+                drawerLogoImg.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(seedKey)}`;
+            }
+        };
+
+        // 5. Hook Profile Picture Sync & Popup into Auth State Listener
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // Sync User Profile Picture in Drawer
+                window.syncUserProfilePicture(user);
+
+                // Show Login Referral Offer Popup (once per session)
+                setTimeout(() => {
+                    window.openLoginReferralPopup();
+                }, 800);
+            }
+        });
+
+
+
+
+
+
+
+
+
+        
 
         
         
