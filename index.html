@@ -2520,10 +2520,10 @@
 
 
 // =======================================================
-        // 🎁 REFERRAL CHALLENGE (SHARE 5 FRIENDS & EARN ₹5) SYSTEM
+        // 🎁 रेफरल चैलेंज (5 दोस्तों को शेयर करें और ₹5 कमाएं) सिस्टम
         // =======================================================
 
-        // 1. Inject UI Elements into "tab-refer" Section Automatically
+        // 1. "tab-refer" सेक्शन में UI एलिमेंट्स अपने आप जोड़ें
         window.injectReferralChallengeUI = function() {
             const referTabContainer = document.getElementById('tab-refer')?.querySelector('.glass-panel');
             if (referTabContainer && !document.getElementById('referChallengeCard')) {
@@ -2537,19 +2537,19 @@
                                 <i class="fa-solid fa-[#000] fa-trophy text-amber-400"></i>
                             </div>
                             <div>
-                                <h4 class="text-xs font-black uppercase text-white tracking-wider">Share 5 Friends & Earn ₹5.00</h4>
-                                <p class="text-[9px] text-slate-400 font-mono">Special Milestone Reward</p>
+                                <h4 class="text-xs font-black uppercase text-white tracking-wider">5 दोस्तों को शेयर करें और ₹5.00 कमाएं</h4>
+                                <p class="text-[9px] text-slate-400 font-mono">विशेष माइलस्टोन इनाम</p>
                             </div>
                         </div>
                         <button type="button" onclick="window.showReferChallengeTerms()" class="text-[10px] text-amber-400 font-mono underline hover:text-amber-300 transition">
-                            <i class="fa-solid fa-circle-info mr-1"></i>Terms
+                            <i class="fa-solid fa-circle-info mr-1"></i>नियम व शर्तें
                         </button>
                     </div>
 
-                    <!-- Progress Bar Section -->
+                    <!-- प्रोग्रेस बार सेक्शन -->
                     <div class="space-y-1.5">
                         <div class="flex justify-between items-center text-[10px] font-mono font-bold">
-                            <span class="text-slate-400">Qualified Referrals (Deposit ≥ ₹10)</span>
+                            <span class="text-slate-400">सफल रेफरल (कम से कम ₹10 डिपॉज़िट)</span>
                             <span id="referProgressText" class="text-amber-400">0 / 5</span>
                         </div>
                         <div class="w-full h-3 bg-slate-900 rounded-full border border-slate-800 overflow-hidden relative">
@@ -2557,11 +2557,11 @@
                         </div>
                     </div>
 
-                    <!-- Claim / Status Button Box -->
+                    <!-- क्लेम / स्टेटस बटन बॉक्स -->
                     <div id="referClaimActionBox" class="pt-1">
                         <button id="btnCollectReferBonus" disabled type="button" onclick="window.claimReferralChallengeBonus()" class="w-full py-3 bg-slate-800 border border-slate-700 text-slate-500 font-extrabold uppercase text-xs tracking-widest rounded-xl transition flex items-center justify-center space-x-2 cursor-not-allowed">
                             <i class="fa-solid fa-lock text-xs"></i>
-                            <span>Complete 5/5 Referrals to Unlock ₹5</span>
+                            <span>₹5 अनलॉक करने के लिए 5/5 रेफरल पूरा करें</span>
                         </button>
                     </div>
                 `;
@@ -2569,35 +2569,35 @@
             }
         };
 
-        // 2. Terms & Conditions Modal/Popup
+        // 2. नियम एवं शर्तें मॉडल / पॉपअप
         window.showReferChallengeTerms = function() {
             if (window.showSecurityInfo) {
                 const titleEl = document.getElementById('legalModalTitle');
                 const contentEl = document.getElementById('legalModalContent');
                 const modal = document.getElementById('legalModalOverlay');
                 
-                titleEl.innerHTML = `<i class="fa-solid fa-gift text-amber-400"></i><span>Offer Terms: Share 5 Friends & Earn ₹5</span>`;
+                titleEl.innerHTML = `<i class="fa-solid fa-gift text-amber-400"></i><span>ऑफर की शर्तें: 5 दोस्तों को शेयर करें और ₹5 कमाएं</span>`;
                 contentEl.innerHTML = `
                     <div class="space-y-3 font-sans text-xs">
                         <div class="bg-amber-500/10 border-l-4 border-amber-500 p-3 rounded text-amber-200 font-medium">
-                            Follow these conditions to earn ₹5 bonus directly in your wallet:
+                            अपने वॉलेट में सीधे ₹5 का बोनस पाने के लिए इन शर्तों का पालन करें:
                         </div>
-                        <ul class="list-decimal pl-5 space-y-2 text-slate-300 font-mono text-[11px]">
-                            <li><strong>Account Registration:</strong> All 5 friends must create a new account using your unique Referral Code or Node Link.</li>
-                            <li><strong>Minimum Deposit:</strong> Each of the 5 friends must deposit at least <strong>₹10.00 or more</strong> into their wallet and get verified by Admin.</li>
-                            <li><strong>Live Progress:</strong> As soon as a referred friend completes a ₹10+ deposit, your progress bar will update (e.g. 1/5, 2/5).</li>
-                            <li><strong>Collect Reward:</strong> When 5 qualified friends complete the deposit, the "Collect ₹5" button will activate instantly!</li>
+                        <ul class="list-decimal pl-5 space-y-2 text-slate-300 font-sans text-[11px]">
+                            <li><strong>अकाउंट रजिस्ट्रेशन:</strong> आपके सभी 5 दोस्तों को आपके रेफरल कोड या लिंक का उपयोग करके नया अकाउंट बनाना होगा।</li>
+                            <li><strong>न्यूनतम डिपॉज़िट:</strong> प्रत्येक दोस्त को अपने वॉलेट में कम से कम <strong>₹10.00 या उससे अधिक</strong> जोड़ना होगा और एडमिन द्वारा वेरिफाई होना होगा।</li>
+                            <li><strong>लाइव प्रोग्रेस:</strong> जैसे ही आपका रेफर किया गया दोस्त ₹10+ का डिपॉज़िट पूरा करेगा, आपकी प्रोग्रेस बार अपडेट हो जाएगी (जैसे 1/5, 2/5)।</li>
+                            <li><strong>इनाम क्लेम करें:</strong> जैसे ही 5 दोस्त डिपॉज़िट पूरा करेंगे, "Collect ₹5" बटन तुरंत चालू हो जाएगा!</li>
                         </ul>
                     </div>
                 `;
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
             } else {
-                alert("Terms: 5 Friends must register with your code & deposit at least ₹10 each to unlock ₹5 Reward!");
+                alert("शर्तें: ₹5 का इनाम पाने के लिए 5 दोस्तों को आपके कोड से रजिस्टर करना होगा और कम से कम ₹10 का डिपॉज़िट करना होगा!");
             }
         };
 
-        // 3. Update Progress Bar & Claim Button State
+        // 3. प्रोग्रेस बार और क्लेम बटन स्टेटस अपडेट करें
         window.renderReferralChallengeProgress = function() {
             window.injectReferralChallengeUI();
 
@@ -2622,27 +2622,27 @@
                 claimBox.innerHTML = `
                     <div class="w-full py-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-extrabold uppercase text-xs tracking-widest rounded-xl text-center flex items-center justify-center space-x-2">
                         <i class="fa-solid fa-circle-check text-emerald-400"></i>
-                        <span>₹5 Reward Collected Successfully!</span>
+                        <span>₹5 का इनाम सफलतापूर्वक प्राप्त कर लिया गया है!</span>
                     </div>
                 `;
             } else if (qualifiedCount >= 5) {
                 claimBox.innerHTML = `
                     <button type="button" onclick="window.claimReferralChallengeBonus()" class="w-full py-3 bg-gradient-to-r from-amber-500 via-rose-500 to-amber-500 hover:from-amber-400 hover:to-rose-400 text-slate-950 font-black uppercase text-xs tracking-widest rounded-xl shadow-glow-amber transition active:scale-95 flex items-center justify-center space-x-2">
                         <i class="fa-solid fa-hand-holding-dollar text-base animate-bounce"></i>
-                        <span>Collect ₹5.00 Reward Now</span>
+                        <span>अभी ₹5.00 का इनाम क्लेम करें</span>
                     </button>
                 `;
             } else {
                 claimBox.innerHTML = `
                     <button disabled type="button" class="w-full py-3 bg-slate-900 border border-slate-800 text-slate-500 font-extrabold uppercase text-xs tracking-widest rounded-xl flex items-center justify-center space-x-2 cursor-not-allowed">
                         <i class="fa-solid fa-lock text-xs"></i>
-                        <span>Complete 5/5 Referrals (${targetVal}/5) to Collect ₹5</span>
+                        <span>₹5 पाने के लिए 5 रेफरल पूरा करें (${targetVal}/5)</span>
                     </button>
                 `;
             }
         };
 
-        // 4. Claim Bonus Function (Adds ₹5 to Wallet Balance in Firebase)
+        // 4. क्लेम बोनस फ़ंक्शन (Firebase में वॉलेट बैलेंस में ₹5 जोड़ता है)
         window.claimReferralChallengeBonus = async function() {
             if (!currentAuthenticatedUserToken || !userDataRecordCached) return;
 
@@ -2650,12 +2650,12 @@
             const isClaimed = userDataRecordCached.referBonusClaimed || false;
 
             if (isClaimed) {
-                if (window.showCustomToast) window.showCustomToast("Reward already collected!", "info");
+                if (window.showCustomToast) window.showCustomToast("इनाम पहले ही प्राप्त किया जा चुका है!", "info");
                 return;
             }
 
             if (qualifiedCount < 5) {
-                if (window.showCustomToast) window.showCustomToast("Need 5 qualified friends to collect ₹5!", "error");
+                if (window.showCustomToast) window.showCustomToast("₹5 प्राप्त करने के लिए 5 योग्य दोस्तों की आवश्यकता है!", "error");
                 return;
             }
 
@@ -2672,38 +2672,38 @@
             };
 
             try {
-                // Update Firebase
+                // Firebase अपडेट करें
                 await update(ref(database, `users/${currentAuthenticatedUserToken.uid}`), {
                     walletBalance: newBal,
                     referBonusClaimed: true
                 });
                 await set(ref(database, `users/${currentAuthenticatedUserToken.uid}/transactions/${rewardTxKey}`), txPayload);
 
-                // Update Local Data Cache
+                // लोकल डेटा कैश अपडेट करें
                 userDataRecordCached.walletBalance = newBal;
                 userDataRecordCached.referBonusClaimed = true;
 
-                // Update UI Readout
+                // UI रीडआउट अपडेट करें
                 document.getElementById('userBalance').innerText = newBal.toFixed(2);
                 window.renderReferralChallengeProgress();
 
                 if (window.showCustomToast) {
-                    window.showCustomToast("🎉 Congratulations! ₹5.00 added to your wallet!", "success");
+                    window.showCustomToast("🎉 बधाई हो! आपके वॉलेट में ₹5.00 जोड़ दिए गए हैं!", "success");
                 }
             } catch (err) {
-                if (window.showCustomToast) window.showCustomToast("Claim error: " + err.message, "error");
+                if (window.showCustomToast) window.showCustomToast("क्लेम त्रुटि: " + err.message, "error");
             }
         };
 
-        // 5. Hook into Admin Approval to Count Referrals with Deposit ≥ ₹10
+        // 5. ≥ ₹10 डिपॉज़िट वाले रेफरल की गिनती के लिए एडमिन अप्रूवल लॉजिक
         const originalCommitStateVerification = window.commitStateVerification;
         window.commitStateVerification = function(targetUid, structId, txnValue, actionType) {
-            // Call existing approval logic
+            // मौजूदा अप्रूवल लॉजिक को कॉल करें
             if (originalCommitStateVerification) {
                 originalCommitStateVerification(targetUid, structId, txnValue, actionType);
             }
 
-            // Additional Check: If approved deposit is >= ₹10, update Referrer's count
+            // अतिरिक्त जाँच: यदि स्वीकृत डिपॉज़िट >= ₹10 है, तो रेफरर की संख्या अपडेट करें
             if (actionType === 'approve' && parseFloat(txnValue) >= 10.00) {
                 const targetUserRef = ref(database, `users/${targetUid}`);
                 get(targetUserRef).then((snap) => {
@@ -2718,9 +2718,9 @@
                                     const rData = rSnap.val();
                                     const currentCount = rData.qualifiedReferCount || 0;
                                     
-                                    // Increment Referrer's Qualified Count
+                                    // रेफरर की संख्या बढ़ाएं
                                     update(referrerRef, { qualifiedReferCount: currentCount + 1 });
-                                    // Mark user so they aren't counted twice
+                                    // यूज़र को चिन्हित करें ताकि दोबारा न गिना जाए
                                     update(targetUserRef, { countedForReferChallenge: true });
                                 }
                             });
@@ -2730,7 +2730,7 @@
             }
         };
 
-        // 6. Auto Trigger Render on Tab Switch / Auth Load
+        // 6. टैब स्विच / ऑथ लोड पर ऑटो रेंडर ट्रिगर करें
         const originalSwitchTab = window.switchTab;
         window.switchTab = function(targetId) {
             if (originalSwitchTab) originalSwitchTab(targetId);
@@ -2738,7 +2738,6 @@
                 setTimeout(() => window.renderReferralChallengeProgress(), 100);
             }
         };
-
 
 
 
@@ -2866,8 +2865,6 @@
                 }, 800);
             }
         });
-
-
 
 
 
