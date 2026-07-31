@@ -11,6 +11,9 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <style>
+    html, body {
+      overscroll-behavior-y: contain;
+    }
     .scrollbar-none::-webkit-scrollbar {
       display: none;
     }
@@ -46,67 +49,7 @@
 
   <div id="root"></div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { 
-      getAuth, 
-      signInWithEmailAndPassword, 
-      createUserWithEmailAndPassword,
-      sendPasswordResetEmail,
-      signInWithPopup,
-      GoogleAuthProvider,
-      signOut, 
-      onAuthStateChanged 
-    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { 
-      getDatabase, 
-      ref, 
-      onValue, 
-      set, 
-      push, 
-      remove, 
-      get, 
-      update 
-    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-database.js";
-
-    // Clean Raw Config Object
-    const rawConfigObj = {
-      apiKey: "AIzaSyDnYNpfLEsGOhTMT1dkDReH4fRA0pgOs94".trim(),
-      authDomain: "sgs-online-service.firebaseapp.com".trim(),
-      databaseURL: "https://sgs-online-service-default-rtdb.firebaseio.com".trim(),
-      projectId: "sgs-online-service".trim(),
-      storageBucket: "sgs-online-service.firebasestorage.app".trim(),
-      messagingSenderId: "12707331594".trim(),
-      appId: "1:12707331594:web:9f5645f5744b7fc7af29f3".trim()
-    };
-
-    const encodedConfig = btoa(JSON.stringify(rawConfigObj));
-    const firebaseConfig = JSON.parse(atob(encodedConfig));
-
-    // Admin UID (a7XKd7o4aGNqgGiIO9GRe5Q1Rhn1)
-    window.ENCODED_ADMIN_UID = btoa("a7XKd7o4aGNqgGiIO9GRe5Q1Rhn1");
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    window.firebaseAuth = getAuth(app);
-    window.googleProvider = new GoogleAuthProvider();
-    window.firebaseDb = getDatabase(app);
-    window.firebaseRef = ref;
-    window.firebaseOnValue = onValue;
-    window.firebaseSet = set;
-    window.firebasePush = push;
-    window.firebaseRemove = remove;
-    window.firebaseGet = get;
-    window.firebaseUpdate = update;
-    window.firebaseSignIn = signInWithEmailAndPassword;
-    window.firebaseSignUp = createUserWithEmailAndPassword;
-    window.firebaseResetPassword = sendPasswordResetEmail;
-    window.firebaseGooglePopup = () => signInWithPopup(window.firebaseAuth, window.googleProvider);
-    window.firebaseSignOut = signOut;
-    window.firebaseOnAuth = onAuthStateChanged;
-
-    window.dispatchEvent(new Event('firebase-ready'));
-
+  <script>
     // Fast 1.2 second Loader dismiss
     setTimeout(() => {
       const splash = document.getElementById('splash-screen');
@@ -123,28 +66,27 @@
     // SVG Icons
     const Icons = {
       Search: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>,
-      Plus: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"/></svg>,
-      Trash2: () => <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>,
-      Edit3: () => <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>,
       ArrowLeft: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>,
       ExternalLink: () => <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>,
       CheckCircle2: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
       FileText: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>,
-      Lock: () => <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>,
       X: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>,
       ChevronRight: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>,
       Bell: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>,
       Menu: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/></svg>,
       ShieldCheck: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>,
-      User: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>,
-      Clock: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
-      Share2: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>,
-      Google: () => <svg className="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+      Share2: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
     };
 
-    // Clean initial arrays - No dummy examples!
-    const SEED_NOTICES = [];
-    const SEED_SERVICES = [];
+
+    // DEFAULT NOTICE BOARD DATA
+    const SEED_NOTICES = [
+      { id: 'n1', text: 'Bihar Graduation Admission Online Form 2026 Process Start.', date: '01 Aug 2026' },
+      { id: 'n2', text: 'Post Matric Scholarship Last Date Extend Ho Chuki Hai.', date: '30 Jul 2026' }
+    ];
+
+
+    // DEFAULT CATEGORIES
     const SEED_CATEGORIES = [
       'Sabhi Services',
       'College Admission',
@@ -153,65 +95,224 @@
       'Admit Card & Result'
     ];
 
+
+    // =========================================================================
+    // 🚀 SERVICES ARRAY (Aap yaha naye buttons/services add/edit kar sakte hain)
+    // =========================================================================
+    const SEED_SERVICES = [
+
+      // --- SERVICE 1 ---
+      {
+        id: 's-1',
+        category: 'College Admission',
+        title: 'VKSU Part 1 Admission Form 2026',
+        shortDesc: 'Veer Kunwar Singh University BA / B.Sc / B.Com Online Admission Form',
+        description: 'VKSU Me Graduation Admission Ke Liye Online Application Form Bharein.',
+        requiredDocs: ['10th & 12th Marksheet', 'Aadhaar Card', 'Passport Photo', 'Email & Mobile Number'],
+        applyLink: 'https://example.com/apply-vksu-admission'
+      },
+
+
+      // --- SERVICE 2 ---
+      {
+        id: 's-2',
+        category: 'College Admission',
+        title: 'Patliputra University Graduation Form',
+        shortDesc: 'PPU UG Regular Admission Online Application Portal',
+        description: 'Patliputra University Me BA / B.Sc / B.Com Course Ke Liye Apply Karein.',
+        requiredDocs: ['12th Marksheet', 'TC / CLC Certificate', 'Aadhaar Card', 'Photo'],
+        applyLink: 'https://example.com/apply-ppu-ug'
+      },
+
+
+      // --- SERVICE 3 ---
+      {
+        id: 's-3',
+        category: 'Scholarship',
+        title: 'Bihar Post Matric Scholarship (PMS)',
+        shortDesc: 'SC, ST, BC, EBC Chhatravriti Yojana Online Form',
+        description: 'Post Matric Scholarship Scheme Active. Apne Documents Ke Saath Apply Karein.',
+        requiredDocs: ['Aadhaar Card', 'Caste Certificate', 'Income Certificate', 'Fee Receipt', 'Bank Passbook'],
+        applyLink: 'https://example.com/apply-pms-scholarship'
+      },
+
+
+      // --- SERVICE 4 ---
+      {
+        id: 's-4',
+        category: 'Scholarship',
+        title: 'National Scholarship Portal (NSP) 2026',
+        shortDesc: 'NSP Pre & Post Matric Central Scholarship Application',
+        description: 'National Scholarship Portal All India Schemes Apply Online.',
+        requiredDocs: ['Bonafide Certificate', 'Marksheet', 'Income Proof', 'Aadhaar Card'],
+        applyLink: 'https://example.com/apply-nsp'
+      },
+
+
+      // --- SERVICE 5 ---
+      {
+        id: 's-5',
+        category: 'Certificates (Jati/Aaya/Niwas)',
+        title: 'Jati Parman Patra (Caste Certificate)',
+        shortDesc: 'Bihar RTPS Online Caste Certificate Apply Portal',
+        description: 'Ghar Baite Jati Parman Patra Online Apply Karein.',
+        requiredDocs: ['Aadhaar Card', 'Photo', 'Swayam Goshna Patra'],
+        applyLink: 'https://example.com/apply-caste-certificate'
+      },
+
+
+      // --- SERVICE 6 ---
+      {
+        id: 's-6',
+        category: 'Certificates (Jati/Aaya/Niwas)',
+        title: 'Aaya Parman Patra (Income Certificate)',
+        shortDesc: 'Bihar RTPS Income Certificate Apply',
+        description: 'Naye Aaya Parman Patra Ke Liye Online Aavedan Karein.',
+        requiredDocs: ['Aadhaar Card', 'Ration Card / Revenue Details', 'Photo'],
+        applyLink: 'https://example.com/apply-income-certificate'
+      },
+
+
+      // --- SERVICE 7 ---
+      {
+        id: 's-7',
+        category: 'Certificates (Jati/Aaya/Niwas)',
+        title: 'Niwas Parman Patra (Residence Certificate)',
+        shortDesc: 'Residence Certificate (Residential Proof) Online Portal',
+        description: 'Bihar Niwas Certificate Online Banalwane Ke Liye Click Karein.',
+        requiredDocs: ['Aadhaar Card', 'Mobile Number', 'Passport Photo'],
+        applyLink: 'https://example.com/apply-residence-certificate'
+      },
+
+
+      // --- SERVICE 8 ---
+      {
+        id: 's-8',
+        category: 'Certificates (Jati/Aaya/Niwas)',
+        title: 'EWS Certificate Online Apply',
+        shortDesc: 'Economically Weaker Section (EWS) Certificate',
+        description: 'General Category EWS Reservation Certificate Apply Karein.',
+        requiredDocs: ['Income Proof', 'Khatiyan / Land Proof', 'Aadhaar Card', 'Photo'],
+        applyLink: 'https://example.com/apply-ews'
+      },
+
+
+      // --- SERVICE 9 ---
+      {
+        id: 's-9',
+        category: 'Admit Card & Result',
+        title: 'College Admit Card Download Portal',
+        shortDesc: 'University Exam Admit Card Direct Download Link',
+        description: 'Apna Registration Number Daal Kar Admit Card Download Karein.',
+        requiredDocs: ['Registration Number', 'Date of Birth'],
+        applyLink: 'https://example.com/download-admit-card'
+      },
+
+
+      // --- SERVICE 10 ---
+      {
+        id: 's-10',
+        category: 'Admit Card & Result',
+        title: 'Semester & Annual Exam Result Check',
+        shortDesc: 'Check All Board / University Examination Results',
+        description: 'Exam Roll Number Aur Roll Code Se Marks Check Karein.',
+        requiredDocs: ['Roll Code', 'Roll Number'],
+        applyLink: 'https://example.com/check-exam-result'
+      },
+
+
+      // --- SERVICE 11 ---
+      {
+        id: 's-11',
+        category: 'College Admission',
+        title: 'Bihar B.Ed Combined Entrance Test Form',
+        shortDesc: 'B.Ed Entrance Exam Online Application 2026',
+        description: 'Two-Year B.Ed Course Combined Entrance Test Registration.',
+        requiredDocs: ['Graduation Marksheet', 'Aadhaar Card', 'Photo', 'Signature'],
+        applyLink: 'https://example.com/apply-bed-entrance'
+      },
+
+
+      // --- SERVICE 12 ---
+      {
+        id: 's-12',
+        category: 'College Admission',
+        title: 'Bihar DElEd Admission Online Form',
+        shortDesc: 'D.El.Ed Entrance Exam Application Form Portal',
+        description: 'Diploma in Elementary Education Entrance Registration.',
+        requiredDocs: ['12th Pass Marksheet', 'Caste Certificate', 'Aadhaar Card'],
+        applyLink: 'https://example.com/apply-deled'
+      },
+
+
+      // --- SERVICE 13 ---
+      {
+        id: 's-13',
+        category: 'Scholarship',
+        title: 'Bihar Kanya Utthan Yojana Online',
+        shortDesc: 'Graduation Pass Girl Students Rs. 50,000 Scholarship',
+        description: 'Graduation Paas Chhatraon Ke Liye Utthan Yojana Form.',
+        requiredDocs: ['Graduation Marksheet', 'Bank Passbook', 'Aadhaar Card', 'Niwas Certificate'],
+        applyLink: 'https://example.com/apply-kanya-utthan'
+      },
+
+
+      // --- SERVICE 14 ---
+      {
+        id: 's-14',
+        category: 'Certificates (Jati/Aaya/Niwas)',
+        title: 'Non-Creamy Layer (NCL) Certificate',
+        shortDesc: 'OBC / BC / EBC Non-Creamy Layer Certificate',
+        description: 'Central Aur State NCL Certificate Application Portal.',
+        requiredDocs: ['Jati', 'Aaya', 'Niwas Certificate', 'Aadhaar Card'],
+        applyLink: 'https://example.com/apply-ncl'
+      },
+
+
+      // --- SERVICE 15 ---
+      {
+        id: 's-15',
+        category: 'Admit Card & Result',
+        title: 'Bihar Board Exam Answer Key & Objection',
+        shortDesc: 'Official Answer Key Check & Challenge Portal',
+        description: '10th & 12th Board Exam Answer Keys Verification Link.',
+        requiredDocs: ['Roll Code', 'Roll Number', 'Objection Detail'],
+        applyLink: 'https://example.com/check-answer-key'
+      }
+
+      // =======================================================================
+      // ➕ Aage Naya Button / Service Add Karne Ke Liye Yaha Paste Karein:
+      // =======================================================================
+      /*
+      ,
+      {
+        id: 's-16',
+        category: 'College Admission',
+        title: 'Aapka Naya Service Title',
+        shortDesc: 'Short Description Yaha Likhein',
+        description: 'Full Detail Information Yaha Likhein.',
+        requiredDocs: ['Document 1', 'Document 2', 'Document 3'],
+        applyLink: 'https://example.com/your-custom-link'
+      }
+      */
+
+    ];
+
+
+
+
     function App() {
-      const [services, setServices] = useState(SEED_SERVICES);
-      const [notices, setNotices] = useState(SEED_NOTICES);
-      const [categories, setCategories] = useState(SEED_CATEGORIES);
-      const [applications, setApplications] = useState([]);
-      const [allUsersList, setAllUsersList] = useState([]);
+      const [services] = useState(SEED_SERVICES);
+      const [notices] = useState(SEED_NOTICES);
+      const [categories] = useState(SEED_CATEGORIES);
 
       const [selectedCat, setSelectedCat] = useState('Sabhi Services');
       const [searchQuery, setSearchQuery] = useState('');
       const [activeService, setActiveService] = useState(null); 
-      const [iframeUrl, setIframeUrl] = useState(null); 
 
       // Drawer & Modal Views
       const [showDrawer, setShowDrawer] = useState(false);
       const [activeModalPage, setActiveModalPage] = useState(null);
-
-      // User Auth State
-      const [currentUser, setCurrentUser] = useState(null);
-      const [customUserId, setCustomUserId] = useState('');
-      const [showUserAuthModal, setShowUserAuthModal] = useState(false);
-      const [authMode, setAuthMode] = useState('login');
-      const [userEmail, setUserEmail] = useState('');
-      const [userPassword, setUserPassword] = useState('');
-      const [agreeTerms, setAgreeTerms] = useState(false);
-      const [userAuthError, setUserAuthError] = useState('');
-      const [isUserAuthLoading, setIsUserAuthLoading] = useState(false);
-      const [pendingApplyService, setPendingApplyService] = useState(null);
-
-      // Admin Auth State
-      const [isAdmin, setIsAdmin] = useState(false);
-      const [showLoginModal, setShowLoginModal] = useState(false);
-      const [adminEmail, setAdminEmail] = useState('');
-      const [adminPassword, setAdminPassword] = useState('');
-      const [authError, setAuthError] = useState('');
-      const [isAuthLoading, setIsAuthLoading] = useState(false);
-
-      // Admin Selected User Inspector State
-      const [selectedInspectorUid, setSelectedInspectorUid] = useState(null);
-
-      // Service Form Modal State
-      const [showServiceFormModal, setShowServiceFormModal] = useState(false);
-      const [editingServiceId, setEditingServiceId] = useState(null);
-      
-      const [formCategory, setFormCategory] = useState('');
-      const [formTitle, setFormTitle] = useState('');
-      const [formShortDesc, setFormShortDesc] = useState('');
-      const [formDescType, setFormDescType] = useState('normal'); 
-      const [formDescription, setFormDescription] = useState('');
-      const [formDocs, setFormDocs] = useState('');
-      const [formApplyLink, setFormApplyLink] = useState('');
-      const [formBannerUrl, setFormBannerUrl] = useState('');
-
-      // Notice & Category Modals State
-      const [showNoticeModal, setShowNoticeModal] = useState(false);
-      const [editingNoticeId, setEditingNoticeId] = useState(null);
-      const [noticeText, setNoticeText] = useState('');
-
-      const [showCategoryModal, setShowCategoryModal] = useState(false);
-      const [newCatName, setNewCatName] = useState('');
 
       // Toast Notification State
       const [toastMsg, setToastMsg] = useState('');
@@ -222,179 +323,32 @@
       };
 
       useEffect(() => {
-        const setupFirebaseSync = () => {
-          if (!window.firebaseDb) return;
-
-          // Sync Services
-          const servicesRef = window.firebaseRef(window.firebaseDb, 'services');
-          window.firebaseOnValue(servicesRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-              const list = Object.keys(data).map(key => ({ id: key, ...data[key] }));
-              setServices(list);
-            } else {
-              setServices([]);
-            }
-          });
-
-          // Sync Notices
-          const noticesRef = window.firebaseRef(window.firebaseDb, 'notices');
-          window.firebaseOnValue(noticesRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-              const list = Object.keys(data).map(key => ({ id: key, ...data[key] }));
-              setNotices(list);
-            } else {
-              setNotices([]);
-            }
-          });
-
-          // Sync Categories
-          const categoriesRef = window.firebaseRef(window.firebaseDb, 'categories');
-          window.firebaseOnValue(categoriesRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-              if (Array.isArray(data)) {
-                setCategories(data);
-              } else {
-                setCategories(Object.values(data));
-              }
-            } else {
-              window.firebaseSet(categoriesRef, SEED_CATEGORIES);
-            }
-          });
-
-          // Sync Applications
-          const applicationsRef = window.firebaseRef(window.firebaseDb, 'applications');
-          window.firebaseOnValue(applicationsRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-              const list = Object.keys(data).map(key => ({ id: key, ...data[key] }));
-              setApplications(list);
-            } else {
-              setApplications([]);
-            }
-          });
-
-          // Sync All Users
-          const usersRef = window.firebaseRef(window.firebaseDb, 'users');
-          window.firebaseOnValue(usersRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-              const list = Object.keys(data).map(key => ({ uid: key, ...data[key] }));
-              setAllUsersList(list);
-            } else {
-              setAllUsersList([]);
-            }
-          });
-
-          // Auth State Listener & Custom User ID
-          window.firebaseOnAuth(window.firebaseAuth, async (user) => {
-            if (user) {
-              setCurrentUser(user);
-              const adminUid = atob(window.ENCODED_ADMIN_UID);
-              setIsAdmin(user.uid === adminUid);
-
-              try {
-                const userRef = window.firebaseRef(window.firebaseDb, 'users/' + user.uid);
-                const snapshot = await window.firebaseGet(userRef);
-                let cid = '';
-                if (snapshot.exists() && snapshot.val() && snapshot.val().customId) {
-                  cid = snapshot.val().customId;
-                } else {
-                  const randNum = Math.floor(100000 + Math.random() * 900000);
-                  cid = 'SGS-' + randNum;
-                  await window.firebaseSet(userRef, {
-                    uid: user.uid,
-                    email: user.email || 'Anonymous User',
-                    customId: cid,
-                    createdAt: new Date().toISOString()
-                  });
-                }
-                setCustomUserId(cid);
-              } catch (err) {
-                console.error("Custom User ID generation error:", err);
-                const fallbackId = 'SGS-' + Math.floor(100000 + Math.random() * 900000);
-                setCustomUserId(fallbackId);
-              }
-
-            } else {
-              setCurrentUser(null);
-              setIsAdmin(false);
-              setCustomUserId('');
-            }
-          });
-        };
-
-        if (window.firebaseDb) {
-          setupFirebaseSync();
-        } else {
-          window.addEventListener('firebase-ready', setupFirebaseSync);
-        }
-      }, []);
-
-      useEffect(() => {
         const handlePopState = () => {
-          if (iframeUrl) {
-            setIframeUrl(null);
-          } else if (activeService) {
+          if (activeService) {
             setActiveService(null);
           } else if (activeModalPage) {
             setActiveModalPage(null);
           } else if (showDrawer) {
             setShowDrawer(false);
-          } else if (showUserAuthModal) {
-            setShowUserAuthModal(false);
-          } else if (showLoginModal) {
-            setShowLoginModal(false);
           }
         };
         window.addEventListener('popstate', handlePopState);
         return () => window.removeEventListener('popstate', handlePopState);
-      }, [iframeUrl, activeService, activeModalPage, showDrawer, showUserAuthModal, showLoginModal]);
+      }, [activeService, activeModalPage, showDrawer]);
 
       const openServiceDetail = (srv) => {
         window.history.pushState({ view: 'detail' }, '');
         setActiveService(srv);
       };
 
-      const openEmbeddedForm = (srv) => {
-        if (!currentUser) {
-          setPendingApplyService(srv);
-          setAuthMode('login');
-          setUserAuthError('');
-          setShowUserAuthModal(true);
-          showNotification('Form bharne ke liye pehle Login / Signup karein!');
-          return;
+      // Direct Redirect on Apply Link
+      const openApplyLink = (srv) => {
+        if (srv && srv.applyLink) {
+          window.open(srv.applyLink, '_blank', 'noopener,noreferrer');
+          showNotification('Aapko official portal par redirect kiya ja raha hai...');
+        } else {
+          showNotification('Apply link uplabdh nahi hai!');
         }
-
-        window.history.pushState({ view: 'iframe' }, '');
-        setIframeUrl(srv.applyLink);
-      };
-
-      const recordApplication = async (srv) => {
-        if (!currentUser || !srv) return;
-        const now = Date.now();
-        const appId = 'app-' + now;
-
-        const applicationData = {
-          id: appId,
-          uid: currentUser.uid,
-          userEmail: currentUser.email || 'Anonymous User',
-          customId: customUserId || 'SGS-USER',
-          serviceId: srv.id,
-          serviceTitle: srv.title,
-          category: srv.category,
-          applyTimestamp: now,
-          applyDate: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
-          status: 'Pending'
-        };
-
-        const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
-        await window.firebaseSet(appRef, applicationData);
-        showNotification('Aapka Google Form Status Record Ho Gaya!');
-        setIframeUrl(null);
-        setActiveModalPage('userStatus');
       };
 
       const handleBackToServices = () => {
@@ -403,120 +357,6 @@
         } else {
           setActiveService(null);
         }
-      };
-
-      const handleBackFromIframe = () => {
-        if (window.history.state?.view) {
-          window.history.back();
-        } else {
-          setIframeUrl(null);
-        }
-      };
-
-      // User Auth Handlers
-      const handleUserEmailLogin = async (e) => {
-        e.preventDefault();
-        if (!agreeTerms) {
-          setUserAuthError('Kripya Terms & Privacy Policy Checkbox ko tick karein!');
-          return;
-        }
-        setUserAuthError('');
-        setIsUserAuthLoading(true);
-
-        try {
-          await window.firebaseSignIn(window.firebaseAuth, userEmail, userPassword);
-          setShowUserAuthModal(false);
-          setUserEmail('');
-          setUserPassword('');
-          showNotification('User Login Successful!');
-
-          if (pendingApplyService) {
-            const srv = pendingApplyService;
-            setPendingApplyService(null);
-            openEmbeddedForm(srv);
-          }
-        } catch (err) {
-          setUserAuthError('Login Failed: ' + err.message);
-        } finally {
-          setIsUserAuthLoading(false);
-        }
-      };
-
-      const handleUserSignUp = async (e) => {
-        e.preventDefault();
-        if (!agreeTerms) {
-          setUserAuthError('Kripya Terms & Privacy Policy Checkbox ko tick karein!');
-          return;
-        }
-        setUserAuthError('');
-        setIsUserAuthLoading(true);
-
-        try {
-          await window.firebaseSignUp(window.firebaseAuth, userEmail, userPassword);
-          setShowUserAuthModal(false);
-          setUserEmail('');
-          setUserPassword('');
-          showNotification('Account Successfully Created!');
-
-          if (pendingApplyService) {
-            const srv = pendingApplyService;
-            setPendingApplyService(null);
-            openEmbeddedForm(srv);
-          }
-        } catch (err) {
-          setUserAuthError('Signup Failed: ' + err.message);
-        } finally {
-          setIsUserAuthLoading(false);
-        }
-      };
-
-      const handleUserGoogleLogin = async () => {
-        if (!agreeTerms) {
-          setUserAuthError('Kripya Terms & Privacy Policy Checkbox ko tick karein!');
-          return;
-        }
-        setUserAuthError('');
-        setIsUserAuthLoading(true);
-
-        try {
-          await window.firebaseGooglePopup();
-          setShowUserAuthModal(false);
-          showNotification('Google Sign-In Successful!');
-
-          if (pendingApplyService) {
-            const srv = pendingApplyService;
-            setPendingApplyService(null);
-            openEmbeddedForm(srv);
-          }
-        } catch (err) {
-          console.error("Google Auth Error:", err);
-          setUserAuthError('Google Sign-In Failed: ' + err.message);
-        } finally {
-          setIsUserAuthLoading(false);
-        }
-      };
-
-      const handleForgotPassword = async (e) => {
-        e.preventDefault();
-        if (!userEmail) {
-          setUserAuthError('Kripya apni registered email id likhein!');
-          return;
-        }
-        setIsUserAuthLoading(true);
-        try {
-          await window.firebaseResetPassword(window.firebaseAuth, userEmail);
-          showNotification('Password Reset Email Bhej Diya Gaya Hai!');
-          setAuthMode('login');
-        } catch (err) {
-          setUserAuthError('Reset Failed: ' + err.message);
-        } finally {
-          setIsUserAuthLoading(false);
-        }
-      };
-
-      const handleUserLogout = async () => {
-        await window.firebaseSignOut(window.firebaseAuth);
-        showNotification('Successfully Logged Out!');
       };
 
       const handleShareWebsite = () => {
@@ -540,215 +380,12 @@
         setShowDrawer(false);
       };
 
-      const handleAdminEmailLogin = async (e) => {
-        e.preventDefault();
-        setAuthError('');
-        setIsAuthLoading(true);
-
-        try {
-          const userCredential = await window.firebaseSignIn(window.firebaseAuth, adminEmail, adminPassword);
-          const user = userCredential.user;
-          const targetUid = atob(window.ENCODED_ADMIN_UID);
-
-          if (user.uid === targetUid) {
-            setIsAdmin(true);
-            setShowLoginModal(false);
-            setAdminEmail('');
-            setAdminPassword('');
-            showNotification('Admin Login Successful!');
-          } else {
-            setAuthError('Error: Unauthorized Admin Account UID mismatch!');
-            await window.firebaseSignOut(window.firebaseAuth);
-            setIsAdmin(false);
-          }
-        } catch (err) {
-          setAuthError('Login Failed: ' + err.message);
-        } finally {
-          setIsAuthLoading(false);
-        }
-      };
-
-      const handleAdminLogout = async () => {
-        await window.firebaseSignOut(window.firebaseAuth);
-        setIsAdmin(false);
-        showNotification('Admin Logged Out');
-      };
-
-      const openServiceModal = (service = null, e = null) => {
-        if (e) e.stopPropagation();
-
-        const validCategories = categories.filter(c => c !== 'Sabhi Services');
-        const defaultCat = validCategories[0] || 'College Admission';
-
-        if (service) {
-          setEditingServiceId(service.id);
-          setFormCategory(service.category || defaultCat);
-          setFormTitle(service.title || '');
-          setFormShortDesc(service.shortDesc || '');
-          setFormDescType(service.descType || 'normal');
-          setFormDescription(service.description || '');
-          setFormDocs(Array.isArray(service.requiredDocs) ? service.requiredDocs.join('\n') : '');
-          setFormApplyLink(service.applyLink || '');
-          setFormBannerUrl(service.bannerUrl || '');
-        } else {
-          setEditingServiceId(null);
-          setFormCategory(defaultCat);
-          setFormTitle('');
-          setFormShortDesc('');
-          setFormDescType('normal');
-          setFormDescription('');
-          setFormDocs('');
-          setFormApplyLink('');
-          setFormBannerUrl('');
-        }
-        setShowServiceFormModal(true);
-      };
-
-      const handleSaveService = (e) => {
-        e.preventDefault();
-        if (!formTitle.trim() || !formApplyLink.trim()) {
-          showNotification('Title aur Apply Link bharna zaruri hai!');
-          return;
-        }
-
-        const docsArray = formDocs.split('\n').filter(d => d.trim() !== '');
-
-        const serviceData = {
-          category: formCategory,
-          title: formTitle,
-          shortDesc: formShortDesc,
-          descType: formDescType,
-          description: formDescription,
-          requiredDocs: docsArray,
-          applyLink: formApplyLink,
-          bannerUrl: formBannerUrl
-        };
-
-        if (editingServiceId) {
-          const srvRef = window.firebaseRef(window.firebaseDb, 'services/' + editingServiceId);
-          window.firebaseSet(srvRef, { id: editingServiceId, ...serviceData });
-          showNotification('Service Updated Realtime!');
-          
-          if (activeService?.id === editingServiceId) {
-            setActiveService({ id: editingServiceId, ...serviceData });
-          }
-        } else {
-          const newId = 's-' + Date.now();
-          const srvRef = window.firebaseRef(window.firebaseDb, 'services/' + newId);
-          window.firebaseSet(srvRef, { id: newId, ...serviceData });
-          showNotification('New Service Added Realtime!');
-        }
-
-        setShowServiceFormModal(false);
-      };
-
-      const handleDeleteService = (id, e = null) => {
-        if (e) e.stopPropagation();
-        if (window.confirm('Kya aap is service ko Realtime Database se delete karna chahte hain?')) {
-          const srvRef = window.firebaseRef(window.firebaseDb, 'services/' + id);
-          window.firebaseRemove(srvRef);
-          if (activeService?.id === id) setActiveService(null);
-          showNotification('Service Deleted!');
-        }
-      };
-
-      const openNoticeModal = (notice = null) => {
-        if (notice) {
-          setEditingNoticeId(notice.id);
-          setNoticeText(notice.text || '');
-        } else {
-          setEditingNoticeId(null);
-          setNoticeText('');
-        }
-        setShowNoticeModal(true);
-      };
-
-      const handleSaveNotice = (e) => {
-        e.preventDefault();
-        if (!noticeText.trim()) return;
-
-        if (editingNoticeId) {
-          const noticeRef = window.firebaseRef(window.firebaseDb, 'notices/' + editingNoticeId);
-          window.firebaseUpdate(noticeRef, {
-            text: noticeText,
-            date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-          });
-          showNotification('Notice Updated Realtime!');
-        } else {
-          const newId = 'n-' + Date.now();
-          const noticeData = {
-            id: newId,
-            text: noticeText,
-            date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
-          };
-          const noticeRef = window.firebaseRef(window.firebaseDb, 'notices/' + newId);
-          window.firebaseSet(noticeRef, noticeData);
-          showNotification('Notice Published Realtime!');
-        }
-
-        setNoticeText('');
-        setEditingNoticeId(null);
-        setShowNoticeModal(false);
-      };
-
-      const handleDeleteNotice = (id) => {
-        if (window.confirm('Is notice ko Realtime Database se delete karein?')) {
-          const noticeRef = window.firebaseRef(window.firebaseDb, 'notices/' + id);
-          window.firebaseRemove(noticeRef);
-          showNotification('Notice Removed!');
-        }
-      };
-
-      const handleAddCategory = (e) => {
-        e.preventDefault();
-        const trimmed = newCatName.trim();
-        if (trimmed && !categories.includes(trimmed)) {
-          const updatedCats = [...categories, trimmed];
-          const catsRef = window.firebaseRef(window.firebaseDb, 'categories');
-          window.firebaseSet(catsRef, updatedCats);
-          setNewCatName('');
-          setShowCategoryModal(false);
-          showNotification('Category Added!');
-        }
-      };
-
-      const handleDeleteCategory = (cat) => {
-        if (cat === 'Sabhi Services') return;
-        if (window.confirm(`Category "${cat}" delete karein?`)) {
-          const updatedCats = categories.filter(c => c !== cat);
-          const catsRef = window.firebaseRef(window.firebaseDb, 'categories');
-          window.firebaseSet(catsRef, updatedCats);
-          if (selectedCat === cat) setSelectedCat('Sabhi Services');
-          showNotification('Category Removed!');
-        }
-      };
-
-      const handleUpdateAppStatus = (appId, newStatus) => {
-        const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
-        window.firebaseUpdate(appRef, { status: newStatus });
-        showNotification(`Application Status Updated to ${newStatus}`);
-      };
-
-      const getComputedStatus = (appItem) => {
-        if (appItem.status === 'Approved') return 'Approved';
-        if (appItem.status === 'Rejected') return 'Rejected';
-        
-        const now = Date.now();
-        const fiveMinsMs = 5 * 60 * 1000;
-        if (appItem.status === 'Pending' && (now - appItem.applyTimestamp > fiveMinsMs)) {
-          return 'In Process';
-        }
-        return appItem.status || 'Pending';
-      };
-
       const filteredServices = services.filter(s => {
         const matchCat = selectedCat === 'Sabhi Services' || s.category === selectedCat;
         const matchSearch = s.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                             s.shortDesc?.toLowerCase().includes(searchQuery.toLowerCase());
         return matchCat && matchSearch;
       });
-
-      const userApplications = applications.filter(app => currentUser && app.uid === currentUser.uid);
 
       return (
         <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col relative">
@@ -774,7 +411,6 @@
 
               <div 
                 onClick={() => {
-                  setIframeUrl(null);
                   setActiveService(null);
                   setSelectedCat('Sabhi Services');
                   setSearchQuery('');
@@ -789,25 +425,6 @@
                 </p>
               </div>
 
-              <div className="flex items-center gap-1.5">
-                {currentUser ? (
-                  <button
-                    onClick={() => setShowDrawer(true)}
-                    className="bg-amber-400 text-slate-900 font-extrabold text-[10px] sm:text-xs px-2.5 py-1 rounded-lg flex items-center gap-1 hover:bg-amber-300 transition-colors"
-                  >
-                    <Icons.User />
-                    <span className="hidden sm:inline">{customUserId || 'Profile'}</span>
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => { setAuthMode('login'); setUserAuthError(''); setShowUserAuthModal(true); }}
-                    className="bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-extrabold text-[11px] sm:text-xs px-3 py-1 rounded-lg shadow transition-colors flex items-center gap-1"
-                  >
-                    <Icons.User />
-                    <span>Login</span>
-                  </button>
-                )}
-              </div>
             </div>
           </header>
 
@@ -831,60 +448,16 @@
                     </button>
                   </div>
 
-                  {currentUser && (
-                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-3 mb-4">
-                      <p className="text-[10px] text-slate-500 font-bold uppercase">Aapka Permanent User ID:</p>
-                      <p className="text-base font-black text-blue-800 tracking-wider">{customUserId || 'SGS-USER'}</p>
-                      <p className="text-[11px] text-slate-600 truncate mt-0.5">{currentUser.email}</p>
-                    </div>
-                  )}
-
                   <nav className="space-y-2 text-xs font-bold text-slate-700">
                     <button
-                      onClick={() => { setSelectedCat('Sabhi Services'); setActiveService(null); setIframeUrl(null); setShowDrawer(false); }}
+                      onClick={() => { 
+                        setSelectedCat('Sabhi Services'); 
+                        setActiveService(null); 
+                        setShowDrawer(false); 
+                      }}
                       className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-blue-700"
                     >
                       <span>🏠 Home Page / Sabhi Services</span>
-                      <Icons.ChevronRight />
-                    </button>
-
-                    <div className="pt-2 border-t border-slate-100">
-                      <p className="text-[10px] text-slate-400 uppercase font-black px-2 mb-1">Service Categories:</p>
-                      {categories.filter(c => c !== 'Sabhi Services').map(cat => (
-                        <button
-                          key={cat}
-                          onClick={() => {
-                            setSelectedCat(cat);
-                            setActiveService(null);
-                            setIframeUrl(null);
-                            setShowDrawer(false);
-                          }}
-                          className={`w-full text-left p-2 rounded-lg hover:bg-blue-50 flex items-center justify-between ${selectedCat === cat ? 'bg-blue-100 text-blue-800 font-extrabold' : 'text-slate-700'}`}
-                        >
-                          <span>📁 {cat}</span>
-                          <Icons.ChevronRight />
-                        </button>
-                      ))}
-                    </div>
-
-                    <button
-                      onClick={() => { 
-                        if (!currentUser) {
-                          setShowDrawer(false);
-                          setAuthMode('login');
-                          setShowUserAuthModal(true);
-                          showNotification('Status dekhne ke liye pehle Login karein!');
-                        } else {
-                          setActiveModalPage('userStatus'); 
-                          setShowDrawer(false); 
-                        }
-                      }}
-                      className="w-full text-left p-2.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-800 flex items-center justify-between border border-blue-200 mt-2"
-                    >
-                      <span className="flex items-center gap-1.5">
-                        <Icons.Clock />
-                        <span>My Application Status (Sthiti)</span>
-                      </span>
                       <Icons.ChevronRight />
                     </button>
 
@@ -898,33 +471,6 @@
                       </span>
                       <Icons.ChevronRight />
                     </button>
-
-                    {/* ADMIN BUTTONS */}
-                    {isAdmin && (
-                      <div className="space-y-1 pt-2 border-t border-purple-100">
-                        <button
-                          onClick={() => { setActiveModalPage('adminStatus'); setShowDrawer(false); }}
-                          className="w-full text-left p-2.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-900 flex items-center justify-between border border-purple-200"
-                        >
-                          <span className="flex items-center gap-1.5 font-extrabold">
-                            <Icons.ShieldCheck />
-                            <span>Admin All Applications</span>
-                          </span>
-                          <Icons.ChevronRight />
-                        </button>
-
-                        <button
-                          onClick={() => { setActiveModalPage('allUsers'); setShowDrawer(false); }}
-                          className="w-full text-left p-2.5 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-900 flex items-center justify-between border border-indigo-200"
-                        >
-                          <span className="flex items-center gap-1.5 font-extrabold">
-                            <Icons.User />
-                            <span>Admin Registered Users ({allUsersList.length})</span>
-                          </span>
-                          <Icons.ChevronRight />
-                        </button>
-                      </div>
-                    )}
 
                     <button
                       onClick={() => { setActiveModalPage('privacy'); setShowDrawer(false); }}
@@ -945,127 +491,15 @@
                 </div>
 
                 <div className="pt-4 border-t border-slate-200 space-y-2">
-                  {currentUser ? (
-                    <button
-                      onClick={() => { handleUserLogout(); setShowDrawer(false); }}
-                      className="w-full bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold p-2.5 rounded-lg text-xs transition-colors text-center"
-                    >
-                      Log Out Account
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => { setAuthMode('login'); setShowUserAuthModal(true); setShowDrawer(false); }}
-                      className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold p-2.5 rounded-lg text-xs transition-colors text-center"
-                    >
-                      Login / Create Account
-                    </button>
-                  )}
-
                   <p className="text-[10px] text-slate-400 text-center">
-                    Firebase Realtime Database Secured
+                    SGS Online Portal • Safe & Fast Direct Service Links
                   </p>
                 </div>
               </div>
             </div>
           )}
 
-          {/* USER AUTH MODAL */}
-          {showUserAuthModal && (
-            <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
-              <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
-                <div className="flex items-center justify-between mb-3 border-b pb-2">
-                  <h3 className="font-bold text-slate-900 text-base">
-                    {authMode === 'login' ? 'User Login Karein' : authMode === 'signup' ? 'Naya Account Banayein' : 'Reset Password'}
-                  </h3>
-                  <button onClick={() => setShowUserAuthModal(false)} className="text-slate-400 hover:text-slate-600">
-                    <Icons.X />
-                  </button>
-                </div>
-
-                <form onSubmit={authMode === 'login' ? handleUserEmailLogin : authMode === 'signup' ? handleUserSignUp : handleForgotPassword} className="space-y-3">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Email ID:</label>
-                    <input
-                      type="email"
-                      value={userEmail}
-                      onChange={(e) => setUserEmail(e.target.value)}
-                      placeholder="Apni email id daalein..."
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium focus:outline-none focus:border-blue-600"
-                      required
-                      autoFocus
-                    />
-                  </div>
-
-                  {authMode !== 'forgot' && (
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1">Password:</label>
-                      <input
-                        type="password"
-                        value={userPassword}
-                        onChange={(e) => setUserPassword(e.target.value)}
-                        placeholder="Password daalein..."
-                        className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium focus:outline-none focus:border-blue-600"
-                        required
-                      />
-                    </div>
-                  )}
-
-                  <div className="flex items-start gap-2 pt-1">
-                    <input
-                      type="checkbox"
-                      id="agreeTermsChk"
-                      checked={agreeTerms}
-                      onChange={(e) => setAgreeTerms(e.target.checked)}
-                      className="mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                      required
-                    />
-                    <label htmlFor="agreeTermsChk" className="text-[11px] text-slate-600 leading-tight">
-                      Main <button type="button" onClick={() => setActiveModalPage('terms')} className="text-blue-700 font-bold underline">Terms & Conditions</button> aur <button type="button" onClick={() => setActiveModalPage('privacy')} className="text-blue-700 font-bold underline">Privacy Policy</button> se sahmat hu.
-                    </label>
-                  </div>
-
-                  {userAuthError && <p className="text-xs text-rose-600 font-bold mt-1">{userAuthError}</p>}
-
-                  <button
-                    type="submit"
-                    disabled={isUserAuthLoading}
-                    className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2.5 rounded-lg transition-colors flex items-center justify-center gap-1 shadow-xs"
-                  >
-                    {isUserAuthLoading ? 'Processing...' : authMode === 'login' ? 'Login Karein' : authMode === 'signup' ? 'Account Banayein (Sign Up)' : 'Reset Email Bhejein'}
-                  </button>
-                </form>
-
-                <div className="mt-3 pt-3 border-t border-slate-200 text-center space-y-2">
-                  <button
-                    onClick={handleUserGoogleLogin}
-                    disabled={isUserAuthLoading}
-                    className="w-full bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-300 font-bold text-xs py-2 rounded-lg transition-colors flex items-center justify-center gap-2"
-                  >
-                    <Icons.Google />
-                    <span>Google Account Se Login Karein</span>
-                  </button>
-
-                  <div className="flex items-center justify-between text-[11px] text-slate-500 font-bold pt-1">
-                    {authMode === 'login' ? (
-                      <>
-                        <button onClick={() => { setAuthMode('signup'); setUserAuthError(''); }} className="text-blue-700 hover:underline">
-                          Naya Account Banayein?
-                        </button>
-                        <button onClick={() => { setAuthMode('forgot'); setUserAuthError(''); }} className="text-slate-500 hover:underline">
-                          Password Bhool Gaye?
-                        </button>
-                      </>
-                    ) : (
-                      <button onClick={() => { setAuthMode('login'); setUserAuthError(''); }} className="text-blue-700 hover:underline mx-auto">
-                        Pahle Se Account Hai? Login Karein
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
+          {/* POLICY MODALS */}
           {activeModalPage && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 overflow-y-auto">
               <div className="bg-white rounded-xl max-w-2xl w-full p-6 shadow-2xl my-8 border border-slate-200 max-h-[85vh] flex flex-col">
@@ -1075,10 +509,6 @@
                     <span>
                       {activeModalPage === 'privacy' && 'Privacy Policy'}
                       {activeModalPage === 'terms' && 'Terms & Conditions'}
-                      {activeModalPage === 'userStatus' && 'Aapke Dwara Apply Kiye Gaye Forms Ka Status'}
-                      {activeModalPage === 'adminStatus' && 'Admin Status Management'}
-                      {activeModalPage === 'adminUserDetail' && 'User Complete Application Details'}
-                      {activeModalPage === 'allUsers' && 'Admin Registered Users List'}
                     </span>
                   </h3>
                   <button onClick={() => setActiveModalPage(null)} className="text-slate-400 hover:text-slate-600">
@@ -1088,211 +518,36 @@
 
                 <div className="flex-1 overflow-y-auto text-xs text-slate-700 space-y-4 pr-1 leading-relaxed">
                   
-                  {activeModalPage === 'userStatus' && (
-                    <div className="space-y-3">
-                      <div className="bg-blue-50 border border-blue-200 p-3 rounded-lg flex items-center justify-between">
-                        <div>
-                          <p className="text-[10px] text-slate-500 font-bold uppercase">Permanent User ID:</p>
-                          <p className="text-base font-black text-blue-800">{customUserId || 'SGS-USER'}</p>
-                        </div>
-                        <p className="text-xs text-slate-600 font-semibold">{currentUser?.email}</p>
-                      </div>
-
-                      <h4 className="font-bold text-slate-900 text-sm border-b pb-1">Applied Forms List:</h4>
-
-                      {userApplications.length === 0 ? (
-                        <p className="text-xs text-slate-400 italic text-center py-6">Aapne abhi tak koi form apply nahi kiya hai.</p>
-                      ) : (
-                        <div className="space-y-2">
-                          {userApplications.map(appItem => {
-                            const currentStatus = getComputedStatus(appItem);
-                            return (
-                              <div key={appItem.id} className="p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between gap-3">
-                                <div>
-                                  <h5 className="font-bold text-slate-900 text-xs">{appItem.serviceTitle}</h5>
-                                  <p className="text-[10px] text-slate-400 mt-0.5">Applied on: {appItem.applyDate}</p>
-                                </div>
-                                <div className="shrink-0">
-                                  {currentStatus === 'Pending' && (
-                                    <span className="bg-amber-100 text-amber-800 border border-amber-300 px-2.5 py-1 rounded-full text-[10px] font-extrabold animate-pulse">
-                                      ⏳ Pending
-                                    </span>
-                                  )}
-                                  {currentStatus === 'In Process' && (
-                                    <span className="bg-blue-100 text-blue-800 border border-blue-300 px-2.5 py-1 rounded-full text-[10px] font-extrabold">
-                                      ⚙️ In Process
-                                    </span>
-                                  )}
-                                  {currentStatus === 'Approved' && (
-                                    <span className="bg-emerald-100 text-emerald-800 border border-emerald-300 px-2.5 py-1 rounded-full text-[10px] font-extrabold">
-                                      ✅ Approved
-                                    </span>
-                                  )}
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {activeModalPage === 'allUsers' && isAdmin && (
-                    <div className="space-y-3">
-                      <p className="text-xs text-slate-500">System me registered sabhi users ki list. Click karke specific user ka sara data aur forms dekhein:</p>
-
-                      {allUsersList.length === 0 ? (
-                        <p className="text-xs text-slate-400 italic text-center py-6">Koi registered user nahi mila.</p>
-                      ) : (
-                        <div className="space-y-2">
-                          {allUsersList.map(u => {
-                            const userFormCount = applications.filter(a => a.uid === u.uid).length;
-                            return (
-                              <div key={u.uid} className="p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-center justify-between">
-                                <div>
-                                  <span className="bg-blue-100 text-blue-800 text-[10px] font-extrabold px-2 py-0.5 rounded">
-                                    {u.customId || 'SGS-USER'}
-                                  </span>
-                                  <p className="font-bold text-slate-900 text-xs mt-1">{u.email}</p>
-                                  <p className="text-[10px] text-slate-400">Total Applied Forms: {userFormCount}</p>
-                                </div>
-
-                                <button
-                                  onClick={() => { setSelectedInspectorUid(u.uid); setActiveModalPage('adminUserDetail'); }}
-                                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[10px] px-3 py-1.5 rounded transition-colors"
-                                >
-                                  View Forms & Details →
-                                </button>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {activeModalPage === 'adminStatus' && isAdmin && (
-                    <div className="space-y-3">
-                      <p className="text-xs text-slate-500">Sabhi users dwara apply kiye gaye forms ki list aur unka status yahan se update karein:</p>
-
-                      {applications.length === 0 ? (
-                        <p className="text-xs text-slate-400 italic text-center py-6">Abhi tak kisi bhi user ne form apply nahi kiya hai.</p>
-                      ) : (
-                        <div className="space-y-3">
-                          {applications.map(appItem => {
-                            const currentStatus = getComputedStatus(appItem);
-                            return (
-                              <div key={appItem.id} className="p-3 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
-                                <div className="flex items-start justify-between gap-2">
-                                  <div>
-                                    <button 
-                                      onClick={() => { setSelectedInspectorUid(appItem.uid); setActiveModalPage('adminUserDetail'); }}
-                                      className="bg-blue-100 hover:bg-blue-200 text-blue-800 text-[10px] font-extrabold px-2 py-0.5 rounded underline"
-                                    >
-                                      User ID: {appItem.customId || 'SGS-USER'}
-                                    </button>
-                                    <h5 className="font-bold text-slate-900 text-xs mt-1">{appItem.serviceTitle}</h5>
-                                    <p className="text-[11px] text-slate-500">User Email: {appItem.userEmail}</p>
-                                    <p className="text-[10px] text-slate-400">Date: {appItem.applyDate}</p>
-                                  </div>
-
-                                  <button
-                                    onClick={() => { setSelectedInspectorUid(appItem.uid); setActiveModalPage('adminUserDetail'); }}
-                                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-[10px] px-2.5 py-1 rounded transition-colors shrink-0"
-                                  >
-                                    View User All Forms
-                                  </button>
-                                </div>
-
-                                <div className="flex items-center justify-between border-t pt-2 mt-2">
-                                  <span className="text-xs font-bold text-slate-700">Current Status: <strong className="text-blue-700">{currentStatus}</strong></span>
-                                  
-                                  <div className="flex items-center gap-1.5">
-                                    <button
-                                      onClick={() => handleUpdateAppStatus(appItem.id, 'Pending')}
-                                      className={`px-2 py-1 rounded text-[10px] font-bold ${currentStatus === 'Pending' ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-700'}`}
-                                    >
-                                      Pending
-                                    </button>
-                                    <button
-                                      onClick={() => handleUpdateAppStatus(appItem.id, 'In Process')}
-                                      className={`px-2 py-1 rounded text-[10px] font-bold ${currentStatus === 'In Process' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-700'}`}
-                                    >
-                                      In Process
-                                    </button>
-                                    <button
-                                      onClick={() => handleUpdateAppStatus(appItem.id, 'Approved')}
-                                      className={`px-2 py-1 rounded text-[10px] font-bold ${currentStatus === 'Approved' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700'}`}
-                                    >
-                                      Approve
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {/* PRIVACY POLICY - FULL DETAILED ENGLISH */}
+                  {/* PRIVACY POLICY */}
                   {activeModalPage === 'privacy' && (
                     <div className="space-y-4 text-slate-700">
                       <div className="bg-blue-50 border-l-4 border-blue-600 p-3.5 rounded text-slate-900 font-medium">
-                        <strong>📌 Official Cyber Seva Kendra Declaration:</strong> SGS ONLINE SERVICE operates as an authorized online assistance service center. We facilitate government online forms (such as Bihar RTPS Caste, Income, Residence Certificates), College/University Admissions (PPU, etc.), Scholarship applications, and various e-services for our customers upon their explicit request.
+                        <strong>📌 Official Cyber Seva Kendra Declaration:</strong> SGS ONLINE SERVICE operates as an online portal providing direct access and assistance links for Bihar government services, university admissions, and online scholarship forms.
                       </div>
 
                       <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Personal Data & Identifiers We Collect:</h4>
-                        <p className="mb-2">To process online applications accurately on government and university portals, we collect the following personal details from users:</p>
-                        <ul className="list-disc pl-5 space-y-1 text-slate-700">
-                          <li><strong>Personal Identification:</strong> Full Name, Father's Name, Mother's Name, Date of Birth, and Gender.</li>
-                          <li><strong>Contact & Login Details:</strong> Active Mobile Number, Email Address, and System-Generated Unique User ID (e.g., SGS-XXXXXX).</li>
-                          <li><strong>Residential & Address Details:</strong> Village/Town, Gram Panchayat / Ward No., Block, Sub-Division, District, State, and Pincode.</li>
-                          <li><strong>Government Identification Documents:</strong> Aadhaar Card details, Passport Size Photographs, Caste/Income/Residence Proofs.</li>
-                          <li><strong>Educational & Academic Credentials:</strong> 10th & 12th Marksheets, Roll Numbers, Registration Cards, Admit Cards, and School/College Details.</li>
-                          <li><strong>Banking & Financial Details:</strong> Bank Account Number, IFSC Code, and Bank Branch details (strictly required for Bihar Post Matric Scholarship disbursal and online fee payments).</li>
-                        </ul>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Services & Application Facilitation:</h4>
+                        <p className="mb-2">We provide direct redirection links to official government and university portals (e.g., RTPS Bihar, VKSU, Patliputra University) for users to easily fill out their online forms.</p>
                       </div>
 
                       <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Purpose and Utilization of Collected Information:</h4>
-                        <p>All information and document copies provided by users are utilized strictly and exclusively for filling and submitting official online application forms on designated government servers (e.g., RTPS Bihar, Patliputra University, Post Matric Scholarship Portal) on behalf of the user. We guarantee 100% data confidentiality. We do NOT sell, lease, share, or disclose user data to any unauthorized third-party commercial entities.</p>
-                      </div>
-
-                      <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. Security & Cloud Data Protection:</h4>
-                        <p>All user information is synchronized securely through Google Firebase Realtime Database with strict authentication access controls. Only authorized system administrators have access to verify and process application forms.</p>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Data Safety & Privacy:</h4>
+                        <p>Our website does not store any sensitive personal credentials or banking passwords on external backend servers. All redirect links send users directly to official source websites.</p>
                       </div>
                     </div>
                   )}
 
-                  {/* TERMS & CONDITIONS - FULL DETAILED ENGLISH */}
+                  {/* TERMS & CONDITIONS */}
                   {activeModalPage === 'terms' && (
                     <div className="space-y-4 text-slate-700">
                       <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Online Facilitation Service Overview:</h4>
-                        <p>SGS ONLINE SERVICE acts as a third-party Cyber Seva Kendra facilitator assisting applicants in filling out government and educational forms correctly. Final approval, certificate issuance, exam admit card generation, or university admission confirmation rests solely with the respective official government or university authorities.</p>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Facilitation Service Overview:</h4>
+                        <p>SGS ONLINE SERVICE acts as an informational & quick-access service portal. Final approvals, certificate generation, or college admissions are strictly subject to official government and university rules.</p>
                       </div>
 
                       <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Applicant Responsibility & Authenticity:</h4>
-                        <p>The applicant is solely responsible for providing genuine, truthful, and accurate information (Name, Father's Name, Mother's Name, Date of Birth, Aadhaar, Educational Marksheets, Address, etc.). SGS ONLINE SERVICE is not liable for form rejections or legal consequences caused by fake, wrong, or inaccurate details submitted by the applicant.</p>
-                      </div>
-
-                      <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. Government Portal Fees & Cyber Processing Charges:</h4>
-                        <p>Total payment collected from users for any service consists of:</p>
-                        <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-700">
-                          <li>Official Government / University Portal Application Fees.</li>
-                          <li>SGS Cyber Service Charges for online form filling, document scanning, formatting, and status tracking.</li>
-                        </ul>
-                      </div>
-
-                      <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">4. Refund & Cancellation Policy:</h4>
-                        <p>Once an application form is filled and submitted to the official government or university portal, all official portal fees and cyber processing service charges become strictly non-refundable under any circumstances.</p>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. User Responsibility:</h4>
+                        <p>Applicants are advised to verify their details before submitting final forms on official government websites.</p>
                       </div>
                     </div>
                   )}
@@ -1307,45 +562,8 @@
             </div>
           )}
 
-          {iframeUrl ? (
-            <main className="flex-1 flex flex-col bg-slate-900">
-              <div className="bg-slate-800 text-white px-3 py-2 border-b border-slate-700 flex flex-wrap items-center justify-between gap-2 sticky top-[45px] z-30">
-                <button
-                  onClick={handleBackFromIframe}
-                  className="inline-flex items-center gap-1.5 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg transition-colors"
-                >
-                  <Icons.ArrowLeft /> Wapas
-                </button>
-
-                <button
-                  onClick={() => recordApplication(activeService)}
-                  className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold px-3 py-1.5 rounded-lg shadow-md animate-pulse border border-emerald-400"
-                >
-                  ✅ Google Form Submit Ho Gaya? Status Track Karein ⚡
-                </button>
-
-                <a
-                  href={iframeUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-xs text-slate-300 hover:text-white flex items-center gap-1 bg-slate-700 px-2.5 py-1 rounded"
-                >
-                  <Icons.ExternalLink /> Direct Tab
-                </a>
-              </div>
-              <div className="flex-1 w-full bg-white relative min-h-[750px]">
-                <iframe 
-                  src={iframeUrl}
-                  className="w-full h-full min-h-[750px] border-0"
-                  title="Online Form Application"
-                >
-                  Loading Form...
-                </iframe>
-              </div>
-            </main>
-          ) : 
-
-          activeService ? (
+          {/* MAIN CONTENT AREA */}
+          {activeService ? (
             <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
               <button
                 onClick={handleBackToServices}
@@ -1355,28 +573,14 @@
               </button>
 
               <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
-                {activeService.bannerUrl ? (
-                  <div className="w-full h-48 sm:h-64 overflow-hidden bg-slate-900 relative">
-                    <img src={activeService.bannerUrl} alt={activeService.title} className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent p-6 flex flex-col justify-end">
-                      <span className="bg-blue-600 text-white text-[11px] font-bold px-2.5 py-1 rounded uppercase tracking-wider w-fit">
-                        {activeService.category}
-                      </span>
-                      <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2 leading-snug drop-shadow-md">
-                        {activeService.title}
-                      </h2>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="bg-slate-900 text-white p-6 sm:p-8">
-                    <span className="bg-blue-600 text-white text-[11px] font-bold px-2.5 py-1 rounded uppercase tracking-wider">
-                      {activeService.category}
-                    </span>
-                    <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-3 leading-snug">
-                      {activeService.title}
-                    </h2>
-                  </div>
-                )}
+                <div className="bg-slate-900 text-white p-6 sm:p-8">
+                  <span className="bg-blue-600 text-white text-[11px] font-bold px-2.5 py-1 rounded uppercase tracking-wider">
+                    {activeService.category}
+                  </span>
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-3 leading-snug">
+                    {activeService.title}
+                  </h2>
+                </div>
 
                 <div className="p-6 sm:p-8 space-y-6">
                   {activeService.requiredDocs && activeService.requiredDocs.length > 0 && (
@@ -1400,24 +604,18 @@
                     <h3 className="text-base font-bold text-slate-900 mb-2 border-b border-slate-200 pb-2">
                       Poori Jaankari / Description:
                     </h3>
-                    {activeService.descType === 'html' ? (
-                      <div 
-                        className="text-sm text-slate-700 leading-relaxed font-sans"
-                        dangerouslySetInnerHTML={{ __html: activeService.description }}
-                      />
-                    ) : (
-                      <div className="whitespace-pre-line text-sm text-slate-700 leading-relaxed bg-slate-50/50 p-4 rounded-lg border border-slate-200">
-                        {activeService.description || "Apply Button par click karke form bharein."}
-                      </div>
-                    )}
+                    <div className="whitespace-pre-line text-sm text-slate-700 leading-relaxed bg-slate-50/50 p-4 rounded-lg border border-slate-200">
+                      {activeService.description || "Apply Button par click karke form bharein."}
+                    </div>
                   </div>
 
                   <div className="pt-6 border-t border-slate-200 text-center">
                     <button
-                      onClick={() => openEmbeddedForm(activeService)}
-                      className="w-full sm:w-auto min-w-[260px] bg-blue-700 hover:bg-blue-800 text-white font-extrabold text-lg px-8 py-3.5 rounded-xl shadow-lg transition-all"
+                      onClick={() => openApplyLink(activeService)}
+                      className="w-full sm:w-auto min-w-[260px] bg-blue-700 hover:bg-blue-800 text-white font-extrabold text-lg px-8 py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 mx-auto"
                     >
-                      ONLINE APPLY KAREIN
+                      <span>ONLINE APPLY KAREIN</span>
+                      <Icons.ExternalLink />
                     </button>
                   </div>
                 </div>
@@ -1432,13 +630,13 @@
                 <div className="bg-gradient-to-r from-blue-900 to-indigo-900 text-white rounded-xl p-5 shadow-md flex items-center justify-between gap-3">
                   <div>
                     <span className="text-[10px] bg-amber-400 text-slate-900 font-extrabold px-2 py-0.5 rounded uppercase">
-                      Focused Category View
+                      Category View
                     </span>
                     <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
                       📂 {selectedCat}
                     </h2>
                     <p className="text-xs text-blue-200 mt-0.5">
-                      Is section me kul {filteredServices.length} active service buttons hain.
+                      Is section me kul {filteredServices.length} active services hain.
                     </p>
                   </div>
 
@@ -1446,10 +644,11 @@
                     onClick={() => { setSelectedCat('Sabhi Services'); setSearchQuery(''); }}
                     className="bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-extrabold text-xs px-4 py-2 rounded-lg shadow transition-colors shrink-0 flex items-center gap-1"
                   >
-                    <Icons.ArrowLeft /> Sabhi Services Par Wapas Jayein
+                    <Icons.ArrowLeft /> Sabhi Services
                   </button>
                 </div>
               ) : (
+                /* NOTICE BOARD */
                 <div className="bg-white border border-slate-300 rounded-xl p-4 shadow-2xs">
                   <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-3">
                     <div className="flex items-center gap-2">
@@ -1458,55 +657,23 @@
                         Notice Board / Taaza Updates
                       </h2>
                     </div>
-                    {isAdmin && (
-                      <button
-                        onClick={() => openNoticeModal(null)}
-                        className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1 rounded transition-colors"
-                      >
-                        + Add Notice
-                      </button>
-                    )}
                   </div>
 
                   <div className="space-y-2">
-                    {notices.length > 0 ? (
-                      notices.map((n) => (
-                        <div key={n.id} className="flex items-start justify-between gap-3 p-2 rounded hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0">
-                          <div className="flex items-start gap-2 text-xs sm:text-sm font-medium text-slate-800">
-                            <span className="text-blue-600 font-bold shrink-0 mt-0.5">•</span>
-                            <span>{n.text}</span>
-                          </div>
-                          <div className="flex items-center gap-1.5 shrink-0">
-                            {n.date && <span className="text-[11px] text-slate-400 font-normal mr-1">{n.date}</span>}
-                            {isAdmin && (
-                              <>
-                                <button 
-                                  onClick={() => openNoticeModal(n)} 
-                                  className="text-blue-600 hover:bg-blue-50 p-1 rounded"
-                                  title="Edit Notice"
-                                >
-                                  <Icons.Edit3 />
-                                </button>
-                                <button 
-                                  onClick={() => handleDeleteNotice(n.id)} 
-                                  className="text-rose-600 hover:bg-rose-50 p-1 rounded"
-                                  title="Delete Notice"
-                                >
-                                  <Icons.Trash2 />
-                                </button>
-                              </>
-                            )}
-                          </div>
+                    {notices.map((n) => (
+                      <div key={n.id} className="flex items-start justify-between gap-3 p-2 rounded hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0">
+                        <div className="flex items-start gap-2 text-xs sm:text-sm font-medium text-slate-800">
+                          <span className="text-blue-600 font-bold shrink-0 mt-0.5">•</span>
+                          <span>{n.text}</span>
                         </div>
-                      ))
-                    ) : (
-                      <p className="text-xs text-slate-400 italic">Abhi koi naya notice nahi hai. Admin Login karke notice add karein.</p>
-                    )}
+                        {n.date && <span className="text-[11px] text-slate-400 font-normal shrink-0">{n.date}</span>}
+                      </div>
+                    ))}
                   </div>
                 </div>
               )}
 
-              {/* SEARCH & CATEGORIES TABS */}
+              {/* SEARCH & CATEGORY TABS */}
               {selectedCat === 'Sabhi Services' && (
                 <div className="space-y-3">
                   <div className="relative">
@@ -1522,60 +689,33 @@
 
                   <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
                     {categories.map((cat) => (
-                      <div key={cat} className="flex items-center shrink-0">
-                        <button
-                          onClick={() => setSelectedCat(cat)}
-                          className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border ${
-                            selectedCat === cat
-                              ? 'bg-blue-700 text-white border-blue-700'
-                              : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-200'
-                          }`}
-                        >
-                          {cat}
-                        </button>
-                        {isAdmin && cat !== 'Sabhi Services' && (
-                          <button 
-                            onClick={() => handleDeleteCategory(cat)}
-                            className="ml-1 text-slate-400 hover:text-rose-600 p-1"
-                            title="Delete Category"
-                          >
-                            <Icons.X />
-                          </button>
-                        )}
-                      </div>
-                    ))}
-
-                    {isAdmin && (
                       <button
-                        onClick={() => setShowCategoryModal(true)}
-                        className="bg-slate-800 text-white text-xs font-bold px-3 py-1.5 rounded-lg shrink-0"
+                        key={cat}
+                        onClick={() => setSelectedCat(cat)}
+                        className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border shrink-0 ${
+                          selectedCat === cat
+                            ? 'bg-blue-700 text-white border-blue-700'
+                            : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-200'
+                        }`}
                       >
-                        + Add Category
+                        {cat}
                       </button>
-                    )}
+                    ))}
                   </div>
                 </div>
               )}
 
-              {/* Service Cards Grid */}
+              {/* SERVICE BUTTON CARDS GRID */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <h3 className="font-extrabold text-slate-900 text-sm sm:text-base">
                     {selectedCat} ({filteredServices.length})
                   </h3>
-                  {isAdmin && (
-                    <button
-                      onClick={() => openServiceModal(null)}
-                      className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3.5 py-2 rounded-lg shadow-2xs flex items-center gap-1.5"
-                    >
-                      <Icons.Plus /> Naya Service Button Add Karein
-                    </button>
-                  )}
                 </div>
 
                 {filteredServices.length === 0 ? (
                   <div className="bg-white p-8 rounded-xl border border-slate-200 text-center">
-                    <p className="text-slate-500 font-bold text-sm">Is category me abhi koi service nahi hai! Admin login karke naya form add karein.</p>
+                    <p className="text-slate-500 font-bold text-sm">Is category me abhi koi service nahi mili!</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -1585,49 +725,22 @@
                         onClick={() => openServiceDetail(srv)}
                         className="bg-white rounded-xl border border-slate-300 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group overflow-hidden"
                       >
-                        <div>
-                          {srv.bannerUrl && (
-                            <div className="h-28 w-full overflow-hidden bg-slate-100">
-                              <img src={srv.bannerUrl} alt={srv.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                            </div>
-                          )}
-
-                          <div className="p-4">
-                            <div className="flex items-center justify-between mb-2">
-                              <span className="bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-200">
-                                {srv.category}
-                              </span>
-
-                              {isAdmin && (
-                                <div className="flex items-center gap-1 z-10" onClick={(e) => e.stopPropagation()}>
-                                  <button
-                                    onClick={(e) => openServiceModal(srv, e)}
-                                    className="p-1.5 text-blue-600 hover:bg-blue-50 rounded bg-blue-50/50 border border-blue-200"
-                                    title="Edit Service"
-                                  >
-                                    <Icons.Edit3 />
-                                  </button>
-                                  <button
-                                    onClick={(e) => handleDeleteService(srv.id, e)}
-                                    className="p-1.5 text-rose-600 hover:bg-rose-50 rounded bg-rose-50/50 border border-rose-200"
-                                    title="Delete Service"
-                                  >
-                                    <Icons.Trash2 />
-                                  </button>
-                                </div>
-                              )}
-                            </div>
-
-                            <h4 className="font-bold text-slate-900 text-sm group-hover:text-blue-700 leading-snug">
-                              {srv.title}
-                            </h4>
-
-                            {srv.shortDesc && (
-                              <p className="text-xs text-slate-500 mt-1.5 line-clamp-2">
-                                {srv.shortDesc}
-                              </p>
-                            )}
+                        <div className="p-4">
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-200">
+                              {srv.category}
+                            </span>
                           </div>
+
+                          <h4 className="font-bold text-slate-900 text-sm group-hover:text-blue-700 leading-snug">
+                            {srv.title}
+                          </h4>
+
+                          {srv.shortDesc && (
+                            <p className="text-xs text-slate-500 mt-1.5 line-clamp-2">
+                              {srv.shortDesc}
+                            </p>
+                          )}
                         </div>
 
                         <div className="p-4 pt-2 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-700">
@@ -1640,249 +753,6 @@
                 )}
               </div>
             </main>
-          )}
-
-          {/* ADMIN LOGIN MODAL */}
-          {showLoginModal && (
-            <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
-              <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-bold text-slate-900 text-base">Firebase Admin Login</h3>
-                  <button onClick={() => setShowLoginModal(false)} className="text-slate-400 hover:text-slate-600">
-                    <Icons.X />
-                  </button>
-                </div>
-                <form onSubmit={handleAdminEmailLogin} className="space-y-3">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Admin Email ID:</label>
-                    <input
-                      type="email"
-                      value={adminEmail}
-                      onChange={(e) => setAdminEmail(e.target.value)}
-                      placeholder="Admin email daalein..."
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium focus:outline-none"
-                      required
-                      autoFocus
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 mb-1">Password:</label>
-                    <input
-                      type="password"
-                      value={adminPassword}
-                      onChange={(e) => setAdminPassword(e.target.value)}
-                      placeholder="Password daalein..."
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-medium focus:outline-none"
-                      required
-                    />
-                  </div>
-
-                  {authError && <p className="text-xs text-rose-600 font-bold mt-1">{authError}</p>}
-
-                  <button
-                    type="submit"
-                    disabled={isAuthLoading}
-                    className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold text-xs py-2.5 rounded-lg transition-colors flex items-center justify-center gap-1"
-                  >
-                    {isAuthLoading ? 'Authenticating Firebase...' : 'Login As Admin'}
-                  </button>
-                </form>
-              </div>
-            </div>
-          )}
-
-          {/* ADD / EDIT SERVICE MODAL */}
-          {showServiceFormModal && (
-            <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-3 overflow-y-auto">
-              <div className="bg-white rounded-xl max-w-xl w-full p-5 shadow-2xl my-6 border border-slate-200">
-                <div className="flex items-center justify-between mb-4 border-b pb-2">
-                  <h3 className="font-bold text-slate-900 text-sm">
-                    {editingServiceId ? 'Service Edit Karein (Realtime DB)' : 'Naya Service Add Karein (Realtime DB)'}
-                  </h3>
-                  <button onClick={() => setShowServiceFormModal(false)} className="text-slate-400">
-                    <Icons.X />
-                  </button>
-                </div>
-
-                <form onSubmit={handleSaveService} className="space-y-3 text-xs font-medium">
-                  <div>
-                    <label className="block text-slate-700 font-bold mb-1">Category:</label>
-                    <select
-                      value={formCategory}
-                      onChange={(e) => setFormCategory(e.target.value)}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-bold"
-                    >
-                      {categories.filter(c => c !== 'Sabhi Services').map(c => (
-                        <option key={c} value={c}>{c}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-slate-700 font-bold mb-1">Title (Heading):</label>
-                    <input
-                      type="text"
-                      value={formTitle}
-                      onChange={(e) => setFormTitle(e.target.value)}
-                      placeholder="e.g. Patliputra University Graduation Form"
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-slate-700 font-bold mb-1">Banner Image Link / URL (Optional):</label>
-                    <input
-                      type="url"
-                      value={formBannerUrl}
-                      onChange={(e) => setFormBannerUrl(e.target.value)}
-                      placeholder="https://example.com/banner.jpg"
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-slate-700 font-bold mb-1">Chhota Description (Summary):</label>
-                    <input
-                      type="text"
-                      value={formShortDesc}
-                      onChange={(e) => setFormShortDesc(e.target.value)}
-                      placeholder="Card par dikhne wala ek line ka intro"
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-slate-700 font-bold mb-1">Kya-Kya Lagega (Required Docs - 1 Per Line):</label>
-                    <textarea
-                      rows={3}
-                      value={formDocs}
-                      onChange={(e) => setFormDocs(e.target.value)}
-                      placeholder="10th Marksheet&#10;Aadhaar Card&#10;Photo"
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-mono"
-                    />
-                  </div>
-
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <label className="text-slate-700 font-bold">Poora Description:</label>
-                      <div className="flex gap-1 bg-slate-100 p-0.5 rounded border border-slate-200">
-                        <button
-                          type="button"
-                          onClick={() => setFormDescType('normal')}
-                          className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                            formDescType === 'normal' ? 'bg-white text-blue-700 shadow-2xs' : 'text-slate-500'
-                          }`}
-                        >
-                          Normal Text
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => setFormDescType('html')}
-                          className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                            formDescType === 'html' ? 'bg-white text-blue-700 shadow-2xs' : 'text-slate-500'
-                          }`}
-                        >
-                          HTML Code
-                        </button>
-                      </div>
-                    </div>
-                    <textarea
-                      rows={4}
-                      value={formDescription}
-                      onChange={(e) => setFormDescription(e.target.value)}
-                      placeholder={formDescType === 'html' ? "<h1>Code</h1>" : "Details text likhein..."}
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-mono"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-slate-700 font-bold mb-1">Apply Link (Google Form URL):</label>
-                    <input
-                      type="url"
-                      value={formApplyLink}
-                      onChange={(e) => setFormApplyLink(e.target.value)}
-                      placeholder="https://docs.google.com/forms/..."
-                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs"
-                      required
-                    />
-                  </div>
-
-                  <div className="flex justify-end gap-2 pt-2 border-t">
-                    <button
-                      type="button"
-                      onClick={() => setShowServiceFormModal(false)}
-                      className="px-3 py-1.5 bg-slate-200 font-bold rounded-lg"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-4 py-1.5 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-lg shadow-sm"
-                    >
-                      Save To Realtime DB
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          )}
-
-          {/* ADD / EDIT NOTICE MODAL */}
-          {showNoticeModal && (
-            <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-3">
-              <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
-                <h3 className="font-bold text-slate-900 text-sm mb-3">
-                  {editingNoticeId ? 'Notice Board Edit Karein' : 'Notice Board Me Naya Notice Add Karein'}
-                </h3>
-                <form onSubmit={handleSaveNotice} className="space-y-3 text-xs">
-                  <input
-                    type="text"
-                    value={noticeText}
-                    onChange={(e) => setNoticeText(e.target.value)}
-                    placeholder="Notice text likhein..."
-                    className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2"
-                    required
-                  />
-                  <div className="flex justify-end gap-2">
-                    <button type="button" onClick={() => setShowNoticeModal(false)} className="px-3 py-1.5 bg-slate-200 font-bold rounded-lg">
-                      Cancel
-                    </button>
-                    <button type="submit" className="px-3 py-1.5 bg-blue-700 text-white font-bold rounded-lg">
-                      Save Notice
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          )}
-
-          {/* ADD CATEGORY MODAL */}
-          {showCategoryModal && (
-            <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-3">
-              <div className="bg-white rounded-xl max-w-sm w-full p-5 shadow-xl border border-slate-200">
-                <h3 className="font-bold text-slate-900 text-sm mb-3">Nayi Sub-Category Add Karein</h3>
-                <form onSubmit={handleAddCategory} className="space-y-3 text-xs">
-                  <input
-                    type="text"
-                    value={newCatName}
-                    onChange={(e) => setNewCatName(e.target.value)}
-                    placeholder="e.g. Government Schemes"
-                    className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2"
-                    required
-                  />
-                  <div className="flex justify-end gap-2">
-                    <button type="button" onClick={() => setShowCategoryModal(false)} className="px-3 py-1.5 bg-slate-200 font-bold rounded-lg">
-                      Cancel
-                    </button>
-                    <button type="submit" className="px-3 py-1.5 bg-blue-700 text-white font-bold rounded-lg">
-                      Add Category
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
           )}
 
           {/* FOOTER */}
@@ -1907,22 +777,6 @@
                 >
                   Terms & Conditions
                 </button>
-
-                {isAdmin ? (
-                  <button
-                    onClick={handleAdminLogout}
-                    className="text-emerald-400 hover:text-emerald-300 text-xs font-semibold underline underline-offset-2 transition-colors cursor-pointer"
-                  >
-                    ✓ Admin Active (Logout)
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => setShowLoginModal(true)}
-                    className="text-slate-500 hover:text-slate-300 text-xs font-medium underline underline-offset-2 transition-colors cursor-pointer"
-                  >
-                    Admin Login
-                  </button>
-                )}
               </div>
             </div>
           </footer>
