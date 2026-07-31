@@ -337,13 +337,12 @@
           return;
         }
 
-        recordApplication(srv);
         window.history.pushState({ view: 'iframe' }, '');
         setIframeUrl(srv.applyLink);
       };
 
       const recordApplication = async (srv) => {
-        if (!currentUser) return;
+        if (!currentUser || !srv) return;
         const now = Date.now();
         const appId = 'app-' + now;
 
@@ -362,6 +361,9 @@
 
         const appRef = window.firebaseRef(window.firebaseDb, 'applications/' + appId);
         await window.firebaseSet(appRef, applicationData);
+        showNotification('Aapka Google Form Status Record Ho Gaya!');
+        setIframeUrl(null);
+        setActiveModalPage('userStatus');
       };
 
       const handleBackToServices = () => {
@@ -1033,7 +1035,6 @@
             </div>
           )}
 
-          {}
           {activeModalPage && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 overflow-y-auto">
               <div className="bg-white rounded-xl max-w-2xl w-full p-6 shadow-2xl my-8 border border-slate-200 max-h-[85vh] flex flex-col">
@@ -1275,26 +1276,30 @@
             </div>
           )}
 
-          {}
           {iframeUrl ? (
             <main className="flex-1 flex flex-col bg-slate-900">
-              <div className="bg-slate-800 text-white px-4 py-2.5 border-b border-slate-700 flex items-center justify-between sticky top-[45px] z-30">
+              <div className="bg-slate-800 text-white px-3 py-2 border-b border-slate-700 flex flex-wrap items-center justify-between gap-2 sticky top-[45px] z-30">
                 <button
                   onClick={handleBackFromIframe}
-                  className="inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors"
+                  className="inline-flex items-center gap-1.5 bg-slate-700 hover:bg-slate-600 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg transition-colors"
                 >
-                  <Icons.ArrowLeft /> Wapas Website Par Aayein
+                  <Icons.ArrowLeft /> Wapas
                 </button>
-                <span className="text-xs text-slate-300 font-semibold hidden sm:inline">
-                  🔒 Form SGS Online Portal ke andar khula hai
-                </span>
+
+                <button
+                  onClick={() => recordApplication(activeService)}
+                  className="inline-flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold px-3 py-1.5 rounded-lg shadow-md animate-pulse border border-emerald-400"
+                >
+                  ✅ Google Form Submit Ho Gaya? Status Track Karein ⚡
+                </button>
+
                 <a
                   href={iframeUrl}
                   target="_blank"
                   rel="noreferrer"
                   className="text-xs text-slate-300 hover:text-white flex items-center gap-1 bg-slate-700 px-2.5 py-1 rounded"
                 >
-                  <Icons.ExternalLink /> Direct Tab Me Kholein
+                  <Icons.ExternalLink /> Direct Tab
                 </a>
               </div>
               <div className="flex-1 w-full bg-white relative min-h-[750px]">
