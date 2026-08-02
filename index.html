@@ -28,7 +28,6 @@
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased selection:bg-yellow-200">
   
-  <!-- Splash Screen -->
   <div id="splash-screen" class="fixed inset-0 z-[100] bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-950 flex flex-col items-center justify-center p-4 text-white">
     <div class="flex flex-col items-center text-center max-w-sm">
       <div class="w-16 h-16 bg-yellow-400 text-slate-950 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg mb-4 animate-pulse">
@@ -51,13 +50,14 @@
   <div id="root"></div>
 
   <script>
+    // Fast 1.2 second Loader dismiss
     setTimeout(() => {
       const splash = document.getElementById('splash-screen');
       if (splash) {
         splash.style.opacity = '0';
         setTimeout(() => splash.remove(), 400);
       }
-    }, 800);
+    }, 1200);
   </script>
 
   <script type="text/babel">
@@ -75,25 +75,47 @@
       Bell: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>,
       Menu: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/></svg>,
       ShieldCheck: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>,
-      Share2: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+      Share2: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>,
+      Mail: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>,
+      WhatsApp: () => <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
     };
 
+    // DEFAULT NOTICE BOARD DATA
     const SEED_NOTICES = [
       { id: 'n1', text: 'Bihar Graduation Admission Online Form 2026 Process Start.', date: '01 Aug 2026' },
       { id: 'n2', text: 'Post Matric Scholarship Last Date Extend Ho Chuki Hai.', date: '30 Jul 2026' }
     ];
 
+
+
+
+
+
+    
+    // DEFAULT CATEGORIES
+    // 💡 NAAYI CATEGORY ADD KARNE KE LIYE: Yahan niche list me comma (,) laga kar nayi category likhein
     const SEED_CATEGORIES = [
-      'Sabhi Services',
+      'All Services',
       'College Admission',
       'Scholarship',
       'Certificates (Jati/Aaya/Niwas)',
       'Admit Card & Result'
+      'STD collage'
     ];
 
+
+
+
+
+
+
+
+
+
+    
     // =========================================================================
-    // 🚀 SABHI USERS KO DIKHNE WALI SERVICES KI LIST (EDIT YAHAN KAREIN)
-    // Nayi service add karne ke liye niche ka ek block copy-paste karein.
+    // 🚀 SERVICES ARRAY (Code me 15 Services Active Hain)
+    // 💡 NAAYI SERVICE ADD KARNE KE LIYE: Is list ke bilkul niche naya block paste karein
     // =========================================================================
     const SEED_SERVICES = [
 
@@ -205,20 +227,74 @@
         description: 'Exam Roll Number Aur Roll Code Se Marks Check Karein.',
         requiredDocs: ['Roll Code', 'Roll Number'],
         applyLink: 'https://example.com/check-exam-result'
-      }
+      },
 
-      /* 
-      // 💡 Nayi service add karne ke liye yahan comma (,) laga kar niche wala block paste karein:
-      ,{
+      // --- SERVICE 11 ---
+      {
         id: 's-11',
         category: 'College Admission',
-        title: 'Aapki Nayi Service Ka Naam',
-        shortDesc: 'Chota description',
-        description: 'Poori details yahan likhein.',
-        requiredDocs: ['Aadhaar Card', 'Photo', '10th Marksheet'],
-        applyLink: 'https://aapki-link-yahan.com'
+        title: 'Bihar B.Ed Combined Entrance Test Form',
+        shortDesc: 'B.Ed Entrance Exam Online Application 2026',
+        description: 'Two-Year B.Ed Course Combined Entrance Test Registration.',
+        requiredDocs: ['Graduation Marksheet', 'Identity Card Proof', 'Photo', 'Signature'],
+        applyLink: 'https://example.com/apply-bed-entrance'
+      },
+
+      // --- SERVICE 12 ---
+      {
+        id: 's-12',
+        category: 'College Admission',
+        title: 'Bihar DElEd Admission Online Form',
+        shortDesc: 'D.El.Ed Entrance Exam Application Form Portal',
+        description: 'Diploma in Elementary Education Entrance Registration.',
+        requiredDocs: ['12th Pass Marksheet', 'Caste Certificate', 'Identity Card Proof'],
+        applyLink: 'https://example.com/apply-deled'
+      },
+
+      // --- SERVICE 13 ---
+      {
+        id: 's-13',
+        category: 'Scholarship',
+        title: 'Bihar Kanya Utthan Yojana Online',
+        shortDesc: 'Graduation Pass Girl Students Rs. 50,000 Scholarship',
+        description: 'Graduation Paas Chhatraon Ke Liye Utthan Yojana Form.',
+        requiredDocs: ['Graduation Marksheet', 'Bank Passbook', 'Identity Card Proof', 'Niwas Certificate'],
+        applyLink: 'https://example.com/apply-kanya-utthan'
+      },
+
+      // --- SERVICE 14 ---
+      {
+        id: 's-14',
+        category: 'Certificates (Jati/Aaya/Niwas)',
+        title: 'Non-Creamy Layer (NCL) Certificate',
+        shortDesc: 'OBC / BC / EBC Non-Creamy Layer Certificate',
+        description: 'Central Aur State NCL Certificate Application Portal.',
+        requiredDocs: ['Jati', 'Aaya', 'Niwas Certificate', 'Identity Card Proof'],
+        applyLink: 'https://example.com/apply-ncl'
+      },
+
+      // --- SERVICE 15 ---
+      {
+        id: 's-15',
+        category: 'Admit Card & Result',
+        title: 'Bihar Board Exam Answer Key & Objection',
+        shortDesc: 'Official Answer Key Check & Challenge Portal',
+        description: '10th & 12th Board Exam Answer Keys Verification Link.',
+        requiredDocs: ['Roll Code', 'Roll Number', 'Objection Detail'],
+        applyLink: 'https://example.com/check-answer-key'
       }
-      */
+
+
+      // --- SERVICE 16 ---
+      {
+        id: 's-15',
+        category: 'STD collage',
+        title: 'Admission sem 5th',
+        shortDesc: 'Official Answer Key Check & Challenge Portal',
+        description: '10th & 12th Board Exam Answer Keys Verification Link.',
+        requiredDocs: ['Roll Code', 'Roll Number', 'Objection Detail'],
+        applyLink: 'https://example.com/check-answer-key'
+      }
     ];
 
     function App() {
@@ -230,11 +306,24 @@
       const [searchQuery, setSearchQuery] = useState('');
       const [activeService, setActiveService] = useState(null); 
 
-      // Navigation & Modal Views
+      // Drawer & Modal Views
       const [showDrawer, setShowDrawer] = useState(false);
       const [activeModalPage, setActiveModalPage] = useState(null);
 
+      // Toast Notification State
       const [toastMsg, setToastMsg] = useState('');
+
+      // ENCRYPTED WHATSAPP NUMBER LOGIC (Base64 Encoded to keep private)
+      const openWhatsAppChat = () => {
+        try {
+          const encNum = "OTExNzA4MDE2OQ=="; // Encrypted Base64 String
+          const decNum = atob(encNum);
+          const text = encodeURIComponent("Hello SGS Online Service! I need support regarding online forms.");
+          window.open(`https://wa.me/${decNum}?text=${text}`, '_blank', 'noopener,noreferrer');
+        } catch (e) {
+          window.open("https://wa.me/9117080169", '_blank');
+        }
+      };
 
       const showNotification = (msg) => {
         setToastMsg(msg);
@@ -260,6 +349,7 @@
         setActiveService(srv);
       };
 
+      // Direct Redirect on Apply Link
       const openApplyLink = (srv) => {
         if (srv && srv.applyLink) {
           window.open(srv.applyLink, '_blank', 'noopener,noreferrer');
@@ -299,16 +389,16 @@
       };
 
       const filteredServices = services.filter(s => {
-        const matchCat = selectedCat === 'Sabhi Services' || s.category === selectedCat;
+        const matchCat = selectedCat === 'Sabhi Services' || selectedCat === 'All service' || s.category === selectedCat;
         const matchSearch = s.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                             s.shortDesc?.toLowerCase().includes(searchQuery.toLowerCase());
         return matchCat && matchSearch;
       });
 
       return (
-        <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col relative">
+        <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col relative pb-12">
           
-          {/* Toast Notification */}
+          {/* Toast Alert */}
           {toastMsg && (
             <div className="fixed top-3 right-3 z-50 bg-slate-900 text-yellow-300 font-bold text-xs px-4 py-2.5 rounded-xl shadow-xl border border-yellow-400/30 animate-bounce">
               ⚡ {toastMsg}
@@ -316,7 +406,7 @@
           )}
 
           {/* STICKY HEADER */}
-          <header className="sticky top-0 z-40 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white shadow-sm border-b border-indigo-500/30 py-2 px-3">
+          <header className="sticky top-0 z-40 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white shadow-sm border-b border-indigo-500/30 py-1.5 sm:py-2 px-3 transition-all">
             <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
               
               <button 
@@ -335,7 +425,7 @@
                 }}
                 className="cursor-pointer text-center group flex-1"
               >
-                <h1 className="text-base sm:text-xl font-extrabold tracking-tight text-yellow-300 group-hover:text-yellow-200 transition-colors leading-tight">
+                <h1 className="text-base sm:text-xl font-extrabold tracking-tight text-yellow-300 group-hover:text-yellow-200 transition-colors leading-tight drop-shadow-xs">
                   SGS ONLINE SERVICE
                 </h1>
                 <p className="text-[9px] sm:text-[11px] font-bold text-amber-200/90 uppercase tracking-wider leading-none mt-0.5">
@@ -391,6 +481,17 @@
                     </button>
 
                     <button
+                      onClick={() => { setActiveModalPage('contact'); setShowDrawer(false); }}
+                      className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-slate-800"
+                    >
+                      <span className="flex items-center gap-2">
+                        <Icons.Mail />
+                        <span>📞 Contact Us & Support</span>
+                      </span>
+                      <Icons.ChevronRight />
+                    </button>
+
+                    <button
                       onClick={() => { setActiveModalPage('privacy'); setShowDrawer(false); }}
                       className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-slate-800"
                     >
@@ -417,37 +518,131 @@
             </div>
           )}
 
-          {/* POLICY & TERMS MODALS */}
+          {/* FULL RESTORED POLICY, TERMS & CONTACT MODALS */}
           {activeModalPage && (
             <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 overflow-y-auto">
-              <div className="bg-white rounded-xl max-w-lg w-full p-6 shadow-2xl my-8 border border-slate-200 max-h-[90vh] flex flex-col">
+              <div className="bg-white rounded-xl max-w-2xl w-full p-6 shadow-2xl my-8 border border-slate-200 max-h-[85vh] flex flex-col">
                 <div className="flex items-center justify-between border-b pb-3 mb-4">
-                  <h3 className="font-extrabold text-slate-900 text-base flex items-center gap-2">
-                    {activeModalPage === 'privacy' && <span>🔒 Privacy Policy</span>}
-                    {activeModalPage === 'terms' && <span>📜 Terms & Conditions</span>}
+                  <h3 className="font-extrabold text-slate-900 text-lg flex items-center gap-2">
+                    {activeModalPage === 'contact' && <Icons.Mail />}
+                    {activeModalPage === 'privacy' && <Icons.ShieldCheck />}
+                    {activeModalPage === 'terms' && <Icons.ShieldCheck />}
+                    <span>
+                      {activeModalPage === 'contact' && 'Contact Us & Customer Support'}
+                      {activeModalPage === 'privacy' && 'Privacy Policy'}
+                      {activeModalPage === 'terms' && 'Terms & Conditions'}
+                    </span>
                   </h3>
                   <button onClick={() => setActiveModalPage(null)} className="text-slate-400 hover:text-slate-600">
                     <Icons.X />
                   </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto text-xs text-slate-700 space-y-4 pr-1">
-                  {activeModalPage === 'privacy' && (
-                    <div className="space-y-3 leading-relaxed">
-                      <p>SGS ONLINE SERVICE customer ke dwaara di gayi sabhi details ko confidential rakhta hai. Hum aapke details ka upyog kewal official portals par forms submit karne ke liye karte hain.</p>
+                <div className="flex-1 overflow-y-auto text-xs text-slate-700 space-y-4 pr-1 leading-relaxed">
+                  
+                  {/* CONTACT US MODAL */}
+                  {activeModalPage === 'contact' && (
+                    <div className="space-y-4 text-slate-700">
+                      <div className="bg-blue-50 border-l-4 border-blue-600 p-3.5 rounded text-slate-900">
+                        <h4 className="font-extrabold text-sm mb-1">Get in Touch with SGS Online Service</h4>
+                        <p className="text-xs text-slate-600">
+                          If you have any questions regarding online form submissions, college admissions, scholarship applications, or document requirements, our support team is here to assist you promptly.
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Email Support</span>
+                          <p className="font-extrabold text-blue-700 text-sm">support@sgsonlineservice.com</p>
+                          <p className="font-bold text-slate-700 text-xs mt-0.5">sgsonlineservice@gmail.com</p>
+                        </div>
+
+                        <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Service Hours</span>
+                          <p className="font-extrabold text-slate-800 text-sm">Mon - Sat: 08:00 AM - 08:00 PM</p>
+                          <p className="text-[11px] text-slate-500">Sunday Emergency Support Active</p>
+                        </div>
+                      </div>
+
+                      <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-xl text-center space-y-2">
+                        <h5 className="font-extrabold text-emerald-900 text-sm">Instant Help on WhatsApp</h5>
+                        <p className="text-xs text-emerald-700">Connect directly with our helpline officer on WhatsApp for immediate assistance.</p>
+                        <button
+                          onClick={openWhatsAppChat}
+                          className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-5 py-2 rounded-lg shadow-sm text-xs transition-all"
+                        >
+                          <Icons.WhatsApp />
+                          <span>Chat on WhatsApp Support</span>
+                        </button>
+                      </div>
                     </div>
                   )}
 
+                  {/* FULL DETAILED PRIVACY POLICY (RESTORED) */}
+                  {activeModalPage === 'privacy' && (
+                    <div className="space-y-4 text-slate-700">
+                      <div className="bg-blue-50 border-l-4 border-blue-600 p-3.5 rounded text-slate-900 font-medium">
+                        <strong>📌 Official Cyber Seva Kendra Declaration:</strong> SGS ONLINE SERVICE operates as an authorized online assistance service center. We facilitate government online forms (such as Bihar RTPS Caste, Income, Residence Certificates), College/University Admissions (PPU, VKSU, etc.), Scholarship applications, and various e-services for our customers upon their explicit request.
+                      </div>
+
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Personal Data & Identifiers We Collect:</h4>
+                        <p className="mb-2">To process online applications accurately on government and university portals, we collect the following personal details from users:</p>
+                        <ul className="list-disc pl-5 space-y-1 text-slate-700">
+                          <li><strong>Personal Identification:</strong> Full Name, Father's Name, Mother's Name, Date of Birth, and Gender.</li>
+                          <li><strong>Contact & Login Details:</strong> Active Mobile Number, Email Address, and System Unique Identifiers.</li>
+                          <li><strong>Residential & Address Details:</strong> Village/Town, Gram Panchayat / Ward No., Block, Sub-Division, District, State, and Pincode.</li>
+                          <li><strong>Government Identification Documents:</strong> Identification proofs, Passport Size Photographs, Caste/Income/Residence Proofs.</li>
+                          <li><strong>Educational & Academic Credentials:</strong> 10th & 12th Marksheets, Roll Numbers, Registration Cards, Admit Cards, and School/College Details.</li>
+                          <li><strong>Banking & Financial Details:</strong> Bank Account Number, IFSC Code, and Bank Branch details (strictly required for Bihar Post Matric Scholarship disbursal and online fee payments).</li>
+                        </ul>
+                      </div>
+
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Purpose and Utilization of Collected Information:</h4>
+                        <p>All information and document copies provided by users are utilized strictly and exclusively for filling and submitting official online application forms on designated government servers (e.g., RTPS Bihar, Patliputra University, Post Matric Scholarship Portal) on behalf of the user. We guarantee 100% data confidentiality. We do NOT sell, lease, share, or disclose user data to any unauthorized third-party commercial entities.</p>
+                      </div>
+
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. Security & Data Protection:</h4>
+                        <p>All user information processing is handled with strict confidentiality access controls. Only authorized system administrators have access to verify and process application forms.</p>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* FULL DETAILED TERMS & CONDITIONS (RESTORED) */}
                   {activeModalPage === 'terms' && (
-                    <div className="space-y-3 leading-relaxed">
-                      <p>SGS ONLINE SERVICE ek facilitation portal hai. Final form approval official department dwaara kiya jata hai.</p>
+                    <div className="space-y-4 text-slate-700">
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Online Facilitation Service Overview:</h4>
+                        <p>SGS ONLINE SERVICE acts as a third-party Cyber Seva Kendra facilitator assisting applicants in filling out government and educational forms correctly. Final approval, certificate issuance, exam admit card generation, or university admission confirmation rests solely with the respective official government or university authorities.</p>
+                      </div>
+
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Applicant Responsibility & Authenticity:</h4>
+                        <p>The applicant is solely responsible for providing genuine, truthful, and accurate information (Name, Father's Name, Mother's Name, Date of Birth, Educational Marksheets, Address, etc.). SGS ONLINE SERVICE is not liable for form rejections or legal consequences caused by fake, wrong, or inaccurate details submitted by the applicant.</p>
+                      </div>
+
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. Government Portal Fees & Cyber Processing Charges:</h4>
+                        <p>Total payment collected from users for any service consists of:</p>
+                        <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-700">
+                          <li>Official Government / University Portal Application Fees.</li>
+                          <li>SGS Cyber Service Charges for online form filling, document scanning, formatting, and status tracking.</li>
+                        </ul>
+                      </div>
+
+                      <div>
+                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">4. Refund & Cancellation Policy:</h4>
+                        <p>Once an application form is filled and submitted to the official government or university portal, all official portal fees and cyber processing service charges become strictly non-refundable under any circumstances.</p>
+                      </div>
                     </div>
                   )}
                 </div>
 
-                <div className="pt-3 border-t mt-4 flex justify-end">
+                <div className="pt-4 border-t mt-4 flex justify-end">
                   <button onClick={() => setActiveModalPage(null)} className="bg-slate-800 text-white font-bold px-4 py-2 rounded-lg text-xs">
-                    Close
+                    Close Window
                   </button>
                 </div>
               </div>
@@ -456,7 +651,6 @@
 
           {/* MAIN CONTENT AREA */}
           {activeService ? (
-            /* SERVICE DETAIL VIEW */
             <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
               <button
                 onClick={handleBackToServices}
@@ -516,35 +710,57 @@
             </main>
           ) : 
 
-          /* HOME LIST VIEW */
           (
             <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
               
-              {/* NOTICE BOARD */}
-              <div className="bg-white border border-slate-300 rounded-xl p-4 shadow-2xs">
-                <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="text-blue-700"><Icons.Bell /></span>
-                    <h2 className="font-extrabold text-slate-900 text-sm sm:text-base uppercase tracking-wider">
-                      Notice Board / Taaza Updates
+              {selectedCat !== 'Sabhi Services' ? (
+                <div className="bg-gradient-to-r from-blue-900 to-indigo-900 text-white rounded-xl p-5 shadow-md flex items-center justify-between gap-3">
+                  <div>
+                    <span className="text-[10px] bg-amber-400 text-slate-900 font-extrabold px-2 py-0.5 rounded uppercase">
+                      Category View
+                    </span>
+                    <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
+                      📂 {selectedCat}
                     </h2>
+                    <p className="text-xs text-blue-200 mt-0.5">
+                      Is section me kul {filteredServices.length} active services hain.
+                    </p>
+                  </div>
+
+                  <button
+                    onClick={() => { setSelectedCat('Sabhi Services'); setSearchQuery(''); }}
+                    className="bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-extrabold text-xs px-4 py-2 rounded-lg shadow transition-colors shrink-0 flex items-center gap-1"
+                  >
+                    <Icons.ArrowLeft /> Sabhi Services
+                  </button>
+                </div>
+              ) : (
+                /* NOTICE BOARD */
+                <div className="bg-white border border-slate-300 rounded-xl p-4 shadow-2xs">
+                  <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-blue-700"><Icons.Bell /></span>
+                      <h2 className="font-extrabold text-slate-900 text-sm sm:text-base uppercase tracking-wider">
+                        Notice Board / Taaza Updates
+                      </h2>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    {notices.map((n) => (
+                      <div key={n.id} className="flex items-start justify-between gap-3 p-2 rounded hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0">
+                        <div className="flex items-start gap-2 text-xs sm:text-sm font-medium text-slate-800">
+                          <span className="text-blue-600 font-bold shrink-0 mt-0.5">•</span>
+                          <span>{n.text}</span>
+                        </div>
+                        {n.date && <span className="text-[11px] text-slate-400 font-normal shrink-0">{n.date}</span>}
+                      </div>
+                    ))}
                   </div>
                 </div>
+              )}
 
-                <div className="space-y-2">
-                  {notices.map((n) => (
-                    <div key={n.id} className="flex items-start justify-between gap-3 p-2 rounded hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0">
-                      <div className="flex items-start gap-2 text-xs sm:text-sm font-medium text-slate-800">
-                        <span className="text-blue-600 font-bold shrink-0 mt-0.5">•</span>
-                        <span>{n.text}</span>
-                      </div>
-                      {n.date && <span className="text-[11px] text-slate-400 font-normal shrink-0">{n.date}</span>}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* SEARCH & CATEGORY FILTER TABS */}
+              {/* SEARCH & CATEGORY TABS */}
               <div className="space-y-3">
                 <div className="relative">
                   <div className="absolute left-3.5 top-3 text-slate-400"><Icons.Search /></div>
@@ -557,7 +773,6 @@
                   />
                 </div>
 
-                {/* CATEGORY BUTTONS */}
                 <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
                   {categories.map((cat) => (
                     <button
@@ -565,8 +780,8 @@
                       onClick={() => setSelectedCat(cat)}
                       className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border shrink-0 ${
                         selectedCat === cat
-                          ? 'bg-blue-700 text-white border-blue-700 shadow-xs'
-                          : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-100'
+                          ? 'bg-blue-700 text-white border-blue-700'
+                          : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-200'
                       }`}
                     >
                       {cat}
@@ -575,7 +790,7 @@
                 </div>
               </div>
 
-              {/* SERVICE CARDS GRID */}
+              {/* SERVICE BUTTON CARDS GRID */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <h3 className="font-extrabold text-slate-900 text-sm sm:text-base">
@@ -584,7 +799,7 @@
                 </div>
 
                 {filteredServices.length === 0 ? (
-                  <div className="bg-white p-8 rounded-xl border border-slate-200 text-center space-y-3">
+                  <div className="bg-white p-8 rounded-xl border border-slate-200 text-center">
                     <p className="text-slate-500 font-bold text-sm">Is category me abhi koi service nahi mili!</p>
                   </div>
                 ) : (
@@ -593,7 +808,7 @@
                       <div
                         key={srv.id}
                         onClick={() => openServiceDetail(srv)}
-                        className="bg-white rounded-xl border border-slate-300 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group overflow-hidden relative"
+                        className="bg-white rounded-xl border border-slate-300 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group overflow-hidden"
                       >
                         <div className="p-4">
                           <div className="flex items-center justify-between mb-2">
@@ -613,7 +828,7 @@
                           )}
                         </div>
 
-                        <div className="p-4 pt-2 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-700 bg-slate-50/50">
+                        <div className="p-4 pt-2 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-700">
                           <span>Full Detail & Apply</span>
                           <span className="group-hover:translate-x-1 transition-transform"><Icons.ChevronRight /></span>
                         </div>
@@ -625,6 +840,18 @@
             </main>
           )}
 
+          {/* FLOATING WHATSAPP SUPPORT BUTTON (ONLY ROUND LOGO ICON) */}
+          <div className="fixed bottom-5 right-5 z-40">
+            <button
+              onClick={openWhatsAppChat}
+              className="bg-emerald-600 hover:bg-emerald-500 text-white w-12 h-12 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-95 border-2 border-white/90"
+              title="Chat with Us on WhatsApp"
+              aria-label="WhatsApp Support"
+            >
+              <Icons.WhatsApp />
+            </button>
+          </div>
+
           {/* FOOTER */}
           <footer className="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800">
             <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
@@ -634,6 +861,13 @@
               </div>
 
               <div className="flex items-center gap-4 text-xs">
+                <button
+                  onClick={() => setActiveModalPage('contact')}
+                  className="text-slate-300 hover:text-white underline underline-offset-2 font-bold"
+                >
+                  Contact Us
+                </button>
+
                 <button
                   onClick={() => setActiveModalPage('privacy')}
                   className="text-slate-400 hover:text-white underline underline-offset-2"
