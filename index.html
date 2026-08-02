@@ -63,7 +63,7 @@
   <script type="text/babel">
     const { useState, useEffect } = React;
 
-    // SVG Icons
+    // SVG Icons Set
     const Icons = {
       Search: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>,
       ArrowLeft: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>,
@@ -86,12 +86,6 @@
       { id: 'n2', text: 'Post Matric Scholarship Last Date Extend Ho Chuki Hai.', date: '30 Jul 2026' }
     ];
 
-
-
-
-
-
-    
     // DEFAULT CATEGORIES
     // 💡 NAAYI CATEGORY ADD KARNE KE LIYE: Yahan niche list me comma (,) laga kar nayi category likhein
     const SEED_CATEGORIES = [
@@ -103,18 +97,8 @@
       'STD collage'
     ];
 
-
-
-
-
-
-
-
-
-
-    
     // =========================================================================
-    // 🚀 SERVICES ARRAY (Code me 15 Services Active Hain)
+    // 🚀 SERVICES ARRAY (Code me 16 Services Active Hain)
     // 💡 NAAYI SERVICE ADD KARNE KE LIYE: Is list ke bilkul niche naya block paste karein
     // =========================================================================
     const SEED_SERVICES = [
@@ -284,7 +268,6 @@
         applyLink: 'https://example.com/check-answer-key'
       },
 
-
       // --- SERVICE 16 ---
       {
         id: 's-16',
@@ -302,7 +285,7 @@
       const [notices] = useState(SEED_NOTICES);
       const [categories] = useState(SEED_CATEGORIES);
 
-      const [selectedCat, setSelectedCat] = useState('Sabhi Services');
+      const [selectedCat, setSelectedCat] = useState('All Services');
       const [searchQuery, setSearchQuery] = useState('');
       const [activeService, setActiveService] = useState(null); 
 
@@ -388,8 +371,11 @@
         setShowDrawer(false);
       };
 
+      // Helper check if selected category is All Services
+      const isAllServices = selectedCat === 'All Services' || selectedCat === 'All service' || selectedCat === 'Sabhi Services';
+
       const filteredServices = services.filter(s => {
-        const matchCat = selectedCat === 'All Services' || selectedCat === 'All service' || s.category === selectedCat;
+        const matchCat = isAllServices || s.category === selectedCat;
         const matchSearch = s.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                             s.shortDesc?.toLowerCase().includes(searchQuery.toLowerCase());
         return matchCat && matchSearch;
@@ -420,7 +406,7 @@
               <div 
                 onClick={() => {
                   setActiveService(null);
-                  setSelectedCat('Sabhi Services');
+                  setSelectedCat('All Services');
                   setSearchQuery('');
                 }}
                 className="cursor-pointer text-center group flex-1"
@@ -569,7 +555,7 @@
                         <p className="text-xs text-emerald-700">Connect directly with our helpline officer on WhatsApp for immediate assistance.</p>
                         <button
                           onClick={openWhatsAppChat}
-                          className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-5 py-2 rounded-lg shadow-sm text-xs transition-all"
+                          className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-5 py-2 rounded-lg shadow-sm text-xs transition-all cursor-pointer"
                         >
                           <Icons.WhatsApp />
                           <span>Chat on WhatsApp Support</span>
@@ -578,7 +564,7 @@
                     </div>
                   )}
 
-                  {/* FULL DETAILED PRIVACY POLICY (RESTORED) */}
+                  {/* FULL DETAILED PRIVACY POLICY */}
                   {activeModalPage === 'privacy' && (
                     <div className="space-y-4 text-slate-700">
                       <div className="bg-blue-50 border-l-4 border-blue-600 p-3.5 rounded text-slate-900 font-medium">
@@ -610,7 +596,7 @@
                     </div>
                   )}
 
-                  {/* FULL DETAILED TERMS & CONDITIONS (RESTORED) */}
+                  {/* FULL DETAILED TERMS & CONDITIONS */}
                   {activeModalPage === 'terms' && (
                     <div className="space-y-4 text-slate-700">
                       <div>
@@ -641,7 +627,7 @@
                 </div>
 
                 <div className="pt-4 border-t mt-4 flex justify-end">
-                  <button onClick={() => setActiveModalPage(null)} className="bg-slate-800 text-white font-bold px-4 py-2 rounded-lg text-xs">
+                  <button onClick={() => setActiveModalPage(null)} className="bg-slate-800 text-white font-bold px-4 py-2 rounded-lg text-xs cursor-pointer">
                     Close Window
                   </button>
                 </div>
@@ -651,35 +637,41 @@
 
           {/* MAIN CONTENT AREA */}
           {activeService ? (
-            <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
+            /* 1. SINGLE SERVICE FULL PAGE VIEW (Hides all other services, notices & categories) */
+            <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6">
               <button
                 onClick={handleBackToServices}
-                className="inline-flex items-center gap-2 bg-white hover:bg-slate-200 text-slate-800 font-bold text-xs sm:text-sm px-4 py-2 rounded-xl border border-slate-300 shadow-2xs mb-6 transition-all"
+                className="inline-flex items-center gap-2 bg-white hover:bg-slate-100 text-slate-800 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-slate-300 shadow-sm mb-6 transition-all cursor-pointer"
               >
-                <Icons.ArrowLeft /> Sabhi Services Par Wapas Jayein
+                <Icons.ArrowLeft /> <span>Sabhi Services Par Wapas Jayein</span>
               </button>
 
-              <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden">
-                <div className="bg-slate-900 text-white p-6 sm:p-8">
-                  <span className="bg-blue-600 text-white text-[11px] font-bold px-2.5 py-1 rounded uppercase tracking-wider">
+              <div className="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
+                <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 text-white p-6 sm:p-10">
+                  <span className="bg-amber-400 text-slate-950 text-xs font-black px-3 py-1 rounded-md uppercase tracking-wider">
                     {activeService.category}
                   </span>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-3 leading-snug">
+                  <h2 className="text-2xl sm:text-4xl font-black text-white mt-4 leading-tight">
                     {activeService.title}
                   </h2>
+                  {activeService.shortDesc && (
+                    <p className="text-slate-300 text-sm sm:text-base mt-2 font-medium">
+                      {activeService.shortDesc}
+                    </p>
+                  )}
                 </div>
 
-                <div className="p-6 sm:p-8 space-y-6">
+                <div className="p-6 sm:p-10 space-y-8">
                   {activeService.requiredDocs && activeService.requiredDocs.length > 0 && (
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-5">
-                      <h3 className="text-base font-bold text-slate-900 flex items-center gap-2 mb-3">
-                        <Icons.FileText />
+                    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6">
+                      <h3 className="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2.5 mb-4">
+                        <span className="text-blue-700"><Icons.FileText /></span>
                         <span>Kya-Kya Dastavez (Documents) Lagega:</span>
                       </h3>
-                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                         {activeService.requiredDocs.map((doc, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-slate-700 bg-white p-2.5 rounded border border-slate-200">
-                            <span className="text-emerald-600"><Icons.CheckCircle2 /></span>
+                          <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm font-semibold text-slate-800 bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
+                            <span className="text-emerald-600 shrink-0 mt-0.5"><Icons.CheckCircle2 /></span>
                             <span>{doc}</span>
                           </li>
                         ))}
@@ -688,10 +680,10 @@
                   )}
 
                   <div>
-                    <h3 className="text-base font-bold text-slate-900 mb-2 border-b border-slate-200 pb-2">
+                    <h3 className="text-base sm:text-lg font-black text-slate-900 mb-3 border-b border-slate-200 pb-3">
                       Poori Jaankari / Description:
                     </h3>
-                    <div className="whitespace-pre-line text-sm text-slate-700 leading-relaxed bg-slate-50/50 p-4 rounded-lg border border-slate-200">
+                    <div className="whitespace-pre-line text-sm sm:text-base text-slate-700 leading-relaxed bg-slate-50/70 p-5 rounded-2xl border border-slate-200 font-medium">
                       {activeService.description || "Apply Button par click karke form bharein."}
                     </div>
                   </div>
@@ -699,7 +691,7 @@
                   <div className="pt-6 border-t border-slate-200 text-center">
                     <button
                       onClick={() => openApplyLink(activeService)}
-                      className="w-full sm:w-auto min-w-[260px] bg-blue-700 hover:bg-blue-800 text-white font-extrabold text-lg px-8 py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 mx-auto"
+                      className="w-full sm:w-auto min-w-[280px] bg-blue-700 hover:bg-blue-800 text-white font-extrabold text-lg px-10 py-4 rounded-2xl shadow-xl transition-all flex items-center justify-center gap-3 mx-auto cursor-pointer"
                     >
                       <span>ONLINE APPLY KAREIN</span>
                       <Icons.ExternalLink />
@@ -708,68 +700,110 @@
                 </div>
               </div>
             </main>
-          ) : 
-
-          (
+          ) : !isAllServices ? (
+            /* 2. SINGLE CATEGORY FULL PAGE VIEW (Hides Notice Board, Search Bar & Category Tabs) */
             <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
-              
-              {selectedCat !== 'All Services' ? (
-                <div className="bg-gradient-to-r from-blue-900 to-indigo-900 text-white rounded-xl p-5 shadow-md flex items-center justify-between gap-3">
-                  <div>
-                    <span className="text-[10px] bg-amber-400 text-slate-900 font-extrabold px-2 py-0.5 rounded uppercase">
-                      Category View
-                    </span>
-                    <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
-                      📂 {selectedCat}
-                    </h2>
-                    <p className="text-xs text-blue-200 mt-0.5">
-                      Is section me kul {filteredServices.length} active services hain.
-                    </p>
-                  </div>
-
-                  <button
-                    onClick={() => { setSelectedCat('Sabhi Services'); setSearchQuery(''); }}
-                    className="bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-extrabold text-xs px-4 py-2 rounded-lg shadow transition-colors shrink-0 flex items-center gap-1"
-                  >
-                    <Icons.ArrowLeft /> Sabhi Services
-                  </button>
+              <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <span className="text-[11px] bg-amber-400 text-slate-950 font-black px-2.5 py-1 rounded-md uppercase tracking-wider">
+                    FULL CATEGORY PAGE VIEW
+                  </span>
+                  <h2 className="text-2xl sm:text-3xl font-black text-white mt-2">
+                    📂 {selectedCat}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-blue-200 mt-1 font-semibold">
+                    Is section me kul {filteredServices.length} active services hain. Neeche click karke apply karein.
+                  </p>
                 </div>
-              ) : (
-                /* NOTICE BOARD */
-                <div className="bg-white border border-slate-300 rounded-xl p-4 shadow-2xs">
-                  <div className="flex items-center justify-between border-b border-slate-200 pb-2 mb-3">
-                    <div className="flex items-center gap-2">
-                      <span className="text-blue-700"><Icons.Bell /></span>
-                      <h2 className="font-extrabold text-slate-900 text-sm sm:text-base uppercase tracking-wider">
-                        Notice Board / Taaza Updates
-                      </h2>
-                    </div>
-                  </div>
 
-                  <div className="space-y-2">
-                    {notices.map((n) => (
-                      <div key={n.id} className="flex items-start justify-between gap-3 p-2 rounded hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0">
-                        <div className="flex items-start gap-2 text-xs sm:text-sm font-medium text-slate-800">
-                          <span className="text-blue-600 font-bold shrink-0 mt-0.5">•</span>
-                          <span>{n.text}</span>
+                <button
+                  onClick={() => { setSelectedCat('All Services'); setSearchQuery(''); }}
+                  className="bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-black text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-md transition-colors shrink-0 flex items-center gap-2 cursor-pointer"
+                >
+                  <Icons.ArrowLeft /> Sabhi Services Par Wapas Jayein
+                </button>
+              </div>
+
+              {/* SERVICES GRID FOR THIS CATEGORY */}
+              <div className="space-y-3">
+                {filteredServices.length === 0 ? (
+                  <div className="bg-white p-10 rounded-2xl border border-slate-200 text-center">
+                    <p className="text-slate-500 font-bold text-sm sm:text-base">Is category me abhi koi service nahi mili!</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {filteredServices.map((srv) => (
+                      <div
+                        key={srv.id}
+                        onClick={() => openServiceDetail(srv)}
+                        className="bg-white rounded-2xl border border-slate-300 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group overflow-hidden"
+                      >
+                        <div className="p-5">
+                          <div className="flex items-center justify-between mb-3">
+                            <span className="bg-blue-50 text-blue-800 text-[10px] sm:text-[11px] font-extrabold px-2.5 py-1 rounded-md border border-blue-200">
+                              {srv.category}
+                            </span>
+                          </div>
+
+                          <h4 className="font-black text-slate-900 text-base group-hover:text-blue-700 leading-snug">
+                            {srv.title}
+                          </h4>
+
+                          {srv.shortDesc && (
+                            <p className="text-xs text-slate-500 mt-2 line-clamp-2 font-medium">
+                              {srv.shortDesc}
+                            </p>
+                          )}
                         </div>
-                        {n.date && <span className="text-[11px] text-slate-400 font-normal shrink-0">{n.date}</span>}
+
+                        <div className="p-4 pt-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs font-black text-blue-700">
+                          <span>Full Detail & Apply</span>
+                          <span className="group-hover:translate-x-1 transition-transform"><Icons.ChevronRight /></span>
+                        </div>
                       </div>
                     ))}
                   </div>
+                )}
+              </div>
+            </main>
+          ) : (
+            /* 3. MAIN HOMEPAGE (ALL SERVICES VIEW) */
+            <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
+              
+              {/* NOTICE BOARD */}
+              <div className="bg-white border border-slate-300 rounded-2xl p-5 shadow-2xs">
+                <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-blue-700"><Icons.Bell /></span>
+                    <h2 className="font-extrabold text-slate-900 text-sm sm:text-base uppercase tracking-wider">
+                      Notice Board / Taaza Updates
+                    </h2>
+                  </div>
                 </div>
-              )}
 
-              {/* SEARCH & CATEGORY TABS */}
-              <div className="space-y-3">
+                <div className="space-y-2">
+                  {notices.map((n) => (
+                    <div key={n.id} className="flex items-start justify-between gap-3 p-2.5 rounded-lg hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0">
+                      <div className="flex items-start gap-2 text-xs sm:text-sm font-semibold text-slate-800">
+                        <span className="text-blue-600 font-bold shrink-0 mt-0.5">•</span>
+                        <span>{n.text}</span>
+                      </div>
+                      {n.date && <span className="text-[11px] text-slate-400 font-medium shrink-0">{n.date}</span>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* SEARCH & CATEGORY NAVIGATION TABS */}
+              <div className="space-y-3 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs">
                 <div className="relative">
-                  <div className="absolute left-3.5 top-3 text-slate-400"><Icons.Search /></div>
+                  <div className="absolute left-3.5 top-3.5 text-slate-400"><Icons.Search /></div>
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="College Admission, Jati, Scholarship Form search karein..."
-                    className="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-medium focus:outline-none focus:border-blue-600 shadow-2xs"
+                    className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm font-semibold focus:outline-none focus:border-blue-600 focus:bg-white shadow-2xs transition-all"
                   />
                 </div>
 
@@ -778,10 +812,10 @@
                     <button
                       key={cat}
                       onClick={() => setSelectedCat(cat)}
-                      className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border shrink-0 ${
+                      className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all border shrink-0 cursor-pointer ${
                         selectedCat === cat
-                          ? 'bg-blue-700 text-white border-blue-700'
-                          : 'bg-white text-slate-700 border-slate-300 hover:bg-slate-200'
+                          ? 'bg-blue-700 text-white border-blue-700 shadow-md'
+                          : 'bg-slate-50 text-slate-700 border-slate-300 hover:bg-slate-200'
                       }`}
                     >
                       {cat}
@@ -799,8 +833,8 @@
                 </div>
 
                 {filteredServices.length === 0 ? (
-                  <div className="bg-white p-8 rounded-xl border border-slate-200 text-center">
-                    <p className="text-slate-500 font-bold text-sm">Is category me abhi koi service nahi mili!</p>
+                  <div className="bg-white p-10 rounded-2xl border border-slate-200 text-center">
+                    <p className="text-slate-500 font-bold text-sm sm:text-base">Is category me abhi koi service nahi mili!</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -808,27 +842,27 @@
                       <div
                         key={srv.id}
                         onClick={() => openServiceDetail(srv)}
-                        className="bg-white rounded-xl border border-slate-300 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group overflow-hidden"
+                        className="bg-white rounded-2xl border border-slate-300 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group overflow-hidden"
                       >
-                        <div className="p-4">
-                          <div className="flex items-center justify-between mb-2">
-                            <span className="bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-200">
+                        <div className="p-5">
+                          <div className="flex items-center justify-between mb-3">
+                            <span className="bg-blue-50 text-blue-800 text-[10px] sm:text-[11px] font-extrabold px-2.5 py-1 rounded-md border border-blue-200">
                               {srv.category}
                             </span>
                           </div>
 
-                          <h4 className="font-bold text-slate-900 text-sm group-hover:text-blue-700 leading-snug">
+                          <h4 className="font-black text-slate-900 text-base group-hover:text-blue-700 leading-snug">
                             {srv.title}
                           </h4>
 
                           {srv.shortDesc && (
-                            <p className="text-xs text-slate-500 mt-1.5 line-clamp-2">
+                            <p className="text-xs text-slate-500 mt-2 line-clamp-2 font-medium">
                               {srv.shortDesc}
                             </p>
                           )}
                         </div>
 
-                        <div className="p-4 pt-2 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-700">
+                        <div className="p-4 pt-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs font-black text-blue-700">
                           <span>Full Detail & Apply</span>
                           <span className="group-hover:translate-x-1 transition-transform"><Icons.ChevronRight /></span>
                         </div>
