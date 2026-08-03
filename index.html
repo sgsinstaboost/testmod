@@ -159,7 +159,7 @@
 
       <div class="mt-8 flex flex-col items-center gap-3">
         <div class="w-10 h-10 border-4 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
-        <p class="text-xs text-slate-300 font-semibold tracking-wide">Loading 3D Animated Seva Portal...</p>
+        <p class="text-xs text-slate-300 font-semibold tracking-wide">Loading Seva Portal...</p>
       </div>
     </div>
   </div>
@@ -498,6 +498,14 @@
         const bgCanvas = document.getElementById('three-bg-canvas');
         if (!bgCanvas) return;
 
+        // Hide 3D background canvas on Main Home Page, keep enabled on Login Page
+        if (userName) {
+          bgCanvas.style.display = 'none';
+          return;
+        } else {
+          bgCanvas.style.display = 'block';
+        }
+
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
         camera.position.z = 12;
@@ -572,7 +580,7 @@
           window.removeEventListener('resize', handleResize);
           cancelAnimationFrame(animationFrameId);
         };
-      }, []);
+      }, [userName]);
 
       // Priority Back-Button PopState Navigation logic
       useEffect(() => {
@@ -705,7 +713,7 @@
           <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-950 flex items-center justify-center p-4 relative overflow-hidden">
             <div className="glass-card border border-indigo-500/30 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative z-10 text-center space-y-4 perspective-container">
               
-              {/* 3D AVATAR CHARACTER COMPONENT */}
+              {/* 3D AVATAR CHARACTER COMPONENT (ACTIVE ON LOGIN PAGE) */}
               <div className="relative -mt-4">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-amber-500/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
                 <ThreeWelcomeAvatar />
@@ -719,13 +727,13 @@
                   Welcome to SGS Portal
                 </h2>
                 <p className="text-xs text-indigo-200 font-semibold">
-                  Government & College Online Seva Portal
+                  Government & College Online Service Portal
                 </p>
               </div>
 
               <div className="bg-gradient-to-r from-indigo-950/90 via-slate-900/90 to-indigo-950/90 p-3.5 rounded-2xl border border-indigo-500/30 text-left shadow-inner">
                 <p className="text-xs text-amber-200/90 font-semibold leading-relaxed">
-                  👋 Namaste! Website access karne ke liye kripya apna Naam darj karein. Aapko ek Unique System UID generate karke di jayegi.
+                  👋 Welcome! Please enter your full name to access the portal. A Unique System UID will be generated for your session.
                 </p>
               </div>
 
@@ -733,14 +741,14 @@
                 <div>
                   <label className="block text-xs font-black text-amber-300 mb-2 uppercase tracking-wider flex items-center gap-2">
                     <span className="p-1 bg-amber-400/20 rounded-lg text-amber-400"><Icons.User /></span>
-                    <span>Apna Poora Naam Bharein:</span>
+                    <span>Enter Your Full Name:</span>
                   </label>
                   <input
                     type="text"
                     required
                     value={inputName}
                     onChange={(e) => setInputName(e.target.value)}
-                    placeholder="Jaise: Rahul Kumar"
+                    placeholder="Enter Your Name"
                     className="w-full bg-slate-950/90 border-2 border-indigo-500/50 rounded-2xl px-4 py-3.5 text-sm font-semibold text-white placeholder-slate-500 outline-none transition-all input-glow"
                   />
                 </div>
@@ -749,13 +757,13 @@
                   type="submit"
                   className="w-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-black text-base py-4 px-6 rounded-2xl shadow-xl shadow-yellow-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-2 cursor-pointer border border-yellow-200/60"
                 >
-                  <span>ENTER 3D PORTAL</span>
+                  <span>ENTER PORTAL</span>
                   <Icons.ChevronRight />
                 </button>
               </form>
 
               <div className="pt-2 border-t border-slate-800/80 text-[10px] font-bold text-slate-400 tracking-wider">
-                🔒 Safe & Secure Cyber Seva Kendra Portal • Authorized Services
+                🔒 Safe & Secure Cyber Service Portal • Authorized Services
               </div>
             </div>
           </div>
@@ -854,7 +862,6 @@
             </div>
           </header>
 
-          {}
           {/* SIDE DRAWER MENU */}
           {showDrawer && (
             <div className="fixed inset-0 z-50 flex">
@@ -1150,7 +1157,6 @@
             </div>
           )}
 
-          {}
           {/* MAIN CONTENT AREA */}
           {activeService ? (
             /* 1. SINGLE SERVICE FULL PAGE VIEW */
@@ -1409,7 +1415,6 @@
             </main>
           )}
 
-          {}
           {/* FLOATING WHATSAPP SUPPORT BUTTON */}
           <div className="fixed bottom-6 right-6 z-40">
             <button
