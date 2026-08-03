@@ -1,16 +1,12 @@
 <!DOCTYPE html>
 <html lang="hi"> 
 <head>
-
-
-<meta name="google-site-verification" content="iPJ9gvz-pcq0qMUyfYB6cbjm11o3cwUVpMwtqDtXbVo" />
-
-  
-  
+  <meta name="google-site-verification" content="iPJ9gvz-pcq0qMUyfYB6cbjm11o3cwUVpMwtqDtXbVo" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SGS ONLINE SERVICE - Government & College Online Seva Portal</title>
   
+  <!-- External Scripts -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -19,6 +15,7 @@
   <style>
     html, body {
       overscroll-behavior-y: contain;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     }
     .scrollbar-none::-webkit-scrollbar {
       display: none;
@@ -30,25 +27,57 @@
     #splash-screen {
       transition: opacity 0.4s ease-out;
     }
+    
+    /* Live Blinking Red Text Animation */
+    @keyframes liveBlink {
+      0%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8)); }
+      50% { opacity: 0.3; transform: scale(0.95); filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.2)); }
+    }
+    .live-blink-text {
+      animation: liveBlink 1.2s infinite ease-in-out;
+    }
+    
+    /* Vibrant Gradient Text */
+    .gradient-text-gold {
+      background: linear-gradient(135deg, #FFE066 0%, #F59E0B 50%, #FCD34D 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .gradient-text-rainbow {
+      background: linear-gradient(90deg, #FF5733, #F39C12, #2ECC71, #3498DB, #9B59B6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Card Glow Effects */
+    .card-colorful-glow {
+      box-shadow: 0 4px 20px -2px rgba(99, 102, 241, 0.15), 0 2px 6px -1px rgba(0, 0, 0, 0.06);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .card-colorful-glow:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px -4px rgba(79, 70, 229, 0.25), 0 8px 10px -2px rgba(0, 0, 0, 0.1);
+    }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased selection:bg-yellow-200">
+<body class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 text-slate-100 antialiased selection:bg-yellow-400 selection:text-slate-900 min-h-screen">
   
-  <div id="splash-screen" class="fixed inset-0 z-[100] bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-950 flex flex-col items-center justify-center p-4 text-white">
+  <!-- FAST SPLASH LOADER -->
+  <div id="splash-screen" class="fixed inset-0 z-[100] bg-gradient-to-br from-blue-950 via-indigo-900 to-purple-950 flex flex-col items-center justify-center p-4 text-white">
     <div class="flex flex-col items-center text-center max-w-sm">
-      <div class="w-16 h-16 bg-yellow-400 text-slate-950 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg mb-4 animate-pulse">
+      <div class="w-20 h-20 bg-gradient-to-tr from-amber-400 via-yellow-300 to-amber-500 text-slate-950 rounded-3xl flex items-center justify-center text-3xl font-black shadow-2xl shadow-yellow-500/30 mb-5 animate-pulse border-2 border-yellow-200">
         SGS
       </div>
-      <h1 class="text-xl sm:text-2xl font-black text-yellow-300 tracking-tight leading-tight">
+      <h1 class="text-2xl sm:text-3xl font-black gradient-text-gold tracking-tight leading-tight">
         SGS ONLINE SERVICE
       </h1>
-      <p class="text-[11px] font-bold text-amber-200/90 uppercase tracking-widest mt-1">
+      <p class="text-[11px] font-bold text-amber-200/90 uppercase tracking-widest mt-1.5 bg-white/10 px-3 py-1 rounded-full border border-white/10">
         Government & College Online Seva Portal
       </p>
 
-      <div class="mt-8 flex flex-col items-center gap-2">
-        <div class="w-8 h-8 border-3 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
-        <p class="text-[11px] text-slate-300 font-semibold tracking-wide">Loading Seva Portal...</p>
+      <div class="mt-8 flex flex-col items-center gap-3">
+        <div class="w-10 h-10 border-4 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
+        <p class="text-xs text-slate-300 font-semibold tracking-wide">Loading Seva Portal...</p>
       </div>
     </div>
   </div>
@@ -67,22 +96,24 @@
   </script>
 
   <script type="text/babel">
-    const { useState, useEffect } = React;
+    const { useState, useEffect, useRef } = React;
 
     // SVG Icons Set
     const Icons = {
-      Search: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>,
-      ArrowLeft: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>,
-      ExternalLink: () => <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>,
-      CheckCircle2: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
+      Search: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>,
+      ArrowLeft: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>,
+      ExternalLink: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>,
+      CheckCircle2: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
       FileText: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>,
-      X: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>,
-      ChevronRight: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>,
+      X: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12"/></svg>,
+      ChevronRight: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7"/></svg>,
       Bell: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>,
-      Menu: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/></svg>,
+      Menu: () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16"/></svg>,
       ShieldCheck: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>,
       Share2: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>,
       Mail: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>,
+      User: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>,
+      IdCard: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/></svg>,
       WhatsApp: () => <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
     };
 
@@ -92,14 +123,7 @@
       { id: 'n2', text: 'Post Matric Scholarship Last Date Extend Ho Chuki Hai.', date: '30 Jul 2026' }
     ];
 
-
-
-
-
-
-    
     // DEFAULT CATEGORIES
-    // 💡 NAAYI CATEGORY ADD KARNE KE LIYE: Yahan niche list me comma (,) laga kar nayi category likhein
     const SEED_CATEGORIES = [
       'All Services',
       'VKSU EXAM FORM',
@@ -108,20 +132,10 @@
       'STD collage'
     ];
 
-
-
-
-
-
-
-
-    
     // =========================================================================
-    // 🚀 SERVICES ARRAY (Code me 16 Services Active Hain)
-    // 💡 NAAYI SERVICE ADD KARNE KE LIYE: Is list ke bilkul niche naya block paste karein
+    // 🚀 SERVICES ARRAY (Code me 8 Services Active Hain)
     // =========================================================================
     const SEED_SERVICES = [
-
       // --- SERVICE 1 ---
       {
         id: 's-1',
@@ -133,7 +147,6 @@
         applyLink: 'https://forms.gle/XjWJZpxKUfHjGzb7A'
       },
 
-      
       // --- SERVICE 2 ---
       {
         id: 's-2',
@@ -188,7 +201,6 @@
         requiredDocs: ['Identity Card Proof', 'Mobile Number', 'Passport Photo'],
         applyLink: 'https://forms.gle/mdWcehMF7o95N37KA'
       },
-    
 
       // --- SERVICE 7 ---
       {
@@ -200,8 +212,6 @@
         requiredDocs: ['Jati', 'Aaya', 'Niwas Certificate', 'Identity Card Proof'],
         applyLink: 'https://example.com/apply-ncl'
       },
-
-     
 
       // --- SERVICE 8 ---
       {
@@ -215,17 +225,18 @@
       }
     ];
 
+    // Helper to generate Unique Random User UID
+    const generateUID = () => {
+      const randomDigits = Math.floor(100000 + Math.random() * 900000);
+      return `SGS-${randomDigits}`;
+    };
 
-
-
-
-
-
-
-
-
-    
     function App() {
+      // User Identity State (First time login name & UID)
+      const [userName, setUserName] = useState(() => localStorage.getItem('sgs_user_name') || '');
+      const [userUID, setUserUID] = useState(() => localStorage.getItem('sgs_user_uid') || '');
+      const [inputName, setInputName] = useState('');
+
       const [services] = useState(SEED_SERVICES);
       const [notices] = useState(SEED_NOTICES);
       const [categories] = useState(SEED_CATEGORIES);
@@ -237,16 +248,80 @@
       // Drawer & Modal Views
       const [showDrawer, setShowDrawer] = useState(false);
       const [activeModalPage, setActiveModalPage] = useState(null);
+      const [showExitModal, setShowExitModal] = useState(false);
 
       // Toast Notification State
       const [toastMsg, setToastMsg] = useState('');
+
+      // Initial history setup for back-button handling
+      useEffect(() => {
+        // Push initial home state to history stack so mobile back can be intercepted
+        if (!window.history.state) {
+          window.history.replaceState({ page: 'home' }, '');
+        }
+
+        const handlePopState = (e) => {
+          // Priority 1: Close Exit Modal if open
+          if (showExitModal) {
+            setShowExitModal(false);
+            window.history.pushState({ page: 'home' }, '');
+            return;
+          }
+
+          // Priority 2: Close Active Service view
+          if (activeService) {
+            setActiveService(null);
+            return;
+          }
+
+          // Priority 3: Close Policy/Contact Modals
+          if (activeModalPage) {
+            setActiveModalPage(null);
+            return;
+          }
+
+          // Priority 4: Close Drawer
+          if (showDrawer) {
+            setShowDrawer(false);
+            return;
+          }
+
+          // Priority 5: Reset Category Filter if not default
+          if (selectedCat !== 'All Services') {
+            setSelectedCat('All Services');
+            return;
+          }
+
+          // Priority 6: User is at absolute Home screen -> Trigger Exit Confirmation Popup
+          setShowExitModal(true);
+          // Re-push state so user can decide in exit popup without leaving page immediately
+          window.history.pushState({ page: 'home' }, '');
+        };
+
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+      }, [activeService, activeModalPage, showDrawer, selectedCat, showExitModal]);
+
+      // Handle Initial Name Submission
+      const handleUserSubmit = (e) => {
+        e.preventDefault();
+        const trimmed = inputName.trim();
+        if (!trimmed) return;
+        
+        const newUid = generateUID();
+        localStorage.setItem('sgs_user_name', trimmed);
+        localStorage.setItem('sgs_user_uid', newUid);
+        setUserName(trimmed);
+        setUserUID(newUid);
+        showNotification(`Welcome ${trimmed}! Your UID: ${newUid}`);
+      };
 
       // ENCRYPTED WHATSAPP NUMBER LOGIC (Base64 Encoded to keep private)
       const openWhatsAppChat = () => {
         try {
           const encNum = "OTExNzA4MDE2OQ=="; // Encrypted Base64 String
           const decNum = atob(encNum);
-          const text = encodeURIComponent("Hello SGS Online Service! I need support regarding online forms.");
+          const text = encodeURIComponent(`Hello SGS Online Service! I need support. My Name: ${userName || 'User'} (UID: ${userUID || 'N/A'})`);
           window.open(`https://wa.me/${decNum}?text=${text}`, '_blank', 'noopener,noreferrer');
         } catch (e) {
           window.open("https://wa.me/9117080169", '_blank');
@@ -255,25 +330,11 @@
 
       const showNotification = (msg) => {
         setToastMsg(msg);
-        setTimeout(() => setToastMsg(''), 3000);
+        setTimeout(() => setToastMsg(''), 3500);
       };
 
-      useEffect(() => {
-        const handlePopState = () => {
-          if (activeService) {
-            setActiveService(null);
-          } else if (activeModalPage) {
-            setActiveModalPage(null);
-          } else if (showDrawer) {
-            setShowDrawer(false);
-          }
-        };
-        window.addEventListener('popstate', handlePopState);
-        return () => window.removeEventListener('popstate', handlePopState);
-      }, [activeService, activeModalPage, showDrawer]);
-
       const openServiceDetail = (srv) => {
-        window.history.pushState({ view: 'detail' }, '');
+        window.history.pushState({ view: 'detail', id: srv.id }, '');
         setActiveService(srv);
       };
 
@@ -288,9 +349,7 @@
       };
 
       const handleBackToServices = () => {
-        if (window.history.state?.view) {
-          window.history.back();
-        } else {
+        if (activeService) {
           setActiveService(null);
         }
       };
@@ -322,27 +381,133 @@
       const filteredServices = services.filter(s => {
         const matchCat = isAllServices || s.category === selectedCat;
         const matchSearch = s.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            s.shortDesc?.toLowerCase().includes(searchQuery.toLowerCase());
+                            srvDescriptionMatch(s, searchQuery);
         return matchCat && matchSearch;
       });
 
+      function srvDescriptionMatch(s, query) {
+        return (s.shortDesc?.toLowerCase().includes(query.toLowerCase()) || false);
+      }
+
+      // ---------------------------------------------------------------------
+      // 1. FIRST TIME USER LOGIN / NAME ENTRY SCREEN
+      // ---------------------------------------------------------------------
+      if (!userName) {
+        return (
+          <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-blue-950 flex items-center justify-center p-4 relative overflow-hidden">
+            {/* Background Colorful Glowing Orbs */}
+            <div className="absolute top-10 left-10 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+            <div className="absolute bottom-10 right-10 w-80 h-80 bg-blue-600/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+
+            <div className="bg-slate-900/90 backdrop-blur-xl border border-indigo-500/30 rounded-3xl p-6 sm:p-10 max-w-md w-full shadow-2xl relative z-10 text-center space-y-6">
+              <div className="mx-auto w-20 h-20 bg-gradient-to-tr from-yellow-400 via-amber-300 to-amber-500 rounded-3xl flex items-center justify-center text-slate-950 font-black text-3xl shadow-xl shadow-yellow-500/20 border-2 border-yellow-300">
+                SGS
+              </div>
+
+              <div>
+                <h2 className="text-2xl sm:text-3xl font-black gradient-text-gold tracking-tight">
+                  Welcome to SGS Portal
+                </h2>
+                <p className="text-xs text-slate-400 mt-1 font-medium">
+                  Government & College Online Seva Portal
+                </p>
+              </div>
+
+              <div className="bg-gradient-to-r from-blue-900/40 via-indigo-900/40 to-purple-900/40 p-4 rounded-2xl border border-indigo-500/20 text-left">
+                <p className="text-xs text-amber-200/90 font-semibold leading-relaxed">
+                  👋 Namaste! Website access karne ke liye kripya apna Naam darj karein. Aapko ek Unique System UID generate karke di jayegi.
+                </p>
+              </div>
+
+              <form onSubmit={handleUserSubmit} className="space-y-4 text-left">
+                <div>
+                  <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider flex items-center gap-1.5">
+                    <Icons.User /> Apna Poora Naam Bharein:
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={inputName}
+                    onChange={(e) => setInputName(e.target.value)}
+                    placeholder="Jaise: Rahul Kumar"
+                    className="w-full bg-slate-800/90 border-2 border-indigo-500/40 focus:border-yellow-400 rounded-xl px-4 py-3.5 text-sm font-semibold text-white placeholder-slate-500 outline-none transition-all shadow-inner"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-black text-base py-3.5 px-6 rounded-xl shadow-lg shadow-yellow-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <span>ENTER PORTAL</span>
+                  <Icons.ChevronRight />
+                </button>
+              </form>
+
+              <div className="pt-2 border-t border-slate-800 text-[10px] text-slate-500">
+                🔒 Safe & Secure Cyber Seva Kendra Portal • Authorized Services
+              </div>
+            </div>
+          </div>
+        );
+      }
+
       return (
-        <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col relative pb-12">
+        <div className="min-h-screen bg-slate-950 text-slate-100 font-sans flex flex-col relative pb-12">
           
           {/* Toast Alert */}
           {toastMsg && (
-            <div className="fixed top-3 right-3 z-50 bg-slate-900 text-yellow-300 font-bold text-xs px-4 py-2.5 rounded-xl shadow-xl border border-yellow-400/30 animate-bounce">
-              ⚡ {toastMsg}
+            <div className="fixed top-4 right-4 z-[99] bg-gradient-to-r from-slate-900 via-indigo-900 to-slate-900 text-yellow-300 font-bold text-xs px-5 py-3 rounded-2xl shadow-2xl border-2 border-yellow-400/40 animate-bounce flex items-center gap-2">
+              <span className="text-base">⚡</span> {toastMsg}
             </div>
           )}
 
-          {/* STICKY HEADER */}
-          <header className="sticky top-0 z-40 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white shadow-sm border-b border-indigo-500/30 py-1.5 sm:py-2 px-3 transition-all">
-            <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
+          {/* EXIT CONFIRMATION MODAL (MOBILE BACK BUTTON ON HOME) */}
+          {showExitModal && (
+            <div className="fixed inset-0 z-[100] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
+              <div className="bg-gradient-to-b from-slate-900 to-indigo-950 border-2 border-red-500/40 rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center space-y-4">
+                <div className="w-14 h-14 bg-red-500/20 text-red-400 rounded-2xl flex items-center justify-center mx-auto text-2xl font-black border border-red-500/40">
+                  🚪
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-white">Exit Website?</h3>
+                  <p className="text-xs text-slate-300 mt-1 font-medium">
+                    Kya aap SGS Online Service Portal se bahar nikalna chahte hain?
+                  </p>
+                </div>
+                <div className="flex items-center gap-3 pt-2">
+                  <button
+                    onClick={() => {
+                      setShowExitModal(false);
+                      window.history.pushState({ page: 'home' }, '');
+                    }}
+                    className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs py-3 rounded-xl border border-slate-700 transition-all cursor-pointer"
+                  >
+                    No (Wapas Raho)
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowExitModal(false);
+                      window.history.back(); // Execute actual browser back exit
+                    }}
+                    className="flex-1 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-xs py-3 rounded-xl shadow-lg shadow-red-600/30 transition-all cursor-pointer"
+                  >
+                    Yes (Exit)
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* STICKY VIBRANT HEADER */}
+          <header className="sticky top-0 z-40 bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 text-white shadow-xl border-b border-white/10 py-2 px-3 sm:px-4 backdrop-blur-md">
+            <div className="max-w-6xl mx-auto flex items-center justify-between gap-3">
               
               <button 
-                onClick={() => setShowDrawer(true)}
-                className="p-1.5 text-white hover:bg-white/10 rounded-lg transition-colors focus:outline-none flex items-center gap-1"
+                onClick={() => {
+                  window.history.pushState({ modal: 'drawer' }, '');
+                  setShowDrawer(true);
+                }}
+                className="p-2 text-yellow-300 hover:bg-white/10 rounded-xl transition-colors focus:outline-none flex items-center gap-1 border border-white/10"
                 title="Open Menu Drawer"
               >
                 <Icons.Menu />
@@ -356,45 +521,68 @@
                 }}
                 className="cursor-pointer text-center group flex-1"
               >
-                <h1 className="text-base sm:text-xl font-extrabold tracking-tight text-yellow-300 group-hover:text-yellow-200 transition-colors leading-tight drop-shadow-xs">
+                <h1 className="text-base sm:text-2xl font-black tracking-tight gradient-text-gold leading-tight drop-shadow-md">
                   SGS ONLINE SERVICE
                 </h1>
-                <p className="text-[9px] sm:text-[11px] font-bold text-amber-200/90 uppercase tracking-wider leading-none mt-0.5">
+                <p className="text-[9px] sm:text-[11px] font-bold text-amber-200/90 uppercase tracking-widest leading-none mt-0.5">
                   Government & College Online Form Seva Portal
                 </p>
+              </div>
+
+              {/* USER IDENTITY BADGE IN HEADER */}
+              <div className="hidden sm:flex items-center gap-2 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-amber-400/30 text-right">
+                <div className="w-7 h-7 bg-amber-400 text-slate-950 font-black rounded-lg flex items-center justify-center text-xs">
+                  {userName.charAt(0).toUpperCase()}
+                </div>
+                <div className="text-left leading-tight">
+                  <p className="text-[11px] font-extrabold text-amber-300 truncate max-w-[100px]">{userName}</p>
+                  <p className="text-[9px] text-slate-400 font-mono">{userUID}</p>
+                </div>
               </div>
 
             </div>
           </header>
 
+          {}
           {/* SIDE DRAWER MENU */}
           {showDrawer && (
             <div className="fixed inset-0 z-50 flex">
               <div 
-                className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"
+                className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"
                 onClick={() => setShowDrawer(false)}
               ></div>
 
-              <div className="relative w-72 max-w-[80%] bg-white h-full shadow-2xl flex flex-col justify-between z-10 p-5 overflow-y-auto">
+              <div className="relative w-80 max-w-[85%] bg-slate-900 text-slate-100 h-full shadow-2xl flex flex-col justify-between z-10 p-5 overflow-y-auto border-r border-slate-800">
                 <div>
-                  <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
+                  <div className="flex items-center justify-between pb-4 border-b border-slate-800 mb-4">
                     <div>
-                      <h3 className="font-extrabold text-blue-800 text-base">SGS ONLINE SERVICE</h3>
-                      <p className="text-[10px] text-slate-500 font-semibold">Authorized Cyber Seva Kendra</p>
+                      <h3 className="font-black text-amber-300 text-base">SGS ONLINE SERVICE</h3>
+                      <p className="text-[10px] text-slate-400 font-semibold">Authorized Cyber Seva Kendra</p>
                     </div>
-                    <button onClick={() => setShowDrawer(false)} className="text-slate-400 hover:text-slate-600 p-1">
+                    <button onClick={() => setShowDrawer(false)} className="text-slate-400 hover:text-white p-1 bg-slate-800 rounded-lg">
                       <Icons.X />
                     </button>
                   </div>
 
-                  <nav className="space-y-2 text-xs font-bold text-slate-700">
+                  {/* USER CARD IN DRAWER */}
+                  <div className="bg-gradient-to-r from-indigo-900/60 to-purple-900/60 p-3.5 rounded-2xl border border-indigo-500/30 mb-5 flex items-center gap-3">
+                    <div className="w-10 h-10 bg-gradient-to-tr from-yellow-400 to-amber-500 text-slate-950 font-black rounded-xl flex items-center justify-center text-lg shadow-md">
+                      {userName.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                      <p className="text-xs font-black text-yellow-300">{userName}</p>
+                      <p className="text-[10px] font-mono text-slate-300">UID: <span className="text-white font-bold">{userUID}</span></p>
+                    </div>
+                  </div>
+
+                  <nav className="space-y-2 text-xs font-bold">
                     <button
                       onClick={() => { 
                         setSelectedCat('All Services'); 
                         setActiveService(null); 
                         setShowDrawer(false); 
                       }}
-                      className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-blue-700"
+                      className="w-full text-left p-3 rounded-xl hover:bg-slate-800 flex items-center justify-between text-yellow-300 bg-slate-800/40 border border-amber-400/20"
                     >
                       <span>🏠 Home Page / All Services</span>
                       <Icons.ChevronRight />
@@ -402,9 +590,9 @@
 
                     <button
                       onClick={handleShareWebsite}
-                      className="w-full text-left p-2.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 flex items-center justify-between border border-emerald-200 mt-1"
+                      className="w-full text-left p-3 rounded-xl bg-emerald-900/30 hover:bg-emerald-800/40 text-emerald-300 flex items-center justify-between border border-emerald-500/30 mt-1"
                     >
-                      <span className="flex items-center gap-1.5 font-extrabold">
+                      <span className="flex items-center gap-2 font-extrabold">
                         <Icons.Share2 />
                         <span>Share Website</span>
                       </span>
@@ -412,8 +600,12 @@
                     </button>
 
                     <button
-                      onClick={() => { setActiveModalPage('contact'); setShowDrawer(false); }}
-                      className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-slate-800"
+                      onClick={() => { 
+                        window.history.pushState({ modal: 'contact' }, '');
+                        setActiveModalPage('contact'); 
+                        setShowDrawer(false); 
+                      }}
+                      className="w-full text-left p-3 rounded-xl hover:bg-slate-800 flex items-center justify-between text-slate-200"
                     >
                       <span className="flex items-center gap-2">
                         <Icons.Mail />
@@ -423,16 +615,24 @@
                     </button>
 
                     <button
-                      onClick={() => { setActiveModalPage('privacy'); setShowDrawer(false); }}
-                      className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-slate-800"
+                      onClick={() => { 
+                        window.history.pushState({ modal: 'privacy' }, '');
+                        setActiveModalPage('privacy'); 
+                        setShowDrawer(false); 
+                      }}
+                      className="w-full text-left p-3 rounded-xl hover:bg-slate-800 flex items-center justify-between text-slate-200"
                     >
                       <span>🔒 Privacy Policy</span>
                       <Icons.ChevronRight />
                     </button>
 
                     <button
-                      onClick={() => { setActiveModalPage('terms'); setShowDrawer(false); }}
-                      className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-slate-800"
+                      onClick={() => { 
+                        window.history.pushState({ modal: 'terms' }, '');
+                        setActiveModalPage('terms'); 
+                        setShowDrawer(false); 
+                      }}
+                      className="w-full text-left p-3 rounded-xl hover:bg-slate-800 flex items-center justify-between text-slate-200"
                     >
                       <span>📜 Terms & Conditions</span>
                       <Icons.ChevronRight />
@@ -440,8 +640,8 @@
                   </nav>
                 </div>
 
-                <div className="pt-4 border-t border-slate-200 space-y-2">
-                  <p className="text-[10px] text-slate-400 text-center">
+                <div className="pt-4 border-t border-slate-800 space-y-2">
+                  <p className="text-[10px] text-slate-400 text-center font-medium">
                     SGS Online Portal • Safe & Fast Direct Service Links
                   </p>
                 </div>
@@ -449,12 +649,13 @@
             </div>
           )}
 
+          {}
           {/* FULL RESTORED POLICY, TERMS & CONTACT MODALS */}
           {activeModalPage && (
-            <div className="fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4 overflow-y-auto">
-              <div className="bg-white rounded-xl max-w-2xl w-full p-6 shadow-2xl my-8 border border-slate-200 max-h-[85vh] flex flex-col">
-                <div className="flex items-center justify-between border-b pb-3 mb-4">
-                  <h3 className="font-extrabold text-slate-900 text-lg flex items-center gap-2">
+            <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
+              <div className="bg-slate-900 rounded-3xl max-w-2xl w-full p-6 shadow-2xl my-8 border border-slate-700 max-h-[85vh] flex flex-col text-slate-200">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                  <h3 className="font-extrabold text-amber-300 text-lg flex items-center gap-2">
                     {activeModalPage === 'contact' && <Icons.Mail />}
                     {activeModalPage === 'privacy' && <Icons.ShieldCheck />}
                     {activeModalPage === 'terms' && <Icons.ShieldCheck />}
@@ -464,43 +665,43 @@
                       {activeModalPage === 'terms' && 'Terms & Conditions'}
                     </span>
                   </h3>
-                  <button onClick={() => setActiveModalPage(null)} className="text-slate-400 hover:text-slate-600">
+                  <button onClick={() => setActiveModalPage(null)} className="text-slate-400 hover:text-white bg-slate-800 p-1.5 rounded-lg">
                     <Icons.X />
                   </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto text-xs text-slate-700 space-y-4 pr-1 leading-relaxed">
+                <div className="flex-1 overflow-y-auto text-xs text-slate-300 space-y-4 pr-2 leading-relaxed scrollbar-none">
                   
                   {/* CONTACT US MODAL */}
                   {activeModalPage === 'contact' && (
-                    <div className="space-y-4 text-slate-700">
-                      <div className="bg-blue-50 border-l-4 border-blue-600 p-3.5 rounded text-slate-900">
-                        <h4 className="font-extrabold text-sm mb-1">Get in Touch with SGS Online Service</h4>
-                        <p className="text-xs text-slate-600">
+                    <div className="space-y-4">
+                      <div className="bg-blue-900/30 border-l-4 border-blue-500 p-3.5 rounded-r-xl text-slate-200">
+                        <h4 className="font-extrabold text-sm text-blue-300 mb-1">Get in Touch with SGS Online Service</h4>
+                        <p className="text-xs text-slate-300">
                           If you have any questions regarding online form submissions, college admissions, scholarship applications, or document requirements, our support team is here to assist you promptly.
                         </p>
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-                          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Email Support</span>
-                          <p className="font-extrabold text-blue-700 text-sm">support@sgsonlineservice.com</p>
-                          <p className="font-bold text-slate-700 text-xs mt-0.5">sgsonlineservice@gmail.com</p>
+                        <div className="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700">
+                          <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider block mb-1">Email Support</span>
+                          <p className="font-extrabold text-blue-400 text-sm">support@sgsonlineservice.com</p>
+                          <p className="font-bold text-slate-300 text-xs mt-0.5">sgsonlineservice@gmail.com</p>
                         </div>
 
-                        <div className="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-                          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Service Hours</span>
-                          <p className="font-extrabold text-slate-800 text-sm">Mon - Sat: 08:00 AM - 08:00 PM</p>
-                          <p className="text-[11px] text-slate-500">Sunday Emergency Support Active</p>
+                        <div className="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700">
+                          <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider block mb-1">Service Hours</span>
+                          <p className="font-extrabold text-white text-sm">Mon - Sat: 08:00 AM - 08:00 PM</p>
+                          <p className="text-[11px] text-slate-400">Sunday Emergency Support Active</p>
                         </div>
                       </div>
 
-                      <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-xl text-center space-y-2">
-                        <h5 className="font-extrabold text-emerald-900 text-sm">Instant Help on WhatsApp</h5>
-                        <p className="text-xs text-emerald-700">Connect directly with our helpline officer on WhatsApp for immediate assistance.</p>
+                      <div className="bg-emerald-950/50 border border-emerald-500/30 p-4 rounded-2xl text-center space-y-3">
+                        <h5 className="font-extrabold text-emerald-300 text-sm">Instant Help on WhatsApp</h5>
+                        <p className="text-xs text-emerald-200/80">Connect directly with our helpline officer on WhatsApp for immediate assistance.</p>
                         <button
                           onClick={openWhatsAppChat}
-                          className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-5 py-2 rounded-lg shadow-sm text-xs transition-all cursor-pointer"
+                          className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold px-6 py-2.5 rounded-xl shadow-lg text-xs transition-all cursor-pointer"
                         >
                           <Icons.WhatsApp />
                           <span>Chat on WhatsApp Support</span>
@@ -511,15 +712,15 @@
 
                   {/* FULL DETAILED PRIVACY POLICY */}
                   {activeModalPage === 'privacy' && (
-                    <div className="space-y-4 text-slate-700">
-                      <div className="bg-blue-50 border-l-4 border-blue-600 p-3.5 rounded text-slate-900 font-medium">
-                        <strong>📌 Official Cyber Seva Kendra Declaration:</strong> SGS ONLINE SERVICE operates as an authorized online assistance service center. We facilitate government online forms (such as Bihar RTPS Caste, Income, Residence Certificates), College/University Admissions (PPU, VKSU, etc.), Scholarship applications, and various e-services for our customers upon their explicit request.
+                    <div className="space-y-4">
+                      <div className="bg-indigo-900/30 border-l-4 border-indigo-500 p-3.5 rounded-r-xl text-slate-200 font-medium">
+                        <strong className="text-indigo-300">📌 Official Cyber Seva Kendra Declaration:</strong> SGS ONLINE SERVICE operates as an authorized online assistance service center. We facilitate government online forms (such as Bihar RTPS Caste, Income, Residence Certificates), College/University Admissions (PPU, VKSU, etc.), Scholarship applications, and various e-services for our customers upon their explicit request.
                       </div>
 
                       <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Personal Data & Identifiers We Collect:</h4>
+                        <h4 className="font-extrabold text-yellow-300 text-sm mb-1.5">1. Personal Data & Identifiers We Collect:</h4>
                         <p className="mb-2">To process online applications accurately on government and university portals, we collect the following personal details from users:</p>
-                        <ul className="list-disc pl-5 space-y-1 text-slate-700">
+                        <ul className="list-disc pl-5 space-y-1.5 text-slate-300">
                           <li><strong>Personal Identification:</strong> Full Name, Father's Name, Mother's Name, Date of Birth, and Gender.</li>
                           <li><strong>Contact & Login Details:</strong> Active Mobile Number, Email Address, and System Unique Identifiers.</li>
                           <li><strong>Residential & Address Details:</strong> Village/Town, Gram Panchayat / Ward No., Block, Sub-Division, District, State, and Pincode.</li>
@@ -530,12 +731,12 @@
                       </div>
 
                       <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Purpose and Utilization of Collected Information:</h4>
+                        <h4 className="font-extrabold text-yellow-300 text-sm mb-1">2. Purpose and Utilization of Collected Information:</h4>
                         <p>All information and document copies provided by users are utilized strictly and exclusively for filling and submitting official online application forms on designated government servers (e.g., RTPS Bihar, Patliputra University, Post Matric Scholarship Portal) on behalf of the user. We guarantee 100% data confidentiality. We do NOT sell, lease, share, or disclose user data to any unauthorized third-party commercial entities.</p>
                       </div>
 
                       <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. Security & Data Protection:</h4>
+                        <h4 className="font-extrabold text-yellow-300 text-sm mb-1">3. Security & Data Protection:</h4>
                         <p>All user information processing is handled with strict confidentiality access controls. Only authorized system administrators have access to verify and process application forms.</p>
                       </div>
                     </div>
@@ -543,36 +744,36 @@
 
                   {/* FULL DETAILED TERMS & CONDITIONS */}
                   {activeModalPage === 'terms' && (
-                    <div className="space-y-4 text-slate-700">
+                    <div className="space-y-4">
                       <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Online Facilitation Service Overview:</h4>
+                        <h4 className="font-extrabold text-yellow-300 text-sm mb-1">1. Online Facilitation Service Overview:</h4>
                         <p>SGS ONLINE SERVICE acts as a third-party Cyber Seva Kendra facilitator assisting applicants in filling out government and educational forms correctly. Final approval, certificate issuance, exam admit card generation, or university admission confirmation rests solely with the respective official government or university authorities.</p>
                       </div>
 
                       <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Applicant Responsibility & Authenticity:</h4>
+                        <h4 className="font-extrabold text-yellow-300 text-sm mb-1">2. Applicant Responsibility & Authenticity:</h4>
                         <p>The applicant is solely responsible for providing genuine, truthful, and accurate information (Name, Father's Name, Mother's Name, Date of Birth, Educational Marksheets, Address, etc.). SGS ONLINE SERVICE is not liable for form rejections or legal consequences caused by fake, wrong, or inaccurate details submitted by the applicant.</p>
                       </div>
 
                       <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. Government Portal Fees & Cyber Processing Charges:</h4>
+                        <h4 className="font-extrabold text-yellow-300 text-sm mb-1">3. Government Portal Fees & Cyber Processing Charges:</h4>
                         <p>Total payment collected from users for any service consists of:</p>
-                        <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-700">
+                        <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-300">
                           <li>Official Government / University Portal Application Fees.</li>
                           <li>SGS Cyber Service Charges for online form filling, document scanning, formatting, and status tracking.</li>
                         </ul>
                       </div>
 
                       <div>
-                        <h4 className="font-extrabold text-slate-900 text-sm mb-1">4. Refund & Cancellation Policy:</h4>
+                        <h4 className="font-extrabold text-yellow-300 text-sm mb-1">4. Refund & Cancellation Policy:</h4>
                         <p>Once an application form is filled and submitted to the official government or university portal, all official portal fees and cyber processing service charges become strictly non-refundable under any circumstances.</p>
                       </div>
                     </div>
                   )}
                 </div>
 
-                <div className="pt-4 border-t mt-4 flex justify-end">
-                  <button onClick={() => setActiveModalPage(null)} className="bg-slate-800 text-white font-bold px-4 py-2 rounded-lg text-xs cursor-pointer">
+                <div className="pt-4 border-t border-slate-800 mt-4 flex justify-end">
+                  <button onClick={() => setActiveModalPage(null)} className="bg-slate-800 hover:bg-slate-700 text-white font-bold px-5 py-2 rounded-xl text-xs cursor-pointer">
                     Close Window
                   </button>
                 </div>
@@ -580,27 +781,28 @@
             </div>
           )}
 
+          {}
           {/* MAIN CONTENT AREA */}
           {activeService ? (
-            /* 1. SINGLE SERVICE FULL PAGE VIEW (Hides all other services, notices & categories) */
+            /* 1. SINGLE SERVICE FULL PAGE VIEW */
             <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6">
               <button
                 onClick={handleBackToServices}
-                className="inline-flex items-center gap-2 bg-white hover:bg-slate-100 text-slate-800 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-slate-300 shadow-sm mb-6 transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-amber-300 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-amber-400/30 shadow-md mb-6 transition-all cursor-pointer"
               >
                 <Icons.ArrowLeft /> <span>Sabhi Services Par Wapas Jayein</span>
               </button>
 
-              <div className="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
-                <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 text-white p-6 sm:p-10">
-                  <span className="bg-amber-400 text-slate-950 text-xs font-black px-3 py-1 rounded-md uppercase tracking-wider">
+              <div className="bg-slate-900 rounded-3xl shadow-2xl border border-indigo-500/30 overflow-hidden">
+                <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-950 text-white p-6 sm:p-10 border-b border-white/10">
+                  <span className="bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 text-xs font-black px-3 py-1 rounded-md uppercase tracking-wider shadow-sm">
                     {activeService.category}
                   </span>
                   <h2 className="text-2xl sm:text-4xl font-black text-white mt-4 leading-tight">
                     {activeService.title}
                   </h2>
                   {activeService.shortDesc && (
-                    <p className="text-slate-300 text-sm sm:text-base mt-2 font-medium">
+                    <p className="text-indigo-200 text-sm sm:text-base mt-2 font-medium">
                       {activeService.shortDesc}
                     </p>
                   )}
@@ -608,15 +810,15 @@
 
                 <div className="p-6 sm:p-10 space-y-8">
                   {activeService.requiredDocs && activeService.requiredDocs.length > 0 && (
-                    <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6">
-                      <h3 className="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2.5 mb-4">
-                        <span className="text-blue-700"><Icons.FileText /></span>
+                    <div className="bg-slate-800/60 border border-slate-700 rounded-2xl p-6">
+                      <h3 className="text-base sm:text-lg font-black text-amber-300 flex items-center gap-2.5 mb-4">
+                        <span className="text-amber-400"><Icons.FileText /></span>
                         <span>Kya-Kya Dastavez (Documents) Lagega:</span>
                       </h3>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                         {activeService.requiredDocs.map((doc, idx) => (
-                          <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm font-semibold text-slate-800 bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
-                            <span className="text-emerald-600 shrink-0 mt-0.5"><Icons.CheckCircle2 /></span>
+                          <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm font-semibold text-slate-200 bg-slate-900/90 p-3 rounded-xl border border-slate-700 shadow-sm">
+                            <span className="text-emerald-400 shrink-0 mt-0.5"><Icons.CheckCircle2 /></span>
                             <span>{doc}</span>
                           </li>
                         ))}
@@ -625,18 +827,18 @@
                   )}
 
                   <div>
-                    <h3 className="text-base sm:text-lg font-black text-slate-900 mb-3 border-b border-slate-200 pb-3">
+                    <h3 className="text-base sm:text-lg font-black text-white mb-3 border-b border-slate-800 pb-3">
                       Poori Jaankari / Description:
                     </h3>
-                    <div className="whitespace-pre-line text-sm sm:text-base text-slate-700 leading-relaxed bg-slate-50/70 p-5 rounded-2xl border border-slate-200 font-medium">
+                    <div className="whitespace-pre-line text-sm sm:text-base text-slate-300 leading-relaxed bg-slate-800/40 p-5 rounded-2xl border border-slate-700/60 font-medium">
                       {activeService.description || "Apply Button par click karke form bharein."}
                     </div>
                   </div>
 
-                  <div className="pt-6 border-t border-slate-200 text-center">
+                  <div className="pt-6 border-t border-slate-800 text-center">
                     <button
                       onClick={() => openApplyLink(activeService)}
-                      className="w-full sm:w-auto min-w-[280px] bg-blue-700 hover:bg-blue-800 text-white font-extrabold text-lg px-10 py-4 rounded-2xl shadow-xl transition-all flex items-center justify-center gap-3 mx-auto cursor-pointer"
+                      className="w-full sm:w-auto min-w-[280px] bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-black text-lg px-10 py-4 rounded-2xl shadow-xl shadow-indigo-600/30 transition-all transform active:scale-95 flex items-center justify-center gap-3 mx-auto cursor-pointer"
                     >
                       <span>ONLINE APPLY KAREIN</span>
                       <Icons.ExternalLink />
@@ -646,24 +848,24 @@
               </div>
             </main>
           ) : !isAllServices ? (
-            /* 2. SINGLE CATEGORY FULL PAGE VIEW (Hides Notice Board, Search Bar & Category Tabs) */
+            /* 2. SINGLE CATEGORY FULL PAGE VIEW */
             <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
-              <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="bg-gradient-to-r from-indigo-900 via-purple-900 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-indigo-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                  <span className="text-[11px] bg-amber-400 text-slate-950 font-black px-2.5 py-1 rounded-md uppercase tracking-wider">
-                    FULL CATEGORY PAGE VIEW
+                  <span className="text-[11px] bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 font-black px-3 py-1 rounded-md uppercase tracking-wider">
+                    CATEGORY VIEW
                   </span>
                   <h2 className="text-2xl sm:text-3xl font-black text-white mt-2">
                     📂 {selectedCat}
                   </h2>
-                  <p className="text-xs sm:text-sm text-blue-200 mt-1 font-semibold">
-                    Is section me kul {filteredServices.length} active services hain. Neeche click karke apply karein.
+                  <p className="text-xs sm:text-sm text-indigo-200 mt-1 font-semibold">
+                    Is section me kul {filteredServices.length} active services hain.
                   </p>
                 </div>
 
                 <button
                   onClick={() => { setSelectedCat('All Services'); setSearchQuery(''); }}
-                  className="bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-black text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-md transition-colors shrink-0 flex items-center gap-2 cursor-pointer"
+                  className="bg-amber-400 hover:bg-yellow-300 text-slate-950 font-black text-xs sm:text-sm px-5 py-3 rounded-xl shadow-md transition-colors shrink-0 flex items-center gap-2 cursor-pointer"
                 >
                   <Icons.ArrowLeft /> Sabhi Services Par Wapas Jayein
                 </button>
@@ -672,8 +874,8 @@
               {/* SERVICES GRID FOR THIS CATEGORY */}
               <div className="space-y-3">
                 {filteredServices.length === 0 ? (
-                  <div className="bg-white p-10 rounded-2xl border border-slate-200 text-center">
-                    <p className="text-slate-500 font-bold text-sm sm:text-base">Is category me abhi koi service nahi mili!</p>
+                  <div className="bg-slate-900 p-10 rounded-3xl border border-slate-800 text-center">
+                    <p className="text-slate-400 font-bold text-sm sm:text-base">Is category me abhi koi service nahi mili!</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -681,27 +883,27 @@
                       <div
                         key={srv.id}
                         onClick={() => openServiceDetail(srv)}
-                        className="bg-white rounded-2xl border border-slate-300 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group overflow-hidden"
+                        className="bg-slate-900 rounded-2xl border border-slate-800 hover:border-indigo-500/50 card-colorful-glow cursor-pointer flex flex-col justify-between group overflow-hidden"
                       >
                         <div className="p-5">
                           <div className="flex items-center justify-between mb-3">
-                            <span className="bg-blue-50 text-blue-800 text-[10px] sm:text-[11px] font-extrabold px-2.5 py-1 rounded-md border border-blue-200">
+                            <span className="bg-indigo-950 text-indigo-300 text-[10px] sm:text-[11px] font-extrabold px-2.5 py-1 rounded-lg border border-indigo-800">
                               {srv.category}
                             </span>
                           </div>
 
-                          <h4 className="font-black text-slate-900 text-base group-hover:text-blue-700 leading-snug">
+                          <h4 className="font-black text-white text-base group-hover:text-yellow-300 transition-colors leading-snug">
                             {srv.title}
                           </h4>
 
                           {srv.shortDesc && (
-                            <p className="text-xs text-slate-500 mt-2 line-clamp-2 font-medium">
+                            <p className="text-xs text-slate-400 mt-2 line-clamp-2 font-medium">
                               {srv.shortDesc}
                             </p>
                           )}
                         </div>
 
-                        <div className="p-4 pt-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs font-black text-blue-700">
+                        <div className="p-4 pt-3 bg-slate-950/60 border-t border-slate-800 flex items-center justify-between text-xs font-black text-amber-400">
                           <span>Full Detail & Apply</span>
                           <span className="group-hover:translate-x-1 transition-transform"><Icons.ChevronRight /></span>
                         </div>
@@ -715,52 +917,68 @@
             /* 3. MAIN HOMEPAGE (ALL SERVICES VIEW) */
             <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
               
-              {/* NOTICE BOARD */}
-              <div className="bg-white border border-slate-300 rounded-2xl p-5 shadow-2xs">
-                <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-3">
+              {/* NOTICE BOARD WITH RED BLINKING LIVE TEXT IN CENTER */}
+              <div className="bg-slate-900/90 border-2 border-indigo-500/30 rounded-3xl p-5 shadow-2xl relative overflow-hidden">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-3 relative">
+                  
+                  {/* Left Title */}
                   <div className="flex items-center gap-2">
-                    <span className="text-blue-700"><Icons.Bell /></span>
-                    <h2 className="font-extrabold text-slate-900 text-sm sm:text-base uppercase tracking-wider">
-                      Notice Board / Taaza Updates
+                    <span className="text-amber-400"><Icons.Bell /></span>
+                    <h2 className="font-extrabold text-white text-xs sm:text-base uppercase tracking-wider">
+                      Notice Board
                     </h2>
                   </div>
+
+                  {/* CENTER RED BLINKING LIVE TEXT */}
+                  <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-950/80 border border-red-600/60 shadow-lg">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+                    <span className="text-red-500 font-black text-xs sm:text-sm tracking-widest uppercase live-blink-text">
+                      LIVE
+                    </span>
+                  </div>
+
+                  {/* Right Status */}
+                  <span className="text-[10px] text-emerald-400 font-bold bg-emerald-950/80 px-2.5 py-1 rounded-full border border-emerald-600/40">
+                    Active
+                  </span>
                 </div>
 
                 <div className="space-y-2">
                   {notices.map((n) => (
-                    <div key={n.id} className="flex items-start justify-between gap-3 p-2.5 rounded-lg hover:bg-slate-50 transition-colors border-b border-slate-100 last:border-0">
-                      <div className="flex items-start gap-2 text-xs sm:text-sm font-semibold text-slate-800">
-                        <span className="text-blue-600 font-bold shrink-0 mt-0.5">•</span>
+                    <div key={n.id} className="flex items-start justify-between gap-3 p-3 rounded-xl bg-slate-800/40 hover:bg-slate-800 transition-colors border border-slate-800">
+                      <div className="flex items-start gap-2.5 text-xs sm:text-sm font-semibold text-slate-200">
+                        <span className="text-amber-400 font-bold shrink-0 mt-0.5">🔹</span>
                         <span>{n.text}</span>
                       </div>
-                      {n.date && <span className="text-[11px] text-slate-400 font-medium shrink-0">{n.date}</span>}
+                      {n.date && <span className="text-[11px] text-amber-300/80 font-mono font-bold shrink-0">{n.date}</span>}
                     </div>
                   ))}
                 </div>
               </div>
 
               {/* SEARCH & CATEGORY NAVIGATION TABS */}
-              <div className="space-y-3 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-2xs">
+              <div className="space-y-4 bg-slate-900/90 p-4 sm:p-5 rounded-3xl border border-slate-800 shadow-xl">
                 <div className="relative">
-                  <div className="absolute left-3.5 top-3.5 text-slate-400"><Icons.Search /></div>
+                  <div className="absolute left-4 top-4 text-slate-400"><Icons.Search /></div>
                   <input
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="College Admission, Jati, Scholarship Form search karein..."
-                    className="w-full bg-slate-50 border border-slate-300 rounded-xl pl-10 pr-4 py-3 text-xs sm:text-sm font-semibold focus:outline-none focus:border-blue-600 focus:bg-white shadow-2xs transition-all"
+                    className="w-full bg-slate-950/80 border-2 border-indigo-500/30 rounded-2xl pl-11 pr-4 py-3.5 text-xs sm:text-sm font-semibold text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 shadow-inner transition-all"
                   />
                 </div>
 
-                <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+                {/* CATEGORY BUTTONS */}
+                <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-none">
                   {categories.map((cat) => (
                     <button
                       key={cat}
                       onClick={() => setSelectedCat(cat)}
-                      className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition-all border shrink-0 cursor-pointer ${
+                      className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all border shrink-0 cursor-pointer ${
                         selectedCat === cat
-                          ? 'bg-blue-700 text-white border-blue-700 shadow-md'
-                          : 'bg-slate-50 text-slate-700 border-slate-300 hover:bg-slate-200'
+                          ? 'bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 border-yellow-300 shadow-lg shadow-yellow-500/20 scale-105'
+                          : 'bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-800 hover:text-white'
                       }`}
                     >
                       {cat}
@@ -770,16 +988,19 @@
               </div>
 
               {/* SERVICE BUTTON CARDS GRID */}
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-extrabold text-slate-900 text-sm sm:text-base">
-                    {selectedCat} ({filteredServices.length})
+                  <h3 className="font-black text-amber-300 text-sm sm:text-base tracking-wide flex items-center gap-2">
+                    <span>⚡ Available Services</span>
+                    <span className="bg-slate-800 text-slate-300 text-xs px-2.5 py-0.5 rounded-full border border-slate-700">
+                      {filteredServices.length}
+                    </span>
                   </h3>
                 </div>
 
                 {filteredServices.length === 0 ? (
-                  <div className="bg-white p-10 rounded-2xl border border-slate-200 text-center">
-                    <p className="text-slate-500 font-bold text-sm sm:text-base">Is category me abhi koi service nahi mili!</p>
+                  <div className="bg-slate-900 p-10 rounded-3xl border border-slate-800 text-center">
+                    <p className="text-slate-400 font-bold text-sm sm:text-base">Is category me abhi koi service nahi mili!</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -787,29 +1008,29 @@
                       <div
                         key={srv.id}
                         onClick={() => openServiceDetail(srv)}
-                        className="bg-white rounded-2xl border border-slate-300 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group overflow-hidden"
+                        className="bg-slate-900 rounded-2xl border border-slate-800 hover:border-indigo-500/60 card-colorful-glow cursor-pointer flex flex-col justify-between group overflow-hidden"
                       >
                         <div className="p-5">
                           <div className="flex items-center justify-between mb-3">
-                            <span className="bg-blue-50 text-blue-800 text-[10px] sm:text-[11px] font-extrabold px-2.5 py-1 rounded-md border border-blue-200">
+                            <span className="bg-gradient-to-r from-indigo-950 to-purple-950 text-indigo-300 text-[10px] sm:text-[11px] font-black px-2.5 py-1 rounded-lg border border-indigo-700/50 uppercase tracking-wider">
                               {srv.category}
                             </span>
                           </div>
 
-                          <h4 className="font-black text-slate-900 text-base group-hover:text-blue-700 leading-snug">
+                          <h4 className="font-black text-white text-base group-hover:text-amber-300 transition-colors leading-snug">
                             {srv.title}
                           </h4>
 
                           {srv.shortDesc && (
-                            <p className="text-xs text-slate-500 mt-2 line-clamp-2 font-medium">
+                            <p className="text-xs text-slate-400 mt-2 line-clamp-2 font-medium">
                               {srv.shortDesc}
                             </p>
                           )}
                         </div>
 
-                        <div className="p-4 pt-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs font-black text-blue-700">
+                        <div className="p-4 pt-3 bg-slate-950/70 border-t border-slate-800 flex items-center justify-between text-xs font-black text-amber-400 group-hover:text-yellow-300">
                           <span>Full Detail & Apply</span>
-                          <span className="group-hover:translate-x-1 transition-transform"><Icons.ChevronRight /></span>
+                          <span className="group-hover:translate-x-1.5 transition-transform"><Icons.ChevronRight /></span>
                         </div>
                       </div>
                     ))}
@@ -819,11 +1040,12 @@
             </main>
           )}
 
-          {/* FLOATING WHATSAPP SUPPORT BUTTON (ONLY ROUND LOGO ICON) */}
-          <div className="fixed bottom-5 right-5 z-40">
+          {}
+          {/* FLOATING WHATSAPP SUPPORT BUTTON */}
+          <div className="fixed bottom-6 right-6 z-40">
             <button
               onClick={openWhatsAppChat}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white w-12 h-12 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-95 border-2 border-white/90"
+              className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white w-14 h-14 rounded-full shadow-2xl shadow-emerald-500/40 flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-95 border-2 border-white/80 cursor-pointer"
               title="Chat with Us on WhatsApp"
               aria-label="WhatsApp Support"
             >
@@ -832,31 +1054,40 @@
           </div>
 
           {/* FOOTER */}
-          <footer className="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800">
-            <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+          <footer className="bg-slate-950 text-slate-400 text-xs py-8 mt-12 border-t border-slate-800">
+            <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
               <div>
-                <p className="font-bold text-white">SGS ONLINE SERVICE © 2026</p>
+                <p className="font-black text-white text-sm">SGS ONLINE SERVICE © 2026</p>
                 <p className="text-slate-500 text-[11px] mt-0.5">All Governmental & College Online Works Portal</p>
               </div>
 
-              <div className="flex items-center gap-4 text-xs">
+              <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-bold">
                 <button
-                  onClick={() => setActiveModalPage('contact')}
-                  className="text-slate-300 hover:text-white underline underline-offset-2 font-bold"
+                  onClick={() => {
+                    window.history.pushState({ modal: 'contact' }, '');
+                    setActiveModalPage('contact');
+                  }}
+                  className="text-amber-300 hover:text-white underline underline-offset-4"
                 >
                   Contact Us
                 </button>
 
                 <button
-                  onClick={() => setActiveModalPage('privacy')}
-                  className="text-slate-400 hover:text-white underline underline-offset-2"
+                  onClick={() => {
+                    window.history.pushState({ modal: 'privacy' }, '');
+                    setActiveModalPage('privacy');
+                  }}
+                  className="text-slate-400 hover:text-white underline underline-offset-4"
                 >
                   Privacy Policy
                 </button>
 
                 <button
-                  onClick={() => setActiveModalPage('terms')}
-                  className="text-slate-400 hover:text-white underline underline-offset-2"
+                  onClick={() => {
+                    window.history.pushState({ modal: 'terms' }, '');
+                    setActiveModalPage('terms');
+                  }}
+                  className="text-slate-400 hover:text-white underline underline-offset-4"
                 >
                   Terms & Conditions
                 </button>
@@ -868,117 +1099,8 @@
       );
     }
 
+    // Render React Application Root
     ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-
-
-
-
-
-
-
-
-// ==========================================
-// MOBILE BACK BUTTON & EXIT POPUP CODE
-// ==========================================
-(function () {
-  // Check karein ki user Home Page par hai ya nahi
-  const isHomePage =
-    window.location.pathname === "/" ||
-    window.location.pathname.endsWith("/index.html") ||
-    window.location.pathname === "";
-
-  if (isHomePage) {
-    // Home page par history state push karein taaki back button capture ho sake
-    history.pushState({ page: "home" }, "", location.href);
-
-    // Dynamic Modal Popup CSS Injection
-    const style = document.createElement("style");
-    style.innerHTML = `
-      .exit-modal-overlay {
-        position: fixed;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.6);
-        display: flex; align-items: center; justify-content: center;
-        z-index: 999999; opacity: 0; visibility: hidden;
-        transition: all 0.2s ease-in-out;
-      }
-      .exit-modal-overlay.active {
-        opacity: 1; visibility: visible;
-      }
-      .exit-modal-box {
-        background: #ffffff;
-        color: #222222;
-        padding: 24px 20px;
-        border-radius: 12px;
-        width: 85%; max-width: 340px;
-        text-align: center;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        font-family: sans-serif;
-      }
-      .exit-modal-box h3 { margin: 0 0 10px 0; font-size: 18px; font-weight: 600; }
-      .exit-modal-box p { margin: 0 0 20px 0; font-size: 14px; color: #666; }
-      .exit-modal-btns { display: flex; gap: 10px; justify-content: center; }
-      .exit-btn {
-        flex: 1; padding: 10px 0; border: none; border-radius: 6px;
-        font-size: 14px; font-weight: 600; cursor: pointer;
-      }
-      .exit-btn-no { background: #e0e0e0; color: #333; }
-      .exit-btn-yes { background: #e53935; color: #fff; }
-    `;
-    document.head.appendChild(style);
-
-    // Dynamic Modal Popup HTML Structure
-    const modalHTML = `
-      <div class="exit-modal-overlay" id="exitModal">
-        <div class="exit-modal-box">
-          <h3>Exit Website?</h3>
-          <p>Are you sure you want to exit?</p>
-          <div class="exit-modal-btns">
-            <button class="exit-btn exit-btn-no" id="exitNoBtn">No</button>
-            <button class="exit-btn exit-btn-yes" id="exitYesBtn">Yes</button>
-          </div>
-        </div>
-      </div>
-    `;
-    document.body.insertAdjacentHTML("beforeend", modalHTML);
-
-    const modal = document.getElementById("exitModal");
-    const noBtn = document.getElementById("exitNoBtn");
-    const yesBtn = document.getElementById("exitYesBtn");
-
-    let exitConfirmed = false;
-
-    // Mobile Back Button Event Listener
-    window.addEventListener("popstate", function (e) {
-      if (!exitConfirmed) {
-        // Pop-up show karein
-        modal.classList.add("active");
-      }
-    });
-
-    // "No" click karne par
-    noBtn.addEventListener("click", function () {
-      modal.classList.remove("active");
-      // State reset karein taaki agli baar fir back dabane par popup aaye
-      history.pushState({ page: "home" }, "", location.href);
-    });
-
-    // "Yes" click karne par
-    yesBtn.addEventListener("click", function () {
-      exitConfirmed = true;
-      modal.classList.remove("active");
-      history.back(); // Browser/App se bahar nikal jaye
-    });
-  }
-})();
-
-
-
-
-
-
-    
-    
   </script>
 </body>
 </html>
