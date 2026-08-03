@@ -1,22 +1,33 @@
 <!DOCTYPE html>
-<html lang="hi"> 
+<html lang="hi" class="dark"> 
 <head>
   <meta name="google-site-verification" content="iPJ9gvz-pcq0qMUyfYB6cbjm11o3cwUVpMwtqDtXbVo" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SGS ONLINE SERVICE - Government & College Online Seva Portal</title>
+  <title>SGS ONLINE SERVICE - Government & College Online Seva Portal 3D</title>
   
   <!-- External Scripts -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Three.js Library for 3D Graphics & Animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
+  <!-- Google Fonts for High-End Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Custom Styles and Animation Utilities -->
   <style>
-    html, body {
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
       overscroll-behavior-y: contain;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background-color: #030712;
+      overflow-x: hidden;
     }
+    
     .scrollbar-none::-webkit-scrollbar {
       display: none;
     }
@@ -24,60 +35,131 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
+    
     #splash-screen {
-      transition: opacity 0.4s ease-out;
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
-    /* Live Blinking Red Text Animation */
-    @keyframes liveBlink {
-      0%, 100% { opacity: 1; transform: scale(1); filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.8)); }
-      50% { opacity: 0.3; transform: scale(0.95); filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.2)); }
+    /* 3D Visual Depth & Perspective Utilities */
+    .perspective-container {
+      perspective: 1200px;
+    }
+    .card-3d-wrap {
+      transform-style: preserve-3d;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+    }
+    .card-3d-wrap:hover {
+      transform: translateY(-8px) rotateX(4deg) rotateY(-2deg) scale(1.02);
+      box-shadow: 0 25px 35px -10px rgba(79, 70, 229, 0.4), 0 0 25px 2px rgba(245, 158, 11, 0.25);
+    }
+
+    /* Live Blinking Red Text Animation with Pulse Ring */
+    @keyframes livePulse {
+      0%, 100% { 
+        opacity: 1; 
+        transform: scale(1); 
+        box-shadow: 0 0 14px rgba(239, 68, 68, 0.9), 0 0 28px rgba(239, 68, 68, 0.5); 
+      }
+      50% { 
+        opacity: 0.35; 
+        transform: scale(0.95); 
+        box-shadow: 0 0 4px rgba(239, 68, 68, 0.2); 
+      }
     }
     .live-blink-text {
-      animation: liveBlink 1.2s infinite ease-in-out;
+      animation: livePulse 1.2s infinite ease-in-out;
     }
-    
-    /* Vibrant Gradient Text */
+
+    /* Shimmer Effect for Accent Cards */
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .shimmer-bg {
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+      background-size: 200% 100%;
+      animation: shimmer 2.8s infinite;
+    }
+
+    /* Floating Animation for 3D elements */
+    @keyframes floatBobbing {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(1deg); }
+    }
+    .animate-float-slow {
+      animation: floatBobbing 5s ease-in-out infinite;
+    }
+
+    /* Gradient Text Colors */
     .gradient-text-gold {
-      background: linear-gradient(135deg, #FFE066 0%, #F59E0B 50%, #FCD34D 100%);
+      background: linear-gradient(135deg, #FFF099 0%, #F59E0B 50%, #D97706 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .gradient-text-rainbow {
-      background: linear-gradient(90deg, #FF5733, #F39C12, #2ECC71, #3498DB, #9B59B6);
+    .gradient-text-cyan {
+      background: linear-gradient(135deg, #A5F3FC 0%, #38BDF8 50%, #818CF8 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
-    /* Card Glow Effects */
-    .card-colorful-glow {
-      box-shadow: 0 4px 20px -2px rgba(99, 102, 241, 0.15), 0 2px 6px -1px rgba(0, 0, 0, 0.06);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Glassmorphism Styling */
+    .glass-card {
+      background: rgba(15, 23, 42, 0.82);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
-    .card-colorful-glow:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 28px -4px rgba(79, 70, 229, 0.25), 0 8px 10px -2px rgba(0, 0, 0, 0.1);
+    
+    .glass-card-glow {
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7), 0 0 15px 0 rgba(99, 102, 241, 0.15);
+    }
+
+    /* Custom Input Glow */
+    .input-glow:focus {
+      box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.4), 0 0 25px rgba(99, 102, 241, 0.3);
+    }
+
+    /* 3D Canvas Positioning */
+    #three-bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: -1;
     }
   </style>
 </head>
-<body class="bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-950 text-slate-100 antialiased selection:bg-yellow-400 selection:text-slate-900 min-h-screen">
-  
+<body class="text-slate-100 antialiased selection:bg-amber-400 selection:text-slate-950 min-h-screen relative">
+
+  <!-- THREE.JS 3D BACKGROUND CANVAS -->
+  <canvas id="three-bg-canvas"></canvas>
+
+  <!-- BACKGROUND DECORATIVE GLOW ORBS -->
+  <div class="fixed top-0 left-1/4 w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[140px] pointer-events-none -z-10 animate-pulse"></div>
+  <div class="fixed bottom-10 right-10 w-[450px] h-[450px] bg-amber-500/15 rounded-full blur-[130px] pointer-events-none -z-10"></div>
+  <div class="fixed top-1/2 left-10 w-[350px] h-[350px] bg-cyan-500/15 rounded-full blur-[130px] pointer-events-none -z-10"></div>
+
   <!-- FAST SPLASH LOADER -->
-  <div id="splash-screen" class="fixed inset-0 z-[100] bg-gradient-to-br from-blue-950 via-indigo-900 to-purple-950 flex flex-col items-center justify-center p-4 text-white">
+  <div id="splash-screen" class="fixed inset-0 z-[100] bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-950 flex flex-col items-center justify-center p-4 text-white">
     <div class="flex flex-col items-center text-center max-w-sm">
-      <div class="w-20 h-20 bg-gradient-to-tr from-amber-400 via-yellow-300 to-amber-500 text-slate-950 rounded-3xl flex items-center justify-center text-3xl font-black shadow-2xl shadow-yellow-500/30 mb-5 animate-pulse border-2 border-yellow-200">
-        SGS
+      <div class="relative mb-6 animate-float-slow">
+        <div class="absolute -inset-2 rounded-3xl bg-gradient-to-r from-amber-400 via-indigo-500 to-cyan-400 blur-xl opacity-80 animate-pulse"></div>
+        <div class="relative w-24 h-24 bg-slate-900 border-2 border-amber-400 rounded-3xl flex items-center justify-center text-4xl font-black text-amber-400 shadow-2xl">
+          SGS
+        </div>
       </div>
       <h1 class="text-2xl sm:text-3xl font-black gradient-text-gold tracking-tight leading-tight">
         SGS ONLINE SERVICE
       </h1>
-      <p class="text-[11px] font-bold text-amber-200/90 uppercase tracking-widest mt-1.5 bg-white/10 px-3 py-1 rounded-full border border-white/10">
-        Government & College Online Seva Portal
+      <p class="text-[10px] sm:text-[11px] font-extrabold text-amber-200/90 uppercase tracking-widest mt-2 bg-indigo-950/90 px-4 py-1.5 rounded-full border border-indigo-500/40 shadow-inner">
+        Government & College Online Seva Portal 3D
       </p>
 
       <div class="mt-8 flex flex-col items-center gap-3">
         <div class="w-10 h-10 border-4 border-amber-400 border-t-transparent rounded-full animate-spin"></div>
-        <p class="text-xs text-slate-300 font-semibold tracking-wide">Loading Seva Portal...</p>
+        <p class="text-xs text-slate-300 font-semibold tracking-wide">Loading 3D Animated Seva Portal...</p>
       </div>
     </div>
   </div>
@@ -90,7 +172,7 @@
       const splash = document.getElementById('splash-screen');
       if (splash) {
         splash.style.opacity = '0';
-        setTimeout(() => splash.remove(), 400);
+        setTimeout(() => splash.remove(), 500);
       }
     }, 1200);
   </script>
@@ -113,7 +195,7 @@
       Share2: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>,
       Mail: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>,
       User: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>,
-      IdCard: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"/></svg>,
+      Lock: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>,
       WhatsApp: () => <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
     };
 
@@ -132,11 +214,8 @@
       'STD collage'
     ];
 
-    // =========================================================================
-    // 🚀 SERVICES ARRAY (Code me 8 Services Active Hain)
-    // =========================================================================
+    // SERVICES ARRAY (All Services Active)
     const SEED_SERVICES = [
-      // --- SERVICE 1 ---
       {
         id: 's-1',
         category: 'VKSU EXAM FORM',
@@ -146,8 +225,6 @@
         requiredDocs: ['Regestration Number', 'Password', 'Name', 'Email & Mobile Number'],
         applyLink: 'https://forms.gle/XjWJZpxKUfHjGzb7A'
       },
-
-      // --- SERVICE 2 ---
       {
         id: 's-2',
         category: 'Intership Certificates',
@@ -157,8 +234,6 @@
         requiredDocs: ['Identity Card Proof', 'Caste Certificate', 'Income Certificate', 'Fee Receipt', 'Bank Passbook'],
         applyLink: 'https://forms.gle/f2ZHP7ATKHPNhPKX6'
       },
-
-      // --- SERVICE 3 ---
       {
         id: 's-3',
         category: 'Intership Certificates',
@@ -168,8 +243,6 @@
         requiredDocs: ['Bonafide Certificate', 'Marksheet', 'Income Proof', 'Identity Card Proof'],
         applyLink: 'https://forms.gle/f2ZHP7ATKHPNhPKX6'
       },
-
-      // --- SERVICE 4 ---
       {
         id: 's-4',
         category: 'RTPS',
@@ -179,8 +252,6 @@
         requiredDocs: ['Identity Card Proof', 'Photo', 'Swayam Goshna Patra'],
         applyLink: 'https://forms.gle/mdWcehMF7o95N37KA'
       },
-
-      // --- SERVICE 5 ---
       {
         id: 's-5',
         category: 'RTPS',
@@ -190,8 +261,6 @@
         requiredDocs: ['Identity Card Proof', 'Ration Card / Revenue Details', 'Photo'],
         applyLink: 'https://forms.gle/mdWcehMF7o95N37KA'
       },
-
-      // --- SERVICE 6 ---
       {
         id: 's-6',
         category: 'RTPS',
@@ -201,8 +270,6 @@
         requiredDocs: ['Identity Card Proof', 'Mobile Number', 'Passport Photo'],
         applyLink: 'https://forms.gle/mdWcehMF7o95N37KA'
       },
-
-      // --- SERVICE 7 ---
       {
         id: 's-7',
         category: 'RTPS',
@@ -212,8 +279,6 @@
         requiredDocs: ['Jati', 'Aaya', 'Niwas Certificate', 'Identity Card Proof'],
         applyLink: 'https://example.com/apply-ncl'
       },
-
-      // --- SERVICE 8 ---
       {
         id: 's-8',
         category: 'STD collage',
@@ -230,6 +295,181 @@
       const randomDigits = Math.floor(100000 + Math.random() * 900000);
       return `SGS-${randomDigits}`;
     };
+
+    // 3D ANIMATED AVATAR/CHARACTER FOR LOGIN PAGE
+    function ThreeWelcomeAvatar() {
+      const mountRef = useRef(null);
+
+      useEffect(() => {
+        const container = mountRef.current;
+        if (!container) return;
+
+        // Scene, Camera, Renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.set(0, 1.2, 4.5);
+
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xf59e0b, 1.5);
+        dirLight.position.set(5, 10, 7);
+        scene.add(dirLight);
+
+        const pointLight = new THREE.PointLight(0x6366f1, 2, 10);
+        pointLight.position.set(-3, 2, 3);
+        scene.add(pointLight);
+
+        // 3D Avatar Character Group
+        const characterGroup = new THREE.Group();
+
+        // 1. Head (Metallic Golden Sphere)
+        const headGeo = new THREE.SphereGeometry(0.6, 32, 32);
+        const headMat = new THREE.MeshStandardMaterial({
+          color: 0x1e1b4b,
+          metalness: 0.8,
+          roughness: 0.2,
+          emissive: 0x312e81,
+          emissiveIntensity: 0.3
+        });
+        const head = new THREE.Mesh(headGeo, headMat);
+        head.position.y = 0.9;
+        characterGroup.add(head);
+
+        // 2. Eyes (Glowing Cyan Spheres)
+        const eyeGeo = new THREE.SphereGeometry(0.1, 16, 16);
+        const eyeMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+        
+        const leftEye = new THREE.Mesh(eyeGeo, eyeMat);
+        leftEye.position.set(-0.2, 0.98, 0.52);
+        characterGroup.add(leftEye);
+
+        const rightEye = new THREE.Mesh(eyeGeo, eyeMat);
+        rightEye.position.set(0.2, 0.98, 0.52);
+        characterGroup.add(rightEye);
+
+        // Visor Glow Glass
+        const visorGeo = new THREE.CylinderGeometry(0.45, 0.45, 0.2, 32, 1, false, 0, Math.PI);
+        const visorMat = new THREE.MeshPhysicalMaterial({
+          color: 0xf59e0b,
+          transmission: 0.6,
+          opacity: 1,
+          transparent: true,
+          roughness: 0.1
+        });
+        const visor = new THREE.Mesh(visorGeo, visorMat);
+        visor.rotation.y = Math.PI / 2;
+        visor.position.set(0, 0.96, 0.2);
+        characterGroup.add(visor);
+
+        // 3. Body (Cyber Torso)
+        const bodyGeo = new THREE.CylinderGeometry(0.4, 0.25, 0.9, 32);
+        const bodyMat = new THREE.MeshStandardMaterial({
+          color: 0x0f172a,
+          metalness: 0.9,
+          roughness: 0.3
+        });
+        const body = new THREE.Mesh(bodyGeo, bodyMat);
+        body.position.y = 0.15;
+        characterGroup.add(body);
+
+        // 4. Glowing Core Emblem (SGS Gem)
+        const gemGeo = new THREE.OctahedronGeometry(0.18);
+        const gemMat = new THREE.MeshBasicMaterial({ color: 0xf59e0b, wireframe: true });
+        const gem = new THREE.Mesh(gemGeo, gemMat);
+        gem.position.set(0, 0.25, 0.38);
+        characterGroup.add(gem);
+
+        // 5. Floating Hands
+        const handGeo = new THREE.SphereGeometry(0.14, 16, 16);
+        const handMat = new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.7 });
+        
+        const leftHand = new THREE.Mesh(handGeo, handMat);
+        leftHand.position.set(-0.65, 0.15, 0.2);
+        characterGroup.add(leftHand);
+
+        const rightHand = new THREE.Mesh(handGeo, handMat);
+        rightHand.position.set(0.65, 0.15, 0.2);
+        characterGroup.add(rightHand);
+
+        // 6. Holographic Orbit Rings
+        const ringGeo = new THREE.TorusGeometry(1.1, 0.02, 16, 100);
+        const ringMat = new THREE.MeshBasicMaterial({ color: 0x6366f1, transparent: true, opacity: 0.6 });
+        const ring1 = new THREE.Mesh(ringGeo, ringMat);
+        ring1.rotation.x = Math.PI / 3;
+        characterGroup.add(ring1);
+
+        const ring2 = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: 0xf59e0b, transparent: true, opacity: 0.5 }));
+        ring2.rotation.y = Math.PI / 4;
+        characterGroup.add(ring2);
+
+        scene.add(characterGroup);
+
+        // Mouse Move Interactive Head Rotation
+        let mouseX = 0, mouseY = 0;
+        const handleMouseMove = (e) => {
+          const rect = container.getBoundingClientRect();
+          mouseX = ((e.clientX - rect.left) / container.clientWidth) * 2 - 1;
+          mouseY = -((e.clientY - rect.top) / container.clientHeight) * 2 + 1;
+        };
+        window.addEventListener('mousemove', handleMouseMove);
+
+        // Animation Loop
+        let clock = new THREE.Clock();
+        let animationFrameId;
+
+        const animate = () => {
+          animationFrameId = requestAnimationFrame(animate);
+          const elapsedTime = clock.getElapsedTime();
+
+          // Idle Bobbing Animation
+          characterGroup.position.y = Math.sin(elapsedTime * 2) * 0.1;
+          
+          // Rotate Hologram Rings & Gem
+          ring1.rotation.z = elapsedTime * 0.8;
+          ring2.rotation.x = elapsedTime * 0.6;
+          gem.rotation.y = elapsedTime * 1.5;
+
+          // Float hands
+          leftHand.position.y = 0.15 + Math.sin(elapsedTime * 3) * 0.05;
+          rightHand.position.y = 0.15 + Math.cos(elapsedTime * 3) * 0.05;
+
+          // Head tracking mouse
+          characterGroup.rotation.y = THREE.MathUtils.lerp(characterGroup.rotation.y, mouseX * 0.4, 0.08);
+          characterGroup.rotation.x = THREE.MathUtils.lerp(characterGroup.rotation.x, -mouseY * 0.2, 0.08);
+
+          renderer.render(scene, camera);
+        };
+
+        animate();
+
+        // Resize handler
+        const handleResize = () => {
+          if (!container) return;
+          camera.aspect = container.clientWidth / container.clientHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(container.clientWidth, container.clientHeight);
+        };
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+          window.removeEventListener('mousemove', handleMouseMove);
+          window.removeEventListener('resize', handleResize);
+          cancelAnimationFrame(animationFrameId);
+          if (container && renderer.domElement) {
+            container.removeChild(renderer.domElement);
+          }
+        };
+      }, []);
+
+      return <div ref={mountRef} className="w-full h-56 sm:h-64 cursor-grab active:cursor-grabbing" />;
+    }
 
     function App() {
       // User Identity State (First time login name & UID)
@@ -253,48 +493,122 @@
       // Toast Notification State
       const [toastMsg, setToastMsg] = useState('');
 
-      // Initial history setup for back-button handling
+      // Background Three.js Particle Canvas Initialization
       useEffect(() => {
-        // Push initial home state to history stack so mobile back can be intercepted
+        const bgCanvas = document.getElementById('three-bg-canvas');
+        if (!bgCanvas) return;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 12;
+
+        const renderer = new THREE.WebGLRenderer({ canvas: bgCanvas, alpha: true, antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // 3D Particles Group
+        const particlesCount = 200;
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particlesCount * 3);
+        const colors = new Float32Array(particlesCount * 3);
+
+        for (let i = 0; i < particlesCount * 3; i += 3) {
+          positions[i] = (Math.random() - 0.5) * 30;
+          positions[i + 1] = (Math.random() - 0.5) * 30;
+          positions[i + 2] = (Math.random() - 0.5) * 30;
+
+          // Golden/Cyan particles mix
+          colors[i] = Math.random() > 0.5 ? 0.96 : 0.2;
+          colors[i + 1] = Math.random() > 0.5 ? 0.62 : 0.7;
+          colors[i + 2] = 0.9;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        const material = new THREE.PointsMaterial({
+          size: 0.18,
+          vertexColors: true,
+          transparent: true,
+          opacity: 0.7
+        });
+
+        const particles = new THREE.Points(geometry, material);
+        scene.add(particles);
+
+        // Floating 3D Geometric Nodes in Background
+        const geoNode = new THREE.IcosahedronGeometry(1.2, 0);
+        const nodeMat = new THREE.MeshBasicMaterial({ color: 0x4f46e5, wireframe: true, transparent: true, opacity: 0.25 });
+        const node1 = new THREE.Mesh(geoNode, nodeMat);
+        node1.position.set(-8, 4, -2);
+        scene.add(node1);
+
+        const node2 = new THREE.Mesh(new THREE.OctahedronGeometry(1.5, 0), new THREE.MeshBasicMaterial({ color: 0xf59e0b, wireframe: true, transparent: true, opacity: 0.2 }));
+        node2.position.set(8, -5, -3);
+        scene.add(node2);
+
+        let animationFrameId;
+        const animate = () => {
+          animationFrameId = requestAnimationFrame(animate);
+          particles.rotation.y += 0.001;
+          particles.rotation.x += 0.0005;
+          node1.rotation.x += 0.005;
+          node1.rotation.y += 0.005;
+          node2.rotation.x -= 0.004;
+          node2.rotation.y -= 0.004;
+          renderer.render(scene, camera);
+        };
+
+        animate();
+
+        const handleResize = () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+        };
+        window.addEventListener('resize', handleResize);
+
+        return () => {
+          window.removeEventListener('resize', handleResize);
+          cancelAnimationFrame(animationFrameId);
+        };
+      }, []);
+
+      // Priority Back-Button PopState Navigation logic
+      useEffect(() => {
         if (!window.history.state) {
           window.history.replaceState({ page: 'home' }, '');
         }
 
         const handlePopState = (e) => {
-          // Priority 1: Close Exit Modal if open
           if (showExitModal) {
             setShowExitModal(false);
             window.history.pushState({ page: 'home' }, '');
             return;
           }
 
-          // Priority 2: Close Active Service view
           if (activeService) {
             setActiveService(null);
             return;
           }
 
-          // Priority 3: Close Policy/Contact Modals
           if (activeModalPage) {
             setActiveModalPage(null);
             return;
           }
 
-          // Priority 4: Close Drawer
           if (showDrawer) {
             setShowDrawer(false);
             return;
           }
 
-          // Priority 5: Reset Category Filter if not default
           if (selectedCat !== 'All Services') {
             setSelectedCat('All Services');
             return;
           }
 
-          // Priority 6: User is at absolute Home screen -> Trigger Exit Confirmation Popup
+          // Trigger Exit Popup on Home Screen
           setShowExitModal(true);
-          // Re-push state so user can decide in exit popup without leaving page immediately
           window.history.pushState({ page: 'home' }, '');
         };
 
@@ -319,7 +633,7 @@
       // ENCRYPTED WHATSAPP NUMBER LOGIC (Base64 Encoded to keep private)
       const openWhatsAppChat = () => {
         try {
-          const encNum = "OTExNzA4MDE2OQ=="; // Encrypted Base64 String
+          const encNum = "OTExNzA4MDE2OQ==";
           const decNum = atob(encNum);
           const text = encodeURIComponent(`Hello SGS Online Service! I need support. My Name: ${userName || 'User'} (UID: ${userUID || 'N/A'})`);
           window.open(`https://wa.me/${decNum}?text=${text}`, '_blank', 'noopener,noreferrer');
@@ -338,7 +652,6 @@
         setActiveService(srv);
       };
 
-      // Direct Redirect on Apply Link
       const openApplyLink = (srv) => {
         if (srv && srv.applyLink) {
           window.open(srv.applyLink, '_blank', 'noopener,noreferrer');
@@ -357,7 +670,7 @@
       const handleShareWebsite = () => {
         const shareData = {
           title: 'SGS ONLINE SERVICE',
-          text: 'SGS ONLINE SERVICE - Government & College Online Form Seva Portal',
+          text: 'SGS ONLINE SERVICE - Government & College Online Form Seva Portal 3D',
           url: window.location.href
         };
 
@@ -375,45 +688,42 @@
         setShowDrawer(false);
       };
 
-      // Helper check if selected category is All Services
       const isAllServices = selectedCat === 'All Services' || selectedCat === 'All service' || selectedCat === 'Sabhi Services';
 
       const filteredServices = services.filter(s => {
         const matchCat = isAllServices || s.category === selectedCat;
         const matchSearch = s.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            srvDescriptionMatch(s, searchQuery);
+                            (s.shortDesc?.toLowerCase().includes(searchQuery.toLowerCase()) || false);
         return matchCat && matchSearch;
       });
 
-      function srvDescriptionMatch(s, query) {
-        return (s.shortDesc?.toLowerCase().includes(query.toLowerCase()) || false);
-      }
-
       // ---------------------------------------------------------------------
-      // 1. FIRST TIME USER LOGIN / NAME ENTRY SCREEN
+      // 1. FIRST TIME USER LOGIN / NAME ENTRY SCREEN (WITH 3D CHARACTER)
       // ---------------------------------------------------------------------
       if (!userName) {
         return (
-          <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-blue-950 flex items-center justify-center p-4 relative overflow-hidden">
-            {/* Background Colorful Glowing Orbs */}
-            <div className="absolute top-10 left-10 w-72 h-72 bg-purple-600/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-            <div className="absolute bottom-10 right-10 w-80 h-80 bg-blue-600/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
-
-            <div className="bg-slate-900/90 backdrop-blur-xl border border-indigo-500/30 rounded-3xl p-6 sm:p-10 max-w-md w-full shadow-2xl relative z-10 text-center space-y-6">
-              <div className="mx-auto w-20 h-20 bg-gradient-to-tr from-yellow-400 via-amber-300 to-amber-500 rounded-3xl flex items-center justify-center text-slate-950 font-black text-3xl shadow-xl shadow-yellow-500/20 border-2 border-yellow-300">
-                SGS
+          <div className="min-h-screen bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-950 flex items-center justify-center p-4 relative overflow-hidden">
+            <div className="glass-card border border-indigo-500/30 rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl relative z-10 text-center space-y-4 perspective-container">
+              
+              {/* 3D AVATAR CHARACTER COMPONENT */}
+              <div className="relative -mt-4">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-amber-500/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+                <ThreeWelcomeAvatar />
               </div>
 
-              <div>
-                <h2 className="text-2xl sm:text-3xl font-black gradient-text-gold tracking-tight">
+              <div className="space-y-1">
+                <span className="bg-amber-400/20 text-amber-300 border border-amber-400/40 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">
+                  🤖 3D Interactive Cyber Guide
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-black gradient-text-gold tracking-tight pt-1">
                   Welcome to SGS Portal
                 </h2>
-                <p className="text-xs text-slate-400 mt-1 font-medium">
+                <p className="text-xs text-indigo-200 font-semibold">
                   Government & College Online Seva Portal
                 </p>
               </div>
 
-              <div className="bg-gradient-to-r from-blue-900/40 via-indigo-900/40 to-purple-900/40 p-4 rounded-2xl border border-indigo-500/20 text-left">
+              <div className="bg-gradient-to-r from-indigo-950/90 via-slate-900/90 to-indigo-950/90 p-3.5 rounded-2xl border border-indigo-500/30 text-left shadow-inner">
                 <p className="text-xs text-amber-200/90 font-semibold leading-relaxed">
                   👋 Namaste! Website access karne ke liye kripya apna Naam darj karein. Aapko ek Unique System UID generate karke di jayegi.
                 </p>
@@ -421,8 +731,9 @@
 
               <form onSubmit={handleUserSubmit} className="space-y-4 text-left">
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1.5 uppercase tracking-wider flex items-center gap-1.5">
-                    <Icons.User /> Apna Poora Naam Bharein:
+                  <label className="block text-xs font-black text-amber-300 mb-2 uppercase tracking-wider flex items-center gap-2">
+                    <span className="p-1 bg-amber-400/20 rounded-lg text-amber-400"><Icons.User /></span>
+                    <span>Apna Poora Naam Bharein:</span>
                   </label>
                   <input
                     type="text"
@@ -430,20 +741,20 @@
                     value={inputName}
                     onChange={(e) => setInputName(e.target.value)}
                     placeholder="Jaise: Rahul Kumar"
-                    className="w-full bg-slate-800/90 border-2 border-indigo-500/40 focus:border-yellow-400 rounded-xl px-4 py-3.5 text-sm font-semibold text-white placeholder-slate-500 outline-none transition-all shadow-inner"
+                    className="w-full bg-slate-950/90 border-2 border-indigo-500/50 rounded-2xl px-4 py-3.5 text-sm font-semibold text-white placeholder-slate-500 outline-none transition-all input-glow"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-black text-base py-3.5 px-6 rounded-xl shadow-lg shadow-yellow-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-black text-base py-4 px-6 rounded-2xl shadow-xl shadow-yellow-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-2 cursor-pointer border border-yellow-200/60"
                 >
-                  <span>ENTER PORTAL</span>
+                  <span>ENTER 3D PORTAL</span>
                   <Icons.ChevronRight />
                 </button>
               </form>
 
-              <div className="pt-2 border-t border-slate-800 text-[10px] text-slate-500">
+              <div className="pt-2 border-t border-slate-800/80 text-[10px] font-bold text-slate-400 tracking-wider">
                 🔒 Safe & Secure Cyber Seva Kendra Portal • Authorized Services
               </div>
             </div>
@@ -452,20 +763,20 @@
       }
 
       return (
-        <div className="min-h-screen bg-slate-950 text-slate-100 font-sans flex flex-col relative pb-12">
+        <div className="min-h-screen text-slate-100 font-sans flex flex-col relative pb-12">
           
           {/* Toast Alert */}
           {toastMsg && (
-            <div className="fixed top-4 right-4 z-[99] bg-gradient-to-r from-slate-900 via-indigo-900 to-slate-900 text-yellow-300 font-bold text-xs px-5 py-3 rounded-2xl shadow-2xl border-2 border-yellow-400/40 animate-bounce flex items-center gap-2">
-              <span className="text-base">⚡</span> {toastMsg}
+            <div className="fixed top-4 right-4 z-[99] bg-gradient-to-r from-slate-900 via-indigo-900 to-slate-900 text-yellow-300 font-black text-xs px-5 py-3 rounded-2xl shadow-2xl border-2 border-amber-400/50 animate-bounce flex items-center gap-2.5 backdrop-blur-md">
+              <span className="text-base">⚡</span> <span>{toastMsg}</span>
             </div>
           )}
 
           {/* EXIT CONFIRMATION MODAL (MOBILE BACK BUTTON ON HOME) */}
           {showExitModal && (
             <div className="fixed inset-0 z-[100] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
-              <div className="bg-gradient-to-b from-slate-900 to-indigo-950 border-2 border-red-500/40 rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center space-y-4">
-                <div className="w-14 h-14 bg-red-500/20 text-red-400 rounded-2xl flex items-center justify-center mx-auto text-2xl font-black border border-red-500/40">
+              <div className="bg-slate-900 border-2 border-red-500/40 rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center space-y-4">
+                <div className="w-14 h-14 bg-red-500/20 text-red-400 rounded-2xl flex items-center justify-center mx-auto text-2xl font-black border border-red-500/40 shadow-inner">
                   🚪
                 </div>
                 <div>
@@ -487,7 +798,7 @@
                   <button
                     onClick={() => {
                       setShowExitModal(false);
-                      window.history.back(); // Execute actual browser back exit
+                      window.history.back();
                     }}
                     className="flex-1 bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-500 hover:to-rose-500 text-white font-extrabold text-xs py-3 rounded-xl shadow-lg shadow-red-600/30 transition-all cursor-pointer"
                   >
@@ -499,7 +810,7 @@
           )}
 
           {/* STICKY VIBRANT HEADER */}
-          <header className="sticky top-0 z-40 bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-900 text-white shadow-xl border-b border-white/10 py-2 px-3 sm:px-4 backdrop-blur-md">
+          <header className="sticky top-0 z-40 bg-slate-950/85 backdrop-blur-xl text-white shadow-2xl border-b border-indigo-500/20 py-2.5 px-3 sm:px-6">
             <div className="max-w-6xl mx-auto flex items-center justify-between gap-3">
               
               <button 
@@ -507,7 +818,7 @@
                   window.history.pushState({ modal: 'drawer' }, '');
                   setShowDrawer(true);
                 }}
-                className="p-2 text-yellow-300 hover:bg-white/10 rounded-xl transition-colors focus:outline-none flex items-center gap-1 border border-white/10"
+                className="p-2.5 text-amber-300 hover:bg-white/10 rounded-2xl transition-all focus:outline-none flex items-center gap-1 border border-white/10 glass-card"
                 title="Open Menu Drawer"
               >
                 <Icons.Menu />
@@ -524,19 +835,19 @@
                 <h1 className="text-base sm:text-2xl font-black tracking-tight gradient-text-gold leading-tight drop-shadow-md">
                   SGS ONLINE SERVICE
                 </h1>
-                <p className="text-[9px] sm:text-[11px] font-bold text-amber-200/90 uppercase tracking-widest leading-none mt-0.5">
+                <p className="text-[9px] sm:text-[11px] font-extrabold text-indigo-300 uppercase tracking-widest leading-none mt-0.5">
                   Government & College Online Form Seva Portal
                 </p>
               </div>
 
               {/* USER IDENTITY BADGE IN HEADER */}
-              <div className="hidden sm:flex items-center gap-2 bg-slate-900/80 px-3 py-1.5 rounded-xl border border-amber-400/30 text-right">
-                <div className="w-7 h-7 bg-amber-400 text-slate-950 font-black rounded-lg flex items-center justify-center text-xs">
+              <div className="hidden sm:flex items-center gap-2.5 bg-slate-900/90 px-3.5 py-1.5 rounded-2xl border border-amber-400/30 shadow-inner text-right">
+                <div className="w-8 h-8 bg-gradient-to-tr from-amber-400 to-yellow-300 text-slate-950 font-black rounded-xl flex items-center justify-center text-xs shadow-md">
                   {userName.charAt(0).toUpperCase()}
                 </div>
                 <div className="text-left leading-tight">
-                  <p className="text-[11px] font-extrabold text-amber-300 truncate max-w-[100px]">{userName}</p>
-                  <p className="text-[9px] text-slate-400 font-mono">{userUID}</p>
+                  <p className="text-[11px] font-black text-amber-300 truncate max-w-[110px]">{userName}</p>
+                  <p className="text-[9px] text-slate-400 font-mono font-bold">{userUID}</p>
                 </div>
               </div>
 
@@ -548,25 +859,25 @@
           {showDrawer && (
             <div className="fixed inset-0 z-50 flex">
               <div 
-                className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity"
+                className="fixed inset-0 bg-slate-950/80 backdrop-blur-md transition-opacity animate-fade-in"
                 onClick={() => setShowDrawer(false)}
               ></div>
 
-              <div className="relative w-80 max-w-[85%] bg-slate-900 text-slate-100 h-full shadow-2xl flex flex-col justify-between z-10 p-5 overflow-y-auto border-r border-slate-800">
+              <div className="relative w-80 max-w-[85%] bg-slate-900 text-slate-100 h-full shadow-2xl flex flex-col justify-between z-10 p-5 overflow-y-auto border-r border-indigo-500/20">
                 <div>
                   <div className="flex items-center justify-between pb-4 border-b border-slate-800 mb-4">
                     <div>
-                      <h3 className="font-black text-amber-300 text-base">SGS ONLINE SERVICE</h3>
-                      <p className="text-[10px] text-slate-400 font-semibold">Authorized Cyber Seva Kendra</p>
+                      <h3 className="font-black gradient-text-gold text-base">SGS ONLINE SERVICE</h3>
+                      <p className="text-[10px] text-indigo-300 font-bold uppercase tracking-wider">Authorized Cyber Seva Kendra</p>
                     </div>
-                    <button onClick={() => setShowDrawer(false)} className="text-slate-400 hover:text-white p-1 bg-slate-800 rounded-lg">
+                    <button onClick={() => setShowDrawer(false)} className="text-slate-400 hover:text-white p-1.5 bg-slate-800 rounded-xl border border-slate-700">
                       <Icons.X />
                     </button>
                   </div>
 
                   {/* USER CARD IN DRAWER */}
-                  <div className="bg-gradient-to-r from-indigo-900/60 to-purple-900/60 p-3.5 rounded-2xl border border-indigo-500/30 mb-5 flex items-center gap-3">
-                    <div className="w-10 h-10 bg-gradient-to-tr from-yellow-400 to-amber-500 text-slate-950 font-black rounded-xl flex items-center justify-center text-lg shadow-md">
+                  <div className="bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 p-4 rounded-2xl border border-indigo-500/30 mb-5 flex items-center gap-3 shadow-lg">
+                    <div className="w-11 h-11 bg-gradient-to-tr from-yellow-400 via-amber-300 to-amber-500 text-slate-950 font-black rounded-2xl flex items-center justify-center text-xl shadow-md border border-yellow-200/50">
                       {userName.charAt(0).toUpperCase()}
                     </div>
                     <div>
@@ -575,14 +886,14 @@
                     </div>
                   </div>
 
-                  <nav className="space-y-2 text-xs font-bold">
+                  <nav className="space-y-2.5 text-xs font-extrabold">
                     <button
                       onClick={() => { 
                         setSelectedCat('All Services'); 
                         setActiveService(null); 
                         setShowDrawer(false); 
                       }}
-                      className="w-full text-left p-3 rounded-xl hover:bg-slate-800 flex items-center justify-between text-yellow-300 bg-slate-800/40 border border-amber-400/20"
+                      className="w-full text-left p-3.5 rounded-2xl hover:bg-slate-800/80 flex items-center justify-between text-yellow-300 bg-slate-800/50 border border-amber-400/30 transition-all"
                     >
                       <span>🏠 Home Page / All Services</span>
                       <Icons.ChevronRight />
@@ -590,11 +901,27 @@
 
                     <button
                       onClick={handleShareWebsite}
-                      className="w-full text-left p-3 rounded-xl bg-emerald-900/30 hover:bg-emerald-800/40 text-emerald-300 flex items-center justify-between border border-emerald-500/30 mt-1"
+                      className="w-full text-left p-3.5 rounded-2xl bg-emerald-950/40 hover:bg-emerald-900/50 text-emerald-300 flex items-center justify-between border border-emerald-500/30 transition-all"
                     >
-                      <span className="flex items-center gap-2 font-extrabold">
+                      <span className="flex items-center gap-2.5 font-extrabold">
                         <Icons.Share2 />
                         <span>Share Website</span>
+                      </span>
+                      <Icons.ChevronRight />
+                    </button>
+
+                    {/* USER DATA PRIVACY MENU ITEM */}
+                    <button
+                      onClick={() => { 
+                        window.history.pushState({ modal: 'data-privacy' }, '');
+                        setActiveModalPage('data-privacy'); 
+                        setShowDrawer(false); 
+                      }}
+                      className="w-full text-left p-3.5 rounded-2xl hover:bg-slate-800 flex items-center justify-between text-emerald-400 bg-emerald-950/20 border border-emerald-500/30 transition-all"
+                    >
+                      <span className="flex items-center gap-2.5">
+                        <Icons.Lock />
+                        <span>🛡️ User Data Privacy</span>
                       </span>
                       <Icons.ChevronRight />
                     </button>
@@ -605,9 +932,9 @@
                         setActiveModalPage('contact'); 
                         setShowDrawer(false); 
                       }}
-                      className="w-full text-left p-3 rounded-xl hover:bg-slate-800 flex items-center justify-between text-slate-200"
+                      className="w-full text-left p-3.5 rounded-2xl hover:bg-slate-800/80 flex items-center justify-between text-slate-200 border border-slate-800 transition-all"
                     >
-                      <span className="flex items-center gap-2">
+                      <span className="flex items-center gap-2.5">
                         <Icons.Mail />
                         <span>📞 Contact Us & Support</span>
                       </span>
@@ -620,7 +947,7 @@
                         setActiveModalPage('privacy'); 
                         setShowDrawer(false); 
                       }}
-                      className="w-full text-left p-3 rounded-xl hover:bg-slate-800 flex items-center justify-between text-slate-200"
+                      className="w-full text-left p-3.5 rounded-2xl hover:bg-slate-800/80 flex items-center justify-between text-slate-200 border border-slate-800 transition-all"
                     >
                       <span>🔒 Privacy Policy</span>
                       <Icons.ChevronRight />
@@ -632,7 +959,7 @@
                         setActiveModalPage('terms'); 
                         setShowDrawer(false); 
                       }}
-                      className="w-full text-left p-3 rounded-xl hover:bg-slate-800 flex items-center justify-between text-slate-200"
+                      className="w-full text-left p-3.5 rounded-2xl hover:bg-slate-800/80 flex items-center justify-between text-slate-200 border border-slate-800 transition-all"
                     >
                       <span>📜 Terms & Conditions</span>
                       <Icons.ChevronRight />
@@ -641,7 +968,7 @@
                 </div>
 
                 <div className="pt-4 border-t border-slate-800 space-y-2">
-                  <p className="text-[10px] text-slate-400 text-center font-medium">
+                  <p className="text-[10px] text-slate-400 text-center font-semibold">
                     SGS Online Portal • Safe & Fast Direct Service Links
                   </p>
                 </div>
@@ -649,33 +976,75 @@
             </div>
           )}
 
-          {}
-          {/* FULL RESTORED POLICY, TERMS & CONTACT MODALS */}
+          {/* FULL POLICY, TERMS, DATA PRIVACY & CONTACT MODALS */}
           {activeModalPage && (
             <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 overflow-y-auto">
-              <div className="bg-slate-900 rounded-3xl max-w-2xl w-full p-6 shadow-2xl my-8 border border-slate-700 max-h-[85vh] flex flex-col text-slate-200">
+              <div className="bg-slate-900 rounded-3xl max-w-2xl w-full p-6 shadow-2xl my-8 border border-indigo-500/30 max-h-[85vh] flex flex-col text-slate-200">
                 <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
                   <h3 className="font-extrabold text-amber-300 text-lg flex items-center gap-2">
                     {activeModalPage === 'contact' && <Icons.Mail />}
                     {activeModalPage === 'privacy' && <Icons.ShieldCheck />}
                     {activeModalPage === 'terms' && <Icons.ShieldCheck />}
+                    {activeModalPage === 'data-privacy' && <Icons.Lock />}
                     <span>
                       {activeModalPage === 'contact' && 'Contact Us & Customer Support'}
                       {activeModalPage === 'privacy' && 'Privacy Policy'}
                       {activeModalPage === 'terms' && 'Terms & Conditions'}
+                      {activeModalPage === 'data-privacy' && 'User Data Privacy & Form Security'}
                     </span>
                   </h3>
-                  <button onClick={() => setActiveModalPage(null)} className="text-slate-400 hover:text-white bg-slate-800 p-1.5 rounded-lg">
+                  <button onClick={() => setActiveModalPage(null)} className="text-slate-400 hover:text-white bg-slate-800 p-1.5 rounded-xl border border-slate-700">
                     <Icons.X />
                   </button>
                 </div>
 
                 <div className="flex-1 overflow-y-auto text-xs text-slate-300 space-y-4 pr-2 leading-relaxed scrollbar-none">
                   
+                  {/* USER DATA PRIVACY MODAL (ENGLISH) */}
+                  {activeModalPage === 'data-privacy' && (
+                    <div className="space-y-4">
+                      <div className="bg-emerald-950/50 border-l-4 border-emerald-500 p-4 rounded-r-2xl text-slate-200 font-medium border border-emerald-500/30">
+                        <strong className="text-emerald-300">🛡️ Official User Data Privacy & Security Assurance:</strong> At SGS ONLINE SERVICE, your privacy, data security, and confidentiality are our highest priorities.
+                      </div>
+
+                      <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/60">
+                        <h4 className="font-extrabold text-yellow-300 text-sm mb-1.5">1. Google Forms Powered Secure Application Links:</h4>
+                        <p>When you apply for any service, college admission form, exam fee payment, or scholarship through our website, all application forms are hosted on secure <strong>Google Forms</strong> infrastructure. The direct access to these form responses is strictly restricted and accessible only to our authorized administrative team.</p>
+                      </div>
+
+                      <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/60">
+                        <h4 className="font-extrabold text-yellow-300 text-sm mb-1.5">2. Protection Against Hackers & Third Parties:</h4>
+                        <p>Because all application links utilize end-to-end encrypted Google enterprise servers, no hacker, malicious third party, or unauthorized person can view, intercept, or tamper with your submitted personal details.</p>
+                      </div>
+
+                      <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/60">
+                        <h4 className="font-extrabold text-yellow-300 text-sm mb-1.5">3. Purpose of SGS Online Portal:</h4>
+                        <p>This website functions as a structured guidance portal providing complete instructions, required document lists, and verified official apply links. We do not store sensitive submission forms on unsecured servers.</p>
+                      </div>
+
+                      <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/60">
+                        <h4 className="font-extrabold text-yellow-300 text-sm mb-1.5">4. 100% Safe & Worry-Free Experience:</h4>
+                        <p>All user information remains completely safe, private, and protected. You can apply for any service with total confidence and zero privacy risk.</p>
+                      </div>
+
+                      <div className="bg-indigo-950/80 border border-indigo-500/40 p-4 rounded-2xl space-y-2.5">
+                        <h5 className="font-extrabold text-amber-300 text-xs uppercase tracking-wider">Need Direct Assistance or Have Questions?</h5>
+                        <p className="text-xs text-slate-300">If you experience any difficulties or have questions regarding your data privacy, you can directly talk with the portal owner on WhatsApp.</p>
+                        <button
+                          onClick={openWhatsAppChat}
+                          className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold px-5 py-2.5 rounded-xl shadow-md text-xs transition-all cursor-pointer mt-1"
+                        >
+                          <Icons.WhatsApp />
+                          <span>Chat Directly with Owner on WhatsApp</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
                   {/* CONTACT US MODAL */}
                   {activeModalPage === 'contact' && (
                     <div className="space-y-4">
-                      <div className="bg-blue-900/30 border-l-4 border-blue-500 p-3.5 rounded-r-xl text-slate-200">
+                      <div className="bg-blue-950/50 border-l-4 border-blue-500 p-4 rounded-r-2xl text-slate-200 border border-blue-500/30">
                         <h4 className="font-extrabold text-sm text-blue-300 mb-1">Get in Touch with SGS Online Service</h4>
                         <p className="text-xs text-slate-300">
                           If you have any questions regarding online form submissions, college admissions, scholarship applications, or document requirements, our support team is here to assist you promptly.
@@ -683,25 +1052,25 @@
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div className="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700">
-                          <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider block mb-1">Email Support</span>
-                          <p className="font-extrabold text-blue-400 text-sm">support@sgsonlineservice.com</p>
+                        <div className="bg-slate-800/80 p-4 rounded-2xl border border-slate-700">
+                          <span className="text-[10px] font-black text-amber-400 uppercase tracking-wider block mb-1">Email Support</span>
+                          <p className="font-extrabold text-cyan-400 text-sm">support@sgsonlineservice.com</p>
                           <p className="font-bold text-slate-300 text-xs mt-0.5">sgsonlineservice@gmail.com</p>
                         </div>
 
-                        <div className="bg-slate-800/80 p-3.5 rounded-xl border border-slate-700">
-                          <span className="text-[10px] font-bold text-amber-400 uppercase tracking-wider block mb-1">Service Hours</span>
+                        <div className="bg-slate-800/80 p-4 rounded-2xl border border-slate-700">
+                          <span className="text-[10px] font-black text-amber-400 uppercase tracking-wider block mb-1">Service Hours</span>
                           <p className="font-extrabold text-white text-sm">Mon - Sat: 08:00 AM - 08:00 PM</p>
-                          <p className="text-[11px] text-slate-400">Sunday Emergency Support Active</p>
+                          <p className="text-[11px] text-slate-400 font-semibold">Sunday Emergency Support Active</p>
                         </div>
                       </div>
 
-                      <div className="bg-emerald-950/50 border border-emerald-500/30 p-4 rounded-2xl text-center space-y-3">
+                      <div className="bg-emerald-950/60 border border-emerald-500/30 p-5 rounded-2xl text-center space-y-3">
                         <h5 className="font-extrabold text-emerald-300 text-sm">Instant Help on WhatsApp</h5>
                         <p className="text-xs text-emerald-200/80">Connect directly with our helpline officer on WhatsApp for immediate assistance.</p>
                         <button
                           onClick={openWhatsAppChat}
-                          className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold px-6 py-2.5 rounded-xl shadow-lg text-xs transition-all cursor-pointer"
+                          className="inline-flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold px-6 py-3 rounded-xl shadow-lg text-xs transition-all cursor-pointer"
                         >
                           <Icons.WhatsApp />
                           <span>Chat on WhatsApp Support</span>
@@ -710,15 +1079,15 @@
                     </div>
                   )}
 
-                  {/* FULL DETAILED PRIVACY POLICY */}
+                  {/* FULL PRIVACY POLICY */}
                   {activeModalPage === 'privacy' && (
                     <div className="space-y-4">
-                      <div className="bg-indigo-900/30 border-l-4 border-indigo-500 p-3.5 rounded-r-xl text-slate-200 font-medium">
+                      <div className="bg-indigo-950/60 border-l-4 border-indigo-500 p-4 rounded-r-2xl text-slate-200 font-medium border border-indigo-500/30">
                         <strong className="text-indigo-300">📌 Official Cyber Seva Kendra Declaration:</strong> SGS ONLINE SERVICE operates as an authorized online assistance service center. We facilitate government online forms (such as Bihar RTPS Caste, Income, Residence Certificates), College/University Admissions (PPU, VKSU, etc.), Scholarship applications, and various e-services for our customers upon their explicit request.
                       </div>
 
-                      <div>
-                        <h4 className="font-extrabold text-yellow-300 text-sm mb-1.5">1. Personal Data & Identifiers We Collect:</h4>
+                      <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/60">
+                        <h4 className="font-extrabold text-yellow-300 text-sm mb-2">1. Personal Data & Identifiers We Collect:</h4>
                         <p className="mb-2">To process online applications accurately on government and university portals, we collect the following personal details from users:</p>
                         <ul className="list-disc pl-5 space-y-1.5 text-slate-300">
                           <li><strong>Personal Identification:</strong> Full Name, Father's Name, Mother's Name, Date of Birth, and Gender.</li>
@@ -730,32 +1099,32 @@
                         </ul>
                       </div>
 
-                      <div>
+                      <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/60">
                         <h4 className="font-extrabold text-yellow-300 text-sm mb-1">2. Purpose and Utilization of Collected Information:</h4>
                         <p>All information and document copies provided by users are utilized strictly and exclusively for filling and submitting official online application forms on designated government servers (e.g., RTPS Bihar, Patliputra University, Post Matric Scholarship Portal) on behalf of the user. We guarantee 100% data confidentiality. We do NOT sell, lease, share, or disclose user data to any unauthorized third-party commercial entities.</p>
                       </div>
 
-                      <div>
+                      <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/60">
                         <h4 className="font-extrabold text-yellow-300 text-sm mb-1">3. Security & Data Protection:</h4>
                         <p>All user information processing is handled with strict confidentiality access controls. Only authorized system administrators have access to verify and process application forms.</p>
                       </div>
                     </div>
                   )}
 
-                  {/* FULL DETAILED TERMS & CONDITIONS */}
+                  {/* FULL TERMS & CONDITIONS */}
                   {activeModalPage === 'terms' && (
                     <div className="space-y-4">
-                      <div>
+                      <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/60">
                         <h4 className="font-extrabold text-yellow-300 text-sm mb-1">1. Online Facilitation Service Overview:</h4>
                         <p>SGS ONLINE SERVICE acts as a third-party Cyber Seva Kendra facilitator assisting applicants in filling out government and educational forms correctly. Final approval, certificate issuance, exam admit card generation, or university admission confirmation rests solely with the respective official government or university authorities.</p>
                       </div>
 
-                      <div>
+                      <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/60">
                         <h4 className="font-extrabold text-yellow-300 text-sm mb-1">2. Applicant Responsibility & Authenticity:</h4>
                         <p>The applicant is solely responsible for providing genuine, truthful, and accurate information (Name, Father's Name, Mother's Name, Date of Birth, Educational Marksheets, Address, etc.). SGS ONLINE SERVICE is not liable for form rejections or legal consequences caused by fake, wrong, or inaccurate details submitted by the applicant.</p>
                       </div>
 
-                      <div>
+                      <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/60">
                         <h4 className="font-extrabold text-yellow-300 text-sm mb-1">3. Government Portal Fees & Cyber Processing Charges:</h4>
                         <p>Total payment collected from users for any service consists of:</p>
                         <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-300">
@@ -764,7 +1133,7 @@
                         </ul>
                       </div>
 
-                      <div>
+                      <div className="bg-slate-800/50 p-4 rounded-2xl border border-slate-700/60">
                         <h4 className="font-extrabold text-yellow-300 text-sm mb-1">4. Refund & Cancellation Policy:</h4>
                         <p>Once an application form is filled and submitted to the official government or university portal, all official portal fees and cyber processing service charges become strictly non-refundable under any circumstances.</p>
                       </div>
@@ -773,7 +1142,7 @@
                 </div>
 
                 <div className="pt-4 border-t border-slate-800 mt-4 flex justify-end">
-                  <button onClick={() => setActiveModalPage(null)} className="bg-slate-800 hover:bg-slate-700 text-white font-bold px-5 py-2 rounded-xl text-xs cursor-pointer">
+                  <button onClick={() => setActiveModalPage(null)} className="bg-slate-800 hover:bg-slate-700 text-white font-extrabold px-5 py-2.5 rounded-xl text-xs cursor-pointer border border-slate-700">
                     Close Window
                   </button>
                 </div>
@@ -788,14 +1157,14 @@
             <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6">
               <button
                 onClick={handleBackToServices}
-                className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-amber-300 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl border border-amber-400/30 shadow-md mb-6 transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-amber-300 font-bold text-xs sm:text-sm px-4 py-3 rounded-2xl border border-amber-400/30 shadow-lg mb-6 transition-all cursor-pointer"
               >
                 <Icons.ArrowLeft /> <span>Sabhi Services Par Wapas Jayein</span>
               </button>
 
-              <div className="bg-slate-900 rounded-3xl shadow-2xl border border-indigo-500/30 overflow-hidden">
-                <div className="bg-gradient-to-r from-blue-900 via-indigo-900 to-purple-950 text-white p-6 sm:p-10 border-b border-white/10">
-                  <span className="bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 text-xs font-black px-3 py-1 rounded-md uppercase tracking-wider shadow-sm">
+              <div className="glass-card rounded-3xl shadow-2xl border border-indigo-500/30 overflow-hidden">
+                <div className="bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 text-white p-6 sm:p-10 border-b border-white/10">
+                  <span className="bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 text-xs font-black px-3 py-1 rounded-lg uppercase tracking-wider shadow-sm">
                     {activeService.category}
                   </span>
                   <h2 className="text-2xl sm:text-4xl font-black text-white mt-4 leading-tight">
@@ -810,14 +1179,14 @@
 
                 <div className="p-6 sm:p-10 space-y-8">
                   {activeService.requiredDocs && activeService.requiredDocs.length > 0 && (
-                    <div className="bg-slate-800/60 border border-slate-700 rounded-2xl p-6">
+                    <div className="bg-slate-900/80 border border-indigo-500/20 rounded-2xl p-6">
                       <h3 className="text-base sm:text-lg font-black text-amber-300 flex items-center gap-2.5 mb-4">
-                        <span className="text-amber-400"><Icons.FileText /></span>
+                        <span className="p-1.5 bg-amber-400/20 rounded-xl text-amber-400"><Icons.FileText /></span>
                         <span>Kya-Kya Dastavez (Documents) Lagega:</span>
                       </h3>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                         {activeService.requiredDocs.map((doc, idx) => (
-                          <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm font-semibold text-slate-200 bg-slate-900/90 p-3 rounded-xl border border-slate-700 shadow-sm">
+                          <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm font-semibold text-slate-200 bg-slate-950/80 p-3.5 rounded-xl border border-slate-800 shadow-sm">
                             <span className="text-emerald-400 shrink-0 mt-0.5"><Icons.CheckCircle2 /></span>
                             <span>{doc}</span>
                           </li>
@@ -830,7 +1199,7 @@
                     <h3 className="text-base sm:text-lg font-black text-white mb-3 border-b border-slate-800 pb-3">
                       Poori Jaankari / Description:
                     </h3>
-                    <div className="whitespace-pre-line text-sm sm:text-base text-slate-300 leading-relaxed bg-slate-800/40 p-5 rounded-2xl border border-slate-700/60 font-medium">
+                    <div className="whitespace-pre-line text-sm sm:text-base text-slate-300 leading-relaxed bg-slate-900/60 p-6 rounded-2xl border border-slate-800 font-medium">
                       {activeService.description || "Apply Button par click karke form bharein."}
                     </div>
                   </div>
@@ -838,7 +1207,7 @@
                   <div className="pt-6 border-t border-slate-800 text-center">
                     <button
                       onClick={() => openApplyLink(activeService)}
-                      className="w-full sm:w-auto min-w-[280px] bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white font-black text-lg px-10 py-4 rounded-2xl shadow-xl shadow-indigo-600/30 transition-all transform active:scale-95 flex items-center justify-center gap-3 mx-auto cursor-pointer"
+                      className="w-full sm:w-auto min-w-[280px] bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-black text-lg px-10 py-4.5 rounded-2xl shadow-xl shadow-yellow-500/20 transition-all transform active:scale-95 flex items-center justify-center gap-3 mx-auto cursor-pointer border border-yellow-200/50"
                     >
                       <span>ONLINE APPLY KAREIN</span>
                       <Icons.ExternalLink />
@@ -850,7 +1219,7 @@
           ) : !isAllServices ? (
             /* 2. SINGLE CATEGORY FULL PAGE VIEW */
             <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
-              <div className="bg-gradient-to-r from-indigo-900 via-purple-900 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl border border-indigo-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="bg-gradient-to-r from-indigo-950 via-slate-900 to-indigo-950 text-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-indigo-500/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
                   <span className="text-[11px] bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 font-black px-3 py-1 rounded-md uppercase tracking-wider">
                     CATEGORY VIEW
@@ -865,154 +1234,29 @@
 
                 <button
                   onClick={() => { setSelectedCat('All Services'); setSearchQuery(''); }}
-                  className="bg-amber-400 hover:bg-yellow-300 text-slate-950 font-black text-xs sm:text-sm px-5 py-3 rounded-xl shadow-md transition-colors shrink-0 flex items-center gap-2 cursor-pointer"
+                  className="bg-amber-400 hover:bg-yellow-300 text-slate-950 font-black text-xs sm:text-sm px-5 py-3 rounded-2xl shadow-md transition-colors shrink-0 flex items-center gap-2 cursor-pointer border border-yellow-200/50"
                 >
                   <Icons.ArrowLeft /> Sabhi Services Par Wapas Jayein
                 </button>
               </div>
 
               {/* SERVICES GRID FOR THIS CATEGORY */}
-              <div className="space-y-3">
+              <div className="space-y-3 perspective-container">
                 {filteredServices.length === 0 ? (
-                  <div className="bg-slate-900 p-10 rounded-3xl border border-slate-800 text-center">
+                  <div className="glass-card p-10 rounded-3xl border border-slate-800 text-center">
                     <p className="text-slate-400 font-bold text-sm sm:text-base">Is category me abhi koi service nahi mili!</p>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     {filteredServices.map((srv) => (
                       <div
                         key={srv.id}
                         onClick={() => openServiceDetail(srv)}
-                        className="bg-slate-900 rounded-2xl border border-slate-800 hover:border-indigo-500/50 card-colorful-glow cursor-pointer flex flex-col justify-between group overflow-hidden"
+                        className="glass-card card-3d-wrap rounded-2xl cursor-pointer flex flex-col justify-between group overflow-hidden border border-indigo-500/20"
                       >
                         <div className="p-5">
                           <div className="flex items-center justify-between mb-3">
-                            <span className="bg-indigo-950 text-indigo-300 text-[10px] sm:text-[11px] font-extrabold px-2.5 py-1 rounded-lg border border-indigo-800">
-                              {srv.category}
-                            </span>
-                          </div>
-
-                          <h4 className="font-black text-white text-base group-hover:text-yellow-300 transition-colors leading-snug">
-                            {srv.title}
-                          </h4>
-
-                          {srv.shortDesc && (
-                            <p className="text-xs text-slate-400 mt-2 line-clamp-2 font-medium">
-                              {srv.shortDesc}
-                            </p>
-                          )}
-                        </div>
-
-                        <div className="p-4 pt-3 bg-slate-950/60 border-t border-slate-800 flex items-center justify-between text-xs font-black text-amber-400">
-                          <span>Full Detail & Apply</span>
-                          <span className="group-hover:translate-x-1 transition-transform"><Icons.ChevronRight /></span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </main>
-          ) : (
-            /* 3. MAIN HOMEPAGE (ALL SERVICES VIEW) */
-            <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
-              
-              {/* NOTICE BOARD WITH RED BLINKING LIVE TEXT IN CENTER */}
-              <div className="bg-slate-900/90 border-2 border-indigo-500/30 rounded-3xl p-5 shadow-2xl relative overflow-hidden">
-                <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-3 relative">
-                  
-                  {/* Left Title */}
-                  <div className="flex items-center gap-2">
-                    <span className="text-amber-400"><Icons.Bell /></span>
-                    <h2 className="font-extrabold text-white text-xs sm:text-base uppercase tracking-wider">
-                      Notice Board
-                    </h2>
-                  </div>
-
-                  {/* CENTER RED BLINKING LIVE TEXT */}
-                  <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-950/80 border border-red-600/60 shadow-lg">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
-                    <span className="text-red-500 font-black text-xs sm:text-sm tracking-widest uppercase live-blink-text">
-                      LIVE
-                    </span>
-                  </div>
-
-                  {/* Right Status */}
-                  <span className="text-[10px] text-emerald-400 font-bold bg-emerald-950/80 px-2.5 py-1 rounded-full border border-emerald-600/40">
-                    Active
-                  </span>
-                </div>
-
-                <div className="space-y-2">
-                  {notices.map((n) => (
-                    <div key={n.id} className="flex items-start justify-between gap-3 p-3 rounded-xl bg-slate-800/40 hover:bg-slate-800 transition-colors border border-slate-800">
-                      <div className="flex items-start gap-2.5 text-xs sm:text-sm font-semibold text-slate-200">
-                        <span className="text-amber-400 font-bold shrink-0 mt-0.5">🔹</span>
-                        <span>{n.text}</span>
-                      </div>
-                      {n.date && <span className="text-[11px] text-amber-300/80 font-mono font-bold shrink-0">{n.date}</span>}
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* SEARCH & CATEGORY NAVIGATION TABS */}
-              <div className="space-y-4 bg-slate-900/90 p-4 sm:p-5 rounded-3xl border border-slate-800 shadow-xl">
-                <div className="relative">
-                  <div className="absolute left-4 top-4 text-slate-400"><Icons.Search /></div>
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="College Admission, Jati, Scholarship Form search karein..."
-                    className="w-full bg-slate-950/80 border-2 border-indigo-500/30 rounded-2xl pl-11 pr-4 py-3.5 text-xs sm:text-sm font-semibold text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 shadow-inner transition-all"
-                  />
-                </div>
-
-                {/* CATEGORY BUTTONS */}
-                <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-none">
-                  {categories.map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => setSelectedCat(cat)}
-                      className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-black transition-all border shrink-0 cursor-pointer ${
-                        selectedCat === cat
-                          ? 'bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 border-yellow-300 shadow-lg shadow-yellow-500/20 scale-105'
-                          : 'bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-800 hover:text-white'
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* SERVICE BUTTON CARDS GRID */}
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-black text-amber-300 text-sm sm:text-base tracking-wide flex items-center gap-2">
-                    <span>⚡ Available Services</span>
-                    <span className="bg-slate-800 text-slate-300 text-xs px-2.5 py-0.5 rounded-full border border-slate-700">
-                      {filteredServices.length}
-                    </span>
-                  </h3>
-                </div>
-
-                {filteredServices.length === 0 ? (
-                  <div className="bg-slate-900 p-10 rounded-3xl border border-slate-800 text-center">
-                    <p className="text-slate-400 font-bold text-sm sm:text-base">Is category me abhi koi service nahi mili!</p>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {filteredServices.map((srv) => (
-                      <div
-                        key={srv.id}
-                        onClick={() => openServiceDetail(srv)}
-                        className="bg-slate-900 rounded-2xl border border-slate-800 hover:border-indigo-500/60 card-colorful-glow cursor-pointer flex flex-col justify-between group overflow-hidden"
-                      >
-                        <div className="p-5">
-                          <div className="flex items-center justify-between mb-3">
-                            <span className="bg-gradient-to-r from-indigo-950 to-purple-950 text-indigo-300 text-[10px] sm:text-[11px] font-black px-2.5 py-1 rounded-lg border border-indigo-700/50 uppercase tracking-wider">
+                            <span className="bg-indigo-950 text-indigo-300 text-[10px] sm:text-[11px] font-extrabold px-2.5 py-1 rounded-lg border border-indigo-800/80 uppercase tracking-wider">
                               {srv.category}
                             </span>
                           </div>
@@ -1028,7 +1272,132 @@
                           )}
                         </div>
 
-                        <div className="p-4 pt-3 bg-slate-950/70 border-t border-slate-800 flex items-center justify-between text-xs font-black text-amber-400 group-hover:text-yellow-300">
+                        <div className="p-4 pt-3 bg-slate-950/80 border-t border-slate-800/80 flex items-center justify-between text-xs font-black text-amber-400 group-hover:text-yellow-300">
+                          <span>Full Detail & Apply</span>
+                          <span className="group-hover:translate-x-1.5 transition-transform"><Icons.ChevronRight /></span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </main>
+          ) : (
+            /* 3. MAIN HOMEPAGE (ALL SERVICES VIEW) */
+            <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
+              
+              {/* NOTICE BOARD WITH RED BLINKING LIVE TEXT IN CENTER */}
+              <div className="glass-card border-2 border-indigo-500/30 rounded-3xl p-5 shadow-2xl relative overflow-hidden">
+                <div className="flex items-center justify-between border-b border-slate-800/80 pb-3.5 mb-3.5 relative">
+                  
+                  {/* Left Title */}
+                  <div className="flex items-center gap-2">
+                    <span className="p-1.5 bg-amber-400/20 text-amber-400 rounded-xl"><Icons.Bell /></span>
+                    <h2 className="font-black text-white text-xs sm:text-base uppercase tracking-wider">
+                      Notice Board
+                    </h2>
+                  </div>
+
+                  {/* CENTER RED BLINKING LIVE TEXT */}
+                  <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-red-950/90 border border-red-500/80 shadow-lg">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+                    <span className="text-red-500 font-black text-xs sm:text-sm tracking-widest uppercase live-blink-text">
+                      LIVE
+                    </span>
+                  </div>
+
+                  {/* Right Status */}
+                  <span className="text-[10px] text-emerald-400 font-black bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-500/40 uppercase tracking-wider">
+                    Active
+                  </span>
+                </div>
+
+                <div className="space-y-2.5">
+                  {notices.map((n) => (
+                    <div key={n.id} className="flex items-start justify-between gap-3 p-3 rounded-2xl bg-slate-900/60 hover:bg-slate-800/80 transition-colors border border-slate-800">
+                      <div className="flex items-start gap-2.5 text-xs sm:text-sm font-semibold text-slate-200">
+                        <span className="text-amber-400 font-bold shrink-0 mt-0.5">🔹</span>
+                        <span>{n.text}</span>
+                      </div>
+                      {n.date && <span className="text-[11px] text-amber-300 font-mono font-black shrink-0">{n.date}</span>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* SEARCH & CATEGORY NAVIGATION TABS */}
+              <div className="space-y-4 glass-card p-4 sm:p-5 rounded-3xl border border-indigo-500/20 shadow-xl">
+                <div className="relative">
+                  <div className="absolute left-4 top-4 text-amber-400"><Icons.Search /></div>
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="College Admission, Jati, Scholarship Form search karein..."
+                    className="w-full bg-slate-950/90 border-2 border-indigo-500/30 rounded-2xl pl-11 pr-4 py-3.5 text-xs sm:text-sm font-semibold text-white placeholder-slate-500 outline-none transition-all input-glow"
+                  />
+                </div>
+
+                {/* CATEGORY BUTTONS */}
+                <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-none">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setSelectedCat(cat)}
+                      className={`px-4 py-2.5 rounded-2xl text-xs sm:text-sm font-black transition-all border shrink-0 cursor-pointer ${
+                        selectedCat === cat
+                          ? 'bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 border-yellow-300 shadow-lg shadow-yellow-500/20 scale-105'
+                          : 'bg-slate-900/90 text-slate-300 border-slate-800 hover:bg-slate-800 hover:text-white'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* SERVICE BUTTON CARDS GRID */}
+              <div className="space-y-4 perspective-container">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-black text-amber-300 text-sm sm:text-base tracking-wide flex items-center gap-2">
+                    <span>⚡ Available Services</span>
+                    <span className="bg-slate-900 text-amber-400 font-mono text-xs px-2.5 py-0.5 rounded-full border border-indigo-500/30">
+                      {filteredServices.length}
+                    </span>
+                  </h3>
+                </div>
+
+                {filteredServices.length === 0 ? (
+                  <div className="glass-card p-10 rounded-3xl border border-slate-800 text-center">
+                    <p className="text-slate-400 font-bold text-sm sm:text-base">Is category me abhi koi service nahi mili!</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {filteredServices.map((srv) => (
+                      <div
+                        key={srv.id}
+                        onClick={() => openServiceDetail(srv)}
+                        className="glass-card card-3d-wrap rounded-2xl cursor-pointer flex flex-col justify-between group overflow-hidden border border-indigo-500/20"
+                      >
+                        <div className="p-5">
+                          <div className="flex items-center justify-between mb-3">
+                            <span className="bg-gradient-to-r from-indigo-950 to-slate-900 text-indigo-300 text-[10px] sm:text-[11px] font-black px-2.5 py-1 rounded-lg border border-indigo-700/50 uppercase tracking-wider">
+                              {srv.category}
+                            </span>
+                          </div>
+
+                          <h4 className="font-black text-white text-base group-hover:text-amber-300 transition-colors leading-snug">
+                            {srv.title}
+                          </h4>
+
+                          {srv.shortDesc && (
+                            <p className="text-xs text-slate-400 mt-2 line-clamp-2 font-medium">
+                              {srv.shortDesc}
+                            </p>
+                          )}
+                        </div>
+
+                        <div className="p-4 pt-3 bg-slate-950/80 border-t border-slate-800/80 flex items-center justify-between text-xs font-black text-amber-400 group-hover:text-yellow-300">
                           <span>Full Detail & Apply</span>
                           <span className="group-hover:translate-x-1.5 transition-transform"><Icons.ChevronRight /></span>
                         </div>
@@ -1045,23 +1414,34 @@
           <div className="fixed bottom-6 right-6 z-40">
             <button
               onClick={openWhatsAppChat}
-              className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white w-14 h-14 rounded-full shadow-2xl shadow-emerald-500/40 flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-95 border-2 border-white/80 cursor-pointer"
+              className="relative bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white w-14 h-14 rounded-full shadow-2xl shadow-emerald-500/40 flex items-center justify-center transition-all duration-300 transform hover:scale-110 active:scale-95 border-2 border-white/80 cursor-pointer group"
               title="Chat with Us on WhatsApp"
               aria-label="WhatsApp Support"
             >
+              <span className="absolute -inset-1 rounded-full bg-emerald-400/30 animate-ping group-hover:opacity-100 opacity-70"></span>
               <Icons.WhatsApp />
             </button>
           </div>
 
           {/* FOOTER */}
-          <footer className="bg-slate-950 text-slate-400 text-xs py-8 mt-12 border-t border-slate-800">
+          <footer className="bg-slate-950 text-slate-400 text-xs py-8 mt-12 border-t border-slate-800/80">
             <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
               <div>
                 <p className="font-black text-white text-sm">SGS ONLINE SERVICE © 2026</p>
-                <p className="text-slate-500 text-[11px] mt-0.5">All Governmental & College Online Works Portal</p>
+                <p className="text-slate-500 text-[11px] font-semibold mt-0.5">All Governmental & College Online Works Portal</p>
               </div>
 
               <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-bold">
+                <button
+                  onClick={() => {
+                    window.history.pushState({ modal: 'data-privacy' }, '');
+                    setActiveModalPage('data-privacy');
+                  }}
+                  className="text-emerald-400 hover:text-white underline underline-offset-4"
+                >
+                  User Data Privacy
+                </button>
+
                 <button
                   onClick={() => {
                     window.history.pushState({ modal: 'contact' }, '');
