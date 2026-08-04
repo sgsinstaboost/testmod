@@ -1,19 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full bg-slate-900 text-slate-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGS STORE - Official Affiliate Deals & Shopping Platform</title>
+    <title>SGS STORE - Affiliate E-Commerce Platform</title>
+    
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        meesho: {
+                            50: '#fdf2f8',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239',
+                            900: '#881337',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <!-- Three.js for 3D Login Animation -->
+    
+    <!-- Three.js for 3D Login Background -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
+    <!-- Firebase SDK (Compat Version for seamless single-file execution) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 9999px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="h-full bg-slate-900 text-slate-100 flex flex-col antialiased custom-scrollbar">
+
     <script>
+        // Global State initialization
         window.sgsState = {
             currentUser: null,
             products: [],
@@ -27,603 +81,454 @@
             db: null,
             auth: null,
             appId: 'sgs-shoping',
-            ADMIN_UID: "sH7GnshitlUshv6bo6EV8sCMZ9w2"
+            ADMIN_UID: "sH7GnshitlUshv6bo6EV8sCMZ9w2",
+            numericUid: Math.floor(1000 + Math.random() * 9000),
+            useFallback: false
         };
 
-        try {
-            const savedCart = localStorage.getItem('sgs_cart');
-            if (savedCart) {
-                window.sgsState.cart = JSON.parse(savedCart) || [];
-            }
-        } catch(e) {
-            window.sgsState.cart = [];
-        }
+        window.showToast = function(message) {
+            const existingToasts = document.querySelectorAll('.sgs-toast');
+            existingToasts.forEach(t => t.remove());
 
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        sgs: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            500: '#16a34a',
-                            600: '#15803d',
-                            700: '#166534',
-                            accent: '#9f208c',
-                            dark: '#0f172a'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    }
-                }
-            }
-        }
+            const toast = document.createElement('div');
+            toast.className = "sgs-toast fixed bottom-5 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-xs md:text-sm px-4 py-3 rounded-xl shadow-2xl z-50 transition-all duration-300 flex items-center gap-2 border border-slate-700 max-w-sm w-11/12 text-center justify-center";
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> ${message}`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        };
     </script>
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; overflow-x: hidden; }
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        .glass-dark {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        #threeCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-        }
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-    </style>
-</head>
-<body class="text-slate-800 antialiased min-h-screen flex flex-col justify-between bg-slate-50">
 
-    <!-- SECTION 1: 3D ANIMATED LOGIN / SIGNUP SCREEN -->
-    <div id="authScreen" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950 overflow-hidden">
-        <!-- 3D Three.js Interactive Background Canvas -->
-        <canvas id="threeCanvas"></canvas>
-
-        <div class="relative z-10 w-full max-w-md glass-panel rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6 border border-white/40">
-            <!-- Brand Logo -->
-            <div class="text-center space-y-2">
-                <div class="w-14 h-14 bg-sgs-600 text-white rounded-2xl flex items-center justify-center mx-auto text-2xl font-black shadow-lg shadow-sgs-600/40">
-                    S
-                </div>
-                <h1 class="text-2xl font-black text-slate-900 tracking-tight">SGS <span class="text-sgs-600">STORE</span></h1>
-                <p class="text-xs text-slate-600 font-medium">Official Deals & Verified Affiliate Platform</p>
-            </div>
-
-            <!-- Auth Mode Switcher Tabs -->
-            <div class="flex bg-slate-200/80 p-1 rounded-xl text-xs font-bold text-slate-600">
-                <button id="tabSignIn" onclick="switchAuthTab('login')" class="flex-1 py-2 rounded-lg bg-white text-slate-900 shadow transition">Sign In</button>
-                <button id="tabSignUp" onclick="switchAuthTab('signup')" class="flex-1 py-2 rounded-lg hover:text-slate-900 transition">Create Account</button>
-            </div>
-
-            <!-- LOGIN FORM -->
-            <form id="formLogin" onsubmit="handleEmailLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-envelope absolute left-3 top-3 text-slate-400 text-xs"></i>
-                        <input type="email" id="loginEmail" required placeholder="Enter your email address" class="w-full bg-white border border-slate-200 rounded-xl py-2.5 pl-9 pr-3 text-xs outline-none focus:border-sgs-600 focus:ring-1 focus:ring-sgs-600">
-                    </div>
-                </div>
-                <div>
-                    <div class="flex justify-between items-center mb-1">
-                        <label class="block text-xs font-bold text-slate-700">Password</label>
-                        <button type="button" onclick="showForgotPassword()" class="text-[11px] font-bold text-sgs-600 hover:underline">Forgot?</button>
-                    </div>
-                    <div class="relative">
-                        <i class="fa-solid fa-lock absolute left-3 top-3 text-slate-400 text-xs"></i>
-                        <input type="password" id="loginPass" required placeholder="Enter your password" class="w-full bg-white border border-slate-200 rounded-xl py-2.5 pl-9 pr-3 text-xs outline-none focus:border-sgs-600 focus:ring-1 focus:ring-sgs-600">
-                    </div>
-                </div>
-                <button type="submit" id="btnLoginSubmit" class="w-full bg-sgs-600 hover:bg-sgs-700 text-white font-bold py-3 rounded-xl text-xs shadow-lg shadow-sgs-600/30 transition">
-                    <i class="fa-solid fa-right-to-bracket mr-1"></i> Sign In to Store
+    <header class="sticky top-0 z-30 bg-slate-900/95 backdrop-blur-md border-b border-slate-800 shadow-md">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2.5 flex items-center justify-between gap-2 md:gap-4">
+            
+            <!-- Left Side: Drawer Toggle & Logo -->
+            <div class="flex items-center gap-2 sm:gap-3">
+                <button onclick="window.toggleDrawer(true)" class="p-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">
+                    <i class="fa-solid fa-bars text-lg sm:text-xl"></i>
                 </button>
-            </form>
-
-            <!-- SIGNUP FORM (Hidden by default) -->
-            <form id="formSignup" onsubmit="handleEmailRegister(event)" class="space-y-4 hidden">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Full Name</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-user absolute left-3 top-3 text-slate-400 text-xs"></i>
-                        <input type="text" id="signupName" required placeholder="Enter your full name" class="w-full bg-white border border-slate-200 rounded-xl py-2.5 pl-9 pr-3 text-xs outline-none focus:border-sgs-600 focus:ring-1 focus:ring-sgs-600">
+                <a href="#home" onclick="window.navigateTo('home')" class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-meesho-600 to-pink-500 flex items-center justify-center text-white font-black text-base shadow-lg shadow-meesho-600/30">
+                        S
                     </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Email Address</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-envelope absolute left-3 top-3 text-slate-400 text-xs"></i>
-                        <input type="email" id="signupEmail" required placeholder="Enter your email address" class="w-full bg-white border border-slate-200 rounded-xl py-2.5 pl-9 pr-3 text-xs outline-none focus:border-sgs-600 focus:ring-1 focus:ring-sgs-600">
+                    <div>
+                        <span class="font-extrabold text-base sm:text-lg tracking-tight bg-gradient-to-r from-white via-slate-200 to-pink-400 bg-clip-text text-transparent">SGS STORE</span>
+                        <span class="hidden sm:inline-block text-[10px] font-semibold text-pink-400 bg-pink-500/10 border border-pink-500/20 px-1.5 py-0.5 rounded ml-1">Affiliate</span>
                     </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Password</label>
-                    <div class="relative">
-                        <i class="fa-solid fa-lock absolute left-3 top-3 text-slate-400 text-xs"></i>
-                        <input type="password" id="signupPass" required minlength="6" placeholder="Enter your password (min 6 chars)" class="w-full bg-white border border-slate-200 rounded-xl py-2.5 pl-9 pr-3 text-xs outline-none focus:border-sgs-600 focus:ring-1 focus:ring-sgs-600">
-                    </div>
-                </div>
-                <button type="submit" id="btnSignupSubmit" class="w-full bg-sgs-600 hover:bg-sgs-700 text-white font-bold py-3 rounded-xl text-xs shadow-lg shadow-sgs-600/30 transition">
-                    <i class="fa-solid fa-user-plus mr-1"></i> Register New Account
-                </button>
-            </form>
-
-            <div class="relative flex py-1 items-center">
-                <div class="flex-grow border-t border-slate-300"></div>
-                <span class="flex-shrink mx-3 text-[10px] font-extrabold text-slate-400 uppercase tracking-widest">Or Continue With</span>
-                <div class="flex-grow border-t border-slate-300"></div>
+                </a>
             </div>
 
-            <!-- GOOGLE SIGN IN BUTTON -->
-            <button onclick="handleGoogleLogin()" class="w-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm transition">
-                <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
-                Sign In with Google
-            </button>
+            <!-- Middle: Search Bar -->
+            <div class="flex-1 max-w-md mx-1 sm:mx-4">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs sm:text-sm"></i>
+                    <input type="text" id="searchInput" oninput="window.handleSearch(this.value)" placeholder="Search books, clothes, footwear..." class="w-full pl-8 sm:pl-9 pr-8 py-1.5 sm:py-2 bg-slate-800/80 text-xs sm:text-sm text-slate-100 placeholder-slate-400 rounded-lg border border-slate-700/80 focus:outline-none focus:border-meesho-500 focus:ring-1 focus:ring-meesho-500 transition-all">
+                    <button id="searchClearBtn" onclick="window.handleSearch('')" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-200 text-xs">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
 
-            <!-- Privacy Policy Footer Link in Auth -->
-            <div class="text-center pt-2 text-[11px] text-slate-500">
-                By logging in, you agree to our 
-                <button onclick="openPrivacyModal()" class="text-sgs-600 font-bold hover:underline">Privacy Policy</button> & 
-                <button onclick="openTermsModal()" class="text-sgs-600 font-bold hover:underline">Terms</button>
+            <!-- Right Side Actions -->
+            <div class="flex items-center gap-1.5 sm:gap-3">
+                <button id="adminHeaderBtn" onclick="window.navigateTo('admin')" class="hidden bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-semibold px-2.5 py-1.5 rounded-lg hover:bg-amber-500/20 transition-all">
+                    <i class="fa-solid fa-user-shield mr-1"></i> <span class="hidden md:inline">Admin Panel</span>
+                </button>
+                <button onclick="window.navigateTo('cart')" class="relative p-2 text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition-colors">
+                    <i class="fa-solid fa-cart-shopping text-base sm:text-lg"></i>
+                    <span id="cartBadge" class="hidden absolute -top-1 -right-1 bg-meesho-600 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border-2 border-slate-900">0</span>
+                </button>
             </div>
         </div>
-    </div>
+    </header>
 
-    <!-- SECTION 2: MAIN E-COMMERCE STORE APP (Visible after login) -->
-    <div id="mainApp" class="hidden min-h-screen flex flex-col">
-
-        <!-- HEADER BAR -->
-        <header class="bg-white sticky top-0 z-40 shadow-sm border-b border-slate-100">
-            <!-- Top Alert Bar -->
-            <div class="bg-slate-900 text-white text-[11px] py-1 px-3">
-                <div class="max-w-6xl mx-auto flex justify-between items-center">
-                    <span><i class="fa-solid fa-fire text-amber-400 mr-1"></i> Best Verified Deals on Amazon, Flipkart & Meesho</span>
-                    <div class="flex items-center gap-3">
-                        <span id="headerAdminTag" class="hidden bg-amber-400 text-slate-950 font-black text-[9px] px-2 py-0.5 rounded-full"><i class="fa-solid fa-crown mr-1"></i> ADMIN LOGGED IN</span>
-                        <button onclick="toggleDrawer()" class="hover:underline text-slate-300 font-semibold flex items-center gap-1"><i class="fa-solid fa-user-circle"></i> Profile & Menu</button>
-                    </div>
+    <div id="drawerBackdrop" onclick="window.toggleDrawer(false)" class="fixed inset-0 bg-slate-950/70 backdrop-blur-sm z-40 hidden opacity-0 transition-opacity duration-300"></div>
+    <aside id="leftDrawer" class="fixed top-0 left-0 bottom-0 w-72 sm:w-80 bg-slate-900 border-r border-slate-800 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+        <!-- Drawer Header -->
+        <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/40">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-meesho-600 to-pink-500 flex items-center justify-center text-white font-bold text-lg shadow-md">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div>
+                    <h4 id="drawerUserName" class="text-sm font-bold text-white truncate max-w-[150px]">Guest User</h4>
+                    <p class="text-xs text-slate-400">UID: <span id="drawerUserUid" class="font-mono text-pink-400 font-semibold">#4252</span></p>
                 </div>
             </div>
+            <button onclick="window.toggleDrawer(false)" class="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
 
-            <!-- Main Navigation Header -->
-            <div class="max-w-6xl mx-auto px-3 py-2.5 flex items-center justify-between gap-3">
-                <div class="flex items-center gap-2">
-                    <button id="headerBackBtn" onclick="handleBackNavigation()" class="hidden p-2 hover:bg-slate-100 rounded-full text-slate-700 transition">
-                        <i class="fa-solid fa-arrow-left text-lg"></i>
-                    </button>
-                    <div onclick="navigateTo('home')" class="cursor-pointer flex items-center gap-2">
-                        <div class="w-9 h-9 bg-sgs-600 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-md">S</div>
-                        <div class="flex flex-col">
-                            <span class="text-xl font-black text-slate-900 tracking-tight leading-none">SGS <span class="text-sgs-600">STORE</span></span>
-                            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Affiliate Portal</span>
-                        </div>
-                    </div>
-                </div>
+        <!-- Drawer Body Menu -->
+        <div class="flex-1 overflow-y-auto p-3 space-y-1 text-xs sm:text-sm custom-scrollbar">
+            <button onclick="window.navigateTo('home'); window.toggleDrawer(false)" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors">
+                <i class="fa-solid fa-house w-5 text-meesho-500"></i> Home Store
+            </button>
+            <button onclick="window.filterCategory('books'); window.toggleDrawer(false)" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors">
+                <i class="fa-solid fa-book w-5 text-blue-400"></i> Books & Guides
+            </button>
+            <button onclick="window.filterCategory('clothes'); window.toggleDrawer(false)" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors">
+                <i class="fa-solid fa-shirt w-5 text-purple-400"></i> Fashion & Apparel
+            </button>
+            <button onclick="window.filterCategory('slippers'); window.toggleDrawer(false)" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors">
+                <i class="fa-solid fa-shoe-prints w-5 text-emerald-400"></i> Footwear & Slippers
+            </button>
+            <button onclick="window.filterCategory('mobiles'); window.toggleDrawer(false)" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-300 hover:bg-slate-800 hover:text-white transition-colors">
+                <i class="fa-solid fa-mobile-screen-button w-5 text-amber-400"></i> Mobiles & Electronics
+            </button>
 
-                <!-- Search Input -->
-                <div class="flex-1 max-w-xl relative">
-                    <input type="text" id="searchInput" oninput="handleSearch()" placeholder="Search SSC Books, 5G Mobiles, Sarees, Slippers..." 
-                        class="w-full bg-slate-100 border border-transparent focus:border-sgs-500 focus:bg-white text-xs sm:text-sm rounded-xl pl-9 pr-4 py-2 outline-none transition">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-sm"></i>
-                </div>
+            <div class="my-3 border-t border-slate-800"></div>
 
-                <!-- Header Actions -->
-                <div class="flex items-center gap-3">
-                    <button onclick="navigateTo('cart')" class="relative p-2 text-slate-700 hover:text-sgs-600 transition">
-                        <i class="fa-solid fa-bag-shopping text-xl"></i>
-                        <span id="cartBadge" class="absolute -top-0.5 -right-0.5 bg-sgs-accent text-white text-[10px] font-extrabold w-4 h-4 rounded-full flex items-center justify-center hidden">0</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Category Navigation Bar -->
-            <div class="border-t border-slate-100 bg-white shadow-inner">
-                <div class="max-w-6xl mx-auto px-3 flex items-center gap-2 overflow-x-auto hide-scrollbar py-2 text-xs font-semibold">
-                    <button onclick="filterCategory('all')" class="cat-pill active-cat px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition bg-sgs-600 text-white" data-cat="all"><i class="fa-solid fa-border-all mr-1"></i> All Products</button>
-                    <button onclick="filterCategory('books')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition bg-slate-100 text-slate-700 hover:bg-slate-200" data-cat="books"><i class="fa-solid fa-book-open mr-1"></i> Books (SSC/Railway)</button>
-                    <button onclick="filterCategory('clothes')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition bg-slate-100 text-slate-700 hover:bg-slate-200" data-cat="clothes"><i class="fa-solid fa-shirt mr-1"></i> Clothes & Fashion</button>
-                    <button onclick="filterCategory('slippers')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition bg-slate-100 text-slate-700 hover:bg-slate-200" data-cat="slippers"><i class="fa-solid fa-shoe-prints mr-1"></i> Slippers & Shoes</button>
-                    <button onclick="filterCategory('mobiles')" class="cat-pill px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition bg-slate-100 text-slate-700 hover:bg-slate-200" data-cat="mobiles"><i class="fa-solid fa-mobile-screen-button mr-1"></i> Mobiles & Electronics</button>
-                </div>
-            </div>
-        </header>
-
-        <!-- MAIN CONTENT CONTAINER -->
-        <main class="flex-1 max-w-6xl w-full mx-auto p-3 md:p-4">
+            <button id="adminDrawerBtn" onclick="window.navigateTo('admin'); window.toggleDrawer(false)" class="hidden w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-amber-400 hover:bg-amber-500/10 transition-colors">
+                <i class="fa-solid fa-user-shield w-5"></i> Admin Dashboard
+            </button>
+            <button onclick="window.openPrivacyModal()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors">
+                <i class="fa-solid fa-shield-halved w-5"></i> Privacy Policy
+            </button>
+            <button onclick="window.openTermsModal()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition-colors">
+                <i class="fa-solid fa-file-contract w-5"></i> Terms & Conditions
+            </button>
             
-            <!-- VIEW 1: HOME PRODUCT GRID -->
-            <div id="viewHome" class="space-y-4">
-                <!-- Promo Hero Banner -->
-                <div class="bg-gradient-to-r from-slate-900 via-sgs-700 to-sgs-600 rounded-2xl p-4 sm:p-6 text-white shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div class="space-y-1.5 text-center sm:text-left">
-                        <span class="bg-amber-400 text-slate-900 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider">Verified Affiliate Hub</span>
-                        <h1 class="text-xl sm:text-3xl font-black">SGS STORE - Direct Store Deals</h1>
-                        <p class="text-xs text-slate-200 max-w-md">Click "Buy Now" to directly purchase on Flipkart, Amazon, or Meesho with verified lowest prices.</p>
-                    </div>
-                    <div class="flex flex-wrap gap-2 justify-center">
-                        <span class="bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-lg text-center text-xs font-bold border border-white/20"><i class="fa-brands fa-amazon text-amber-300 mr-1"></i> Amazon</span>
-                        <span class="bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-lg text-center text-xs font-bold border border-white/20"><i class="fa-solid fa-bag-shopping text-blue-300 mr-1"></i> Flipkart</span>
-                        <span class="bg-white/10 backdrop-blur-md px-3 py-1.5 rounded-lg text-center text-xs font-bold border border-white/20"><i class="fa-solid fa-store text-pink-300 mr-1"></i> Meesho</span>
-                    </div>
-                </div>
+            <div class="my-3 border-t border-slate-800"></div>
 
-                <!-- Header Bar for Grid -->
-                <div class="flex items-center justify-between pt-2">
+            <!-- WhatsApp Support Option -->
+            <a id="whatsappSupportBtn" href="#" target="_blank" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600/30 border border-emerald-500/30 font-medium transition-colors">
+                <i class="fa-brands fa-whatsapp text-base w-5"></i> WhatsApp Support
+            </a>
+        </div>
+
+        <!-- Drawer Footer -->
+        <div class="p-3 border-t border-slate-800 bg-slate-950/40">
+            <button id="authDrawerActionBtn" onclick="window.handleAuthDrawerAction()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg transition-colors flex items-center justify-center gap-2">
+                <i class="fa-solid fa-right-to-bracket"></i> Login / Switch Account
+            </button>
+        </div>
+    </aside>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-6 space-y-4">
+
+        <!-- Category Pills Filter Bar -->
+        <div id="categoryFilterBar" class="flex items-center gap-2 overflow-x-auto pb-2 custom-scrollbar">
+            <button onclick="window.filterCategory('all')" data-cat="all" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-meesho-600 text-white shadow-md shadow-meesho-600/20 transition-all">
+                🔥 All Items
+            </button>
+            <button onclick="window.filterCategory('books')" data-cat="books" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all">
+                📚 Books & Exam Guides
+            </button>
+            <button onclick="window.filterCategory('clothes')" data-cat="clothes" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all">
+                👕 Clothing & Fashion
+            </button>
+            <button onclick="window.filterCategory('slippers')" data-cat="slippers" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all">
+                🩴 Footwear & Slippers
+            </button>
+            <button onclick="window.filterCategory('mobiles')" data-cat="mobiles" class="cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all">
+                📱 Mobiles & Electronics
+            </button>
+        </div>
+
+        <!-- VIEW 1: HOME PRODUCT GRID -->
+        <section id="homeView" class="space-y-4">
+            <div class="flex items-center justify-between">
+                <h2 class="text-sm sm:text-base font-bold text-slate-200 flex items-center gap-2">
+                    <span id="currentCategoryTitle">All Products</span>
+                    <span id="productCount" class="text-xs font-normal text-slate-400 bg-slate-800 px-2 py-0.5 rounded-full border border-slate-700">0 Items</span>
+                </h2>
+            </div>
+
+            <!-- Grid Container -->
+            <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2.5 sm:gap-4">
+                <!-- Products rendered dynamically -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="hidden py-16 text-center space-y-3 bg-slate-800/40 rounded-2xl border border-slate-800">
+                <i class="fa-solid fa-box-open text-4xl text-slate-600"></i>
+                <h3 class="text-base font-semibold text-slate-300">No Products Available</h3>
+                <p class="text-xs text-slate-500 max-w-sm mx-auto">Items added by Admin will appear here in real-time.</p>
+                <button id="seedDataBtn" onclick="window.seedSampleProducts()" class="hidden text-xs bg-meesho-600 hover:bg-meesho-700 text-white font-semibold px-4 py-2 rounded-lg shadow-md transition-colors">
+                    Add Sample Products
+                </button>
+            </div>
+        </section>
+
+        <!-- VIEW 2: PRODUCT DETAIL -->
+        <section id="detailView" class="hidden space-y-4 max-w-4xl mx-auto">
+            <button onclick="window.navigateTo('home')" class="text-xs text-slate-400 hover:text-white flex items-center gap-1 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700 transition-colors">
+                <i class="fa-solid fa-arrow-left"></i> Back to Products
+            </button>
+
+            <div id="productDetailContent" class="bg-slate-800/60 rounded-2xl border border-slate-800 p-4 sm:p-6 md:flex gap-6">
+                <!-- Detail Content Rendered via JS -->
+            </div>
+        </section>
+
+        <!-- VIEW 3: CART VIEW -->
+        <section id="cartView" class="hidden space-y-4 max-w-3xl mx-auto">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-cart-shopping text-meesho-500"></i> My Cart
+                </h2>
+                <button onclick="window.navigateTo('home')" class="text-xs text-slate-400 hover:text-white">Continue Shopping</button>
+            </div>
+
+            <div id="cartItemsList" class="space-y-3">
+                <!-- Cart items rendered dynamically -->
+            </div>
+
+            <div id="cartSummary" class="hidden bg-slate-800/80 p-4 rounded-xl border border-slate-700 space-y-3">
+                <div class="flex justify-between text-sm text-slate-300">
+                    <span>Total Amount</span>
+                    <span id="cartTotal" class="font-bold text-white text-base">₹0</span>
+                </div>
+                <button onclick="window.clearCart()" class="w-full py-2 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold rounded-lg transition-colors">
+                    Clear Cart
+                </button>
+            </div>
+        </section>
+
+        <!-- VIEW 4: ADMIN DASHBOARD -->
+        <section id="adminView" class="hidden space-y-6">
+            <div class="bg-slate-800/80 rounded-2xl p-4 sm:p-6 border border-slate-700/80 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-700/80 pb-3">
                     <div>
-                        <h2 id="categoryTitle" class="text-lg font-black text-slate-900">Featured Deals</h2>
-                        <p class="text-xs text-slate-500">Live products synced from Firebase Realtime Database</p>
+                        <h2 class="text-lg font-bold text-amber-400 flex items-center gap-2">
+                            <i class="fa-solid fa-user-shield"></i> Admin Panel
+                        </h2>
+                        <p class="text-xs text-slate-400">Add or manage affiliate products & real-time user click logs.</p>
                     </div>
-                    <span id="productCount" class="text-xs text-sgs-600 bg-sgs-50 border border-sgs-100 font-bold px-2.5 py-1 rounded-full">0 Items</span>
-                </div>
-
-                <!-- Product Cards Grid -->
-                <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
-                    <!-- Products dynamically rendered from Firebase Firestore -->
-                </div>
-            </div>
-
-            <!-- VIEW 2: PRODUCT DETAIL -->
-            <div id="viewDetail" class="hidden max-w-4xl mx-auto bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-slate-100">
-                <div id="detailContainer" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Dynamically Filled -->
-                </div>
-            </div>
-
-            <!-- VIEW 3: CART / SAVED DEALS -->
-            <div id="viewCart" class="hidden space-y-4 max-w-2xl mx-auto">
-                <div class="flex justify-between items-center border-b pb-3">
-                    <h2 class="text-xl font-bold text-slate-900"><i class="fa-solid fa-bag-shopping text-sgs-600 mr-2"></i> Your Saved Deals</h2>
-                    <button onclick="clearCart()" class="text-xs text-red-500 hover:underline font-semibold"><i class="fa-solid fa-trash mr-1"></i> Clear All</button>
-                </div>
-                
-                <div id="cartItemsList" class="space-y-3">
-                    <!-- Dynamically Filled -->
-                </div>
-            </div>
-
-            <!-- VIEW 4: ADMIN PANEL DASHBOARD -->
-            <div id="viewAdmin" class="hidden max-w-4xl mx-auto space-y-6">
-                <div class="bg-white p-5 sm:p-6 rounded-2xl border shadow-sm space-y-5">
-                    <div class="flex justify-between items-center border-b pb-3">
-                        <div>
-                            <h2 class="text-xl font-black text-slate-900"><i class="fa-solid fa-crown text-amber-500 mr-2"></i> Admin Firebase Product Manager</h2>
-                            <p class="text-xs text-slate-500">Connected to Realtime Database. UID: <span id="adminUidDisplay" class="font-mono text-sgs-600 font-bold"></span></p>
-                        </div>
-                        <button onclick="seedInitialData()" class="bg-amber-50 text-amber-800 hover:bg-amber-100 text-xs font-bold px-3 py-1.5 rounded-lg border border-amber-200 transition">
-                            <i class="fa-solid fa-seedling mr-1"></i> Seed Sample Products
+                    <div class="flex items-center gap-2">
+                        <button onclick="window.seedSampleProducts()" class="text-xs bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold px-3 py-1.5 rounded-lg border border-slate-600 transition-colors">
+                            <i class="fa-solid fa-database mr-1"></i> Seed Products
                         </button>
                     </div>
+                </div>
 
-                    <!-- Product Add/Edit Form -->
-                    <form id="adminProductForm" onsubmit="handleSaveProduct(event)" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4">
-                        <h3 id="formTitle" class="font-bold text-slate-800 text-sm border-b pb-2">Add New Real-Time Product</h3>
-                        <input type="hidden" id="editProductId" value="">
+                <!-- Product Add / Edit Form -->
+                <form id="adminProductForm" onsubmit="window.handleSaveProduct(event)" class="space-y-4 text-xs sm:text-sm">
+                    <input type="hidden" id="adminEditProductId">
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">Product Title *</label>
-                                <input type="text" id="pTitle" required placeholder="e.g. SSC GD Constable Guide 2026" class="w-full border rounded-lg p-2 text-xs outline-none focus:border-sgs-500 bg-white">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">Category *</label>
-                                <select id="pCategory" onchange="toggleCategoryFields()" required class="w-full border rounded-lg p-2 text-xs outline-none focus:border-sgs-500 bg-white">
-                                    <option value="books">Books (SSC/Railway)</option>
-                                    <option value="clothes">Clothes & Fashion</option>
-                                    <option value="slippers">Slippers & Footwear</option>
-                                    <option value="mobiles">Mobiles & Electronics</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                            <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">Selling Price (₹) *</label>
-                                <input type="number" id="pPrice" required placeholder="199" class="w-full border rounded-lg p-2 text-xs outline-none focus:border-sgs-500 bg-white">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">MRP Price (₹) *</label>
-                                <input type="number" id="pMrp" required placeholder="499" class="w-full border rounded-lg p-2 text-xs outline-none focus:border-sgs-500 bg-white">
-                            </div>
-                            <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">Affiliate Platform *</label>
-                                <select id="pStore" class="w-full border rounded-lg p-2 text-xs outline-none focus:border-sgs-500 bg-white">
-                                    <option value="Amazon">Amazon</option>
-                                    <option value="Flipkart">Flipkart</option>
-                                    <option value="Meesho">Meesho</option>
-                                </select>
-                            </div>
-                        </div>
-
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Affiliate Direct Link (URL) *</label>
-                            <input type="url" id="pAffiliateUrl" required placeholder="https://www.amazon.in/dp/... or https://meesho.com/..." class="w-full border rounded-lg p-2 text-xs outline-none focus:border-sgs-500 bg-white">
+                            <label class="block text-slate-300 font-medium mb-1">Category *</label>
+                            <select id="adminCategory" onchange="window.toggleCategoryFields()" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-slate-200 focus:outline-none focus:border-amber-500">
+                                <option value="books">Books & Guides</option>
+                                <option value="clothes">Clothing & Apparel</option>
+                                <option value="slippers">Footwear & Slippers</option>
+                                <option value="mobiles">Mobiles & Electronics</option>
+                            </select>
                         </div>
-
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Image URL *</label>
-                            <input type="url" id="pImage" required placeholder="https://images.unsplash.com/..." class="w-full border rounded-lg p-2 text-xs outline-none focus:border-sgs-500 bg-white">
+                            <label class="block text-slate-300 font-medium mb-1">Product Title *</label>
+                            <input type="text" id="adminTitle" required placeholder="e.g., SSC GD Constable Book 2026" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-slate-200 focus:outline-none focus:border-amber-500">
                         </div>
-
-                        <!-- CATEGORY SPECIFIC INPUT FIELDS -->
-                        <div id="catFieldsMobile" class="hidden grid grid-cols-3 gap-3 bg-blue-50/50 p-3 rounded-lg border border-blue-100">
-                            <div>
-                                <label class="block text-[11px] font-bold text-blue-900 mb-1">RAM</label>
-                                <input type="text" id="pRam" placeholder="e.g. 6 GB" class="w-full border rounded p-1.5 text-xs bg-white">
-                            </div>
-                            <div>
-                                <label class="block text-[11px] font-bold text-blue-900 mb-1">ROM</label>
-                                <input type="text" id="pRom" placeholder="e.g. 128 GB" class="w-full border rounded p-1.5 text-xs bg-white">
-                            </div>
-                            <div>
-                                <label class="block text-[11px] font-bold text-blue-900 mb-1">Specs</label>
-                                <input type="text" id="pSpecs" placeholder="e.g. 5000 mAh" class="w-full border rounded p-1.5 text-xs bg-white">
-                            </div>
-                        </div>
-
-                        <div id="catFieldsClothes" class="hidden bg-purple-50/50 p-3 rounded-lg border border-purple-100 space-y-2">
-                            <div class="grid grid-cols-2 gap-2">
-                                <input type="text" id="pClothSizes" placeholder="Sizes: S, M, L, XL" class="w-full border rounded p-1.5 text-xs bg-white">
-                                <input type="text" id="pFabric" placeholder="Fabric: 100% Pure Cotton" class="w-full border rounded p-1.5 text-xs bg-white">
-                            </div>
-                        </div>
-
-                        <div id="catFieldsSlippers" class="hidden bg-amber-50/50 p-3 rounded-lg border border-amber-100 space-y-2">
-                            <div class="grid grid-cols-2 gap-2">
-                                <input type="text" id="pFootSizes" placeholder="UK Sizes: 6, 7, 8, 9" class="w-full border rounded p-1.5 text-xs bg-white">
-                                <input type="text" id="pSole" placeholder="Sole: Soft EVA Sole" class="w-full border rounded p-1.5 text-xs bg-white">
-                            </div>
-                        </div>
-
-                        <div id="catFieldsBooks" class="hidden bg-emerald-50/50 p-3 rounded-lg border border-emerald-100 space-y-2">
-                            <div class="grid grid-cols-2 gap-2">
-                                <input type="text" id="pBookExam" placeholder="Exam: SSC GD / Railway" class="w-full border rounded p-1.5 text-xs bg-white">
-                                <input type="text" id="pBookLang" placeholder="Medium: Hindi & English" class="w-full border rounded p-1.5 text-xs bg-white">
-                            </div>
-                        </div>
-
                         <div>
-                            <label class="block text-xs font-bold text-slate-700 mb-1">Description *</label>
-                            <textarea id="pDesc" rows="2" required placeholder="Write detailed description about product..." class="w-full border rounded-lg p-2 text-xs outline-none focus:border-sgs-500 bg-white"></textarea>
+                            <label class="block text-slate-300 font-medium mb-1">Target Store *</label>
+                            <select id="adminStore" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-slate-200 focus:outline-none focus:border-amber-500">
+                                <option value="Amazon">Amazon</option>
+                                <option value="Flipkart">Flipkart</option>
+                                <option value="Meesho">Meesho</option>
+                                <option value="Direct Store">Direct Store</option>
+                            </select>
                         </div>
-
-                        <div class="flex gap-2">
-                            <button type="submit" class="bg-sgs-600 hover:bg-sgs-700 text-white font-bold py-2 px-4 rounded-lg text-xs transition">
-                                <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Save to Firebase
-                            </button>
-                            <button type="button" onclick="resetAdminForm()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 px-4 rounded-lg text-xs">
-                                Cancel
-                            </button>
+                        <div>
+                            <label class="block text-slate-300 font-medium mb-1">MRP Price (₹) *</label>
+                            <input type="number" id="adminMrp" required placeholder="399" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-slate-200 focus:outline-none focus:border-amber-500">
                         </div>
-                    </form>
-
-                    <!-- Inventory Table -->
-                    <div class="space-y-2">
-                        <h3 class="font-bold text-slate-800 text-sm">Live Store Inventory (<span id="adminProdCount">0</span>)</h3>
-                        <div class="overflow-x-auto border rounded-xl">
-                            <table class="w-full text-left border-collapse text-xs">
-                                <thead>
-                                    <tr class="bg-slate-100 border-b text-slate-600 font-bold">
-                                        <th class="p-2.5">Item</th>
-                                        <th class="p-2.5">Category</th>
-                                        <th class="p-2.5">Price / MRP</th>
-                                        <th class="p-2.5">Store Link</th>
-                                        <th class="p-2.5 text-right">Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="adminProductTable">
-                                    <!-- Populated dynamically -->
-                                </tbody>
-                            </table>
+                        <div>
+                            <label class="block text-slate-300 font-medium mb-1">Selling Price (₹) *</label>
+                            <input type="number" id="adminPrice" required placeholder="199" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-slate-200 focus:outline-none focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-slate-300 font-medium mb-1">Image URL *</label>
+                            <input type="url" id="adminImage" required placeholder="https://images.unsplash.com/..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-slate-200 focus:outline-none focus:border-amber-500">
                         </div>
                     </div>
 
-                    <!-- USER Clicks / Order History Log for Admin -->
-            <div class="border-t pt-4 space-y-3">
-                <div class="flex justify-between items-center">
-                    <h3 class="font-black text-slate-900 text-sm"><i class="fa-solid fa-chart-line text-sgs-600 mr-2"></i> Real-time User Affiliate Click History</h3>
-                    <span id="orderLogCount" class="text-[10px] bg-slate-100 font-bold px-2 py-0.5 rounded-full text-slate-600">0 Clicks</span>
-                </div>
-                <div id="adminUserOrdersList" class="space-y-2 max-h-60 overflow-y-auto">
-                    <!-- Populated with real-time Firestore user order events -->
-                </div>
-            </div>
-        </div>
-    </div>
+                    <!-- Category-Specific Dynamic Fields -->
+                    <div id="dynamicFields" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                        <!-- Dynamic fields inserted by JS -->
+                    </div>
 
-</main>
+                    <div>
+                        <label class="block text-slate-300 font-medium mb-1">Affiliate Link (Redirect URL) *</label>
+                        <input type="url" id="adminAffiliateUrl" required placeholder="https://amazon.in/dp/..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-slate-200 focus:outline-none focus:border-amber-500">
+                    </div>
 
-<!-- MODAL: ADMIN USER SPECIFIC ORDERS INSPECTOR -->
-<div id="modalUserOrders" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
-    <div class="bg-white max-w-lg w-full rounded-2xl p-5 space-y-4 shadow-2xl max-h-[85vh] flex flex-col justify-between">
-        <div class="flex justify-between items-center border-b pb-3">
-            <div>
-                <h3 class="font-black text-slate-900 text-sm"><i class="fa-solid fa-user-gear text-sgs-600 mr-1.5"></i> User Activity Inspector</h3>
-                <p class="text-[11px] text-slate-500 font-mono">UID: <span id="inspectUid" class="text-blue-600 font-bold"></span></p>
-            </div>
-            <button onclick="closeInspectModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-        </div>
-        <div id="inspectOrdersContainer" class="flex-1 overflow-y-auto space-y-2 text-xs pr-1">
-            <!-- Dynamically populated with user clicks -->
-        </div>
-        <button onclick="closeInspectModal()" class="w-full bg-slate-900 text-white font-bold py-2 rounded-xl text-xs">Close Inspector</button>
-    </div>
-</div>
+                    <div>
+                        <label class="block text-slate-300 font-medium mb-1">Description</label>
+                        <textarea id="adminDescription" rows="2" placeholder="Product features, specs, and details..." class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-slate-200 focus:outline-none focus:border-amber-500"></textarea>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-5 py-2 rounded-lg transition-colors">
+                            <i class="fa-solid fa-floppy-disk mr-1"></i> Save Product
+                        </button>
+                        <button type="button" onclick="window.resetAdminForm()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 font-semibold px-4 py-2 rounded-lg transition-colors">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Current Products Table -->
+                <div class="mt-6 space-y-3">
+                    <h3 class="text-sm font-bold text-slate-200">Existing Inventory (<span id="adminProductCount">0</span>)</h3>
+                    <div class="overflow-x-auto custom-scrollbar rounded-xl border border-slate-700/80">
+                        <table class="w-full text-left text-xs text-slate-300">
+                            <thead class="bg-slate-900 text-slate-400 border-b border-slate-700/80">
+                                <tr>
+                                    <th class="p-3">Product</th>
+                                    <th class="p-3">Category</th>
+                                    <th class="p-3">Price</th>
+                                    <th class="p-3">Store</th>
+                                    <th class="p-3 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminProductsTable" class="divide-y divide-slate-800/80 bg-slate-900/40">
+                                <!-- Rendered dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- User Orders / Click Logs Table -->
+                <div class="mt-8 space-y-3">
+                    <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-mouse-pointer text-meesho-500"></i> User Affiliate Clicks / Orders Logged
+                    </h3>
+                    <div class="overflow-x-auto custom-scrollbar rounded-xl border border-slate-700/80">
+                        <table class="w-full text-left text-xs text-slate-300">
+                            <thead class="bg-slate-900 text-slate-400 border-b border-slate-700/80">
+                                <tr>
+                                    <th class="p-3">Date/Time</th>
+                                    <th class="p-3">User UID</th>
+                                    <th class="p-3">Product Title</th>
+                                    <th class="p-3">Store</th>
+                                    <th class="p-3">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminOrdersTable" class="divide-y divide-slate-800/80 bg-slate-900/40">
+                                <!-- Rendered dynamically -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
+        </section>
 
-        </main>
+    </main>
 
-        <!-- FOOTER -->
-        <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800 mt-10">
-            <div class="max-w-6xl mx-auto px-4 space-y-4">
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-3 text-center sm:text-left border-b border-slate-800 pb-4">
-                    <div class="flex items-center gap-2">
-                        <div class="w-7 h-7 bg-sgs-600 rounded-lg flex items-center justify-center text-white font-black">S</div>
-                        <span class="text-white font-black text-lg tracking-tight">SGS STORE</span>
+    <!-- AUTH SCREEN OVERLAY (3D Animated Background) -->
+    <div id="authScreen" class="fixed inset-0 z-50 bg-slate-950 flex items-center justify-center p-4">
+        <!-- Three.js Canvas Container -->
+        <div id="threejsContainer" class="absolute inset-0 pointer-events-none"></div>
+
+        <!-- Auth Card -->
+        <div class="relative z-10 w-full max-w-md bg-slate-900/90 backdrop-blur-xl p-6 sm:p-8 rounded-3xl border border-slate-800 shadow-2xl space-y-6">
+            <div class="text-center space-y-2">
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-tr from-meesho-600 to-pink-500 text-white font-black text-xl shadow-lg shadow-meesho-600/40">
+                    S
+                </div>
+                <h1 class="text-2xl font-extrabold text-white tracking-tight">Welcome to SGS STORE</h1>
+                <p class="text-xs text-slate-400">Sign in to explore best deals and discounts</p>
+            </div>
+
+            <!-- Auth Form -->
+            <form id="authForm" onsubmit="window.handleAuthSubmit(event)" class="space-y-4">
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
+                        <input type="email" id="authEmail" required placeholder="Enter your email" class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-meesho-500 transition-colors">
                     </div>
-                    <p class="text-[11px] max-w-md">India's leading affiliate deals showcase for Books, Fashion, Footwear & Mobiles.</p>
-                    <div class="flex gap-4 font-semibold text-[11px]">
-                        <button onclick="openPrivacyModal()" class="hover:text-white transition">Privacy Policy</button>
-                        <button onclick="openTermsModal()" class="hover:text-white transition">Terms & Conditions</button>
+                    <div id="passwordContainer">
+                        <label class="block text-xs font-semibold text-slate-300 mb-1">Password</label>
+                        <input type="password" id="authPassword" placeholder="Enter your password" class="w-full bg-slate-950/80 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-meesho-500 transition-colors">
                     </div>
                 </div>
-                <div class="flex flex-col sm:flex-row justify-between items-center text-[11px] gap-2">
-                    <p>© 2026 SGS STORE. All rights reserved.</p>
-                    <p class="text-slate-500">Verified Deals on Amazon • Flipkart • Meesho</p>
+
+                <div class="flex items-center justify-between text-xs">
+                    <button type="button" id="toggleAuthModeBtn" onclick="window.toggleAuthMode()" class="text-meesho-400 hover:underline">
+                        Need an account? Register
+                    </button>
+                    <button type="button" onclick="window.handleForgotPassword()" class="text-slate-400 hover:text-slate-200">
+                        Forgot password?
+                    </button>
                 </div>
+
+                <button type="submit" id="authSubmitBtn" class="w-full py-3 bg-gradient-to-r from-meesho-600 to-pink-600 hover:from-meesho-700 hover:to-pink-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-lg shadow-meesho-600/30 transition-all">
+                    Sign In
+                </button>
+            </form>
+
+            <div class="relative flex items-center justify-center">
+                <div class="border-t border-slate-800 w-full"></div>
+                <span class="bg-slate-900 px-3 text-[10px] text-slate-500 uppercase font-semibold">or</span>
             </div>
-        </footer>
 
-    </div>
+            <!-- Google Sign In -->
+            <button onclick="window.handleGoogleSignIn()" class="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs rounded-xl border border-slate-700 flex items-center justify-center gap-2 transition-colors">
+                <i class="fa-brands fa-google text-red-400"></i> Continue with Google
+            </button>
 
-    <!-- USER PROFILE / NAVIGATION DRAWER -->
-    <div id="drawerOverlay" onclick="toggleDrawer()" class="hidden fixed inset-0 bg-black/60 z-50 transition-opacity"></div>
-    <div id="userDrawer" class="fixed top-0 right-0 h-full w-80 max-w-full bg-white z-50 transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl flex flex-col justify-between">
-        <div class="p-5 space-y-5 border-b bg-slate-900 text-white">
-            <div class="flex justify-between items-center">
-                <h3 class="font-black text-base"><i class="fa-solid fa-user-gear text-sgs-500 mr-2"></i> User Account</h3>
-                <button onclick="toggleDrawer()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-full bg-sgs-600 flex items-center justify-center text-white font-black text-xl shadow" id="drawerUserAvatar">
-                    U
-                </div>
-                <div class="min-w-0 flex-1 space-y-0.5">
-                    <p id="drawerUserName" class="font-bold text-sm truncate text-white">User</p>
-                    <p id="drawerUserEmail" class="text-xs text-slate-400 truncate">user@email.com</p>
-                    <p class="text-[10px] font-mono text-sgs-500 truncate">UID: <span id="drawerUserUid"></span></p>
-                </div>
-            </div>
-        </div>
-
-        <div class="p-5 flex-1 space-y-4 overflow-y-auto text-xs font-bold text-slate-700">
-            <!-- WHATSAPP SUPPORT BUTTON -->
-            <a id="btnWhatsappSupport" href="#" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white p-3 rounded-xl flex items-center justify-between shadow transition">
-                <span class="flex items-center gap-2"><i class="fa-brands fa-whatsapp text-lg"></i> WhatsApp Support</span>
-                <i class="fa-solid fa-chevron-right text-xs"></i>
-            </a>
-
-            <div class="space-y-1 pt-2">
-                <button onclick="toggleDrawer(); navigateTo('home');" class="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center gap-2">
-                    <i class="fa-solid fa-house text-sgs-600"></i> Home Page
-                </button>
-                <button onclick="toggleDrawer(); navigateTo('cart');" class="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center gap-2">
-                    <i class="fa-solid fa-bag-shopping text-sgs-600"></i> My Cart / Saved Items
-                </button>
-                <button id="drawerAdminBtn" onclick="toggleDrawer(); navigateTo('admin');" class="hidden w-full text-left p-2.5 rounded-lg bg-amber-50 text-amber-900 border border-amber-200 flex items-center gap-2">
-                    <i class="fa-solid fa-crown text-amber-500"></i> Admin Product Manager
-                </button>
-                <button onclick="openPrivacyModal()" class="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center gap-2">
-                    <i class="fa-solid fa-shield-halved text-slate-500"></i> Privacy Policy
-                </button>
-                <button onclick="openTermsModal()" class="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center gap-2">
-                    <i class="fa-solid fa-file-contract text-slate-500"></i> Terms & Conditions
-                </button>
-            </div>
-        </div>
-
-        <div class="p-4 border-t bg-slate-50">
-            <button onclick="handleSignOut()" class="w-full bg-red-50 text-red-600 hover:bg-red-100 font-bold py-2.5 rounded-xl border border-red-200 text-xs flex items-center justify-center gap-2 transition">
-                <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+            <button onclick="window.skipAuthAndBrowse()" class="w-full text-center text-xs text-slate-400 hover:text-white transition-colors">
+                Skip & Browse Store
             </button>
         </div>
     </div>
 
-    <!-- MODAL: Privacy Policy -->
-    <div id="modalPrivacy" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
-        <div class="bg-white max-w-2xl w-full rounded-2xl p-6 space-y-4 shadow-2xl max-h-[85vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="font-black text-slate-900 text-lg"><i class="fa-solid fa-shield-halved text-sgs-600 mr-2"></i> SGS STORE Privacy Policy</h3>
-                <button onclick="closeModals()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+    <!-- USER ORDERS INSPECTOR MODAL FOR ADMIN -->
+    <div id="userOrdersModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-2xl p-5 space-y-4 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-sm font-bold text-slate-200">User Activity Log: <span id="modalUserUid" class="text-meesho-400 font-mono"></span></h3>
+                <button onclick="window.closeUserModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-            <div class="text-xs text-slate-600 space-y-3 leading-relaxed">
-                <p><strong>Effective Date: August 2026</strong></p>
-                <p>Welcome to <strong>SGS STORE</strong>. We value your trust and are committed to maintaining the privacy and security of your personal information when accessing our affiliate e-commerce platform.</p>
-                
-                <h4 class="font-bold text-slate-800 text-xs">1. Affiliate Disclosure</h4>
-                <p>SGS STORE operates as an official affiliate portal. When you click on "Buy Now", you are securely redirected to partner marketplace websites including Amazon, Flipkart, and Meesho. Purchases take place on their respective secure checkout domains.</p>
-                
-                <h4 class="font-bold text-slate-800 text-xs">2. Information We Collect</h4>
-                <p>We collect basic account information (such as your Name, Email address, and unique user identifier UID) when you register on SGS STORE to personalize your deal recommendations and track saved deals.</p>
-                
-                <h4 class="font-bold text-slate-800 text-xs">3. Payment & Financial Data</h4>
-                <p>SGS STORE does not request, store, or process credit cards, bank account details, or payment credentials on our servers. All financial transactions are completed on official seller websites.</p>
-                
-                <h4 class="font-bold text-slate-800 text-xs">4. Data Protection & Security</h4>
-                <p>Your authentication credentials are managed securely via Firebase Auth. We implement industry-standard encryption protocols to safeguard your account against unauthorized access.</p>
+            <div id="modalUserOrdersList" class="max-h-60 overflow-y-auto space-y-2 text-xs custom-scrollbar">
+                <!-- User clicks rendered dynamically -->
             </div>
-            <button onclick="closeModals()" class="w-full bg-slate-900 text-white font-bold py-2.5 rounded-xl text-xs">Close Privacy Policy</button>
         </div>
     </div>
 
-    <!-- MODAL: Terms & Conditions -->
-    <div id="modalTerms" class="hidden fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
-        <div class="bg-white max-w-2xl w-full rounded-2xl p-6 space-y-4 shadow-2xl max-h-[85vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="font-black text-slate-900 text-lg"><i class="fa-solid fa-file-contract text-sgs-600 mr-2"></i> Terms & Conditions</h3>
-                <button onclick="closeModals()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+    <!-- PRIVACY POLICY MODAL -->
+    <div id="privacyModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-2xl rounded-2xl p-6 space-y-4 shadow-2xl text-xs text-slate-300 max-h-[80vh] overflow-y-auto custom-scrollbar">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-base font-bold text-white">Privacy Policy</h3>
+                <button onclick="window.closeModals()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-            <div class="text-xs text-slate-600 space-y-3 leading-relaxed">
-                <p><strong>Terms of Use Agreement</strong></p>
-                <p>By accessing SGS STORE, you agree to comply with the following terms and conditions:</p>
-                
-                <h4 class="font-bold text-slate-800 text-xs">1. Product Pricing & Availability</h4>
-                <p>Product prices, MRPs, discounts, and inventory availability displayed on SGS STORE are updated dynamically from partner feeds. The final binding price is the price listed on the merchant checkout page (Amazon, Flipkart, or Meesho) at the moment of purchase.</p>
-                
-                <h4 class="font-bold text-slate-800 text-xs">2. Product Warranty & Returns</h4>
-                <p>All shipping, order tracking, returns, exchanges, and warranty claims are governed solely by the policies of the respective merchant store where the product is purchased.</p>
-                
-                <h4 class="font-bold text-slate-800 text-xs">3. User Conduct</h4>
-                <p>Users must not attempt to breach platform security, reverse engineer application logic, or submit automated queries to the system.</p>
+            <div class="space-y-3 leading-relaxed">
+                <p>Welcome to <strong>SGS STORE</strong>. We respect your privacy and are committed to protecting your personal information.</p>
+                <h4 class="font-bold text-slate-100">1. Information Collection</h4>
+                <p>When you browse SGS STORE, we may log anonymous session analytics and affiliate link click redirections to improve our product offerings.</p>
+                <h4 class="font-bold text-slate-100">2. Affiliate Disclosure</h4>
+                <p>SGS STORE participates in various affiliate programs (including Amazon Associates, Flipkart, and Meesho). Clicking "Buy Now" redirects you to third-party seller websites where purchases are completed securely.</p>
+                <h4 class="font-bold text-slate-100">3. Data Security</h4>
+                <p>We use Firebase authentication and cloud databases to ensure safe data handling. We never store credit card or payment information on our servers.</p>
             </div>
-            <button onclick="closeModals()" class="w-full bg-slate-900 text-white font-bold py-2.5 rounded-xl text-xs">I Understand & Accept</button>
         </div>
     </div>
 
-    <!-- FIREBASE MODULE SCRIPT -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { 
-            getAuth, 
-            signInWithEmailAndPassword, 
-            createUserWithEmailAndPassword, 
-            sendPasswordResetEmail, 
-            signInWithPopup, 
-            GoogleAuthProvider, 
-            signOut, 
-            onAuthStateChanged 
-        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { 
-            getFirestore, 
-            doc, 
-            setDoc, 
-            getDoc, 
-            collection, 
-            onSnapshot, 
-            addDoc, 
-            deleteDoc, 
-            serverTimestamp 
-        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    <!-- TERMS & CONDITIONS MODAL -->
+    <div id="termsModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-2xl rounded-2xl p-6 space-y-4 shadow-2xl text-xs text-slate-300 max-h-[80vh] overflow-y-auto custom-scrollbar">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-base font-bold text-white">Terms & Conditions</h3>
+                <button onclick="window.closeModals()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="space-y-3 leading-relaxed">
+                <p>By using <strong>SGS STORE</strong>, you agree to comply with the following terms:</p>
+                <h4 class="font-bold text-slate-100">1. Product Pricing & Availability</h4>
+                <p>Prices and discounts listed on SGS STORE are synced regularly with affiliate partners. Final pricing and stock availability are determined at checkout on the respective seller's platform.</p>
+                <h4 class="font-bold text-slate-100">2. External Links</h4>
+                <p>SGS STORE contains links to third-party websites. We are not responsible for the content or policies of external shopping sites.</p>
+            </div>
+        </div>
+    </div>
 
-        // REAL-TIME FIREBASE CONFIGURATION PROVIDED BY USER
+    <script>
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDlXTuZf2q6sN_UgbOCqcPWW55Ke0iYBiU",
             authDomain: "sgs-shoping.firebaseapp.com",
@@ -634,376 +539,769 @@
             appId: "1:55501257124:web:b0f0a15ac96916c302a931"
         };
 
-        const ADMIN_UID = "sH7GnshitlUshv6bo6EV8sCMZ9w2";
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'sgs-shoping';
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        window.sgsState.db = db;
         window.sgsState.auth = auth;
-        window.sgsState.appId = appId;
-        window.sgsState.ADMIN_UID = ADMIN_UID;
+        window.sgsState.db = db;
 
-        // AUTH STATE OBSERVER
-        onAuthStateChanged(auth, (user) => {
+        // Base64 WhatsApp Number: 7462986977 -> NzQ2Mjk4Njk3Nw==
+        const encodedNum = "NzQ2Mjk4Njk3Nw==";
+        const decodedNum = atob(encodedNum);
+        document.getElementById('whatsappSupportBtn').href = `https://wa.me/91${decodedNum}?text=Hello%20SGS%20STORE%20Support`;
+
+        // Authentication state listener
+        auth.onAuthStateChanged((user) => {
             if (user) {
                 window.sgsState.currentUser = user;
-                window.sgsState.isAdmin = (user.uid === ADMIN_UID);
-
+                window.sgsState.isAdmin = (user.uid === window.sgsState.ADMIN_UID);
+                
                 document.getElementById('authScreen').classList.add('hidden');
-                document.getElementById('mainApp').classList.remove('hidden');
+                document.getElementById('drawerUserName').innerText = user.displayName || user.email.split('@')[0];
+                document.getElementById('drawerUserUid').innerText = `#${window.sgsState.numericUid}`;
+                document.getElementById('authDrawerActionBtn').innerHTML = `<i class="fa-solid fa-right-from-bracket text-red-400"></i> Logout`;
 
-                // Update UI Profile Drawer Details
-                document.getElementById('drawerUserName').innerText = user.displayName || (user.email ? user.email.split('@')[0] : 'User');
-                document.getElementById('drawerUserEmail').innerText = user.email || 'Google User';
-                document.getElementById('drawerUserUid').innerText = user.uid;
-                document.getElementById('drawerUserAvatar').innerText = (user.displayName || user.email || 'U')[0].toUpperCase();
-
-                // Admin UI Badges
                 if (window.sgsState.isAdmin) {
-                    document.getElementById('headerAdminTag').classList.remove('hidden');
-                    document.getElementById('drawerAdminBtn').classList.remove('hidden');
-                    document.getElementById('adminUidDisplay').innerText = user.uid;
-                } else {
-                    document.getElementById('headerAdminTag').classList.add('hidden');
-                    document.getElementById('drawerAdminBtn').classList.add('hidden');
+                    document.getElementById('adminHeaderBtn').classList.remove('hidden');
+                    document.getElementById('adminDrawerBtn').classList.remove('hidden');
+                    document.getElementById('seedDataBtn').classList.remove('hidden');
                 }
-
-                // Attach WhatsApp Support Number (Base64 Decoded: "7462986977")
-                try {
-                    const waNum = atob("NzQ2Mjk4Njk3Nw==");
-                    const waBtn = document.getElementById('btnWhatsappSupport');
-                    if (waBtn) waBtn.href = `https://wa.me/91${waNum}?text=Hello%20SGS%20STORE%20Support,%20I%20need%20help`;
-                } catch(e) {
-                    console.error("WA Decode Error", e);
-                }
-
-                // Start Firestore Realtime Sync
-                initFirestoreSync();
             } else {
                 window.sgsState.currentUser = null;
-                document.getElementById('mainApp').classList.add('hidden');
-                document.getElementById('authScreen').classList.remove('hidden');
+                window.sgsState.isAdmin = false;
+                document.getElementById('drawerUserName').innerText = "Guest User";
+                document.getElementById('drawerUserUid').innerText = `#${window.sgsState.numericUid}`;
+                document.getElementById('authDrawerActionBtn').innerHTML = `<i class="fa-solid fa-right-to-bracket text-emerald-400"></i> Login / Register`;
+                document.getElementById('adminHeaderBtn').classList.add('hidden');
+                document.getElementById('adminDrawerBtn').classList.add('hidden');
+                document.getElementById('seedDataBtn').classList.add('hidden');
             }
+            initFirestoreSync();
         });
 
-        // FIRESTORE REALTIME PRODUCTS LISTENERS
         function initFirestoreSync() {
-            const productsCol = collection(db, 'artifacts', appId, 'public', 'data', 'products');
-            onSnapshot(productsCol, (snapshot) => {
-                const prods = [];
-                snapshot.forEach((doc) => {
-                    prods.push({ id: doc.id, ...doc.data() });
+            try {
+                const productsCol = db.collection('artifacts').doc(window.sgsState.appId).collection('public').doc('data').collection('products');
+                
+                productsCol.onSnapshot((snapshot) => {
+                    const prods = [];
+                    snapshot.forEach((doc) => {
+                        prods.push({ id: doc.id, ...doc.data() });
+                    });
+                    window.sgsState.products = prods;
+                    window.sgsState.useFallback = false;
+                    saveLocalProducts(prods);
+                    
+                    if (typeof window.renderProducts === 'function') {
+                        window.renderProducts();
+                    }
+                    if (typeof window.renderAdminTable === 'function') {
+                        window.renderAdminTable();
+                    }
+                }, (error) => {
+                    console.warn("Firestore sync unavailable, using LocalStorage fallback mode:", error.message);
+                    enableLocalStorageFallback();
                 });
-                window.sgsState.products = prods;
-                if (typeof window.renderProducts === 'function') window.renderProducts();
-                if (typeof window.renderAdminTable === 'function') window.renderAdminTable();
-            }, (error) => {
-                console.error("Firestore Products Snapshot Error:", error);
-            });
 
-            // If admin, sync user order clicks
-            if (window.sgsState.isAdmin) {
-                const ordersCol = collection(db, 'artifacts', appId, 'public', 'data', 'user_orders');
-                onSnapshot(ordersCol, (snapshot) => {
-                    const ordersList = document.getElementById('adminUserOrdersList');
-                    const countBadge = document.getElementById('orderLogCount');
-                    if (!ordersList) return;
-                    ordersList.innerHTML = '';
+                // Listen for user orders / clicks
+                const ordersCol = db.collection('artifacts').doc(window.sgsState.appId).collection('public').doc('data').collection('orders');
+                ordersCol.onSnapshot((snapshot) => {
                     const orders = [];
                     snapshot.forEach((doc) => {
                         orders.push({ id: doc.id, ...doc.data() });
                     });
                     window.sgsState.userOrders = orders;
-                    if (countBadge) countBadge.innerText = `${orders.length} Clicks`;
-
-                    if (orders.length === 0) {
-                        ordersList.innerHTML = `<p class="text-xs text-slate-400">No user click logs recorded yet.</p>`;
-                        return;
+                    if (window.sgsState.isAdmin && typeof window.renderAdminOrders === 'function') {
+                        window.renderAdminOrders();
                     }
-                    orders.forEach((o) => {
-                        const card = document.createElement('div');
-                        card.className = "bg-slate-50 p-2.5 rounded-lg border text-xs space-y-1 hover:border-sgs-500 transition cursor-pointer";
-                        card.onclick = () => window.inspectUserOrders(o.userId);
-                        card.innerHTML = `
-                            <div class="flex justify-between font-bold text-slate-800">
-                                <span><i class="fa-solid fa-user text-sgs-600 mr-1"></i> UID: <span class="font-mono text-[10px] text-blue-600 hover:underline">${o.userId}</span></span>
-                                <span class="text-[10px] text-slate-400">${o.timestamp ? new Date(o.timestamp.seconds * 1000).toLocaleString() : 'Just now'}</span>
+                }, (err) => {
+                    console.warn("Orders listener offline fallback active.");
+                });
+            } catch (e) {
+                console.warn("Firestore initialization error, switching to fallback:", e);
+                enableLocalStorageFallback();
+            }
+        }
+
+        function getInitialSampleProducts() {
+            return [
+                { id: 'sample-1', category: 'books', title: 'SSC GD Constable Guide 2026', store: 'Amazon', mrp: 499, price: 249, image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400', affiliateUrl: 'https://amazon.in', description: 'Complete study guide for SSC GD Exam with previous solved papers.', author: 'Arihant' },
+                { id: 'sample-2', category: 'books', title: 'Railway NTPC & Group D Math Special', store: 'Flipkart', mrp: 399, price: 199, image: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=400', affiliateUrl: 'https://flipkart.com', description: 'Comprehensive Mathematics guide tailored for Railway competitive exams.', author: 'Youth Competition' },
+                { id: 'sample-3', category: 'clothes', title: 'Men Printed Cotton Casual T-Shirt', store: 'Meesho', mrp: 699, price: 229, image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=400', affiliateUrl: 'https://meesho.com', description: '100% pure breathable cotton round neck t-shirt.', size: 'M, L, XL' },
+                { id: 'sample-4', category: 'clothes', title: 'Women Anarkali Rayon Kurti Set', store: 'Meesho', mrp: 1299, price: 399, image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400', affiliateUrl: 'https://meesho.com', description: 'Elegant printed kurti set suitable for daily and festive wear.', size: 'S, M, L' },
+                { id: 'sample-5', category: 'slippers', title: 'Lightweight Ortho Comfort Chappal', store: 'Amazon', mrp: 499, price: 189, image: 'https://images.unsplash.com/photo-1603808033192-082d6919d3e1?w=400', affiliateUrl: 'https://amazon.in', description: 'Extra soft memory foam sole daily wear slippers.', size: '7, 8, 9, 10' },
+                { id: 'sample-6', category: 'mobiles', title: 'Redmi 13C 5G (4GB RAM, 128GB)', store: 'Amazon', mrp: 13999, price: 9999, image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400', affiliateUrl: 'https://amazon.in', description: '5G Smartphone with 50MP AI Camera and 5000mAh Battery.', ramRom: '4GB RAM | 128GB ROM' }
+            ];
+        }
+
+        function enableLocalStorageFallback() {
+            window.sgsState.useFallback = true;
+            let savedProds = null;
+            try {
+                savedProds = JSON.parse(localStorage.getItem('sgs_products_fallback'));
+            } catch(e) {}
+
+            if (savedProds && Array.isArray(savedProds) && savedProds.length > 0) {
+                window.sgsState.products = savedProds;
+            } else {
+                window.sgsState.products = getInitialSampleProducts();
+                saveLocalProducts(window.sgsState.products);
+            }
+
+            try {
+                const savedOrders = JSON.parse(localStorage.getItem('sgs_orders_fallback'));
+                if (savedOrders && Array.isArray(savedOrders)) {
+                    window.sgsState.userOrders = savedOrders;
+                }
+            } catch(e) {}
+
+            if (typeof window.renderProducts === 'function') window.renderProducts();
+            if (typeof window.renderAdminTable === 'function') window.renderAdminTable();
+            if (typeof window.renderAdminOrders === 'function') window.renderAdminOrders();
+        }
+
+        function saveLocalProducts(prods) {
+            try {
+                localStorage.setItem('sgs_products_fallback', JSON.stringify(prods));
+            } catch(e) {}
+        }
+
+        function saveLocalOrders(orders) {
+            try {
+                localStorage.setItem('sgs_orders_fallback', JSON.stringify(orders));
+            } catch(e) {}
+        }
+
+        // Render Products Grid
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            const emptyState = document.getElementById('emptyState');
+            if(!grid) return;
+            grid.innerHTML = '';
+
+            const products = window.sgsState.products || [];
+            let filtered = products.filter(p => {
+                const pCat = (p.category || '').toLowerCase().trim();
+                const curCat = (window.sgsState.currentCategory || 'all').toLowerCase().trim();
+                const matchesCat = curCat === 'all' || pCat === curCat;
+                
+                const pTitle = p.title ? p.title.toLowerCase() : '';
+                const pDesc = p.description ? p.description.toLowerCase() : '';
+                const pStore = p.store ? p.store.toLowerCase() : '';
+                const q = (window.sgsState.searchQuery || '').toLowerCase().trim();
+                const matchesSearch = !q || pTitle.includes(q) || pDesc.includes(q) || pStore.includes(q);
+                
+                return matchesCat && matchesSearch;
+            });
+
+            const countElem = document.getElementById('productCount');
+            if(countElem) countElem.innerText = `${filtered.length} Items`;
+
+            if (filtered.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            filtered.forEach(p => {
+                const mrp = parseFloat(p.mrp) || 0;
+                const price = parseFloat(p.price) || 0;
+                const discount = mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0;
+
+                const card = document.createElement('div');
+                card.className = "bg-slate-800/80 rounded-2xl border border-slate-700/80 overflow-hidden flex flex-col justify-between hover:border-slate-600 transition-all shadow-lg group";
+                card.innerHTML = `
+                    <div class="relative cursor-pointer" onclick="window.renderProductDetail('${p.id}')">
+                        <img src="${p.image || 'https://placehold.co/300x300/1e293b/ffffff?text=Product'}" alt="${p.title}" class="w-full h-36 sm:h-44 object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/300x300/1e293b/ffffff?text=No+Image'">
+                        ${discount > 0 ? `<span class="absolute top-2 left-2 bg-emerald-500 text-slate-950 font-black text-[10px] px-2 py-0.5 rounded-full shadow-md">${discount}% OFF</span>` : ''}
+                        <span class="absolute bottom-2 right-2 bg-slate-950/80 backdrop-blur-md text-slate-300 text-[10px] px-1.5 py-0.5 rounded border border-slate-700"><i class="fa-solid fa-store text-amber-400 mr-1"></i>${p.store || 'Store'}</span>
+                    </div>
+                    <div class="p-3 flex-1 flex flex-col justify-between space-y-2">
+                        <div>
+                            <h3 onclick="window.renderProductDetail('${p.id}')" class="text-xs sm:text-sm font-semibold text-slate-200 line-clamp-2 cursor-pointer hover:text-meesho-400 transition-colors">${p.title}</h3>
+                            <div class="flex items-center gap-1.5 mt-1">
+                                <span class="text-sm font-bold text-white">₹${price}</span>
+                                ${mrp > price ? `<span class="text-xs text-slate-500 line-through">₹${mrp}</span>` : ''}
                             </div>
-                            <p class="text-slate-600"><span class="font-bold">Clicked:</span> ${o.productTitle || 'Product'} (${o.store || 'Store'}) - ₹${o.price || 0}</p>
-                        `;
-                        ordersList.appendChild(card);
-                    });
-                }, (error) => {
-                    console.error("Orders Snapshot Error:", error);
+                        </div>
+                        <div class="pt-2 border-t border-slate-700/60 flex items-center gap-1.5">
+                            <button onclick="window.handleBuyNow('${p.id}')" class="flex-1 py-1.5 bg-gradient-to-r from-meesho-600 to-pink-600 hover:from-meesho-700 hover:to-pink-700 text-white font-bold text-xs rounded-lg shadow-md transition-all flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-bolt text-[10px]"></i> Buy Now
+                            </button>
+                            <button onclick="window.addToCart('${p.id}')" class="p-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 rounded-lg text-xs transition-colors" title="Add to Cart">
+                                <i class="fa-solid fa-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Handle Affiliate Direct Buy Now Click
+        function handleBuyNow(productId) {
+            const product = window.sgsState.products.find(p => p.id === productId);
+            if (!product) return;
+
+            // Log click order to Firestore or Local Fallback
+            const uid = window.sgsState.currentUser ? window.sgsState.currentUser.uid : `guest-${window.sgsState.numericUid}`;
+            const clickData = {
+                id: 'ord-' + Date.now(),
+                userUid: uid,
+                productId: product.id,
+                productTitle: product.title,
+                store: product.store || 'Store',
+                price: product.price,
+                affiliateUrl: product.affiliateUrl || '#',
+                timestamp: { seconds: Math.floor(Date.now() / 1000) }
+            };
+
+            if (!window.sgsState.useFallback) {
+                const ordersCol = db.collection('artifacts').doc(window.sgsState.appId).collection('public').doc('data').collection('orders');
+                ordersCol.add({
+                    ...clickData,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                }).catch(err => {
+                    console.warn("Logging order to local storage fallback");
+                    window.sgsState.userOrders.unshift(clickData);
+                    saveLocalOrders(window.sgsState.userOrders);
+                });
+            } else {
+                window.sgsState.userOrders.unshift(clickData);
+                saveLocalOrders(window.sgsState.userOrders);
+            }
+
+            window.showToast(`Redirecting to ${product.store || 'Store'}...`);
+            setTimeout(() => {
+                window.open(product.affiliateUrl || '#', '_blank');
+            }, 600);
+        }
+
+        function renderProductDetail(productId) {
+            const product = window.sgsState.products.find(p => p.id === productId);
+            if(!product) return;
+
+            window.sgsState.activeProduct = product;
+            const detailContainer = document.getElementById('productDetailContent');
+            const mrp = parseFloat(product.mrp) || 0;
+            const price = parseFloat(product.price) || 0;
+            const discount = mrp > price ? Math.round(((mrp - price) / mrp) * 100) : 0;
+
+            detailContainer.innerHTML = `
+                <div class="md:w-1/2 space-y-3">
+                    <img src="${product.image}" alt="${product.title}" class="w-full h-64 sm:h-80 object-cover rounded-xl border border-slate-700">
+                </div>
+                <div class="md:w-1/2 space-y-4 mt-4 md:mt-0">
+                    <div>
+                        <span class="text-xs bg-meesho-500/20 text-meesho-400 border border-meesho-500/30 px-2.5 py-1 rounded-full font-semibold">${product.store || 'Store'}</span>
+                        <h1 class="text-lg sm:text-xl font-bold text-white mt-2">${product.title}</h1>
+                        <p class="text-xs text-slate-400 mt-1">${product.description || 'No description provided.'}</p>
+                    </div>
+
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-2xl font-extrabold text-white">₹${price}</span>
+                        ${mrp > price ? `<span class="text-sm text-slate-500 line-through">₹${mrp}</span>` : ''}
+                        ${discount > 0 ? `<span class="text-xs font-bold text-emerald-400">${discount}% OFF</span>` : ''}
+                    </div>
+
+                    ${product.size ? `
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">Available Sizes / Variants</label>
+                            <span class="inline-block bg-slate-900 px-3 py-1 rounded-lg text-xs text-slate-200 border border-slate-700">${product.size}</span>
+                        </div>
+                    ` : ''}
+
+                    ${product.ramRom ? `
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-300 mb-1">RAM / ROM Specs</label>
+                            <span class="inline-block bg-slate-900 px-3 py-1 rounded-lg text-xs text-slate-200 border border-slate-700">${product.ramRom}</span>
+                        </div>
+                    ` : ''}
+
+                    <div class="pt-4 border-t border-slate-700 flex gap-3">
+                        <button onclick="window.handleBuyNow('${product.id}')" class="flex-1 py-3 bg-gradient-to-r from-meesho-600 to-pink-600 hover:from-meesho-700 hover:to-pink-700 text-white font-bold text-sm rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-bolt"></i> Buy Now on ${product.store || 'Store'}
+                        </button>
+                        <button onclick="window.addToCart('${product.id}')" class="px-4 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl text-sm font-semibold transition-colors">
+                            <i class="fa-solid fa-cart-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+            window.navigateTo('detail');
+        }
+
+        function filterCategory(cat) {
+            window.sgsState.currentCategory = cat;
+            document.querySelectorAll('.cat-pill').forEach(btn => {
+                if (btn.dataset.cat === cat) {
+                    btn.className = "cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-meesho-600 text-white shadow-md shadow-meesho-600/20 transition-all";
+                } else {
+                    btn.className = "cat-pill px-3.5 py-1.5 rounded-full text-xs font-medium whitespace-nowrap bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition-all";
+                }
+            });
+            
+            const titles = {
+                all: 'All Products',
+                books: 'Books & Exam Guides',
+                clothes: 'Clothing & Apparel',
+                slippers: 'Footwear & Slippers',
+                mobiles: 'Mobiles & Electronics'
+            };
+            document.getElementById('currentCategoryTitle').innerText = titles[cat] || 'Products';
+            renderProducts();
+            if (window.sgsState.currentView !== 'home') {
+                navigateTo('home');
+            }
+        }
+
+        function handleSearch(query) {
+            window.sgsState.searchQuery = query;
+            const clearBtn = document.getElementById('searchClearBtn');
+            if (query) {
+                clearBtn.classList.remove('hidden');
+            } else {
+                clearBtn.classList.add('hidden');
+            }
+            renderProducts();
+        }
+
+        // Cart Actions
+        function addToCart(productId) {
+            const product = window.sgsState.products.find(p => p.id === productId);
+            if(!product) return;
+            window.sgsState.cart.push(product);
+            try {
+                localStorage.setItem('sgs_cart', JSON.stringify(window.sgsState.cart));
+            } catch(e){}
+            updateCartBadge();
+            window.showToast("Added to Cart!");
+        }
+
+        function updateCartBadge() {
+            const badge = document.getElementById('cartBadge');
+            const count = window.sgsState.cart.length;
+            if (count > 0) {
+                badge.innerText = count;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function clearCart() {
+            window.sgsState.cart = [];
+            localStorage.removeItem('sgs_cart');
+            updateCartBadge();
+            renderCart();
+            window.showToast("Cart cleared");
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartItemsList');
+            const summary = document.getElementById('cartSummary');
+            container.innerHTML = '';
+
+            if (window.sgsState.cart.length === 0) {
+                container.innerHTML = `<div class="text-center py-12 text-slate-400 text-xs">Your cart is empty.</div>`;
+                summary.classList.add('hidden');
+                return;
+            }
+
+            let total = 0;
+            window.sgsState.cart.forEach((p, index) => {
+                total += (parseFloat(p.price) || 0);
+                const item = document.createElement('div');
+                item.className = "bg-slate-800/80 p-3 rounded-xl border border-slate-700 flex items-center justify-between gap-3 text-xs";
+                item.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <img src="${p.image}" class="w-12 h-12 object-cover rounded-lg">
+                        <div>
+                            <h4 class="font-bold text-white truncate max-w-[180px]">${p.title}</h4>
+                            <span class="text-slate-400">₹${p.price}</span>
+                        </div>
+                    </div>
+                    <button onclick="window.removeFromCart(${index})" class="text-red-400 hover:text-red-300 p-2"><i class="fa-solid fa-trash"></i></button>
+                `;
+                container.appendChild(item);
+            });
+
+            document.getElementById('cartTotal').innerText = `₹${total}`;
+            summary.classList.remove('hidden');
+        }
+
+        function removeFromCart(index) {
+            window.sgsState.cart.splice(index, 1);
+            localStorage.setItem('sgs_cart', JSON.stringify(window.sgsState.cart));
+            updateCartBadge();
+            renderCart();
+        }
+
+        function toggleCategoryFields() {
+            const cat = document.getElementById('adminCategory').value;
+            const container = document.getElementById('dynamicFields');
+            container.innerHTML = '';
+
+            if (cat === 'clothes' || cat === 'slippers') {
+                container.innerHTML = `
+                    <div class="col-span-full">
+                        <label class="block text-slate-300 font-medium mb-1">Available Sizes (comma separated)</label>
+                        <input type="text" id="adminSize" placeholder="e.g. S, M, L, XL or 7, 8, 9, 10" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-slate-200">
+                    </div>
+                `;
+            } else if (cat === 'mobiles') {
+                container.innerHTML = `
+                    <div class="col-span-full">
+                        <label class="block text-slate-300 font-medium mb-1">RAM / Storage Specs</label>
+                        <input type="text" id="adminRamRom" placeholder="e.g. 6GB RAM | 128GB Storage" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-slate-200">
+                    </div>
+                `;
+            } else if (cat === 'books') {
+                container.innerHTML = `
+                    <div class="col-span-full">
+                        <label class="block text-slate-300 font-medium mb-1">Author / Publisher</label>
+                        <input type="text" id="adminAuthor" placeholder="e.g. Arihant Publications / Lucent" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-slate-200">
+                    </div>
+                `;
+            }
+        }
+
+        function handleSaveProduct(e) {
+            e.preventDefault();
+            const editId = document.getElementById('adminEditProductId').value;
+            const cat = document.getElementById('adminCategory').value;
+            const title = document.getElementById('adminTitle').value;
+            const store = document.getElementById('adminStore').value;
+            const mrp = parseFloat(document.getElementById('adminMrp').value) || 0;
+            const price = parseFloat(document.getElementById('adminPrice').value) || 0;
+            const image = document.getElementById('adminImage').value;
+            const affiliateUrl = document.getElementById('adminAffiliateUrl').value;
+            const description = document.getElementById('adminDescription').value;
+
+            const sizeElem = document.getElementById('adminSize');
+            const ramRomElem = document.getElementById('adminRamRom');
+            const authorElem = document.getElementById('adminAuthor');
+
+            const productData = {
+                category: cat,
+                title,
+                store,
+                mrp,
+                price,
+                image,
+                affiliateUrl,
+                description,
+                size: sizeElem ? sizeElem.value : '',
+                ramRom: ramRomElem ? ramRomElem.value : '',
+                author: authorElem ? authorElem.value : ''
+            };
+
+            if (window.sgsState.useFallback) {
+                if (editId) {
+                    const idx = window.sgsState.products.findIndex(p => p.id === editId);
+                    if (idx !== -1) {
+                        window.sgsState.products[idx] = { ...window.sgsState.products[idx], ...productData };
+                    }
+                } else {
+                    productData.id = 'prod-' + Date.now();
+                    window.sgsState.products.unshift(productData);
+                }
+                saveLocalProducts(window.sgsState.products);
+                renderProducts();
+                renderAdminTable();
+                window.showToast(editId ? "Product updated locally!" : "Product added locally!");
+                resetAdminForm();
+                return;
+            }
+
+            const productsCol = db.collection('artifacts').doc(window.sgsState.appId).collection('public').doc('data').collection('products');
+
+            if (editId) {
+                productsCol.doc(editId).update({
+                    ...productData,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    window.showToast("Product updated!");
+                    resetAdminForm();
+                }).catch(() => {
+                    enableLocalStorageFallback();
+                    handleSaveProduct(e);
+                });
+            } else {
+                productsCol.add({
+                    ...productData,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    window.showToast("Product added successfully!");
+                    resetAdminForm();
+                }).catch(() => {
+                    enableLocalStorageFallback();
+                    handleSaveProduct(e);
                 });
             }
         }
 
-        // AUTH FUNCTIONS
-        window.handleEmailLogin = async function(e) {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const pass = document.getElementById('loginPass').value;
-            const btn = document.getElementById('btnLoginSubmit');
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Signing In...`;
+        function editAdminProduct(id) {
+            const p = window.sgsState.products.find(item => item.id === id);
+            if(!p) return;
 
-            try {
-                await signInWithEmailAndPassword(auth, email, pass);
-                window.showToast("Signed in successfully!");
-            } catch (err) {
-                window.showToast("Login Error: " + (err.code ? err.code.replace('auth/', '') : err.message));
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = `<i class="fa-solid fa-right-to-bracket mr-1"></i> Sign In to Store`;
-            }
-        };
+            document.getElementById('adminEditProductId').value = p.id;
+            document.getElementById('adminCategory').value = p.category || 'books';
+            toggleCategoryFields();
 
-        window.handleEmailRegister = async function(e) {
-            e.preventDefault();
-            const email = document.getElementById('signupEmail').value;
-            const pass = document.getElementById('signupPass').value;
-            const btn = document.getElementById('btnSignupSubmit');
-            btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Creating Account...`;
+            document.getElementById('adminTitle').value = p.title || '';
+            document.getElementById('adminStore').value = p.store || 'Amazon';
+            document.getElementById('adminMrp').value = p.mrp || '';
+            document.getElementById('adminPrice').value = p.price || '';
+            document.getElementById('adminImage').value = p.image || '';
+            document.getElementById('adminAffiliateUrl').value = p.affiliateUrl || '';
+            document.getElementById('adminDescription').value = p.description || '';
 
-            try {
-                await createUserWithEmailAndPassword(auth, email, pass);
-                window.showToast("Account registered!");
-            } catch (err) {
-                window.showToast("Registration Error: " + (err.code ? err.code.replace('auth/', '') : err.message));
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = `<i class="fa-solid fa-user-plus mr-1"></i> Register New Account`;
-            }
-        };
+            if (p.size && document.getElementById('adminSize')) document.getElementById('adminSize').value = p.size;
+            if (p.ramRom && document.getElementById('adminRamRom')) document.getElementById('adminRamRom').value = p.ramRom;
+            if (p.author && document.getElementById('adminAuthor')) document.getElementById('adminAuthor').value = p.author;
+        }
 
-        window.handleGoogleLogin = async function() {
-            const provider = new GoogleAuthProvider();
-            try {
-                await signInWithPopup(auth, provider);
-                window.showToast("Google Login Success!");
-            } catch (err) {
-                window.showToast("Google Sign-In Error: " + err.message);
-            }
-        };
-
-        window.showForgotPassword = async function() {
-            const email = prompt("Enter your registered email address to receive password reset link:");
-            if (email) {
-                try {
-                    await sendPasswordResetEmail(auth, email);
-                    window.showToast("Reset email sent! Please check your inbox.");
-                } catch (err) {
-                    window.showToast("Error sending reset email: " + err.message);
+        function deleteAdminProduct(id) {
+            if(confirm("Are you sure you want to delete this product?")) {
+                if (window.sgsState.useFallback) {
+                    window.sgsState.products = window.sgsState.products.filter(p => p.id !== id);
+                    saveLocalProducts(window.sgsState.products);
+                    renderProducts();
+                    renderAdminTable();
+                    window.showToast("Product deleted locally!");
+                    return;
                 }
-            }
-        };
 
-        window.handleSignOut = async function() {
-            try {
-                await signOut(auth);
-                window.showToast("Signed out.");
-            } catch(e) {
-                window.showToast("Sign out error.");
-            }
-        };
-
-        // SAVE PRODUCT TO FIRESTORE
-        window.handleSaveProduct = async function(e) {
-            e.preventDefault();
-            if (!window.sgsState.isAdmin) {
-                alert("Only authorized admin UID can modify products.");
-                return;
-            }
-
-            const editId = document.getElementById('editProductId').value;
-            const category = document.getElementById('pCategory').value;
-
-            const priceVal = parseFloat(document.getElementById('pPrice').value) || 0;
-            const mrpVal = parseFloat(document.getElementById('pMrp').value) || 0;
-
-            const productData = {
-                title: document.getElementById('pTitle').value,
-                category: category,
-                price: priceVal,
-                mrp: mrpVal,
-                store: document.getElementById('pStore').value,
-                affiliateUrl: document.getElementById('pAffiliateUrl').value,
-                image: document.getElementById('pImage').value,
-                description: document.getElementById('pDesc').value,
-                rating: '4.8',
-                reviews: '150+',
-                updatedAt: serverTimestamp()
-            };
-
-            if(category === 'mobiles') {
-                productData.ram = document.getElementById('pRam').value;
-                productData.rom = document.getElementById('pRom').value;
-                productData.specs = document.getElementById('pSpecs').value;
-            } else if(category === 'clothes') {
-                productData.clothSizes = document.getElementById('pClothSizes').value;
-                productData.fabric = document.getElementById('pFabric').value;
-            } else if(category === 'slippers') {
-                productData.footSizes = document.getElementById('pFootSizes').value;
-                productData.sole = document.getElementById('pSole').value;
-            } else if(category === 'books') {
-                productData.bookExam = document.getElementById('pBookExam').value;
-                productData.bookLang = document.getElementById('pBookLang').value;
-            }
-
-            try {
-                if (editId) {
-                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'products', editId);
-                    await setDoc(docRef, productData, { merge: true });
-                    window.showToast("Product updated in Firestore!");
-                } else {
-                    const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'products');
-                    await addDoc(colRef, productData);
-                    window.showToast("New product saved to Firestore!");
-                }
-                window.resetAdminForm();
-            } catch (err) {
-                window.showToast("Firestore Save Error: " + err.message);
-            }
-        };
-
-        window.deleteAdminProduct = async function(id) {
-            if (!window.sgsState.isAdmin) return;
-            if (confirm("Are you sure you want to delete this product from Firestore?")) {
-                try {
-                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'products', id));
+                db.collection('artifacts').doc(window.sgsState.appId).collection('public').doc('data').collection('products').doc(id).delete().then(() => {
                     window.showToast("Product deleted!");
-                } catch(err) {
-                    window.showToast("Delete Error: " + err.message);
-                }
-            }
-        };
-
-        // SEED SAMPLE DATA TO FIRESTORE
-        window.seedInitialData = async function() {
-            if (!window.sgsState.isAdmin) return;
-            if (!confirm("Add initial sample products (Books, Clothes, Slippers, Mobiles) to Firebase?")) return;
-
-            const samples = [
-                { title: 'SSC GD Constable Exam Guide 2026', category: 'books', price: 189, mrp: 399, rating: '4.8', reviews: '1,840', store: 'Amazon', affiliateUrl: 'https://www.amazon.in/s?k=SSC+GD+Book', image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400', description: 'Updated syllabus guide for SSC GD Constable Exam.', bookExam: 'SSC GD 2026', bookLang: 'Hindi' },
-                { title: 'Railway NTPC & Group D Solved Papers', category: 'books', price: 199, mrp: 450, rating: '4.7', reviews: '1,290', store: 'Flipkart', affiliateUrl: 'https://www.flipkart.com/search?q=railway+ntpc+book', image: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400', description: '35+ Fully Solved papers with explanations.', bookExam: 'RRB Railway', bookLang: 'Hindi & English' },
-                { title: 'Men Casual Printed Cotton T-Shirt', category: 'clothes', price: 219, mrp: 599, rating: '4.5', reviews: '1,780', store: 'Meesho', affiliateUrl: 'https://meesho.com/s/men-tshirt', image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=400', description: 'Soft 100% combed cotton round-neck printed t-shirt.', clothSizes: 'S, M, L, XL', fabric: 'Pure Cotton' },
-                { title: 'Women Soft Sole Doctor Chappal Slipper', category: 'slippers', price: 189, mrp: 499, rating: '4.6', reviews: '1,820', store: 'Amazon', affiliateUrl: 'https://www.amazon.in/s?k=ortho+slippers', image: 'https://images.unsplash.com/photo-1562273138-f46be4ebdf33?w=400', description: 'Orthopaedic slippers for daily home comfort.', footSizes: '4, 5, 6, 7 UK', sole: 'Doctor Cushion' },
-                { title: 'Redmi 5G Smartphone (6GB RAM / 128GB)', category: 'mobiles', price: 10499, mrp: 14999, rating: '4.5', reviews: '12,400', store: 'Amazon', affiliateUrl: 'https://www.amazon.in/s?k=5G+smartphone', image: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=400', description: 'High performance 5G processor, 50MP AI Dual Camera.', ram: '6 GB', rom: '128 GB', specs: '5000 mAh' }
-            ];
-
-            const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'products');
-            for (let item of samples) {
-                await addDoc(colRef, { ...item, updatedAt: serverTimestamp() });
-            }
-            window.showToast("Sample products seeded successfully!");
-        };
-
-        // RECORD AFFILIATE CLICK IN FIRESTORE
-        window.recordAffiliateClick = async function(product) {
-            if (!auth.currentUser) return;
-            try {
-                const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'user_orders');
-                await addDoc(colRef, {
-                    userId: auth.currentUser.uid,
-                    userEmail: auth.currentUser.email || 'N/A',
-                    productId: product.id || 'N/A',
-                    productTitle: product.title || 'N/A',
-                    price: product.price || 0,
-                    store: product.store || 'N/A',
-                    timestamp: serverTimestamp()
+                }).catch(() => {
+                    window.sgsState.products = window.sgsState.products.filter(p => p.id !== id);
+                    saveLocalProducts(window.sgsState.products);
+                    renderProducts();
+                    renderAdminTable();
+                    window.showToast("Product deleted locally!");
                 });
-            } catch(e) {
-                console.error("Error logging click:", e);
             }
-        };
+        }
 
-        // ADMIN INSPECT USER SPECIFIC ORDERS
-        window.inspectUserOrders = function(targetUid) {
-            const container = document.getElementById('inspectOrdersContainer');
-            const uidDisplay = document.getElementById('inspectUid');
-            if(!container || !uidDisplay) return;
+        function resetAdminForm() {
+            document.getElementById('adminProductForm').reset();
+            document.getElementById('adminEditProductId').value = '';
+            toggleCategoryFields();
+        }
 
-            uidDisplay.innerText = targetUid;
+        function renderAdminTable() {
+            const tbody = document.getElementById('adminProductsTable');
+            const count = document.getElementById('adminProductCount');
+            if(!tbody) return;
+            tbody.innerHTML = '';
+
+            const products = window.sgsState.products || [];
+            if(count) count.innerText = products.length;
+
+            products.forEach(p => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-3 font-medium text-white flex items-center gap-2">
+                        <img src="${p.image}" class="w-8 h-8 object-cover rounded">
+                        <span class="truncate max-w-[150px]">${p.title}</span>
+                    </td>
+                    <td class="p-3 capitalize">${p.category}</td>
+                    <td class="p-3 font-bold text-emerald-400">₹${p.price}</td>
+                    <td class="p-3">${p.store}</td>
+                    <td class="p-3 text-right space-x-2">
+                        <button onclick="window.editAdminProduct('${p.id}')" class="text-amber-400 hover:underline"><i class="fa-solid fa-pen"></i></button>
+                        <button onclick="window.deleteAdminProduct('${p.id}')" class="text-red-400 hover:underline"><i class="fa-solid fa-trash"></i></button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderAdminOrders() {
+            const tbody = document.getElementById('adminOrdersTable');
+            if(!tbody) return;
+            tbody.innerHTML = '';
+
+            const orders = window.sgsState.userOrders || [];
+            orders.forEach(o => {
+                const tr = document.createElement('tr');
+                const dateStr = o.timestamp ? new Date(o.timestamp.seconds * 1000).toLocaleString() : 'Just now';
+                tr.innerHTML = `
+                    <td class="p-3 text-slate-400">${dateStr}</td>
+                    <td class="p-3">
+                        <button onclick="window.openUserOrdersModal('${o.userUid}')" class="text-meesho-400 font-mono hover:underline font-bold">
+                            ${o.userUid}
+                        </button>
+                    </td>
+                    <td class="p-3 font-medium text-white">${o.productTitle || 'Product'}</td>
+                    <td class="p-3">${o.store || 'Store'}</td>
+                    <td class="p-3">
+                        <a href="${o.affiliateUrl}" target="_blank" class="text-xs bg-slate-800 text-slate-200 px-2 py-1 rounded border border-slate-700">Link</a>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function openUserOrdersModal(uid) {
+            document.getElementById('modalUserUid').innerText = uid;
+            const container = document.getElementById('modalUserOrdersList');
             container.innerHTML = '';
 
-            const userClicks = (window.sgsState.userOrders || []).filter(o => o.userId === targetUid);
-
-            if(userClicks.length === 0) {
-                container.innerHTML = `<p class="text-slate-400 text-center py-6">No order click logs found for this UID.</p>`;
+            const userClicks = window.sgsState.userOrders.filter(o => o.userUid === uid);
+            if (userClicks.length === 0) {
+                container.innerHTML = `<p class="text-slate-400 text-center py-4">No logged clicks found for this UID.</p>`;
             } else {
-                userClicks.forEach((o, index) => {
-                    const card = document.createElement('div');
-                    card.className = "bg-slate-50 p-2.5 rounded-xl border space-y-1";
-                    card.innerHTML = `
-                        <div class="flex justify-between font-bold text-slate-800">
-                            <span>#${index + 1} ${o.productTitle}</span>
-                            <span class="text-sgs-600 font-black">₹${o.price}</span>
+                userClicks.forEach(c => {
+                    const div = document.createElement('div');
+                    div.className = "p-2.5 bg-slate-800 rounded-lg border border-slate-700 flex justify-between items-center";
+                    div.innerHTML = `
+                        <div>
+                            <p class="font-bold text-white">${c.productTitle}</p>
+                            <span class="text-slate-400 text-[10px]">${c.store} - ₹${c.price}</span>
                         </div>
-                        <div class="flex justify-between text-[11px] text-slate-500">
-                            <span>Platform: <strong>${o.store}</strong></span>
-                            <span>${o.timestamp ? new Date(o.timestamp.seconds * 1000).toLocaleString() : 'Just now'}</span>
-                        </div>
+                        <a href="${c.affiliateUrl}" target="_blank" class="text-xs text-meesho-400 hover:underline">View Deal</a>
                     `;
-                    container.appendChild(card);
+                    container.appendChild(div);
                 });
             }
+            document.getElementById('userOrdersModal').classList.remove('hidden');
+            document.getElementById('userOrdersModal').classList.add('flex');
+        }
 
-            document.getElementById('modalUserOrders').classList.remove('hidden');
-        };
+        function closeUserModal() {
+            document.getElementById('userOrdersModal').classList.add('hidden');
+            document.getElementById('userOrdersModal').classList.remove('flex');
+        }
 
-        window.closeInspectModal = function() {
-            document.getElementById('modalUserOrders').classList.add('hidden');
-        };
-    </script>
+        function seedSampleProducts() {
+            const sampleData = [
+                { category: 'books', title: 'SSC GD Constable Guide 2026', store: 'Amazon', mrp: 499, price: 249, image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=400', affiliateUrl: 'https://amazon.in', description: 'Complete study guide for SSC GD Exam with previous solved papers.' },
+                { category: 'books', title: 'Railway NTPC & Group D Math Special', store: 'Flipkart', mrp: 399, price: 199, image: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=400', affiliateUrl: 'https://flipkart.com', description: 'Comprehensive Mathematics guide tailored for Railway competitive exams.' },
+                { category: 'clothes', title: 'Men Printed Cotton Casual T-Shirt', store: 'Meesho', mrp: 699, price: 229, image: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=400', affiliateUrl: 'https://meesho.com', description: '100% pure breathable cotton round neck t-shirt.' },
+                { category: 'clothes', title: 'Women Anarkali Rayon Kurti Set', store: 'Meesho', mrp: 1299, price: 399, image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400', affiliateUrl: 'https://meesho.com', description: 'Elegant printed kurti set suitable for daily and festive wear.' },
+                { category: 'slippers', title: 'Lightweight Ortho Comfort Chappal', store: 'Amazon', mrp: 499, price: 189, image: 'https://images.unsplash.com/photo-1603808033192-082d6919d3e1?w=400', affiliateUrl: 'https://amazon.in', description: 'Extra soft memory foam sole daily wear slippers.' },
+                { category: 'mobiles', title: 'Redmi 13C 5G (4GB RAM, 128GB)', store: 'Amazon', mrp: 13999, price: 9999, image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400', affiliateUrl: 'https://amazon.in', description: '5G Smartphone with 50MP AI Camera and 5000mAh Battery.' }
+            ];
 
-    <script>
-        // THREE.JS 3D ANIMATED BACKGROUND FOR LOGIN SCREEN
+            const productsCol = db.collection('artifacts').doc(window.sgsState.appId).collection('public').doc('data').collection('products');
+            sampleData.forEach(prod => {
+                productsCol.add({
+                    ...prod,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            });
+            window.showToast("Sample products seeded!");
+        }
+
+        let isRegistering = false;
+        function toggleAuthMode() {
+            isRegistering = !isRegistering;
+            const btn = document.getElementById('authSubmitBtn');
+            const toggleBtn = document.getElementById('toggleAuthModeBtn');
+            if (isRegistering) {
+                btn.innerText = "Register Account";
+                toggleBtn.innerText = "Already have an account? Sign In";
+            } else {
+                btn.innerText = "Sign In";
+                toggleBtn.innerText = "Need an account? Register";
+            }
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('authEmail').value;
+            const pass = document.getElementById('authPassword').value;
+
+            if (isRegistering) {
+                auth.createUserWithEmailAndPassword(email, pass).then(() => {
+                    window.showToast("Account registered successfully!");
+                }).catch(err => window.showToast("Error: " + err.message));
+            } else {
+                auth.signInWithEmailAndPassword(email, pass).then(() => {
+                    window.showToast("Signed in successfully!");
+                }).catch(err => window.showToast("Error: " + err.message));
+            }
+        }
+
+        function handleGoogleSignIn() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider).then(() => {
+                window.showToast("Google Sign-In successful!");
+            }).catch(err => window.showToast("Google Auth Error: " + err.message));
+        }
+
+        function handleForgotPassword() {
+            const email = prompt("Enter your email address to reset password:");
+            if (email) {
+                auth.sendPasswordResetEmail(email).then(() => {
+                    window.showToast("Password reset link sent to email!");
+                }).catch(err => window.showToast("Error: " + err.message));
+            }
+        }
+
+        function skipAuthAndBrowse() {
+            document.getElementById('authScreen').classList.add('hidden');
+        }
+
+        function handleAuthDrawerAction() {
+            toggleDrawer(false);
+            if (window.sgsState.currentUser) {
+                auth.signOut().then(() => {
+                    window.showToast("Logged out successfully");
+                });
+            } else {
+                document.getElementById('authScreen').classList.remove('hidden');
+            }
+        }
+
+        // Three.js 3D Wireframe Starfield Initialization
         function init3DLoginBackground() {
-            const canvas = document.getElementById('threeCanvas');
-            if(!canvas) return;
+            const container = document.getElementById('threejsContainer');
+            if(!container) return;
 
             const scene = new THREE.Scene();
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            
             renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
 
-            // Create Animated Floating Geometry
-            const geometry = new THREE.IcosahedronGeometry(2, 1);
-            const material = new THREE.MeshBasicMaterial({ color: 0x16a34a, wireframe: true, transparent: true, opacity: 0.35 });
-            const sphere = new THREE.Mesh(geometry, material);
-            scene.add(sphere);
+            // Create Star Particles
+            const geometry = new THREE.BufferGeometry();
+            const count = 600;
+            const positions = new Float32Array(count * 3);
 
-            // Add Particle Starfield
-            const particlesGeo = new THREE.BufferGeometry();
-            const count = 300;
-            const posArray = new Float32Array(count * 3);
             for(let i=0; i<count*3; i++) {
-                posArray[i] = (Math.random() - 0.5) * 20;
+                positions[i] = (Math.random() - 0.5) * 10;
             }
-            particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-            const particlesMat = new THREE.PointsMaterial({ size: 0.03, color: 0x9f208c });
-            const particlesMesh = new THREE.Points(particlesGeo, particlesMat);
-            scene.add(particlesMesh);
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
-            camera.position.z = 5;
+            const material = new THREE.PointsMaterial({
+                size: 0.025,
+                color: 0xe11d48,
+                transparent: true,
+                opacity: 0.8
+            });
+
+            const particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+            camera.position.z = 3;
 
             function animate() {
-                // Battery Saver: Pause animation when login screen is hidden
-                const authScreen = document.getElementById('authScreen');
-                if (authScreen && authScreen.classList.contains('hidden')) {
-                    setTimeout(animate, 1000);
-                    return;
+                if (!document.getElementById('authScreen').classList.contains('hidden')) {
+                    requestAnimationFrame(animate);
+                    particles.rotation.x += 0.0008;
+                    particles.rotation.y += 0.001;
+                    renderer.render(scene, camera);
                 }
-                requestAnimationFrame(animate);
-                sphere.rotation.x += 0.003;
-                sphere.rotation.y += 0.005;
-                particlesMesh.rotation.y -= 0.002;
-                renderer.render(scene, camera);
             }
             animate();
 
@@ -1014,551 +1312,108 @@
             });
         }
 
-        // HISTORY BACK PRESS & NAVIGATION MANAGEMENT
-        window.addEventListener('popstate', (event) => {
-            if (event.state && event.state.view) {
-                renderView(event.state.view, false);
-            } else {
-                renderView('home', false);
-            }
-        });
-
-        function navigateTo(viewName, pushHistory = true) {
-            if (pushHistory) {
-                window.history.pushState({ view: viewName }, '', `#${viewName}`);
-            }
-            renderView(viewName, pushHistory);
-        }
-
-        function handleBackNavigation() {
-            window.history.back();
-        }
-
-        function renderView(viewName, pushHistory) {
+        function navigateTo(viewName, updateHistory = true) {
             window.sgsState.currentView = viewName;
 
-            const vHome = document.getElementById('viewHome');
-            const vDetail = document.getElementById('viewDetail');
-            const vCart = document.getElementById('viewCart');
-            const vAdmin = document.getElementById('viewAdmin');
+            document.getElementById('homeView').classList.add('hidden');
+            document.getElementById('detailView').classList.add('hidden');
+            document.getElementById('cartView').classList.add('hidden');
+            document.getElementById('adminView').classList.add('hidden');
 
-            if (vHome) vHome.classList.add('hidden');
-            if (vDetail) vDetail.classList.add('hidden');
-            if (vCart) vCart.classList.add('hidden');
-            if (vAdmin) vAdmin.classList.add('hidden');
-
-            const backBtn = document.getElementById('headerBackBtn');
-            if (backBtn) {
-                if (viewName === 'home') {
-                    backBtn.classList.add('hidden');
-                } else {
-                    backBtn.classList.remove('hidden');
-                }
-            }
-
-            if (viewName === 'home') {
-                if (vHome) vHome.classList.remove('hidden');
-                renderProducts();
-            } else if (viewName === 'detail') {
-                if (vDetail) vDetail.classList.remove('hidden');
-                renderProductDetail();
-            } else if (viewName === 'cart') {
-                if (vCart) vCart.classList.remove('hidden');
+            if (viewName === 'home') document.getElementById('homeView').classList.remove('hidden');
+            if (viewName === 'detail') document.getElementById('detailView').classList.remove('hidden');
+            if (viewName === 'cart') {
                 renderCart();
-            } else if (viewName === 'admin') {
-                if (!window.sgsState.isAdmin) {
-                    alert("Unauthorized! Only Admin UID can access this panel.");
-                    navigateTo('home', false);
-                    return;
-                }
-                if (vAdmin) vAdmin.classList.remove('hidden');
+                document.getElementById('cartView').classList.remove('hidden');
+            }
+            if (viewName === 'admin') {
                 renderAdminTable();
+                renderAdminOrders();
+                document.getElementById('adminView').classList.remove('hidden');
             }
 
+            if (updateHistory) {
+                history.pushState({ view: viewName }, '', `#${viewName}`);
+            }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function switchAuthTab(mode) {
-            const btnSignIn = document.getElementById('tabSignIn');
-            const btnSignUp = document.getElementById('tabSignUp');
-            const formLogin = document.getElementById('formLogin');
-            const formSignup = document.getElementById('formSignup');
-
-            if (mode === 'login') {
-                if(btnSignIn) btnSignIn.className = "flex-1 py-2 rounded-lg bg-white text-slate-900 shadow transition";
-                if(btnSignUp) btnSignUp.className = "flex-1 py-2 rounded-lg hover:text-slate-900 transition";
-                if(formLogin) formLogin.classList.remove('hidden');
-                if(formSignup) formSignup.classList.add('hidden');
+        window.onpopstate = function(event) {
+            if (event.state && event.state.view) {
+                navigateTo(event.state.view, false);
             } else {
-                if(btnSignUp) btnSignUp.className = "flex-1 py-2 rounded-lg bg-white text-slate-900 shadow transition";
-                if(btnSignIn) btnSignIn.className = "flex-1 py-2 rounded-lg hover:text-slate-900 transition";
-                if(formSignup) formSignup.classList.remove('hidden');
-                if(formLogin) formLogin.classList.add('hidden');
+                navigateTo('home', false);
             }
-        }
-
-        function filterCategory(category) {
-            window.sgsState.currentCategory = category;
-            document.querySelectorAll('.cat-pill').forEach(btn => {
-                if (btn.dataset.cat === category) {
-                    btn.className = "cat-pill active-cat px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition bg-sgs-600 text-white";
-                } else {
-                    btn.className = "cat-pill px-4 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition bg-slate-100 text-slate-700 hover:bg-slate-200";
-                }
-            });
-
-            const titleMap = {
-                'all': 'Featured Deals',
-                'books': 'SSC, Railway & Govt Exam Books',
-                'clothes': 'Fashion, Shirts, Sarees & Kurtis',
-                'slippers': 'Slippers, Sandals & Shoes',
-                'mobiles': 'Mobiles, Earbuds & Tech Accessories'
-            };
-            const catTitle = document.getElementById('categoryTitle');
-            if(catTitle) catTitle.innerText = titleMap[category] || 'Products';
-
-            if (window.sgsState.currentView !== 'home') {
-                navigateTo('home');
-            } else {
-                renderProducts();
-            }
-        }
-
-        function handleSearch() {
-            const input = document.getElementById('searchInput');
-            if (input) {
-                window.sgsState.searchQuery = input.value.toLowerCase().trim();
-            }
-            if (window.sgsState.currentView !== 'home') {
-                navigateTo('home');
-            } else {
-                renderProducts();
-            }
-        }
-
-        function renderProducts() {
-            const grid = document.getElementById('productGrid');
-            if(!grid) return;
-            grid.innerHTML = '';
-
-            const products = window.sgsState.products || [];
-            let filtered = products.filter(p => {
-                const matchesCat = window.sgsState.currentCategory === 'all' || p.category === window.sgsState.currentCategory;
-                const pTitle = p.title ? p.title.toLowerCase() : '';
-                const pDesc = p.description ? p.description.toLowerCase() : '';
-                const pStore = p.store ? p.store.toLowerCase() : '';
-                const q = window.sgsState.searchQuery || '';
-                const matchesSearch = pTitle.includes(q) || pDesc.includes(q) || pStore.includes(q);
-                return matchesCat && matchesSearch;
-            });
-
-            const countElem = document.getElementById('productCount');
-            if(countElem) countElem.innerText = `${filtered.length} Items`;
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `
-                    <div class="col-span-full py-16 text-center text-slate-500 space-y-3">
-                        <i class="fa-solid fa-box-open text-5xl text-slate-300"></i>
-                        <p class="text-sm font-bold">No products available in database!</p>
-                        <p class="text-xs">If you are Admin, click "Seed Sample Products" in Admin Panel to populate deals.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            filtered.forEach(p => {
-                const mrpVal = p.mrp || 0;
-                const priceVal = p.price || 0;
-                const discount = (mrpVal > priceVal && mrpVal > 0) ? Math.round(((mrpVal - priceVal) / mrpVal) * 100) : 0;
-                const card = document.createElement('div');
-                card.className = "bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-md transition cursor-pointer flex flex-col justify-between group";
-
-                let storeBg = "bg-amber-500";
-                if(p.store === 'Flipkart') storeBg = "bg-blue-600";
-                if(p.store === 'Meesho') storeBg = "bg-pink-600";
-
-                card.innerHTML = `
-                    <div onclick="openProductDetail('${p.id}')">
-                        <div class="relative aspect-square w-full bg-slate-100 overflow-hidden">
-                            <img src="${p.image || ''}" alt="${p.title || 'Product'}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300" loading="lazy" onerror="this.src='https://placehold.co/400x400/e2e8f0/475569?text=Product+Image'">
-                            <span class="absolute top-2 left-2 ${storeBg} text-white text-[9px] font-black px-2 py-0.5 rounded-full shadow">
-                                ${p.store || 'Offer'}
-                            </span>
-                        </div>
-                        <div class="p-2.5 space-y-1">
-                            <h3 class="text-xs font-semibold text-slate-800 line-clamp-2 leading-tight">${p.title || 'Untitled'}</h3>
-                            <div class="flex items-baseline gap-1.5 flex-wrap pt-0.5">
-                                <span class="text-sm font-black text-slate-900">₹${priceVal}</span>
-                                ${mrpVal > priceVal ? `<span class="text-[11px] text-slate-400 line-through">₹${mrpVal}</span>` : ''}
-                                ${discount > 0 ? `<span class="text-[10px] font-bold text-green-600">${discount}% off</span>` : ''}
-                            </div>
-                            <div class="flex items-center gap-1.5">
-                                <div class="inline-flex items-center gap-1 bg-green-600 text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full">
-                                    <span>${p.rating || '4.8'}</span>
-                                    <i class="fa-solid fa-star text-[7px]"></i>
-                                </div>
-                                <span class="text-[10px] text-slate-400">(${p.reviews || '100+'})</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="p-2 pt-0 grid grid-cols-2 gap-1.5">
-                        <button onclick="event.stopPropagation(); addToCart('${p.id}')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-1.5 rounded-lg text-[10px] transition flex items-center justify-center gap-1">
-                            <i class="fa-solid fa-bag-shopping"></i> Add
-                        </button>
-                        <button onclick="event.stopPropagation(); redirectToAffiliate('${p.id}')" class="bg-sgs-600 hover:bg-sgs-700 text-white font-bold py-1.5 rounded-lg text-[10px] shadow transition flex items-center justify-center gap-1">
-                            <span>Buy Now</span> <i class="fa-solid fa-arrow-up-right-from-square text-[8px]"></i>
-                        </button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        window.redirectToAffiliate = function(productId) {
-            const product = (window.sgsState.products || []).find(p => p.id === productId);
-            if(!product || !product.affiliateUrl) return;
-
-            // Record click event in Firestore
-            if (window.recordAffiliateClick) {
-                window.recordAffiliateClick(product);
-            }
-
-            window.open(product.affiliateUrl, '_blank');
         };
 
-        function openProductDetail(id) {
-            const product = (window.sgsState.products || []).find(p => p.id === id);
-            if (!product) return;
-            window.sgsState.activeProduct = product;
-            navigateTo('detail');
-        }
-
-        function renderProductDetail() {
-            const p = window.sgsState.activeProduct;
-            if (!p) return;
-
-            const mrpVal = p.mrp || 0;
-            const priceVal = p.price || 0;
-            const discount = (mrpVal > priceVal && mrpVal > 0) ? Math.round(((mrpVal - priceVal) / mrpVal) * 100) : 0;
-            const detailContainer = document.getElementById('detailContainer');
-
-            let extraSpecsHtml = '';
-            if (p.category === 'mobiles') {
-                extraSpecsHtml = `
-                    <div class="bg-blue-50/60 p-3 rounded-xl border border-blue-100 space-y-1 text-xs text-blue-900">
-                        <p class="font-bold border-b border-blue-200 pb-1"><i class="fa-solid fa-microchip mr-1"></i> Technical Specs:</p>
-                        <div class="grid grid-cols-2 gap-1 pt-1">
-                            <div><span class="text-slate-500">RAM:</span> <span class="font-bold">${p.ram || 'Standard'}</span></div>
-                            <div><span class="text-slate-500">Storage:</span> <span class="font-bold">${p.rom || 'Standard'}</span></div>
-                            <div class="col-span-2"><span class="text-slate-500">Highlights:</span> <span class="font-bold">${p.specs || 'High Quality'}</span></div>
-                        </div>
-                    </div>
-                `;
-            } else if (p.category === 'clothes') {
-                extraSpecsHtml = `
-                    <div class="bg-purple-50/60 p-3 rounded-xl border border-purple-100 space-y-1 text-xs text-purple-900">
-                        <p class="font-bold border-b border-purple-200 pb-1"><i class="fa-solid fa-shirt mr-1"></i> Clothing Specs:</p>
-                        <p><span class="text-slate-500">Available Sizes:</span> <span class="font-bold">${p.clothSizes || 'S, M, L, XL'}</span></p>
-                        <p><span class="text-slate-500">Fabric Material:</span> <span class="font-bold">${p.fabric || 'Cotton Blend'}</span></p>
-                    </div>
-                `;
-            } else if (p.category === 'slippers') {
-                extraSpecsHtml = `
-                    <div class="bg-amber-50/60 p-3 rounded-xl border border-amber-100 space-y-1 text-xs text-amber-900">
-                        <p class="font-bold border-b border-amber-200 pb-1"><i class="fa-solid fa-shoe-prints mr-1"></i> Footwear Specs:</p>
-                        <p><span class="text-slate-500">Available UK Sizes:</span> <span class="font-bold">${p.footSizes || '6, 7, 8, 9, 10'}</span></p>
-                        <p><span class="text-slate-500">Sole Material:</span> <span class="font-bold">${p.sole || 'Soft Cushioned EVA'}</span></p>
-                    </div>
-                `;
-            } else if (p.category === 'books') {
-                extraSpecsHtml = `
-                    <div class="bg-emerald-50/60 p-3 rounded-xl border border-emerald-100 space-y-1 text-xs text-emerald-900">
-                        <p class="font-bold border-b border-emerald-200 pb-1"><i class="fa-solid fa-book-bookmark mr-1"></i> Book Details:</p>
-                        <p><span class="text-slate-500">Exam Category:</span> <span class="font-bold">${p.bookExam || 'General Competition'}</span></p>
-                        <p><span class="text-slate-500">Medium / Language:</span> <span class="font-bold">${p.bookLang || 'Hindi / English'}</span></p>
-                    </div>
-                `;
-            }
-
-            detailContainer.innerHTML = `
-                <div class="space-y-3">
-                    <div class="aspect-square rounded-2xl overflow-hidden bg-slate-100 border relative">
-                        <img src="${p.image || ''}" alt="${p.title || 'Product'}" class="w-full h-full object-cover">
-                        <span class="absolute top-3 left-3 bg-slate-900 text-white text-xs font-bold px-3 py-1 rounded-full">
-                            Deal on ${p.store || 'Store'}
-                        </span>
-                    </div>
-                </div>
-
-                <div class="space-y-4 flex flex-col justify-between">
-                    <div class="space-y-3">
-                        <div class="flex justify-between items-center">
-                            <span class="text-[10px] font-black uppercase text-sgs-600 bg-sgs-50 px-2.5 py-1 rounded-md border border-sgs-100 tracking-wider">${p.category || 'General'}</span>
-                            <span class="text-xs font-bold text-slate-500"><i class="fa-solid fa-circle-check text-green-500 mr-1"></i> Verified Deal</span>
-                        </div>
-                        <h1 class="text-lg sm:text-xl font-bold text-slate-900">${p.title || ''}</h1>
-                        
-                        <div class="flex items-center gap-2">
-                            <span class="bg-green-600 text-white text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-                                ${p.rating || '4.8'} <i class="fa-solid fa-star text-[10px]"></i>
-                            </span>
-                            <span class="text-xs text-slate-500 font-medium">${p.reviews || '100+'} Ratings & Reviews</span>
-                        </div>
-
-                        <div class="pt-2 border-t border-b py-3 space-y-1">
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-2xl font-black text-slate-900">₹${priceVal}</span>
-                                ${mrpVal > priceVal ? `<span class="text-sm text-slate-400 line-through">₹${mrpVal}</span>` : ''}
-                                ${discount > 0 ? `<span class="text-xs font-bold text-green-600">${discount}% OFF</span>` : ''}
-                            </div>
-                            <p class="text-xs text-slate-500">Fulfilled by ${p.store || 'Store'} Official Seller</p>
-                        </div>
-
-                        ${extraSpecsHtml}
-
-                        <div class="space-y-1 text-xs text-slate-700 pt-1">
-                            <p class="font-bold text-slate-900">Product Description:</p>
-                            <p class="leading-relaxed text-slate-600">${p.description || 'No description available.'}</p>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-3 pt-4 border-t">
-                        <button onclick="addToCart('${p.id}')" class="flex-1 bg-slate-100 text-slate-800 font-bold py-3 rounded-xl text-xs sm:text-sm hover:bg-slate-200 transition flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-bag-shopping"></i> Save to Cart
-                        </button>
-                        <button onclick="redirectToAffiliate('${p.id}')" class="flex-1 bg-sgs-600 hover:bg-sgs-700 text-white font-bold py-3 rounded-xl text-xs sm:text-sm shadow-md transition flex items-center justify-center gap-2">
-                            <span>Buy Now on ${p.store || 'Store'}</span>
-                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        function addToCart(productId) {
-            const product = (window.sgsState.products || []).find(p => p.id === productId);
-            if (!product) return;
-
-            const existing = (window.sgsState.cart || []).find(item => item.product && item.product.id === productId);
-            if (!existing) {
-                window.sgsState.cart.push({ product, addedAt: new Date().toLocaleDateString() });
-                localStorage.setItem('sgs_cart', JSON.stringify(window.sgsState.cart));
-            }
-
-            updateCartBadge();
-            showToast(`Saved to Cart!`);
-        }
-
-        function updateCartBadge() {
-            const badge = document.getElementById('cartBadge');
-            if(!badge) return;
-            const cartLen = (window.sgsState.cart || []).length;
-            if (cartLen > 0) {
-                badge.innerText = cartLen;
-                badge.classList.remove('hidden');
+        function toggleDrawer(show) {
+            const drawer = document.getElementById('leftDrawer');
+            const backdrop = document.getElementById('drawerBackdrop');
+            if (show) {
+                backdrop.classList.remove('hidden');
+                setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+                drawer.classList.remove('-translate-x-full');
             } else {
-                badge.classList.add('hidden');
+                backdrop.classList.add('opacity-0');
+                drawer.classList.add('-translate-x-full');
+                setTimeout(() => backdrop.classList.add('hidden'), 300);
             }
         }
 
-        function removeFromCart(productId) {
-            window.sgsState.cart = (window.sgsState.cart || []).filter(i => i.product && i.product.id !== productId);
-            localStorage.setItem('sgs_cart', JSON.stringify(window.sgsState.cart));
-            updateCartBadge();
-            renderCart();
+        function openPrivacyModal() {
+            closeModals();
+            document.getElementById('privacyModal').classList.remove('hidden');
+            document.getElementById('privacyModal').classList.add('flex');
+            toggleDrawer(false);
         }
 
-        function clearCart() {
-            window.sgsState.cart = [];
-            localStorage.removeItem('sgs_cart');
-            updateCartBadge();
-            renderCart();
+        function openTermsModal() {
+            closeModals();
+            document.getElementById('termsModal').classList.remove('hidden');
+            document.getElementById('termsModal').classList.add('flex');
+            toggleDrawer(false);
         }
 
-        function renderCart() {
-            const list = document.getElementById('cartItemsList');
-            if(!list) return;
-
-            const cart = window.sgsState.cart || [];
-
-            if (cart.length === 0) {
-                list.innerHTML = `
-                    <div class="bg-white p-8 rounded-2xl border text-center space-y-3">
-                        <i class="fa-solid fa-bag-shopping text-4xl text-slate-300"></i>
-                        <p class="text-sm font-bold text-slate-700">Your Saved Deals list is empty!</p>
-                        <button onclick="navigateTo('home')" class="bg-sgs-600 text-white font-bold text-xs px-4 py-2 rounded-xl">
-                            Browse Products
-                        </button>
-                    </div>
-                `;
-                return;
-            }
-
-            list.innerHTML = '';
-
-            cart.forEach(item => {
-                const p = item.product || {};
-                const itemCard = document.createElement('div');
-                itemCard.className = "bg-white p-3 rounded-2xl border border-slate-200 flex gap-3 items-center";
-                itemCard.innerHTML = `
-                    <img src="${p.image || ''}" alt="${p.title || 'Product'}" class="w-16 h-16 object-cover rounded-xl bg-slate-100 flex-shrink-0">
-                    <div class="flex-1 min-w-0 space-y-1">
-                        <h4 class="text-xs font-semibold text-slate-800 truncate">${p.title || 'Product'}</h4>
-                        <div class="flex items-baseline gap-2">
-                            <span class="text-xs font-black text-slate-900">₹${p.price || 0}</span>
-                            ${p.mrp ? `<span class="text-[10px] text-slate-400 line-through">₹${p.mrp}</span>` : ''}
-                            <span class="text-[10px] font-bold text-blue-600">On ${p.store || 'Store'}</span>
-                        </div>
-                    </div>
-                    <button onclick="redirectToAffiliate('${p.id}')" class="bg-sgs-600 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1">
-                        Buy <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-                    </button>
-                    <button onclick="removeFromCart('${p.id}')" class="text-slate-400 hover:text-red-500 p-2 text-sm">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                `;
-                list.appendChild(itemCard);
-            });
-        }
-
-        function toggleCategoryFields() {
-            const catElem = document.getElementById('pCategory');
-            if(!catElem) return;
-            const cat = catElem.value;
-            
-            const mob = document.getElementById('catFieldsMobile');
-            const clo = document.getElementById('catFieldsClothes');
-            const sli = document.getElementById('catFieldsSlippers');
-            const boo = document.getElementById('catFieldsBooks');
-
-            if(mob) mob.classList.add('hidden');
-            if(clo) clo.classList.add('hidden');
-            if(sli) sli.classList.add('hidden');
-            if(boo) boo.classList.add('hidden');
-
-            if(cat === 'mobiles' && mob) mob.classList.remove('hidden');
-            if(cat === 'clothes' && clo) clo.classList.remove('hidden');
-            if(cat === 'slippers' && sli) sli.classList.remove('hidden');
-            if(cat === 'books' && boo) boo.classList.remove('hidden');
-        }
-
-        function editAdminProduct(id) {
-            const p = (window.sgsState.products || []).find(prod => prod.id === id);
-            if(!p) return;
-
-            document.getElementById('editProductId').value = p.id;
-            document.getElementById('pTitle').value = p.title || '';
-            document.getElementById('pCategory').value = p.category || 'books';
-            document.getElementById('pPrice').value = p.price || '';
-            document.getElementById('pMrp').value = p.mrp || '';
-            document.getElementById('pStore').value = p.store || 'Amazon';
-            document.getElementById('pAffiliateUrl').value = p.affiliateUrl || '';
-            document.getElementById('pImage').value = p.image || '';
-            document.getElementById('pDesc').value = p.description || '';
-
-            toggleCategoryFields();
-
-            if(p.category === 'mobiles') {
-                document.getElementById('pRam').value = p.ram || '';
-                document.getElementById('pRom').value = p.rom || '';
-                document.getElementById('pSpecs').value = p.specs || '';
-            } else if(p.category === 'clothes') {
-                document.getElementById('pClothSizes').value = p.clothSizes || '';
-                document.getElementById('pFabric').value = p.fabric || '';
-            } else if(p.category === 'slippers') {
-                document.getElementById('pFootSizes').value = p.footSizes || '';
-                document.getElementById('pSole').value = p.sole || '';
-            } else if(p.category === 'books') {
-                document.getElementById('pBookExam').value = p.bookExam || '';
-                document.getElementById('pBookLang').value = p.bookLang || '';
-            }
-
-            document.getElementById('formTitle').innerText = "Edit Firestore Product #" + p.id;
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function resetAdminForm() {
-            const form = document.getElementById('adminProductForm');
-            if(form) form.reset();
-            const editId = document.getElementById('editProductId');
-            if(editId) editId.value = '';
-            const title = document.getElementById('formTitle');
-            if(title) title.innerText = "Add New Real-Time Product";
-            toggleCategoryFields();
-        }
-
-        function renderAdminTable() {
-            const tbody = document.getElementById('adminProductTable');
-            if (!tbody) return;
-            const prods = window.sgsState.products || [];
-            const countElem = document.getElementById('adminProdCount');
-            if(countElem) countElem.innerText = prods.length;
-            tbody.innerHTML = '';
-
-            prods.forEach(p => {
-                const tr = document.createElement('tr');
-                tr.className = "border-b hover:bg-slate-50";
-                tr.innerHTML = `
-                    <td class="p-2.5 flex items-center gap-2 max-w-xs">
-                        <img src="${p.image || ''}" class="w-8 h-8 rounded object-cover bg-slate-200" onerror="this.src='https://placehold.co/100x100?text=IMG'">
-                        <span class="truncate font-semibold text-slate-800">${p.title || 'Product'}</span>
-                    </td>
-                    <td class="p-2.5 uppercase font-bold text-[10px] text-sgs-600">${p.category || ''}</td>
-                    <td class="p-2.5 font-bold">₹${p.price || 0} <span class="text-slate-400 line-through text-[10px]">₹${p.mrp || 0}</span></td>
-                    <td class="p-2.5"><a href="${p.affiliateUrl}" target="_blank" class="text-blue-600 hover:underline font-bold text-[10px]">${p.store || 'Link'}</a></td>
-                    <td class="p-2.5 text-right space-x-1">
-                        <button onclick="editAdminProduct('${p.id}')" class="p-1 text-slate-600 hover:text-blue-600"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button onclick="deleteAdminProduct('${p.id}')" class="p-1 text-slate-600 hover:text-red-600"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function toggleDrawer() {
-            const drawer = document.getElementById('userDrawer');
-            const overlay = document.getElementById('drawerOverlay');
-            if(!drawer || !overlay) return;
-            if (drawer.classList.contains('translate-x-full')) {
-                drawer.classList.remove('translate-x-full');
-                overlay.classList.remove('hidden');
-            } else {
-                drawer.classList.add('translate-x-full');
-                overlay.classList.add('hidden');
-            }
-        }
-
-        function openPrivacyModal() { 
-            const m = document.getElementById('modalPrivacy');
-            if(m) m.classList.remove('hidden'); 
-        }
-        function openTermsModal() { 
-            const m = document.getElementById('modalTerms');
-            if(m) m.classList.remove('hidden'); 
-        }
         function closeModals() {
-            const mp = document.getElementById('modalPrivacy');
-            const mt = document.getElementById('modalTerms');
-            if(mp) mp.classList.add('hidden');
-            if(mt) mt.classList.add('hidden');
+            document.getElementById('privacyModal').classList.add('hidden');
+            document.getElementById('privacyModal').classList.remove('flex');
+            document.getElementById('termsModal').classList.add('hidden');
+            document.getElementById('termsModal').classList.remove('flex');
         }
 
-        function showToast(message) {
-            // Remove previous toasts if any
-            const existingToasts = document.querySelectorAll('.sgs-toast');
-            existingToasts.forEach(t => t.remove());
+        // Global function bindings
+        window.renderProducts = renderProducts;
+        window.renderAdminTable = renderAdminTable;
+        window.renderAdminOrders = renderAdminOrders;
+        window.renderProductDetail = renderProductDetail;
+        window.renderCart = renderCart;
+        window.navigateTo = navigateTo;
+        window.filterCategory = filterCategory;
+        window.handleSearch = handleSearch;
+        window.addToCart = addToCart;
+        window.removeFromCart = removeFromCart;
+        window.clearCart = clearCart;
+        window.handleBuyNow = handleBuyNow;
+        window.toggleCategoryFields = toggleCategoryFields;
+        window.handleSaveProduct = handleSaveProduct;
+        window.editAdminProduct = editAdminProduct;
+        window.deleteAdminProduct = deleteAdminProduct;
+        window.resetAdminForm = resetAdminForm;
+        window.seedSampleProducts = seedSampleProducts;
+        window.toggleDrawer = toggleDrawer;
+        window.openPrivacyModal = openPrivacyModal;
+        window.openTermsModal = openTermsModal;
+        window.closeModals = closeModals;
+        window.handleAuthSubmit = handleAuthSubmit;
+        window.toggleAuthMode = toggleAuthMode;
+        window.handleGoogleSignIn = handleGoogleSignIn;
+        window.handleForgotPassword = handleForgotPassword;
+        window.skipAuthAndBrowse = skipAuthAndBrowse;
+        window.handleAuthDrawerAction = handleAuthDrawerAction;
+        window.openUserOrdersModal = openUserOrdersModal;
+        window.closeUserModal = closeUserModal;
 
-            const toast = document.createElement('div');
-            toast.className = "sgs-toast fixed bottom-5 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs px-4 py-2.5 rounded-full shadow-2xl z-50 transition duration-300 flex items-center gap-2 border border-slate-700";
-            toast.innerHTML = `<i class="fa-solid fa-circle-check text-green-400"></i> ${message}`;
-            document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                setTimeout(() => toast.remove(), 300);
-            }, 2200);
-        }
-
-        // Initialize App on Window Load
+        // Initialize App
         window.onload = function() {
             init3DLoginBackground();
             updateCartBadge();
@@ -1566,9 +1421,9 @@
 
             const hash = window.location.hash.replace('#', '');
             if (['home', 'detail', 'cart', 'admin'].includes(hash)) {
-                renderView(hash, false);
+                renderView ? renderView(hash, false) : navigateTo(hash, false);
             } else {
-                renderView('home', false);
+                navigateTo('home', false);
             }
         };
     </script>
