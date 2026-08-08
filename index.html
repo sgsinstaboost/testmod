@@ -24,42 +24,88 @@
     .img-preview { max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px dashed #3b82f6; display: none; object-fit: cover; margin-top: 6px; }
     .pdf-preview { display: none; margin-top: 6px; font-size: 11px; font-weight: bold; color: #1d4ed8; background: #eff6ff; padding: 6px 10px; border-radius: 6px; border: 1px solid #bfdbfe; width: fit-content; }
 
-    /* NEON BLUE NIGHT MODE CUSTOM STYLES */
+    /* PERFECT NEON BLUE NIGHT MODE OVERRIDES */
     body.neon-blue-mode {
       background-color: #030712 !important;
-      color: #e0f2fe !important;
-    }
-    body.neon-blue-mode div[class*="bg-white"],
-    body.neon-blue-mode div[class*="bg-slate-50"],
-    body.neon-blue-mode div[class*="bg-slate-100"] {
-      background-color: #0b132b !important;
       color: #ffffff !important;
-      border-color: #00f3ff/40 !important;
     }
-    body.neon-blue-mode .border-slate-200,
-    body.neon-blue-mode .border-slate-300 {
-      border-color: #00f3ff/30 !important;
+    /* Main Background Containers */
+    body.neon-blue-mode div[class*="bg-white"],
+    body.neon-blue-mode div[class*="bg-slate"],
+    body.neon-blue-mode div[class*="bg-indigo"],
+    body.neon-blue-mode div[class*="bg-amber"],
+    body.neon-blue-mode div[class*="bg-emerald"],
+    body.neon-blue-mode div[class*="bg-blue"],
+    body.neon-blue-mode nav,
+    body.neon-blue-mode main {
+      background-color: #0a1128 !important;
+      color: #ffffff !important;
+      border-color: #00f3ff !important;
+      box-shadow: 0 0 8px rgba(0, 243, 255, 0.25) !important;
     }
+    /* All Text Inside Neon Mode */
     body.neon-blue-mode h1, 
     body.neon-blue-mode h2, 
     body.neon-blue-mode h3, 
     body.neon-blue-mode h4, 
     body.neon-blue-mode h5,
+    body.neon-blue-mode h6,
     body.neon-blue-mode p,
     body.neon-blue-mode label,
-    body.neon-blue-mode span:not(.no-neon) {
-      color: #e0f2fe !important;
+    body.neon-blue-mode span:not(.no-neon),
+    body.neon-blue-mode li,
+    body.neon-blue-mode strong {
+      color: #ffffff !important;
+      text-shadow: none !important;
     }
+    /* Drawer Navigation Links Text */
+    body.neon-blue-mode nav button span,
+    body.neon-blue-mode nav button {
+      color: #ffffff !important;
+    }
+    /* RED BUTTONS WITH SOLID BLACK TEXT FOR NEON MODE */
+    body.neon-blue-mode button:not(.no-neon),
+    body.neon-blue-mode .neon-red-btn {
+      background-color: #dc2626 !important;
+      color: #000000 !important;
+      font-weight: 900 !important;
+      border: 1px solid #f87171 !important;
+      box-shadow: 0 0 10px rgba(220, 38, 38, 0.6) !important;
+    }
+    /* Input Fields */
     body.neon-blue-mode input,
     body.neon-blue-mode select,
     body.neon-blue-mode textarea {
-      background-color: #1c2541 !important;
+      background-color: #121e42 !important;
       color: #00f3ff !important;
-      border-color: #00f3ff !important;
+      border: 1px solid #00f3ff !important;
     }
+    /* Header Bar */
     body.neon-blue-mode header {
-      background: linear-gradient(to right, #050b14, #0a192f, #112240) !important;
-      border-bottom: 1px solid #00f3ff/40 !important;
+      background: linear-gradient(to right, #020617, #0f172a, #1e1b4b) !important;
+      border-bottom: 2px solid #00f3ff !important;
+    }
+    /* SVG Icons Color */
+    body.neon-blue-mode svg {
+      stroke: #00f3ff !important;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printable-receipt, #printable-receipt * {
+        visibility: visible;
+      }
+      #printable-receipt {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+      .no-print {
+        display: none !important;
+      }
     }
   </style>
 
@@ -122,7 +168,9 @@
       Headphones: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>,
       ListCheck: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 022 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>,
       Trash: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>,
-      Moon: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+      Moon: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>,
+      Download: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>,
+      CheckCircle: () => <svg className="w-12 h-12 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
     };
 
     // HIGH QUALITY HD IMAGE COMPRESSION (1600px Max, 85% Quality)
@@ -202,6 +250,7 @@
       const [activeModalPage, setActiveModalPage] = useState(null);
       const [toastMsg, setToastMsg] = useState('');
       const [isSubmitting, setIsSubmitting] = useState(false);
+      const [submittedReceipt, setSubmittedReceipt] = useState(null);
 
       // Neon Blue Theme State
       const [isNeonMode, setIsNeonMode] = useState(() => {
@@ -273,7 +322,9 @@
       // Hardware Mobile Back Button Sync
       useEffect(() => {
         const handlePopState = () => {
-          if (activeService) {
+          if (submittedReceipt) {
+            setSubmittedReceipt(null);
+          } else if (activeService) {
             setActiveService(null);
           } else if (activeModalPage) {
             setActiveModalPage(null);
@@ -285,7 +336,7 @@
         };
         window.addEventListener('popstate', handlePopState);
         return () => window.removeEventListener('popstate', handlePopState);
-      }, [activeService, activeModalPage, showDrawer, selectedCat]);
+      }, [submittedReceipt, activeService, activeModalPage, showDrawer, selectedCat]);
 
       const openServiceDetail = (srv) => {
         window.history.pushState({ page: 'detail' }, '');
@@ -415,11 +466,24 @@
           setUserApps(updatedApps);
           localStorage.setItem('sgs_user_applications', JSON.stringify(updatedApps));
 
+          // 5. Extract amount paid for receipt page
+          const upi = getUpiDetails(activeService.qrImageUrl);
+          const receiptData = {
+            uid: submissionId,
+            serviceTitle: activeService.title,
+            category: activeService.category,
+            dateTime: dateStr,
+            amount: upi.am ? `₹${upi.am}` : "As Applicable / Paid"
+          };
+
           showNotification(`Application Submitted! UID: ${submissionId}`);
           form.reset();
           document.querySelectorAll('.img-preview').forEach(img => img.style.display = 'none');
           document.querySelectorAll('.pdf-preview').forEach(pdf => pdf.style.display = 'none');
+          
           setActiveService(null);
+          window.history.pushState({ page: 'receipt' }, '');
+          setSubmittedReceipt(receiptData);
 
         } catch (err) {
           showNotification("Submission Failed. Please try again.");
@@ -567,7 +631,7 @@
                 <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-col gap-2">
                   <button 
                     onClick={handleAcceptTerms} 
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 neon-red-btn"
                   >
                     <span>I Agree & Continue</span> →
                   </button>
@@ -592,7 +656,7 @@
 
                   {/* NAV LINKS */}
                   <nav className="space-y-2 text-xs font-bold text-slate-700">
-                    <button onClick={() => { setSelectedCat('All Services'); setActiveService(null); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-blue-700">
+                    <button onClick={() => { setSelectedCat('All Services'); setActiveService(null); setSubmittedReceipt(null); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-blue-700">
                       <span>🏠 Home Page / All Services</span>
                       <Icons.ChevronRight />
                     </button>
@@ -652,7 +716,7 @@
                     <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-2xs">
                       <h5 className="font-extrabold text-slate-900 text-xs mb-1">WhatsApp Support</h5>
                       <p className="text-[11px] text-slate-500 mb-2.5 leading-snug">Fast Reply (Instant Assistance). Connect directly on WhatsApp.</p>
-                      <button onClick={handleWhatsAppSupport} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2 rounded-lg transition-colors">
+                      <button onClick={handleWhatsAppSupport} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2 rounded-lg transition-colors neon-red-btn">
                         Chat on WhatsApp
                       </button>
                     </div>
@@ -660,7 +724,7 @@
                     <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-2xs">
                       <h5 className="font-extrabold text-slate-900 text-xs mb-1">Email Support</h5>
                       <p className="text-[11px] text-slate-500 mb-2.5 leading-snug">Send us an email inquiry for official ticket assistance.</p>
-                      <button onClick={handleEmailSupport} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-2 rounded-lg transition-colors">
+                      <button onClick={handleEmailSupport} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-2 rounded-lg transition-colors neon-red-btn">
                         Send Email
                       </button>
                     </div>
@@ -674,8 +738,67 @@
             </div>
           )}
 
-          {/* FULL SCREEN MODAL VIEW */}
-          {activeModalPage ? (
+          {/* DYNAMIC SUCCESSFUL APPLICATION RECEIPT SCREEN */}
+          {submittedReceipt ? (
+            <div className="min-h-screen bg-slate-100 p-4 sm:p-6 flex flex-col items-center justify-center">
+              <div id="printable-receipt" className="bg-white max-w-md w-full rounded-2xl border border-slate-200 shadow-xl overflow-hidden p-6 text-slate-800 space-y-5">
+                
+                <div className="text-center space-y-2 border-b border-slate-100 pb-4">
+                  <div className="flex justify-center mb-1">
+                    <Icons.CheckCircle />
+                  </div>
+                  <h2 className="text-xl font-extrabold text-slate-900">Application Submitted!</h2>
+                  <p className="text-xs text-slate-500 font-medium">Your request has been successfully registered with SGS Online Service.</p>
+                </div>
+
+                <div className="bg-slate-50 rounded-xl border border-slate-200 p-4 space-y-3 text-xs">
+                  <div className="flex items-center justify-between border-b border-slate-200/60 pb-2">
+                    <span className="text-slate-500 font-semibold">Application UID:</span>
+                    <span className="font-black text-blue-700 text-sm tracking-wide">{submittedReceipt.uid}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between border-b border-slate-200/60 pb-2">
+                    <span className="text-slate-500 font-semibold">Service Name:</span>
+                    <span className="font-bold text-slate-900 text-right max-w-[200px] leading-tight">{submittedReceipt.serviceTitle}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between border-b border-slate-200/60 pb-2">
+                    <span className="text-slate-500 font-semibold">Category:</span>
+                    <span className="font-bold text-slate-800">{submittedReceipt.category}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between border-b border-slate-200/60 pb-2">
+                    <span className="text-slate-500 font-semibold">Amount Paid:</span>
+                    <span className="font-black text-emerald-600 text-sm">{submittedReceipt.amount}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-slate-500 font-semibold">Date & Time:</span>
+                    <span className="font-medium text-slate-700 text-[11px]">{submittedReceipt.dateTime}</span>
+                  </div>
+                </div>
+
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[11px] text-amber-900 font-medium leading-relaxed">
+                  📌 <strong>Note:</strong> Save your UID for tracking. Our assistance team will process your form and update status shortly.
+                </div>
+
+                <div className="pt-2 flex flex-col sm:flex-row gap-3 no-print">
+                  <button 
+                    onClick={() => window.print()} 
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 neon-red-btn"
+                  >
+                    <Icons.Download /> Download Receipt
+                  </button>
+                  <button 
+                    onClick={() => setSubmittedReceipt(null)} 
+                    className="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-1 neon-red-btn"
+                  >
+                    Done ✓
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : activeModalPage ? (
             <div className="fixed inset-0 bg-slate-100 z-50 flex flex-col h-full w-full overflow-hidden">
               <div className="bg-gradient-to-r from-blue-800 to-indigo-900 text-white px-4 py-3 shadow-md flex items-center justify-between shrink-0">
                 <h3 className="font-extrabold text-white text-base sm:text-lg flex items-center gap-2">
@@ -704,7 +827,7 @@
                       {userApps.length > 0 && (
                         <button 
                           onClick={clearAllApps}
-                          className="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-2xs"
+                          className="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-2xs neon-red-btn"
                         >
                           <Icons.Trash /> Clear All
                         </button>
@@ -829,7 +952,7 @@
               </div>
 
               <div className="p-3 bg-white border-t border-slate-200 flex justify-end shrink-0">
-                <button onClick={() => setActiveModalPage(null)} className="bg-slate-900 text-white font-bold px-6 py-2 rounded-xl text-xs shadow-md">
+                <button onClick={() => setActiveModalPage(null)} className="bg-slate-900 text-white font-bold px-6 py-2 rounded-xl text-xs shadow-md neon-red-btn">
                   Close Window
                 </button>
               </div>
@@ -858,7 +981,7 @@
               {/* MAIN SERVICES CONTENT */}
               {activeService ? (
                 <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-6">
-                  <button onClick={() => setActiveService(null)} className="inline-flex items-center gap-2 bg-white text-slate-800 font-bold text-xs px-4 py-2 rounded-xl border border-slate-300 mb-4 shadow-2xs">
+                  <button onClick={() => setActiveService(null)} className="inline-flex items-center gap-2 bg-white text-slate-800 font-bold text-xs px-4 py-2 rounded-xl border border-slate-300 mb-4 shadow-2xs neon-red-btn">
                     <Icons.ArrowLeft /> Back to Services
                   </button>
 
@@ -935,7 +1058,7 @@
                               {/* PhonePe Button */}
                               <a 
                                 href={phonepeUrl} 
-                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-[#5f259f] hover:bg-[#4a1c7d] text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all"
+                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-[#5f259f] hover:bg-[#4a1c7d] text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all neon-red-btn"
                               >
                                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.8 10.2c0-2.4-1.9-4.3-4.3-4.3H8.3c-.6 0-1.1.5-1.1 1.1v10.1c0 .6.5 1.1 1.1 1.1h2.3c.6 0 1.1-.5 1.1-1.1v-2.8h2.8c2.4 0 4.3-1.9 4.3-4.2zm-4.3 1.9h-2.8v-3.8h2.8c1 0 1.9.9 1.9 1.9 0 1-.9 1.9-1.9 1.9z"/></svg>
                                 <span>PhonePe</span>
@@ -944,7 +1067,7 @@
                               {/* GPay Button */}
                               <a 
                                 href={gpayUrl} 
-                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 font-bold text-xs py-2.5 px-3 rounded-lg shadow-sm transition-all"
+                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 font-bold text-xs py-2.5 px-3 rounded-lg shadow-sm transition-all neon-red-btn"
                               >
                                 <svg className="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
                                 <span>Google Pay</span>
@@ -953,7 +1076,7 @@
                               {/* Pay via Other Apps Button */}
                               <a 
                                 href={genericUpiUrl} 
-                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all"
+                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all neon-red-btn"
                               >
                                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
                                 <span>Pay via Other App</span>
@@ -981,7 +1104,7 @@
                       <button 
                         type="submit" 
                         disabled={isSubmitting}
-                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm py-3.5 rounded-xl shadow-lg transition-all active:scale-95 disabled:bg-slate-400 mt-2"
+                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm py-3.5 rounded-xl shadow-lg transition-all active:scale-95 disabled:bg-slate-400 mt-2 neon-red-btn"
                       >
                         {isSubmitting ? "Uploading & Submitting..." : "Submit Application →"}
                       </button>
@@ -1041,7 +1164,7 @@
                               }
                             }}
                             style={getCategoryButtonStyle(catObj, isSelected)}
-                            className="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border shrink-0"
+                            className="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border shrink-0 neon-red-btn"
                           >
                             {catName}
                           </button>
