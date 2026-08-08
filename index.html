@@ -2,11 +2,8 @@
 <html lang="hi"> 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="theme-color" content="#1e40af" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>SGS ONLINE SERVICE - Government & College Online Seva Portal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SGS ONLINE SERVICE - Form Filling Assistance & Help Desk</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -14,10 +11,7 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <style>
-    html, body { 
-      overscroll-behavior-y: none; 
-      -webkit-tap-highlight-color: transparent;
-    }
+    html, body { overscroll-behavior-y: contain; }
     .scrollbar-none::-webkit-scrollbar { display: none; }
     .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
     #splash-screen { transition: opacity 0.3s ease-out; }
@@ -25,642 +19,10 @@
     .pdf-preview { display: none; margin-top: 6px; font-size: 11px; font-weight: bold; color: #1d4ed8; background: #eff6ff; padding: 6px 10px; border-radius: 6px; border: 1px solid #bfdbfe; width: fit-content; }
   </style>
 
-  <script>
-    const STATIC_CATEGORIES = [
-      { name: 'All Services', color: 'blue' },
-      { name: 'STD Collage', color: 'purple' },
-      { name: 'Internship', color: 'indigo' },
-      { name: 'Certificates (Jati/Aaya/Niwas)', color: 'emerald' },
-      { name: 'College Admission', color: 'purple' },
-      { name: 'Scholarship', color: 'amber' },
-      { name: 'Government Forms', color: 'rose' }
-    ];
-     
-    const STATIC_NOTICES = [
-      { id: 1, text: "Bihar RTPS Income / Caste Certificate online forms are active." },
-      { id: 2, text: "College Admission Forms & Post Matric Scholarship portal open." }
-    ];
-
-    const ALL_POSTS = [
-      {
-        id: "internship-application-01",
-        title: "Internship Application Online Form",
-        category: "Internship",
-        description: "Internship ke liye apni personal, academic aur payment details bharein.",
-        qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D300%26cu%3DINR&size=200&format=png",
-        fields: [
-          { id: "field_full_name", name: "full_name", label: "Full Name", type: "text", required: true },
-          {
-            id: "field_gender",
-            name: "gender",
-            label: "Gender",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_male", label: "Male", value: "male" },
-              { id: "opt_female", label: "Female", value: "female" }
-            ]
-          },
-          { id: "field_father_name", name: "father_name", label: "Father's Name", type: "text", required: true },
-          { id: "field_mother_name", name: "mother_name", label: "Mother's Name", type: "text", required: true },
-          { id: "field_contact_number", name: "contact_number", label: "Contact Number", type: "tel", required: true },
-          { id: "field_email_address", name: "email_address", label: "Email Address", type: "email", required: true },
-          {
-            id: "field_university_name",
-            name: "university_name",
-            label: "University Name",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_vksu", label: "Veer Kunwar Singh University", value: "veer_kunwar_singh_university" }
-            ]
-          },
-          { id: "field_college_name", name: "college_name", label: "College Name", type: "text", required: true },
-          {
-            id: "field_degree",
-            name: "degree",
-            label: "Degree",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_ug", label: "UG", value: "ug" }
-            ]
-          },
-          {
-            id: "field_stream",
-            name: "stream",
-            label: "Stream",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_ba", label: "B.A", value: "ba" },
-              { id: "opt_bcom", label: "B.COM", value: "bcom" },
-              { id: "opt_bsc", label: "B.SC", value: "bsc" }
-            ]
-          },
-          {
-            id: "field_semester",
-            name: "semester",
-            label: "Semester",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_5th", label: "5th", value: "5th" }
-            ]
-          },
-          {
-            id: "field_academic_session",
-            name: "academic_session",
-            label: "Academic Session",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_2023_2027", label: "2023-2027", value: "2023_2027" },
-              { id: "opt_2024_2028", label: "2024-2028", value: "2024_2028" },
-              { id: "opt_2025_2029", label: "2025-2029", value: "2025_2029" },
-              { id: "opt_2026_2030", label: "2026-2030", value: "2026_2030" }
-            ]
-          },
-          { id: "field_major_subject", name: "major_subject", label: "Major Subject / Honors", type: "text", required: true },
-          { id: "field_university_reg_no", name: "university_reg_no", label: "University Registration Number", type: "text", required: true },
-          { id: "field_university_roll_no", name: "university_roll_no", label: "University Roll Number", type: "text", required: true },
-          {
-            id: "field_select_course",
-            name: "select_course",
-            label: "Select Course",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_teacher_training", label: "Teacher Training", value: "teacher_training" },
-              { id: "opt_cyber_security", label: "Cyber Security", value: "cyber_security" },
-              { id: "opt_digital_literacy", label: "Digital Literacy", value: "digital_literacy" },
-              { id: "opt_financial_literacy", label: "Financial Literacy", value: "financial_literacy" },
-              { id: "opt_healthcare", label: "Healthcare", value: "healthcare" },
-              { id: "opt_tourism", label: "Tourism", value: "tourism" },
-              { id: "opt_agriculture", label: "Agriculture", value: "agriculture" },
-              { id: "opt_graphics", label: "Graphics and Content Creation", value: "graphics_content_creation" },
-              { id: "opt_entrepreneurship", label: "Entrepreneurship", value: "entrepreneurship" },
-              { id: "opt_skill_dev", label: "Skill and Personality Development", value: "skill_personality_development" },
-              { id: "opt_disaster_mgmt", label: "Disaster Management", value: "disaster_management" }
-            ]
-          },
-          { id: "field_guardian_name", name: "guardian_name", label: "Guardian Name (Emergency Contact)", type: "text", required: true },
-          { id: "field_emergency_contact_no", name: "emergency_contact_no", label: "Emergency Contact Number", type: "tel", required: true },
-          {
-            id: "field_relationship",
-            name: "relationship",
-            label: "Relationship with Emergency Contact",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_mother", label: "Mother", value: "mother" },
-              { id: "opt_father", label: "Father", value: "father" },
-              { id: "opt_brother", label: "Brother", value: "brother" },
-              { id: "opt_sister", label: "Sister", value: "sister" },
-              { id: "opt_other", label: "Other", value: "other" }
-            ]
-          },
-          {
-            id: "field_payment_screenshot",
-            name: "payment_screenshot",
-            label: "Upload Payment Screenshot",
-            type: "file",
-            accept: "image/*",
-            required: true
-          }
-        ]
-      },
-      {
-        id: "rtps-caste-02",
-        title: "Bihar RTPS Caste Certificate (जाति प्रमाण पत्र)",
-        category: "Certificates (Jati/Aaya/Niwas)",
-        description: "Caste Certificate apply karne ke liye niche details bharein, documents upload karein aur QR par pay karein.",
-        qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D30%26cu%3DINR&size=200&format=png",
-        fields: [
-          { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
-          { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
-          { id: "field_mother_name", name: "mother_name", label: "माता का नाम / Mother's Name", type: "text", required: true, placeholder: "Mother name likhein" },
-          { id: "field_husband_name", name: "husband_name", label: "पति का नाम / Husband's Name (Optional)", type: "text", required: false, placeholder: "Pati ka naam (yadi laagu ho)" },
-          { id: "field_mobile_no", name: "mobile_no", label: "मोबाइल नंबर / Mobile Number", type: "tel", required: true, placeholder: "Mobile number" },
-          { id: "field_district", name: "district", label: "जिला / District", type: "text", required: true, placeholder: "District name likhein" },
-          { id: "field_sub_division", name: "sub_division", label: "अनुमंडल / Sub Division", type: "text", required: true, placeholder: "Sub division likhein" },
-          { id: "field_block", name: "block", label: "प्रखंड / Block", type: "text", required: true, placeholder: "Block name likhein" },
-          { id: "field_gram_panchayat", name: "gram_panchayat", label: "ग्राम पंचायत / Gram Panchayat", type: "text", required: true, placeholder: "Panchayat name likhein" },
-          { id: "field_ward_no", name: "ward_no", label: "वार्ड संख्या / Ward No.", type: "text", required: true, placeholder: "Ward number likhein" },
-          { id: "field_village", name: "village", label: "ग्राम/मोहल्ला / Village/Town", type: "text", required: true, placeholder: "Village name likhein" },
-          { id: "field_police_station", name: "police_station", label: "थाना / Police Station", type: "text", required: true, placeholder: "Police station likhein" },
-          {
-            id: "field_applicant_photo",
-            name: "applicant_photo",
-            label: "आवेदक का फोटो / Photograph of Applicant",
-            type: "file",
-            accept: "image/*, application/pdf",
-            required: true
-          },
-          {
-            id: "field_payment_screenshot",
-            name: "adhar_card",
-            label: "आधार कार्ड के दोनों साइड का फोटो अपलोड करें / Upload photos of both sides of the Aadhaar card.",
-            type: "file",
-            accept: "image/*",
-            required: true
-          },
-          {
-            id: "field_profession",
-            name: "profession",
-            label: "पेशा / Profession",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_student", label: "छात्र / Student", value: "student" },
-              { id: "opt_farmer", label: "किसान / Farmer", value: "farmer" },
-              { id: "opt_housewife", label: "गृहिणी / Housewife", value: "housewife" },
-              { id: "opt_other_prof", label: "अन्य / Other", value: "other" }
-            ]
-          },
-          { id: "field_category", name: "category", label: "वर्ग / Category", type: "text", required: true, placeholder: "e.g. OBC / EBC / SC / ST" },
-          { id: "field_caste", name: "caste", label: "जाति / Caste", type: "text", required: true, placeholder: "Apni jati likhein" },
-          {
-            id: "field_caste_proof_doc",
-            name: "caste_proof_doc",
-            label: "जाति प्रमाणपत्र के साक्ष्य हेतु दस्तावेज",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_purana_jati_cert", label: "आपका पुराना बना हुआ जाती प्रमाणपत्र", value: "purana_jati_certificate" },
-              { id: "opt_khatiyan", label: "राजस्व अभिलेख - खतियान", value: "rajashwa_khatiyan" },
-              { id: "opt_bhumi_doc", label: "राजस्व अभिलेख - भूमि संबंधी दस्तावेज", value: "rajashwa_bhumi_dastavez" },
-              { id: "opt_anya_rajashwa", label: "अन्य राजस्व अभिलेख", value: "anya_rajashwa_abhilekh" }
-            ]
-          },
-          {
-            id: "field_identity_proof",
-            name: "identity_proof",
-            label: "दस्तावेज़ अपलोड करें / Upload Selected Document Proof",
-            type: "file",
-            accept: "image/*, application/pdf",
-            required: true
-          },
-          {
-            id: "field_payment_screenshot",
-            name: "payment_screenshot",
-            label: "भुगतान का स्क्रीनशॉट अपलोड करें / Upload Payment Screenshot",
-            type: "file",
-            accept: "image/*",
-            required: true 
-          }
-        ]
-      },
-      {
-        id: "rtps-income-03",
-        title: "Bihar RTPS Income Certificate (आय प्रमाण पत्र)",
-        category: "Certificates (Jati/Aaya/Niwas)",
-        description: "Income Certificate online form bharein aur required documents upload karein.",
-        qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D30%26cu%3DINR&size=200&format=png",
-        fields: [
-          { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
-          { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
-          { id: "field_mother_name", name: "mother_name", label: "माता का नाम / Mother's Name", type: "text", required: true, placeholder: "Mother name likhein" },
-          { id: "field_husband_name", name: "husband_name", label: "पति का नाम / Husband's Name (Optional)", type: "text", required: false, placeholder: "Pati ka naam (yadi laagu ho)" },
-          { id: "field_mobile_no", name: "mobile_no", label: "मोबाइल नंबर / Mobile Number", type: "tel", required: true, placeholder: "Mobile number" },
-          { id: "field_district", name: "district", label: "जिला / District", type: "text", required: true, placeholder: "District name likhein" },
-          { id: "field_sub_division", name: "sub_division", label: "अनुमंडल / Sub Division", type: "text", required: true, placeholder: "Sub division likhein" },
-          { id: "field_block", name: "block", label: "प्रखंड / Block", type: "text", required: true, placeholder: "Block name likhein" },
-          { id: "field_gram_panchayat", name: "gram_panchayat", label: "ग्राम पंचायत / Gram Panchayat", type: "text", required: true, placeholder: "Panchayat name likhein" },
-          { id: "field_ward_no", name: "ward_no", label: "वार्ड संख्या / Ward No.", type: "text", required: true, placeholder: "Ward number likhein" },
-          { id: "field_village", name: "village", label: "ग्राम/मोहल्ला / Village/Town", type: "text", required: true, placeholder: "Village name likhein" },
-          { id: "field_police_station", name: "police_station", label: "थाना / Police Station", type: "text", required: true, placeholder: "Police station likhein" },
-          {
-            id: "field_applicant_photo",
-            name: "applicant_photo",
-            label: "आवेदक का फोटो / Photograph of Applicant",
-            type: "file",
-            accept: "image/*, application/pdf",
-            required: true
-          },
-          {
-            id: "field_payment_screenshot",
-            name: "adhar_card",
-            label: "आधार कार्ड के दोनों साइड का फोटो अपलोड करें / Upload photos of both sides of the Aadhaar card.",
-            type: "file",
-            accept: "image/*",
-            required: true
-          },
-          {
-            id: "field_annual_income_range",
-            name: "annual_income_range",
-            label: "वार्षिक आय / Annual Family Income Amount",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_inc_60k", label: "₹60,000", value: "60000" },
-              { id: "opt_inc_70k", label: "₹70,000", value: "70000" },
-              { id: "opt_inc_80k", label: "₹80,000", value: "80000" },
-              { id: "opt_inc_90k", label: "₹90,000", value: "90000" },
-              { id: "opt_inc_1lakh", label: "₹1,00,000", value: "100000" },
-              { id: "opt_inc_1_2lakh", label: "₹1,20,000", value: "120000" },
-              { id: "opt_inc_1_5lakh", label: "₹1,50,000", value: "150000" }
-            ]
-          },
-          {
-            id: "field_income_proof_doc",
-            name: "income_proof_doc",
-            label: "आय प्रमाणपत्र के साक्ष्य हेतु दस्तावेज",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_purana_income_cert", label: "आपका पुराना बना हुआ आय प्रमाणपत्र/income certificate", value: "purana_income_certificate" },
-              { id: "opt_anyanya_abhilekh", label: "अन्यान्य अभिलेख", value: "anyanya_abhilekh" }
-            ]
-          },
-          {
-            id: "field_identity_proof",
-            name: "identity_proof",
-            label: "दस्तावेज़ अपलोड करें / Upload Selected Document Proof",
-            type: "file",
-            accept: "image/*, application/pdf",
-            required: true
-          },
-          {
-            id: "field_payment_screenshot",
-            name: "payment_screenshot",
-            label: "भुगतान का स्क्रीनशॉट अपलोड करें / Upload Payment Screenshot",
-            type: "file",
-            accept: "image/*",
-            required: true 
-          }
-        ]
-      },
-      {
-        id: "rtps-residence-04",
-        title: "Bihar RTPS Residence Certificate (निवास प्रमाण पत्र)",
-        category: "Certificates (Jati/Aaya/Niwas)",
-        description: "Niwas Praman Patra ke liye form fill karein.",
-        qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D30%26cu%3DINR&size=200&format=png",
-        fields: [
-          { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
-          { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
-          { id: "field_mother_name", name: "mother_name", label: "माता का नाम / Mother's Name", type: "text", required: true, placeholder: "Mother name likhein" },
-          { id: "field_husband_name", name: "husband_name", label: "पति का नाम / Husband's Name (Optional)", type: "text", required: false, placeholder: "Pati ka naam (yadi laagu ho)" },
-          { id: "field_mobile_no", name: "mobile_no", label: "मोबाइल नंबर / Mobile Number", type: "tel", required: true, placeholder: "Mobile number" },
-          { id: "field_district", name: "district", label: "जिला / District", type: "text", required: true, placeholder: "District name likhein" },
-          { id: "field_sub_division", name: "sub_division", label: "अनुमंडल / Sub Division", type: "text", required: true, placeholder: "Sub division likhein" },
-          { id: "field_block", name: "block", label: "प्रखंड / Block", type: "text", required: true, placeholder: "Block name likhein" },
-          { id: "field_gram_panchayat", name: "gram_panchayat", label: "ग्राम पंचायत / Gram Panchayat", type: "text", required: true, placeholder: "Panchayat name likhein" },
-          { id: "field_ward_no", name: "ward_no", label: "वार्ड संख्या / Ward No.", type: "text", required: true, placeholder: "Ward number likhein" },
-          { id: "field_village", name: "village", label: "ग्राम/मोहल्ला / Village/Town", type: "text", required: true, placeholder: "Village name likhein" },
-          { id: "field_police_station", name: "police_station", label: "थाना / Police Station", type: "text", required: true, placeholder: "Police station likhein" },
-          {
-            id: "field_applicant_photo",
-            name: "applicant_photo",
-            label: "आवेदक का फोटो / Photograph of Applicant",
-            type: "file",
-            accept: "image/*, application/pdf",
-            required: true
-          },
-          {
-            id: "field_payment_screenshot",
-            name: "adhar_card",
-            label: "आधार कार्ड के दोनों साइड का फोटो अपलोड करें / Upload photos of both sides of the Aadhaar card.",
-            type: "file",
-            accept: "image/*",
-            required: true
-          },
-          {
-            id: "field_residence_type",
-            name: "residence_type",
-            label: "निवास का प्रकार / Type of Residence",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_sthayi", label: "स्थायी", value: "sthayi" },
-              { id: "opt_asthayi", label: "अस्थायी", value: "asthayi" }
-            ]
-          },
-          {
-            id: "field_residence_proof_doc",
-            name: "residence_proof_doc",
-            label: "आवास प्रमाणपत्र के साक्ष्य हेतु दस्तावेज",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_purana_niwas_cert", label: "आपका पुराना बना हुआ निवास प्रमाण पत्र", value: "purana_niwas_certificate" },
-              { id: "opt_khatiyan_doc", label: "राजस्व अभिलेख - खतियान", value: "rajashwa_khatiyan" },
-              { id: "opt_bhumi_doc", label: "राजस्व अभिलेख - भूमि संबंधी दस्तावेज", value: "rajashwa_bhumi_dastavez" },
-              { id: "opt_ration_card_doc", label: "राशन कार्ड", value: "ration_card" },
-              { id: "opt_anya_rajashwa_doc", label: "अन्य राजस्व अभिलेख", value: "anya_rajashwa_abhilekh" }
-            ]
-          },
-          {
-            id: "field_identity_proof",
-            name: "identity_proof",
-            label: "दस्तावेज़ अपलोड करें / Upload Selected Document Proof",
-            type: "file",
-            accept: "image/*, application/pdf",
-            required: true
-          },
-          {
-            id: "field_payment_screenshot",
-            name: "payment_screenshot",
-            label: "भुगतान का स्क्रीनशॉट अपलोड करें / Upload Payment Screenshot",
-            type: "file",
-            accept: "image/*",
-            required: true 
-          }
-        ]
-      },
-      {
-        id: "vksu-exam-form-all-sem-05",
-        title: "VKSU Exam Form All Semester",
-        category: "STD Collage", 
-        description: "Veer Kunwar Singh University exam form fill up service all semesters (Sem 1 to Sem 8).",
-        qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D630%26cu%3DINR&size=200&format=png",
-        fields: [
-          { id: "field_student_name", name: "student_name", label: "Student Name", type: "text", required: true, placeholder: "Apna name likhein" },
-          {
-            id: "field_course",
-            name: "course",
-            label: "Course / Stream",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_ba", label: "B.A", value: "ba" },
-              { id: "opt_bcom", label: "B.Com", value: "bcom" },
-              { id: "opt_bsc", label: "B.Sc", value: "bsc" }
-            ]
-          },
-          {
-            id: "field_semester",
-            name: "semester",
-            label: "Select Semester",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_sem1", label: "Semester 1", value: "sem_1" },
-              { id: "opt_sem2", label: "Semester 2", value: "sem_2" },
-              { id: "opt_sem3", label: "Semester 3", value: "sem_3" },
-              { id: "opt_sem4", label: "Semester 4", value: "sem_4" },
-              { id: "opt_sem5", label: "Semester 5", value: "sem_5" },
-              { id: "opt_sem6", label: "Semester 6", value: "sem_6" },
-              { id: "opt_sem7", label: "Semester 7", value: "sem_7" },
-              { id: "opt_sem8", label: "Semester 8", value: "sem_8" }
-            ]
-          },
-          { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number", type: "tel", required: true, placeholder: "10-digit mobile number likhein" },
-          { id: "field_vksu_reg_no", name: "vksu_reg_no", label: "VKSU Registration Number", type: "text", required: true, placeholder: "Registration number likhein" },
-          { id: "field_vksu_password", name: "vksu_password", label: "VKSU Password (Optional)", type: "text", required: false, placeholder: "Agar password pata ho to likhein" },
-          {
-            id: "field_password_forgot",
-            name: "password_forgot",
-            label: "Password yaad nahi hai? (Optional)",
-            type: "radio",
-            required: false,
-            options: [
-              { id: "opt_pass_yes", label: "Yes", value: "yes" },
-              { id: "opt_pass_no", label: "No", value: "no" }
-            ]
-          },
-          {
-            id: "field_student_photo",
-            name: "student_photo",
-            label: "Student Photo (Image/PDF)",
-            type: "file",
-            accept: "image/*, application/pdf",
-            required: true
-          },
-          {
-            id: "field_payment_screenshot",
-            name: "payment_screenshot",
-            label: "Upload Payment Screenshot",
-            type: "file",
-            accept: "image/*",
-            required: true 
-          }
-        ]
-      },
-      {
-        id: "rtps-combo-06",
-        title: "Bihar RTPS Combo Service (जाति, आय एवं निवास प्रमाण पत्र एक साथ बनवाएं)",
-        category: "Certificates (Jati/Aaya/Niwas)",
-        description: "जाति, आय एवं निवास प्रमाण पत्र एक साथ आवेदन करने के लिए नीचे अपनी पूरी डिटेल्स भरें, सभी आवश्यक दस्तावेज़ अपलोड करें और QR कोड स्कैन करके ₹90 का भुगतान करें।",
-        qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D90%26cu%3DINR&size=200&format=png",
-        fields: [
-          { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
-          { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
-          { id: "field_mother_name", name: "mother_name", label: "माता का नाम / Mother's Name", type: "text", required: true, placeholder: "Mother name likhein" },
-          { id: "field_husband_name", name: "husband_name", label: "पति का नाम / Husband's Name (Optional)", type: "text", required: false, placeholder: "Pati ka naam (yadi laagu ho)" },
-          { id: "field_mobile_no", name: "mobile_no", label: "मोबाइल नंबर / Mobile Number", type: "tel", required: true, placeholder: "Mobile number" },
-          { id: "field_district", name: "district", label: "जिला / District", type: "text", required: true, placeholder: "District name likhein" },
-          { id: "field_sub_division", name: "sub_division", label: "अनुमंडल / Sub Division", type: "text", required: true, placeholder: "Sub division likhein" },
-          { id: "field_block", name: "block", label: "प्रखंड / Block", type: "text", required: true, placeholder: "Block name likhein" },
-          { id: "field_gram_panchayat", name: "gram_panchayat", label: "ग्राम पंचायत / Gram Panchayat", type: "text", required: true, placeholder: "Panchayat name likhein" },
-          { id: "field_ward_no", name: "ward_no", label: "वार्ड संख्या / Ward No.", type: "text", required: true, placeholder: "Ward number likhein" },
-          { id: "field_village", name: "village", label: "ग्राम/मोहल्ला / Village/Town", type: "text", required: true, placeholder: "Village name likhein" },
-          { id: "field_police_station", name: "police_station", label: "थाना / Police Station", type: "text", required: true, placeholder: "Police station likhein" },
-          {
-            id: "field_applicant_photo",
-            name: "applicant_photo",
-            label: "आवेदक का फोटो / Photograph of Applicant",
-            type: "file",
-            accept: "image/*, application/pdf",
-            required: true
-          },
-          {
-            id: "field_payment_screenshot",
-            name: "adhar_card",
-            label: "आधार कार्ड के दोनों साइड का फोटो अपलोड करें / Upload photos of both sides of the Aadhaar card.",
-            type: "file",
-            accept: "image/*",
-            required: true
-          },
-          {
-            id: "field_profession",
-            name: "profession",
-            label: "पेशा / Profession",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_student", label: "छात्र / Student", value: "student" },
-              { id: "opt_farmer", label: "किसान / Farmer", value: "farmer" },
-              { id: "opt_housewife", label: "गृहिणी / Housewife", value: "housewife" },
-              { id: "opt_other_prof", label: "अन्य / Other", value: "other" }
-            ]
-          },
-          { id: "field_category", name: "category", label: "वर्ग / Category", type: "text", required: true, placeholder: "e.g. OBC / EBC / SC / ST" },
-          { id: "field_caste", name: "caste", label: "जाति / Caste", type: "text", required: true, placeholder: "Apni jati likhein" },
-          {
-            id: "field_annual_income_range",
-            name: "annual_income_range",
-            label: "वार्षिक आय / Annual Family Income Amount",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_inc_60k", label: "₹60,000", value: "60000" },
-              { id: "opt_inc_70k", label: "₹70,000", value: "70000" },
-              { id: "opt_inc_80k", label: "₹80,000", value: "80000" },
-              { id: "opt_inc_90k", label: "₹90,000", value: "90000" },
-              { id: "opt_inc_1lakh", label: "₹1,00,000", value: "100000" },
-              { id: "opt_inc_1_2lakh", label: "₹1,20,000", value: "120000" },
-              { id: "opt_inc_1_5lakh", label: "₹1,50,000", value: "150000" }
-            ]
-          },
-          {
-            id: "field_residence_type",
-            name: "residence_type",
-            label: "निवास का प्रकार / Type of Residence",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_sthayi", label: "स्थायी", value: "sthayi" },
-              { id: "opt_asthayi", label: "अस्थायी", value: "asthayi" }
-            ]
-          },
-          {
-            id: "field_combo_proof_doc",
-            name: "combo_proof_doc",
-            label: "प्रमाणपत्रों के साक्ष्य हेतु दस्तावेज",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_purana_certificates", label: "पुराना बना हुआ जाति / आय / निवास प्रमाण पत्र", value: "purana_all_certificates" },
-              { id: "opt_khatiyan_doc", label: "राजस्व अभिलेख - खतियान", value: "rajashwa_khatiyan" },
-              { id: "opt_bhumi_doc", label: "राजस्व अभिलेख - भूमि संबंधी दस्तावेज", value: "rajashwa_bhumi_dastavez" },
-              { id: "opt_ration_card_doc", label: "राशन कार्ड", value: "ration_card" },
-              { id: "opt_anya_rajashwa_doc", label: "अन्य राजस्व अभिलेख", value: "anya_rajashwa_abhilekh" }
-            ]
-          },
-          {
-            id: "field_identity_proof",
-            name: "identity_proof",
-            label: "दस्तावेज़ अपलोड करें / Upload Selected Document Proof",
-            type: "file",
-            accept: "image/*, application/pdf",
-            required: true
-          },
-          {
-            id: "field_payment_screenshot",
-            name: "payment_screenshot",
-            label: "भुगतान का स्क्रीनशॉट अपलोड करें / Upload Payment Screenshot",
-            type: "file",
-            accept: "image/*",
-            required: true
-          }
-        ]
-      },
-      {
-        id: "vksu-admission-sem5-2024-2028-07",
-        title: "VKSU Online Admission Form (Semester 5th)",
-        category: "College Admission",
-        description: "Veer Kunwar Singh University, Session 2024-2028 Semester 5th Online Admission Form fill up service.",
-        qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D30%26cu%3DINR&size=200&format=png",
-        fields: [
-          { id: "field_student_name", name: "student_name", label: "Student Name", type: "text", required: true, placeholder: "Apna name likhein" },
-          {
-            id: "field_select_class",
-            name: "select_class",
-            label: "Select Class",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_ba", label: "B.A", value: "ba" },
-              { id: "opt_bcom", label: "B.COM", value: "bcom" },
-              { id: "opt_bsc", label: "B.SC", value: "bsc" }
-            ]
-          },
-          {
-            id: "field_semester",
-            name: "semester",
-            label: "Semester",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_sem_v", label: "V", value: "5th" }
-            ]
-          },
-          {
-            id: "field_session",
-            name: "session",
-            label: "Session",
-            type: "radio",
-            required: true,
-            options: [
-              { id: "opt_session_2024_2028", label: "2024-2028", value: "2024_2028" }
-            ]
-          },
-          { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number", type: "tel", required: true, placeholder: "10-digit mobile number likhein" },
-          { id: "field_registration_no", name: "registration_no", label: "Registration No.", type: "text", required: true, placeholder: "University Registration Number likhein" },
-          { id: "field_roll_number", name: "roll_number", label: "University Roll Number", type: "text", required: true, placeholder: "University Roll Number likhein" },
-          { id: "field_dob", name: "dob", label: "Date of Birth (DD/MM/YYYY)", type: "text", required: true, placeholder: "DD/MM/YYYY" },
-          {
-            id: "field_student_photo",
-            name: "student_photo",
-            label: "Upload Student Photo",
-            type: "file",
-            accept: "image/*",
-            required: true
-          },
-          {
-            id: "field_student_sign",
-            name: "student_sign",
-            label: "Upload Student Signature",
-            type: "file",
-            accept: "image/*",
-            required: true
-          },
-          {
-            id: "field_payment_screenshot",
-            name: "payment_screenshot",
-            label: "Upload Payment Screenshot",
-            type: "file",
-            accept: "image/*",
-            required: true 
-          }
-        ]
-      }
-    ];
-  </script>
+  <!-- External Static Posts Data File -->
+  <script src="posts.js"></script>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased selection:bg-yellow-200 pb-16">
+<body class="bg-slate-50 text-slate-800 antialiased selection:bg-yellow-200">
   
   <!-- SPLASH LOADER SCREEN -->
   <div id="splash-screen" class="fixed inset-0 z-[100] bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-950 flex flex-col items-center justify-center p-4 text-white">
@@ -672,11 +34,11 @@
         SGS ONLINE SERVICE
       </h1>
       <p class="text-[11px] font-bold text-amber-200/90 uppercase tracking-widest mt-1">
-        Government & College Online Seva Portal
+        Online Form Filling Assistance & Facilitation Portal
       </p>
       <div class="mt-8 flex flex-col items-center gap-2">
         <div class="w-8 h-8 border-3 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
-        <p class="text-[11px] text-slate-300 font-semibold tracking-wide">Loading Seva Portal...</p>
+        <p class="text-[11px] text-slate-300 font-semibold tracking-wide">Loading Assistance Portal...</p>
       </div>
     </div>
   </div>
@@ -696,9 +58,11 @@
   <script type="text/babel">
     const { useState, useEffect } = React;
 
+    // Telegram Bot Credentials
     const TELEGRAM_BOT_TOKEN = "8358900801:AAE42RhsmJPv_h40nGEqC7wuXW5HQ_wp8pk";
     const TELEGRAM_CHAT_ID = "5011508473";
 
+    // Support Encrypted Credentials
     const _0xwa = "OTExNzA4MDE2OQ==";
     const _0xem = "contactsgsonlineservice@gmail.com";
 
@@ -712,12 +76,11 @@
       ShieldCheck: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>,
       Share2: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>,
       Headphones: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>,
-      ListCheck: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>,
-      Trash: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>,
-      Home: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>,
-      Academic: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0112 20.055a11.952 11.952 0 01-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+      ListCheck: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 022 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>,
+      Trash: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
     };
 
+    // HIGH QUALITY HD IMAGE COMPRESSION (1600px Max, 85% Quality)
     const compressImage = (file) => {
       return new Promise((resolve) => {
         if (!file || file.type === 'application/pdf' || !file.type.startsWith('image/')) {
@@ -761,6 +124,27 @@
       });
     };
 
+    // Helper to parse UPI params from QR code URL
+    const getUpiDetails = (qrUrl) => {
+      let upiData = { pa: "s.kumar.2372@superyes", pn: "Merchant", am: "" };
+      try {
+        if (qrUrl) {
+          const parsedUrl = new URL(qrUrl);
+          const textParam = parsedUrl.searchParams.get("text");
+          if (textParam) {
+            const upiString = decodeURIComponent(textParam);
+            const upiUrl = new URL(upiString);
+            upiData.pa = upiUrl.searchParams.get("pa") || upiData.pa;
+            upiData.pn = upiUrl.searchParams.get("pn") || upiData.pn;
+            upiData.am = upiUrl.searchParams.get("am") || "";
+          }
+        }
+      } catch (e) {
+        console.error("UPI parse error", e);
+      }
+      return upiData;
+    };
+
     function App() {
       const [services, setServices] = useState(typeof ALL_POSTS !== 'undefined' ? ALL_POSTS : []);
       const [notices, setNotices] = useState(typeof STATIC_NOTICES !== 'undefined' ? STATIC_NOTICES : []);
@@ -774,9 +158,23 @@
       const [toastMsg, setToastMsg] = useState('');
       const [isSubmitting, setIsSubmitting] = useState(false);
 
-      // STATE FOR SECURE MOBILE BACK PRESS
-      const [viewState, setViewState] = useState({ page: 'home', category: 'All Services', service: null, modal: null });
+      // First Time Visit Legal Agreement State
+      const [hasAgreed, setHasAgreed] = useState(() => {
+        try {
+          return localStorage.getItem('sgs_terms_accepted') === 'true';
+        } catch (e) {
+          return false;
+        }
+      });
 
+      const handleAcceptTerms = () => {
+        try {
+          localStorage.setItem('sgs_terms_accepted', 'true');
+        } catch (e) {}
+        setHasAgreed(true);
+      };
+
+      // User Applications State from LocalStorage
       const [userApps, setUserApps] = useState(() => {
         try {
           const saved = localStorage.getItem('sgs_user_applications');
@@ -791,6 +189,7 @@
         setTimeout(() => setToastMsg(''), 3000);
       };
 
+      // Helper function to delete single item from tracking list
       const deleteSingleApp = (uidToDelete) => {
         const updated = userApps.filter(item => item.uid !== uidToDelete);
         setUserApps(updated);
@@ -798,6 +197,7 @@
         showNotification("Application removed from tracking!");
       };
 
+      // Helper function to clear all tracking items
       const clearAllApps = () => {
         if (window.confirm("Kya aap saare tracking history clear karna chahte hain?")) {
           setUserApps([]);
@@ -806,45 +206,26 @@
         }
       };
 
-      // ADVANCED MOBILE BACK BUTTON NAVIGATION HANDLER
-      const navigateTo = (newState, pushToHistory = true) => {
-        if (pushToHistory) {
-          window.history.pushState(newState, '');
-        }
-        setViewState(newState);
-        if (newState.category) setSelectedCat(newState.category);
-        setActiveService(newState.service || null);
-        setActiveModalPage(newState.modal || null);
-        if (newState.drawer !== undefined) setShowDrawer(newState.drawer);
-        else setShowDrawer(false);
-      };
-
+      // Hardware Mobile Back Button Sync
       useEffect(() => {
-        // Set initial state
-        window.history.replaceState({ page: 'home', category: 'All Services', service: null, modal: null }, '');
-
-        const handlePopState = (e) => {
-          if (e.state) {
-            setViewState(e.state);
-            setSelectedCat(e.state.category || 'All Services');
-            setActiveService(e.state.service || null);
-            setActiveModalPage(e.state.modal || null);
-            setShowDrawer(e.state.drawer || false);
-          } else {
-            // Default Home state fallback
-            setSelectedCat('All Services');
+        const handlePopState = () => {
+          if (activeService) {
             setActiveService(null);
+          } else if (activeModalPage) {
             setActiveModalPage(null);
+          } else if (showDrawer) {
             setShowDrawer(false);
+          } else if (selectedCat !== 'All Services') {
+            setSelectedCat('All Services');
           }
         };
-
         window.addEventListener('popstate', handlePopState);
         return () => window.removeEventListener('popstate', handlePopState);
-      }, []);
+      }, [activeService, activeModalPage, showDrawer, selectedCat]);
 
       const openServiceDetail = (srv) => {
-        navigateTo({ page: 'detail', category: selectedCat, service: srv, modal: null });
+        window.history.pushState({ page: 'detail' }, '');
+        setActiveService(srv);
       };
 
       const handleFilePreview = (e, imgPreviewId, pdfPreviewId) => {
@@ -881,13 +262,14 @@
         const formData = new FormData(form);
         const submissionId = "SGS-" + Math.floor(100000 + Math.random() * 900000);
 
-        let textDetails = `📥 *New Online Application Received!*\n\n`;
+        let textDetails = `📥 *New Online Assistance Request Received!*\n\n`;
         textDetails += `🆔 *UID:* \`${submissionId}\`\n`;
         textDetails += `📌 *Service:* ${activeService.title}\n\n`;
         textDetails += `👤 *USER SUBMITTED DETAILS:*\n`;
 
         const rawFileInputs = [];
 
+        // Loop through all defined fields in post configuration
         if (activeService.fields) {
           activeService.fields.forEach((f) => {
             if (f.type === 'file') {
@@ -912,12 +294,18 @@
           });
         }
 
-        const utrVal = formData.get("utr_number");
+        // Custom File Input for Main Payment Screenshot
+        const mainPayProof = formData.get("main_payment_screenshot");
+        if (mainPayProof && mainPayProof instanceof File && mainPayProof.size > 0) {
+          rawFileInputs.push({ label: "Main Payment Screenshot", name: "main_payment_screenshot", file: mainPayProof });
+        }
+
         const dateStr = new Date().toLocaleString();
-        textDetails += `\n💳 *UTR / Transaction ID:* \`${utrVal || 'N/A'}\`\n`;
+        textDetails += `\n💳 *Payment Screenshot:* Attached Below\n`;
         textDetails += `📅 *Date:* ${dateStr}`;
 
         try {
+          // 1. Send Complete Text Message First
           await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -928,6 +316,7 @@
             })
           });
 
+          // 2. Compress Images
           const processedFiles = await Promise.all(
             rawFileInputs.map(async (item) => {
               const fileObj = await compressImage(item.file);
@@ -935,6 +324,7 @@
             })
           );
 
+          // 3. Upload Files to Telegram
           for (const item of processedFiles) {
             const fileData = new FormData();
             fileData.append("chat_id", TELEGRAM_CHAT_ID);
@@ -952,6 +342,7 @@
             });
           }
 
+          // 4. Save Only UID and Service Title to LocalStorage
           const newAppItem = {
             uid: submissionId,
             serviceTitle: activeService.title
@@ -964,8 +355,7 @@
           form.reset();
           document.querySelectorAll('.img-preview').forEach(img => img.style.display = 'none');
           document.querySelectorAll('.pdf-preview').forEach(pdf => pdf.style.display = 'none');
-          
-          window.history.back();
+          setActiveService(null);
 
         } catch (err) {
           showNotification("Submission Failed. Please try again.");
@@ -1007,6 +397,7 @@
         window.open(`mailto:${_0xem}?subject=${subject}&body=${body}`, "_blank");
       };
 
+      // Guaranteed Exact Color Renderer
       const getCategoryButtonStyle = (catObj, isSelected) => {
         const color = (typeof catObj === 'object' ? catObj.color : 'blue') || 'blue';
         
@@ -1014,8 +405,6 @@
           blue: { bg: '#2563eb', text: '#ffffff', unBg: '#eff6ff', unText: '#1d4ed8', border: '#bfdbfe' },
           emerald: { bg: '#059669', text: '#ffffff', unBg: '#ecfdf5', unText: '#047857', border: '#a7f3d0' },
           purple: { bg: '#7c3aed', text: '#ffffff', unBg: '#f5f3ff', unText: '#6d28d9', border: '#ddd6fe' },
-          purpal: { bg: '#7c3aed', text: '#ffffff', unBg: '#f5f3ff', unText: '#6d28d9', border: '#ddd6fe' },
-          indigo: { bg: '#4f46e5', text: '#ffffff', unBg: '#eef2ff', unText: '#4338ca', border: '#c7d2fe' },
           amber: { bg: '#d97706', text: '#ffffff', unBg: '#fffbeb', unText: '#b45309', border: '#fde68a' },
           rose: { bg: '#e11d48', text: '#ffffff', unBg: '#fff1f2', unText: '#be123c', border: '#fecdd3' },
           red: { bg: '#dc2626', text: '#ffffff', unBg: '#fef2f2', unText: '#b91c1c', border: '#fca5a5' },
@@ -1048,32 +437,105 @@
       });
 
       return (
-        <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col relative max-w-md mx-auto shadow-2xl border-x border-slate-200">
+        <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col relative">
           
+          {/* Toast Notification */}
           {toastMsg && (
             <div className="fixed top-3 right-3 z-[60] bg-slate-900 text-yellow-300 font-bold text-xs px-4 py-2.5 rounded-xl shadow-xl border border-yellow-400/30 animate-bounce">
               ⚡ {toastMsg}
             </div>
           )}
 
+          {/* FIRST VISIT MANDATORY LEGAL DISCLAIMER POPUP MODAL */}
+          {!hasAgreed && (
+            <div className="fixed inset-0 z-[120] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+              <div className="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden animate-fade-in flex flex-col">
+                <div className="bg-gradient-to-r from-blue-800 to-indigo-900 text-white p-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-yellow-400 text-lg"><Icons.ShieldCheck /></span>
+                    <h3 className="font-extrabold text-sm sm:text-base tracking-wide">Terms, Privacy Policy & Disclaimer Notice</h3>
+                  </div>
+                </div>
+
+                <div className="p-5 text-xs text-slate-700 space-y-4 leading-relaxed max-h-[65vh] overflow-y-auto">
+                  <div className="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-lg text-amber-950 font-semibold">
+                    Please read our complete Privacy Policy, Terms & Conditions, and Disclaimer before proceeding to use SGS ONLINE SERVICE.
+                  </div>
+
+                  {/* 1. PRIVACY POLICY DETAILS */}
+                  <div className="border border-slate-200 p-3.5 rounded-xl bg-slate-50 space-y-2">
+                    <h4 className="font-extrabold text-blue-900 text-xs uppercase tracking-wider flex items-center gap-1">
+                      🔒 1. Privacy Policy & Data Collection
+                    </h4>
+                    <p className="text-slate-600">
+                      SGS ONLINE SERVICE operates independently as a private digital facilitation desk helping users fill out online application forms (college admission, RTPS certificates, scholarship forms, etc.) accurately.
+                    </p>
+                    <ul className="list-disc pl-4 space-y-1 text-slate-700 font-medium text-[11px]">
+                      <li><strong>Data Collected:</strong> Name, DOB, Parent Names, Contact Number, Address, Academic Qualifications, Uploaded Scanned Documents/PDFs, and Payment Screenshots.</li>
+                      <li><strong>Purpose:</strong> Data is solely collected to fill out official forms on external portals on your behalf after verification via call/WhatsApp.</li>
+                      <li><strong>Secure Storage:</strong> All user-submitted form data, compressed images, and documents are securely transmitted via end-to-end encrypted connection directly to our admin panel via Telegram Bot for processing. Your private records are 100% confidential and never shared or sold to third parties.</li>
+                    </ul>
+                  </div>
+
+                  {/* 2. TERMS & CONDITIONS DETAILS */}
+                  <div className="border border-slate-200 p-3.5 rounded-xl bg-slate-50 space-y-2">
+                    <h4 className="font-extrabold text-blue-900 text-xs uppercase tracking-wider flex items-center gap-1">
+                      📜 2. Terms & Conditions
+                    </h4>
+                    <ul className="list-disc pl-4 space-y-1 text-slate-700 font-medium text-[11px]">
+                      <li><strong>Private Facilitation:</strong> SGS ONLINE SERVICE is an independent cyber cafe / form assistance center and NOT an official government entity or college portal.</li>
+                      <li><strong>Accuracy Responsibility:</strong> Users are solely responsible for providing 100% accurate and authentic personal details and documents.</li>
+                      <li><strong>Fee Policy:</strong> Payment includes the official fee (if applicable) plus our nominal form-filling service charge. Valid payment screenshot proof is mandatory.</li>
+                    </ul>
+                  </div>
+
+                  {/* 3. DISCLAIMER NOTICE DETAILS */}
+                  <div className="border border-slate-200 p-3.5 rounded-xl bg-amber-50/60 space-y-2">
+                    <h4 className="font-extrabold text-amber-900 text-xs uppercase tracking-wider flex items-center gap-1">
+                      ⚠️ 3. Non-Government Disclaimer
+                    </h4>
+                    <p className="text-amber-950 font-medium text-[11px]">
+                      We do NOT claim to be an official government portal. All official form submissions are carried out on respective official government / university websites on behalf of the applicant. Final approval/rejection rests with the official authority.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-col gap-2">
+                  <button 
+                    onClick={handleAcceptTerms} 
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
+                  >
+                    <span>I Agree & Continue</span> →
+                  </button>
+                  <p className="text-[10px] text-center text-slate-400 font-medium">
+                    By clicking "I Agree & Continue", you accept all Privacy Policy, Terms & Disclaimer conditions.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* SIDE DRAWER MENU */}
           {showDrawer && (
             <div className="fixed inset-0 z-[80] flex">
-              <div className="fixed inset-0 bg-slate-900/60 transition-opacity" onClick={() => window.history.back()}></div>
+              <div className="fixed inset-0 bg-slate-900/60 transition-opacity" onClick={() => setShowDrawer(false)}></div>
               <div className="relative w-80 max-w-[85%] bg-white h-full shadow-2xl flex flex-col justify-between z-10 p-5 overflow-y-auto">
                 <div>
                   <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
                     <h3 className="font-extrabold text-blue-800 text-base">SGS ONLINE SERVICE</h3>
-                    <button onClick={() => window.history.back()} className="text-slate-400"><Icons.X /></button>
+                    <button onClick={() => setShowDrawer(false)} className="text-slate-400"><Icons.X /></button>
                   </div>
 
+                  {/* NAV LINKS */}
                   <nav className="space-y-2 text-xs font-bold text-slate-700">
-                    <button onClick={() => navigateTo({ page: 'home', category: 'All Services', service: null, modal: null })} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-blue-700">
+                    <button onClick={() => { setSelectedCat('All Services'); setActiveService(null); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-blue-700">
                       <span>🏠 Home Page / All Services</span>
                       <Icons.ChevronRight />
                     </button>
 
+                    {/* TRACK MY APPLICATION BUTTON */}
                     <button 
-                      onClick={() => navigateTo({ page: 'track', category: selectedCat, service: null, modal: 'track' })} 
+                      onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('track'); setShowDrawer(false); }} 
                       className="w-full text-left p-2.5 rounded-lg bg-amber-50 text-amber-900 flex items-center justify-between border border-amber-300 shadow-2xs"
                     >
                       <span className="flex items-center gap-1.5 font-extrabold text-amber-800">
@@ -1082,21 +544,27 @@
                       <Icons.ChevronRight />
                     </button>
 
+                    {/* SHARE WEBSITE BUTTON */}
                     <button onClick={handleShareWebsite} className="w-full text-left p-2.5 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-between border border-emerald-200">
                       <span className="flex items-center gap-1.5 font-extrabold"><Icons.Share2 /> Share Website</span>
                       <Icons.ChevronRight />
                     </button>
                     
-                    <button onClick={() => navigateTo({ page: 'privacy', category: selectedCat, service: null, modal: 'privacy' })} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('privacy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
                       <span>🔒 Privacy Policy</span>
                       <Icons.ChevronRight />
                     </button>
-                    <button onClick={() => navigateTo({ page: 'terms', category: selectedCat, service: null, modal: 'terms' })} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('terms'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
                       <span>📜 Terms & Conditions</span>
+                      <Icons.ChevronRight />
+                    </button>
+                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('disclaimer'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                      <span>⚠️ Disclaimer Notice</span>
                       <Icons.ChevronRight />
                     </button>
                   </nav>
 
+                  {/* CUSTOMER SUPPORT SECTION INSIDE DRAWER */}
                   <div className="mt-6 pt-5 border-t border-slate-200 space-y-3">
                     <h4 className="text-xs font-extrabold uppercase text-slate-400 tracking-wider flex items-center gap-1.5 mb-3">
                       <Icons.Headphones /> Customer Support
@@ -1121,14 +589,15 @@
                 </div>
 
                 <div className="pt-4 mt-6 border-t border-slate-100 text-center text-[10px] text-slate-400 font-semibold">
-                  SGS Helpdesk • 24/7 Service Support
+                  SGS Helpdesk • Private Form Filling Facilitation Center
                 </div>
               </div>
             </div>
           )}
 
+          {/* FULL SCREEN MODAL VIEW */}
           {activeModalPage ? (
-            <div className="fixed inset-0 bg-slate-100 z-50 flex flex-col h-full w-full max-w-md mx-auto overflow-hidden">
+            <div className="fixed inset-0 bg-slate-100 z-50 flex flex-col h-full w-full overflow-hidden">
               <div className="bg-gradient-to-r from-blue-800 to-indigo-900 text-white px-4 py-3 shadow-md flex items-center justify-between shrink-0">
                 <h3 className="font-extrabold text-white text-base sm:text-lg flex items-center gap-2">
                   <Icons.ShieldCheck />
@@ -1136,19 +605,22 @@
                     {activeModalPage === 'track' && 'Track My Applications'}
                     {activeModalPage === 'privacy' && 'Privacy Policy'}
                     {activeModalPage === 'terms' && 'Terms & Conditions'}
+                    {activeModalPage === 'disclaimer' && 'Disclaimer & Service Policy'}
                   </span>
                 </h3>
-                <button onClick={() => window.history.back()} className="bg-white/20 text-white px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1">
+                <button onClick={() => setActiveModalPage(null)} className="bg-white/20 text-white px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1">
                   <Icons.X /> Close
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto p-4 sm:p-6 w-full mx-auto text-xs text-slate-700 space-y-4">
+              <div className="flex-1 overflow-y-auto p-4 sm:p-6 max-w-4xl w-full mx-auto text-xs text-slate-700 space-y-4">
+                
+                {/* TRACK APPLICATION MODAL PAGE */}
                 {activeModalPage === 'track' && (
                   <div className="space-y-4">
                     <div className="bg-amber-50 border-l-4 border-amber-600 p-4 rounded-r-xl text-slate-900 font-medium flex items-center justify-between gap-2 flex-wrap">
                       <div>
-                        <strong>📋 Application Tracking Center:</strong> Aapke dwara submit kiye gaye sabhi online applications ke UIDs.
+                        <strong>📋 Application Tracking Center:</strong> Aapke dwara submit kiye gaye sabhi online assistance requests ke UIDs.
                       </div>
                       {userApps.length > 0 && (
                         <button 
@@ -1162,7 +634,7 @@
 
                     {userApps.length === 0 ? (
                       <div className="bg-white p-8 rounded-2xl border border-slate-200 text-center">
-                        <p className="text-sm font-bold text-slate-500">Aapne abhi tak koi form submit nahi kiya hai.</p>
+                        <p className="text-sm font-bold text-slate-500">Aapne abhi tak koi form assistance request submit nahi kiya hai.</p>
                       </div>
                     ) : (
                       <div className="space-y-3">
@@ -1186,46 +658,48 @@
                   </div>
                 )}
 
+                {/* PRIVACY POLICY MODAL PAGE */}
                 {activeModalPage === 'privacy' && (
                   <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
                     <div className="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-r-xl text-slate-900 font-medium">
-                      <strong>📌 Cyber Seva Kendra Privacy Policy:</strong> SGS ONLINE SERVICE operates as an online digital facilitation center assisting users with government, college, and administrative online applications.
+                      <strong>📌 Private Form Facilitation Center Privacy Policy:</strong> SGS ONLINE SERVICE operates independently as a private online digital assistance center helping users fill out government, college, and administrative online forms accurately upon request.
                     </div>
 
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Comprehensive Data Collection Notice</h4>
-                      <p className="mb-2">To process online application forms, process service payments, and provide customer support, we collect full personal data directly submitted by users during form filling:</p>
+                      <p className="mb-2">To assist users in filling online application forms, verifying details via call/WhatsApp, and providing customer support, we collect personal data directly submitted by users during form submission:</p>
                       <ul className="list-disc pl-5 space-y-1 text-slate-700 font-medium">
                         <li><strong>Personal Identification Details:</strong> Full Name, Father's Name, Mother's Name, Date of Birth, Gender, Category/Caste, and Religion.</li>
                         <li><strong>Contact Information:</strong> Mobile Number, Email Address, Full Postal Address, District, Pin Code, and State.</li>
                         <li><strong>Academic & Identity Records:</strong> Educational Qualification details, Roll Numbers, Registration Numbers, Marksheets, and Certificates.</li>
                         <li><strong>Uploaded Documents & Media:</strong> Applicant Photograph, Digital Signature Scans, PDF Documents, and Identity Proof files uploaded by the user.</li>
-                        <li><strong>Payment Verification Data:</strong> Payment UTR / Transaction Reference Numbers, UPI Transaction IDs, Fee Receipts, and Date of Payment.</li>
+                        <li><strong>Payment Verification Data:</strong> Payment Screenshots, Fee Receipts, and Date of Payment.</li>
                       </ul>
                     </div>
 
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Purpose of Data Collection & Usage</h4>
-                      <p>All data collected from users is strictly used to perform digital facilitation services, complete official online application form submissions on external government/college portals, verify registration details, generate application tracking IDs, and deliver customer support updates.</p>
+                      <p>All user-provided data is used exclusively to fill out online application forms on official external portals on behalf of the user after phone verification, generate tracking IDs, and deliver completed receipts via WhatsApp or Email.</p>
                     </div>
 
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. End-to-End Secure Telegram Storage</h4>
-                      <p>User-submitted form data, compressed high-resolution images, and uploaded PDF files are transmitted through encrypted connections directly to our secure Admin Telegram Bot Portal. We do not sell, lease, trade, or share user personal records with unauthorized third parties.</p>
+                      <p>User-submitted form data, compressed high-resolution images, and uploaded PDF files are transmitted through encrypted connections directly to our admin panel via Telegram. We strictly do NOT sell, lease, trade, or share user personal records with any unauthorized third parties.</p>
                     </div>
 
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1">4. User Rights & Data Protection</h4>
-                      <p>Users maintain full rights to verify, review, or request corrections to their application status by contacting our designated support team via WhatsApp or Email along with their unique Support Ticket ID.</p>
+                      <p>Users maintain full rights to verify, review, or request corrections or deletion of their application status by contacting our designated support team via WhatsApp or Email along with their unique Support Ticket ID.</p>
                     </div>
                   </div>
                 )}
 
+                {/* TERMS & CONDITIONS MODAL PAGE */}
                 {activeModalPage === 'terms' && (
                   <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
                     <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Facilitation Service Overview</h4>
-                      <p>SGS ONLINE SERVICE operates independently as an online assistance service center. We help applicants fill out government, university, college, and competitive examination forms accurately based entirely on information provided by the user.</p>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Private Facilitation Service Overview</h4>
+                      <p>SGS ONLINE SERVICE operates independently as a private cyber cafe and online form-filling assistance center. We help applicants fill out government, university, college, and competitive examination forms accurately based entirely on information provided by the user.</p>
                     </div>
 
                     <div>
@@ -1235,12 +709,12 @@
 
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. Payment Verification & Fee Policy</h4>
-                      <p>Application submission processing requires valid payment confirmation. Users must provide a genuine UTR or Transaction Reference Number after scanning the payment QR code. Fake or misleading transaction entries will lead to immediate cancellation of application processing.</p>
+                      <p>Application processing requires valid payment confirmation covering official portal fees (if applicable) and our nominal service facilitation charge. Users must provide a genuine payment screenshot after scanning the payment QR code or paying via UPI buttons.</p>
                     </div>
 
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1">4. Non-Affiliation Disclaimer</h4>
-                      <p>SGS ONLINE SERVICE is a private assistance portal and does not claim to be an official government entity or official government website unless explicitly stated. All official application fees are remitted according to respective official guidelines.</p>
+                      <p>SGS ONLINE SERVICE is a private assistance portal and is NOT an official government entity or official college representative. All official form submissions are carried out on respective official government portals on behalf of the user.</p>
                     </div>
 
                     <div>
@@ -1249,38 +723,75 @@
                     </div>
                   </div>
                 )}
+
+                {/* DISCLAIMER MODAL PAGE */}
+                {activeModalPage === 'disclaimer' && (
+                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
+                    <div className="bg-amber-50 border-l-4 border-amber-600 p-4 rounded-r-xl text-amber-950 font-bold">
+                      ⚠️ DISCLAIMER & NON-AFFILIATION NOTICE
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Swatantra Private Service (Non-Government)</h4>
+                      <p>SGS ONLINE SERVICE ek swatantra private online cyber cafe aur form filling assistance desk hai. Hum kisi bhi sarkari vibhag (Government Department), Bihar RTPS Portal, VKSU University, ya kisi bhi official college/university administration se affiliated ya authorized portal nahi hain.</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Form Filling Facilitation</h4>
+                      <p>Humare dwaara pradan ki jaane wali seva sirf users ke anurodh par unka online application form sahi tarike se official portals par bharne mein madad karne ki facilitation service hai. Iske badle mein hum ek nominal assistance service charge lete hain.</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. External Links & Official Portals</h4>
+                      <p>Aapke dwara jama kiye gaye sabhi details ko humari team verification ke baad official government / university portals par submit karti hai. Aavedan patra ki manjuri ya aswikriti (Approval/Rejection) puri tarah se sambandhit sarkari/college adhikaariyon ke haath mein hoti hai.</p>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="p-3 bg-white border-t border-slate-200 flex justify-end shrink-0">
-                <button onClick={() => window.history.back()} className="bg-slate-900 text-white font-bold px-6 py-2 rounded-xl text-xs shadow-md">
+                <button onClick={() => setActiveModalPage(null)} className="bg-slate-900 text-white font-bold px-6 py-2 rounded-xl text-xs shadow-md">
                   Close Window
                 </button>
               </div>
             </div>
           ) : (
             <>
+              {/* STICKY HEADER */}
               <header className="sticky top-0 z-40 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white shadow-sm py-2 px-3">
                 <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
-                  <button onClick={() => navigateTo({ ...viewState, drawer: true })} className="p-1.5 text-white hover:bg-white/10 rounded-lg">
+                  <button onClick={() => setShowDrawer(true)} className="p-1.5 text-white hover:bg-white/10 rounded-lg">
                     <Icons.Menu />
                   </button>
-                  <div onClick={() => navigateTo({ page: 'home', category: 'All Services', service: null, modal: null })} className="cursor-pointer text-center flex-1">
+                  <div onClick={() => { setSelectedCat('All Services'); setActiveService(null); }} className="cursor-pointer text-center flex-1">
                     <h1 className="text-base sm:text-xl font-extrabold text-yellow-300">SGS ONLINE SERVICE</h1>
-                    <p className="text-[9px] sm:text-[11px] font-bold text-amber-200/90 uppercase">Government & College Online Form Seva Portal</p>
+                    <p className="text-[9px] sm:text-[11px] font-bold text-amber-200/90 uppercase">Online Form Filling Assistance Portal (Private Service)</p>
                   </div>
                 </div>
               </header>
 
+              {/* MANDATORY LEGAL NOTICE BANNER BELOW HEADER */}
+              <div className="bg-slate-900 text-slate-200 text-[11px] px-4 py-2 border-b border-slate-800 text-center font-medium">
+                <span className="bg-amber-400 text-slate-950 font-black px-1.5 py-0.5 rounded text-[10px] mr-1.5">NOTICE</span>
+                SGS Online Service is an independent private form filling assistance portal (Cyber Cafe). We are NOT an official government or college portal.
+              </div>
+
+              {/* MAIN SERVICES CONTENT */}
               {activeService ? (
-                <main className="flex-1 w-full mx-auto px-4 py-6">
-                  <button onClick={() => window.history.back()} className="inline-flex items-center gap-2 bg-white text-slate-800 font-bold text-xs px-4 py-2 rounded-xl border border-slate-300 mb-4 shadow-2xs">
+                <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-6">
+                  <button onClick={() => setActiveService(null)} className="inline-flex items-center gap-2 bg-white text-slate-800 font-bold text-xs px-4 py-2 rounded-xl border border-slate-300 mb-4 shadow-2xs">
                     <Icons.ArrowLeft /> Back to Services
                   </button>
 
                   <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden p-5 sm:p-6">
                     <span className="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">{activeService.category}</span>
                     <h2 className="text-xl sm:text-2xl font-black text-slate-900 mt-2 mb-2">{activeService.title}</h2>
-                    <p className="text-xs text-slate-600 mb-6">{activeService.description}</p>
+                    <p className="text-xs text-slate-600 mb-4">{activeService.description}</p>
+
+                    {/* Form Filling Transparency Note */}
+                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-[11px] text-amber-900 font-medium mb-5">
+                      ℹ️ <strong>Assistance Notice:</strong> Information submitted below will be used by our team to fill out your official online form on your behalf after phone confirmation.
+                    </div>
 
                     <form onSubmit={handleFormSubmit} className="space-y-4">
                       {activeService.fields && activeService.fields.map((field, idx) => (
@@ -1326,20 +837,66 @@
                         </div>
                       ))}
 
-                      <div className="bg-blue-50/80 border border-blue-200 p-4 rounded-xl text-center my-4">
-                        <p className="text-xs font-extrabold text-blue-900 mb-2">Scan QR & Pay Application Fee</p>
-                        <img src={activeService.qrImageUrl} alt="Payment QR Code" className="max-w-[180px] mx-auto rounded-lg border-2 border-blue-600 shadow-sm" />
-                      </div>
+                      {/* PAYMENT SECTION WITH QR AND DYNAMIC UPI BUTTONS */}
+                      {(() => {
+                        const upi = getUpiDetails(activeService.qrImageUrl);
+                        const amParam = upi.am ? `&am=${upi.am}` : "";
+                        const phonepeUrl = `phonepe://pay?pa=${upi.pa}&pn=${encodeURIComponent(upi.pn)}${amParam}&cu=INR`;
+                        const gpayUrl = `tez://upi/pay?pa=${upi.pa}&pn=${encodeURIComponent(upi.pn)}${amParam}&cu=INR`;
+                        const genericUpiUrl = `upi://pay?pa=${upi.pa}&pn=${encodeURIComponent(upi.pn)}${amParam}&cu=INR`;
 
+                        return (
+                          <div className="bg-blue-50/80 border border-blue-200 p-4 rounded-xl text-center my-4 space-y-3">
+                            <p className="text-xs font-extrabold text-blue-900">Scan QR or Click Below to Pay {upi.am ? `₹${upi.am}` : ''}</p>
+                            
+                            <img src={activeService.qrImageUrl} alt="Payment QR Code" className="max-w-[180px] mx-auto rounded-lg border-2 border-blue-600 shadow-sm" />
+
+                            {/* DYNAMIC UPI BUTTONS */}
+                            <div className="pt-2 flex flex-col sm:flex-row gap-2 justify-center items-center">
+                              {/* PhonePe Button */}
+                              <a 
+                                href={phonepeUrl} 
+                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-[#5f259f] hover:bg-[#4a1c7d] text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all"
+                              >
+                                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.8 10.2c0-2.4-1.9-4.3-4.3-4.3H8.3c-.6 0-1.1.5-1.1 1.1v10.1c0 .6.5 1.1 1.1 1.1h2.3c.6 0 1.1-.5 1.1-1.1v-2.8h2.8c2.4 0 4.3-1.9 4.3-4.2zm-4.3 1.9h-2.8v-3.8h2.8c1 0 1.9.9 1.9 1.9 0 1-.9 1.9-1.9 1.9z"/></svg>
+                                <span>PhonePe</span>
+                              </a>
+
+                              {/* GPay Button */}
+                              <a 
+                                href={gpayUrl} 
+                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 font-bold text-xs py-2.5 px-3 rounded-lg shadow-sm transition-all"
+                              >
+                                <svg className="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                                <span>Google Pay</span>
+                              </a>
+
+                              {/* Pay via Other Apps Button */}
+                              <a 
+                                href={genericUpiUrl} 
+                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all"
+                              >
+                                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
+                                <span>Pay via Other App</span>
+                              </a>
+                            </div>
+                          </div>
+                        );
+                      })()}
+
+                      {/* PAYMENT SCREENSHOT UPLOAD INSTEAD OF UTR BOX */}
                       <div className="space-y-1">
-                        <label className="block text-xs font-extrabold text-rose-600">Payment UTR / Transaction ID (Mandatory):</label>
+                        <label className="block text-xs font-extrabold text-rose-600">Upload Payment Screenshot (Mandatory):</label>
                         <input 
-                          type="text" 
-                          name="utr_number" 
+                          type="file" 
+                          name="main_payment_screenshot" 
+                          accept="image/*" 
                           required 
-                          placeholder="12-digit UTR or Ref Number daalein" 
+                          onChange={(e) => handleFilePreview(e, 'prev_img_main_payment', 'prev_pdf_main_payment')}
                           className="w-full bg-slate-50 border border-rose-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-rose-600" 
                         />
+                        <img id="prev_img_main_payment" className="img-preview" alt="Payment Screenshot Preview" />
+                        <div id="prev_pdf_main_payment" className="pdf-preview"></div>
                       </div>
 
                       <button 
@@ -1353,17 +910,27 @@
                   </div>
                 </main>
               ) : (
-                <main className="flex-1 w-full mx-auto px-4 py-6 space-y-6 pb-24">
-                  <div className="bg-white border border-slate-300 rounded-xl p-4 shadow-2xs">
-                    <div className="flex items-center gap-2 border-b border-slate-200 pb-2 mb-3">
-                      <span className="text-blue-700"><Icons.Bell /></span>
-                      <h2 className="font-extrabold text-slate-900 text-sm uppercase">Notice Board</h2>
+                <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
+                  {/* COLORFUL NOTICE BOARD WITH BLINKING LIVE BUTTON */}
+                  <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border border-indigo-200 rounded-2xl p-4 shadow-sm relative overflow-hidden">
+                    <div className="flex items-center justify-between border-b border-indigo-100 pb-2.5 mb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-indigo-600 animate-bounce"><Icons.Bell /></span>
+                        <h2 className="font-black text-indigo-950 text-sm uppercase tracking-wider">Notice Board</h2>
+                      </div>
+                      
+                      {/* BLINKING LIVE BUTTON */}
+                      <span className="inline-flex items-center gap-1.5 bg-rose-600 text-white font-extrabold text-[10px] px-2.5 py-0.5 rounded-full shadow-md tracking-wider">
+                        <span className="w-2 h-2 rounded-full bg-amber-300 animate-ping"></span>
+                        LIVE
+                      </span>
                     </div>
-                    <div className="space-y-2">
+
+                    <div className="space-y-2.5">
                       {notices.map((n) => (
-                        <div key={n.id} className="flex items-start gap-2 text-xs font-medium text-slate-800 border-b border-slate-100 pb-1.5 last:border-0">
-                          <span className="text-blue-600 font-bold">•</span>
-                          <span>{n.text}</span>
+                        <div key={n.id} className="flex items-start gap-2.5 text-xs font-semibold text-slate-800 bg-white/80 p-2 rounded-xl border border-indigo-100/60 shadow-2xs">
+                          <span className="text-indigo-600 font-extrabold text-sm leading-none">•</span>
+                          <span className="leading-relaxed">{n.text}</span>
                         </div>
                       ))}
                     </div>
@@ -1377,12 +944,11 @@
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search form, service..."
-                        className="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-medium focus:outline-none focus:border-blue-600 shadow-2xs"
+                        className="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-medium focus:outline-none focus:border-blue-600"
                       />
                     </div>
 
-                    {/* HORIZONTALLY SCROLLABLE CATEGORIES BAR RIGHT UNDER THE SEARCH BOX */}
-                    <div className="flex items-center overflow-x-auto scrollbar-none py-1 gap-2">
+                    <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
                       {categories.map((catObj) => {
                         const catName = typeof catObj === 'object' ? catObj.name : catObj;
                         const isSelected = selectedCat === catName;
@@ -1390,10 +956,13 @@
                           <button
                             key={catName}
                             onClick={() => {
-                              navigateTo({ page: 'category', category: catName, service: null, modal: null });
+                              if (catName !== selectedCat) {
+                                window.history.pushState({ page: 'category' }, '');
+                                setSelectedCat(catName);
+                              }
                             }}
                             style={getCategoryButtonStyle(catObj, isSelected)}
-                            className="px-3.5 py-1.5 rounded-xl text-[11px] font-extrabold transition-all border shrink-0 whitespace-nowrap shadow-2xs"
+                            className="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border shrink-0"
                           >
                             {catName}
                           </button>
@@ -1402,7 +971,7 @@
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {filteredServices.map((srv) => (
                       <div
                         key={srv.id}
@@ -1427,44 +996,13 @@
                 </main>
               )}
 
-              {/* STRICT 3-BUTTON BOTTOM NAVIGATION BAR (WITH 'STD Collage' INSTEAD OF MENU) */}
-              <nav className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-white border-t border-slate-200 shadow-xl z-30 grid grid-cols-3 py-2 px-3">
-                <button
-                  onClick={() => {
-                    navigateTo({ page: 'home', category: 'All Services', service: null, modal: null });
-                  }}
-                  className={`flex flex-col items-center justify-center py-1 rounded-xl text-xs font-extrabold transition-all ${selectedCat === 'All Services' && !activeService && !activeModalPage ? 'text-blue-700 bg-blue-50' : 'text-slate-600 hover:text-blue-600'}`}
-                >
-                  <Icons.Home />
-                  <span className="text-[10px] mt-0.5">Home</span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    navigateTo({ page: 'track', category: selectedCat, service: null, modal: 'track' });
-                  }}
-                  className={`flex flex-col items-center justify-center py-1 rounded-xl text-xs font-extrabold transition-all ${activeModalPage === 'track' ? 'text-blue-700 bg-blue-50' : 'text-slate-600 hover:text-blue-600'}`}
-                >
-                  <Icons.ListCheck />
-                  <span className="text-[10px] mt-0.5">Track App ({userApps.length})</span>
-                </button>
-
-                <button
-                  onClick={() => {
-                    navigateTo({ page: 'category', category: 'STD Collage', service: null, modal: null });
-                  }}
-                  className={`flex flex-col items-center justify-center py-1 rounded-xl text-xs font-extrabold transition-all ${selectedCat === 'STD Collage' && !activeService && !activeModalPage ? 'text-purple-700 bg-purple-50' : 'text-slate-600 hover:text-purple-600'}`}
-                >
-                  <Icons.Academic />
-                  <span className="text-[10px] mt-0.5">STD Collage</span>
-                </button>
-              </nav>
-
-              <footer className="bg-slate-900 text-slate-400 text-xs py-6 mt-12 mb-16 border-t border-slate-800 text-center">
+              {/* FOOTER WITH MODAL BUTTONS */}
+              <footer className="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800 text-center px-4">
                 <p className="font-bold text-white">SGS ONLINE SERVICE © 2026</p>
-                <div className="flex items-center justify-center gap-4 text-xs mt-2">
-                  <button onClick={() => navigateTo({ page: 'privacy', category: selectedCat, service: null, modal: 'privacy' })} className="text-slate-400 hover:text-white underline">Privacy Policy</button>
-                  <button onClick={() => navigateTo({ page: 'terms', category: selectedCat, service: null, modal: 'terms' })} className="text-slate-400 hover:text-white underline">Terms & Conditions</button>
+                <div className="flex flex-wrap items-center justify-center gap-4 text-xs mt-3">
+                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('privacy'); }} className="text-slate-400 hover:text-white underline">Privacy Policy</button>
+                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('terms'); }} className="text-slate-400 hover:text-white underline">Terms & Conditions</button>
+                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('disclaimer'); }} className="text-slate-400 hover:text-white underline">Disclaimer</button>
                 </div>
               </footer>
             </>
