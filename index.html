@@ -11,34 +11,61 @@
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
   <style>
-    html, body { overscroll-behavior-y: contain; }
+    html, body { 
+      overscroll-behavior-y: contain; 
+      background-color: #030712;
+      color: #f3f4f6;
+    }
     .scrollbar-none::-webkit-scrollbar { display: none; }
     .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
-    #splash-screen { transition: opacity 0.3s ease-out; }
-    .img-preview { max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px dashed #3b82f6; display: none; object-fit: cover; margin-top: 6px; }
-    .pdf-preview { display: none; margin-top: 6px; font-size: 11px; font-weight: bold; color: #1d4ed8; background: #eff6ff; padding: 6px 10px; border-radius: 6px; border: 1px solid #bfdbfe; width: fit-content; }
+    #splash-screen { transition: opacity 0.4s ease-out; }
+    .img-preview { max-width: 150px; max-height: 150px; border-radius: 12px; border: 2px dashed #6366f1; display: none; object-fit: cover; margin-top: 8px; shadow: 0 0 15px rgba(99,102,241,0.3); }
+    .pdf-preview { display: none; margin-top: 8px; font-size: 11px; font-weight: bold; color: #818cf8; background: rgba(30, 27, 75, 0.6); backdrop-filter: blur(8px); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(99, 102, 241, 0.3); width: fit-content; }
+    
+    .glass-card {
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .glass-card-hover {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card-hover:hover {
+      transform: translateY(-3px);
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: 0 12px 30px -10px rgba(79, 70, 229, 0.3);
+    }
+    .glow-bg {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(0,0,0,0) 70%);
+      pointer-events: none;
+    }
   </style>
 
   <!-- External Static Posts Data File -->
   <script src="posts.js"></script>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased selection:bg-yellow-200">
+<body class="bg-gray-950 text-gray-100 antialiased selection:bg-indigo-500 selection:text-white relative overflow-x-hidden">
   
+  <div class="glow-bg top-0 left-1/2 -translate-x-1/2"></div>
+
   <!-- SPLASH LOADER SCREEN -->
-  <div id="splash-screen" class="fixed inset-0 z-[100] bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-950 flex flex-col items-center justify-center p-4 text-white">
+  <div id="splash-screen" class="fixed inset-0 z-[100] bg-slate-950 flex flex-col items-center justify-center p-4 text-white">
     <div class="flex flex-col items-center text-center max-w-sm">
-      <div class="w-16 h-16 bg-yellow-400 text-slate-950 rounded-2xl flex items-center justify-center text-2xl font-black shadow-lg mb-4 animate-pulse">
+      <div class="w-20 h-20 bg-gradient-to-tr from-indigo-600 via-violet-600 to-amber-400 text-white rounded-3xl flex items-center justify-center text-3xl font-black shadow-2xl mb-6 animate-pulse border border-white/20">
         SGS
       </div>
-      <h1 class="text-xl sm:text-2xl font-black text-yellow-300 tracking-tight leading-tight">
+      <h1 class="text-2xl sm:text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-amber-300 via-indigo-300 to-violet-400 tracking-tight leading-tight">
         SGS ONLINE SERVICE
       </h1>
-      <p class="text-[11px] font-bold text-amber-200/90 uppercase tracking-widest mt-1">
+      <p class="text-[11px] font-bold text-gray-400 uppercase tracking-widest mt-2">
         Online Form Filling Assistance & Facilitation Portal
       </p>
-      <div class="mt-8 flex flex-col items-center gap-2">
-        <div class="w-8 h-8 border-3 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
-        <p class="text-[11px] text-slate-300 font-semibold tracking-wide">Loading Assistance Portal...</p>
+      <div class="mt-8 flex flex-col items-center gap-3">
+        <div class="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        <p class="text-[11px] text-gray-400 font-semibold tracking-wide">Loading Assistance Portal...</p>
       </div>
     </div>
   </div>
@@ -50,7 +77,7 @@
       const splash = document.getElementById('splash-screen');
       if (splash) {
         splash.style.opacity = '0';
-        setTimeout(() => splash.remove(), 300);
+        setTimeout(() => splash.remove(), 400);
       }
     }, 600);
   </script>
@@ -58,11 +85,11 @@
   <script type="text/babel">
     const { useState, useEffect } = React;
 
-    // Telegram Bot Credentials
+    // Telegram Bot Credentials (Unchanged)
     const TELEGRAM_BOT_TOKEN = "8358900801:AAE42RhsmJPv_h40nGEqC7wuXW5HQ_wp8pk";
     const TELEGRAM_CHAT_ID = "5011508473";
 
-    // Support Encrypted Credentials
+    // Support Encrypted Credentials (Unchanged)
     const _0xwa = "OTExNzA4MDE2OQ==";
     const _0xem = "contactsgsonlineservice@gmail.com";
 
@@ -80,7 +107,7 @@
       Trash: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
     };
 
-    // HIGH QUALITY HD IMAGE COMPRESSION (1600px Max, 85% Quality)
+    // HIGH QUALITY HD IMAGE COMPRESSION
     const compressImage = (file) => {
       return new Promise((resolve) => {
         if (!file || file.type === 'application/pdf' || !file.type.startsWith('image/')) {
@@ -124,7 +151,6 @@
       });
     };
 
-    // Helper to parse UPI params from QR code URL
     const getUpiDetails = (qrUrl) => {
       let upiData = { pa: "s.kumar.2372@superyes", pn: "Merchant", am: "" };
       try {
@@ -158,7 +184,6 @@
       const [toastMsg, setToastMsg] = useState('');
       const [isSubmitting, setIsSubmitting] = useState(false);
 
-      // First Time Visit Legal Agreement State
       const [hasAgreed, setHasAgreed] = useState(() => {
         try {
           return localStorage.getItem('sgs_terms_accepted') === 'true';
@@ -174,7 +199,6 @@
         setHasAgreed(true);
       };
 
-      // User Applications State from LocalStorage
       const [userApps, setUserApps] = useState(() => {
         try {
           const saved = localStorage.getItem('sgs_user_applications');
@@ -189,7 +213,6 @@
         setTimeout(() => setToastMsg(''), 3000);
       };
 
-      // Helper function to delete single item from tracking list
       const deleteSingleApp = (uidToDelete) => {
         const updated = userApps.filter(item => item.uid !== uidToDelete);
         setUserApps(updated);
@@ -197,7 +220,6 @@
         showNotification("Application removed from tracking!");
       };
 
-      // Helper function to clear all tracking items
       const clearAllApps = () => {
         if (window.confirm("Kya aap saare tracking history clear karna chahte hain?")) {
           setUserApps([]);
@@ -206,7 +228,6 @@
         }
       };
 
-      // Hardware Mobile Back Button Sync
       useEffect(() => {
         const handlePopState = () => {
           if (activeService) {
@@ -269,7 +290,6 @@
 
         const rawFileInputs = [];
 
-        // Loop through all defined fields in post configuration
         if (activeService.fields) {
           activeService.fields.forEach((f) => {
             if (f.type === 'file') {
@@ -294,7 +314,6 @@
           });
         }
 
-        // Custom File Input for Main Payment Screenshot
         const mainPayProof = formData.get("main_payment_screenshot");
         if (mainPayProof && mainPayProof instanceof File && mainPayProof.size > 0) {
           rawFileInputs.push({ label: "Main Payment Screenshot", name: "main_payment_screenshot", file: mainPayProof });
@@ -305,7 +324,6 @@
         textDetails += `📅 *Date:* ${dateStr}`;
 
         try {
-          // 1. Send Complete Text Message First
           await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -316,7 +334,6 @@
             })
           });
 
-          // 2. Compress Images
           const processedFiles = await Promise.all(
             rawFileInputs.map(async (item) => {
               const fileObj = await compressImage(item.file);
@@ -324,7 +341,6 @@
             })
           );
 
-          // 3. Upload Files to Telegram
           for (const item of processedFiles) {
             const fileData = new FormData();
             fileData.append("chat_id", TELEGRAM_CHAT_ID);
@@ -342,7 +358,6 @@
             });
           }
 
-          // 4. Save Only UID and Service Title to LocalStorage
           const newAppItem = {
             uid: submissionId,
             serviceTitle: activeService.title
@@ -397,34 +412,19 @@
         window.open(`mailto:${_0xem}?subject=${subject}&body=${body}`, "_blank");
       };
 
-      // Guaranteed Exact Color Renderer
       const getCategoryButtonStyle = (catObj, isSelected) => {
-        const color = (typeof catObj === 'object' ? catObj.color : 'blue') || 'blue';
-        
-        const palette = {
-          blue: { bg: '#2563eb', text: '#ffffff', unBg: '#eff6ff', unText: '#1d4ed8', border: '#bfdbfe' },
-          emerald: { bg: '#059669', text: '#ffffff', unBg: '#ecfdf5', unText: '#047857', border: '#a7f3d0' },
-          purple: { bg: '#7c3aed', text: '#ffffff', unBg: '#f5f3ff', unText: '#6d28d9', border: '#ddd6fe' },
-          amber: { bg: '#d97706', text: '#ffffff', unBg: '#fffbeb', unText: '#b45309', border: '#fde68a' },
-          rose: { bg: '#e11d48', text: '#ffffff', unBg: '#fff1f2', unText: '#be123c', border: '#fecdd3' },
-          red: { bg: '#dc2626', text: '#ffffff', unBg: '#fef2f2', unText: '#b91c1c', border: '#fca5a5' },
-          teal: { bg: '#0d9488', text: '#ffffff', unBg: '#f0fdfa', unText: '#0f766e', border: '#99f6e4' }
-        };
-
-        const activePalette = palette[color] || palette.blue;
-
         if (isSelected) {
           return {
-            backgroundColor: activePalette.bg,
-            color: activePalette.text,
-            borderColor: activePalette.bg,
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+            background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)',
+            color: '#ffffff',
+            borderColor: '#818cf8',
+            boxShadow: '0 0 15px rgba(99, 102, 241, 0.4)'
           };
         } else {
           return {
-            backgroundColor: activePalette.unBg,
-            color: activePalette.unText,
-            borderColor: activePalette.border
+            background: 'rgba(31, 41, 55, 0.6)',
+            color: '#9ca3af',
+            borderColor: 'rgba(255, 255, 255, 0.08)'
           };
         }
       };
@@ -437,77 +437,76 @@
       });
 
       return (
-        <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col relative">
+        <div className="min-h-screen font-sans flex flex-col relative">
           
           {/* Toast Notification */}
           {toastMsg && (
-            <div className="fixed top-3 right-3 z-[60] bg-slate-900 text-yellow-300 font-bold text-xs px-4 py-2.5 rounded-xl shadow-xl border border-yellow-400/30 animate-bounce">
+            <div className="fixed top-4 right-4 z-[160] bg-indigo-600 text-white font-extrabold text-xs px-5 py-3 rounded-2xl shadow-2xl border border-indigo-400/50 animate-bounce backdrop-blur-md">
               ⚡ {toastMsg}
             </div>
           )}
 
           {/* FIRST VISIT MANDATORY LEGAL DISCLAIMER POPUP MODAL */}
           {!hasAgreed && (
-            <div className="fixed inset-0 z-[120] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-              <div className="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden animate-fade-in flex flex-col">
-                <div className="bg-gradient-to-r from-blue-800 to-indigo-900 text-white p-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-yellow-400 text-lg"><Icons.ShieldCheck /></span>
-                    <h3 className="font-extrabold text-sm sm:text-base tracking-wide">Terms, Privacy Policy & Disclaimer Notice</h3>
+            <div className="fixed inset-0 z-[120] bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4">
+              <div className="bg-gray-900 border border-gray-800 rounded-3xl max-w-lg w-full shadow-2xl overflow-hidden flex flex-col">
+                <div className="bg-gradient-to-r from-indigo-900 via-indigo-800 to-violet-900 text-white p-5 border-b border-gray-800">
+                  <div className="flex items-center gap-3">
+                    <span className="text-amber-400 text-xl"><Icons.ShieldCheck /></span>
+                    <h3 className="font-black text-sm sm:text-base tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-300">
+                      Terms, Privacy Policy & Disclaimer
+                    </h3>
                   </div>
                 </div>
 
-                <div className="p-5 text-xs text-slate-700 space-y-4 leading-relaxed max-h-[65vh] overflow-y-auto">
-                  <div className="bg-amber-50 border-l-4 border-amber-500 p-3 rounded-r-lg text-amber-950 font-semibold">
-                    Please read our complete Privacy Policy, Terms & Conditions, and Disclaimer before proceeding to use SGS ONLINE SERVICE.
+                <div className="p-6 text-xs text-gray-300 space-y-4 leading-relaxed max-h-[60vh] overflow-y-auto scrollbar-none">
+                  <div className="bg-amber-500/10 border-l-4 border-amber-500 p-3.5 rounded-r-xl text-amber-200 font-medium">
+                    Please read our complete Privacy Policy, Terms & Conditions, and Disclaimer before using SGS ONLINE SERVICE.
                   </div>
 
-                  {/* 1. PRIVACY POLICY DETAILS */}
-                  <div className="border border-slate-200 p-3.5 rounded-xl bg-slate-50 space-y-2">
-                    <h4 className="font-extrabold text-blue-900 text-xs uppercase tracking-wider flex items-center gap-1">
+                  <div className="glass-card p-4 rounded-2xl space-y-2">
+                    <h4 className="font-black text-indigo-400 text-xs uppercase tracking-wider flex items-center gap-1.5">
                       🔒 1. Privacy Policy & Data Collection
                     </h4>
-                    <p className="text-slate-600">
-                      SGS ONLINE SERVICE operates independently as a private digital facilitation desk helping users fill out online application forms (college admission, RTPS certificates, scholarship forms, etc.) accurately.
+                    <p className="text-gray-400">
+                      SGS ONLINE SERVICE operates independently as a private digital facilitation desk helping users fill out online application forms accurately.
                     </p>
-                    <ul className="list-disc pl-4 space-y-1 text-slate-700 font-medium text-[11px]">
-                      <li><strong>Data Collected:</strong> Name, DOB, Parent Names, Contact Number, Address, Academic Qualifications, Uploaded Scanned Documents/PDFs, and Payment Screenshots.</li>
-                      <li><strong>Purpose:</strong> Data is solely collected to fill out official forms on external portals on your behalf after verification via call/WhatsApp.</li>
-                      <li><strong>Secure Storage:</strong> All user-submitted form data, compressed images, and documents are securely transmitted via end-to-end encrypted connection directly to our admin panel via Telegram Bot for processing. Your private records are 100% confidential and never shared or sold to third parties.</li>
+                    <ul className="list-disc pl-4 space-y-1 text-gray-300 font-medium text-[11px]">
+                      <li><strong>Data Collected:</strong> Name, DOB, Parent Names, Contact Number, Address, Academic Qualifications, Scanned Documents/PDFs, and Payment Proofs.</li>
+                      <li><strong>Purpose:</strong> Used solely to fill official forms on external portals on your behalf after verification.</li>
+                      <li><strong>Storage:</strong> Transmitted via encrypted connection directly to our admin panel via Telegram Bot. Private records are confidential and never shared.</li>
                     </ul>
                   </div>
 
-                  {/* 2. TERMS & CONDITIONS DETAILS */}
-                  <div className="border border-slate-200 p-3.5 rounded-xl bg-slate-50 space-y-2">
-                    <h4 className="font-extrabold text-blue-900 text-xs uppercase tracking-wider flex items-center gap-1">
+                  <div className="glass-card p-4 rounded-2xl space-y-2">
+                    <h4 className="font-black text-indigo-400 text-xs uppercase tracking-wider flex items-center gap-1.5">
                       📜 2. Terms & Conditions
                     </h4>
-                    <ul className="list-disc pl-4 space-y-1 text-slate-700 font-medium text-[11px]">
-                      <li><strong>Private Facilitation:</strong> SGS ONLINE SERVICE is an independent cyber cafe / form assistance center and NOT an official government entity or college portal.</li>
-                      <li><strong>Accuracy Responsibility:</strong> Users are solely responsible for providing 100% accurate and authentic personal details and documents.</li>
-                      <li><strong>Fee Policy:</strong> Payment includes the official fee (if applicable) plus our nominal form-filling service charge. Valid payment screenshot proof is mandatory.</li>
+                    <ul className="list-disc pl-4 space-y-1 text-gray-300 font-medium text-[11px]">
+                      <li><strong>Private Facilitation:</strong> Independent cyber cafe / form assistance center and NOT an official government entity.</li>
+                      <li><strong>Accuracy:</strong> Users are solely responsible for providing 100% accurate details.</li>
+                      <li><strong>Fee Policy:</strong> Payment includes official portal fees (if applicable) plus service charges.</li>
                     </ul>
                   </div>
 
-                  {/* 3. DISCLAIMER NOTICE DETAILS */}
-                  <div className="border border-slate-200 p-3.5 rounded-xl bg-amber-50/60 space-y-2">
-                    <h4 className="font-extrabold text-amber-900 text-xs uppercase tracking-wider flex items-center gap-1">
+                  <div className="glass-card p-4 rounded-2xl bg-amber-500/5 space-y-2">
+                    <h4 className="font-black text-amber-400 text-xs uppercase tracking-wider flex items-center gap-1.5">
                       ⚠️ 3. Non-Government Disclaimer
                     </h4>
-                    <p className="text-amber-950 font-medium text-[11px]">
-                      We do NOT claim to be an official government portal. All official form submissions are carried out on respective official government / university websites on behalf of the applicant. Final approval/rejection rests with the official authority.
+                    <p className="text-gray-300 text-[11px]">
+                      We do NOT claim to be an official government portal. Final approval or rejection rests with the respective official authorities.
                     </p>
                   </div>
                 </div>
 
-                <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-col gap-2">
+                <div className="p-5 bg-gray-950/80 border-t border-gray-800 flex flex-col gap-3">
                   <button 
                     onClick={handleAcceptTerms} 
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
+                    className="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-extrabold text-xs py-3.5 rounded-xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 border border-indigo-400/30"
                   >
                     <span>I Agree & Continue</span> →
                   </button>
-                  <p className="text-[10px] text-center text-slate-400 font-medium">
+                  <p className="text-[10px] text-center text-gray-500 font-medium">
                     By clicking "I Agree & Continue", you accept all Privacy Policy, Terms & Disclaimer conditions.
                   </p>
                 </div>
@@ -517,79 +516,79 @@
 
           {/* SIDE DRAWER MENU */}
           {showDrawer && (
-            <div className="fixed inset-0 z-[80] flex">
-              <div className="fixed inset-0 bg-slate-900/60 transition-opacity" onClick={() => setShowDrawer(false)}></div>
-              <div className="relative w-80 max-w-[85%] bg-white h-full shadow-2xl flex flex-col justify-between z-10 p-5 overflow-y-auto">
+            <div className="fixed inset-0 z-[150] flex">
+              <div className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity" onClick={() => setShowDrawer(false)}></div>
+              <div className="relative w-80 max-w-[85%] bg-gray-900 border-r border-gray-800 h-full shadow-2xl flex flex-col justify-between z-10 p-6 overflow-y-auto">
                 <div>
-                  <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
-                    <h3 className="font-extrabold text-blue-800 text-base">SGS ONLINE SERVICE</h3>
-                    <button onClick={() => setShowDrawer(false)} className="text-slate-400"><Icons.X /></button>
+                  <div className="flex items-center justify-between pb-5 border-b border-gray-800 mb-5">
+                    <h3 className="font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-indigo-400 text-lg">
+                      SGS ONLINE SERVICE
+                    </h3>
+                    <button onClick={() => setShowDrawer(false)} className="text-gray-400 hover:text-white"><Icons.X /></button>
                   </div>
 
                   {/* NAV LINKS */}
-                  <nav className="space-y-2 text-xs font-bold text-slate-700">
-                    <button onClick={() => { setSelectedCat('All Services'); setActiveService(null); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-blue-700">
+                  <nav className="space-y-2 text-xs font-bold text-gray-300">
+                    <button onClick={() => { setSelectedCat('All Services'); setActiveService(null); setShowDrawer(false); }} className="w-full text-left p-3 rounded-xl hover:bg-gray-800/80 flex items-center justify-between text-indigo-400 transition-colors">
                       <span>🏠 Home Page / All Services</span>
                       <Icons.ChevronRight />
                     </button>
 
-                    {/* TRACK MY APPLICATION BUTTON */}
                     <button 
                       onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('track'); setShowDrawer(false); }} 
-                      className="w-full text-left p-2.5 rounded-lg bg-amber-50 text-amber-900 flex items-center justify-between border border-amber-300 shadow-2xs"
+                      className="w-full text-left p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 flex items-center justify-between transition-colors"
                     >
-                      <span className="flex items-center gap-1.5 font-extrabold text-amber-800">
+                      <span className="flex items-center gap-2 font-extrabold">
                         <Icons.ListCheck /> Track My Application ({userApps.length})
                       </span>
                       <Icons.ChevronRight />
                     </button>
 
-                    {/* SHARE WEBSITE BUTTON */}
-                    <button onClick={handleShareWebsite} className="w-full text-left p-2.5 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-between border border-emerald-200">
-                      <span className="flex items-center gap-1.5 font-extrabold"><Icons.Share2 /> Share Website</span>
+                    <button onClick={handleShareWebsite} className="w-full text-left p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 flex items-center justify-between transition-colors">
+                      <span className="flex items-center gap-2 font-extrabold"><Icons.Share2 /> Share Website</span>
                       <Icons.ChevronRight />
                     </button>
                     
-                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('privacy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('privacy'); setShowDrawer(false); }} className="w-full text-left p-3 rounded-xl hover:bg-gray-800 flex items-center justify-between">
                       <span>🔒 Privacy Policy</span>
                       <Icons.ChevronRight />
                     </button>
-                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('terms'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('terms'); setShowDrawer(false); }} className="w-full text-left p-3 rounded-xl hover:bg-gray-800 flex items-center justify-between">
                       <span>📜 Terms & Conditions</span>
                       <Icons.ChevronRight />
                     </button>
-                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('disclaimer'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('disclaimer'); setShowDrawer(false); }} className="w-full text-left p-3 rounded-xl hover:bg-gray-800 flex items-center justify-between">
                       <span>⚠️ Disclaimer Notice</span>
                       <Icons.ChevronRight />
                     </button>
                   </nav>
 
-                  {/* CUSTOMER SUPPORT SECTION INSIDE DRAWER */}
-                  <div className="mt-6 pt-5 border-t border-slate-200 space-y-3">
-                    <h4 className="text-xs font-extrabold uppercase text-slate-400 tracking-wider flex items-center gap-1.5 mb-3">
+                  {/* CUSTOMER SUPPORT */}
+                  <div className="mt-8 pt-6 border-t border-gray-800 space-y-4">
+                    <h4 className="text-[10px] font-black uppercase text-gray-500 tracking-wider flex items-center gap-2">
                       <Icons.Headphones /> Customer Support
                     </h4>
                     
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-2xs">
-                      <h5 className="font-extrabold text-slate-900 text-xs mb-1">WhatsApp Support</h5>
-                      <p className="text-[11px] text-slate-500 mb-2.5 leading-snug">Fast Reply (Instant Assistance). Connect directly on WhatsApp.</p>
-                      <button onClick={handleWhatsAppSupport} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2 rounded-lg transition-colors">
+                    <div className="glass-card rounded-2xl p-4 border border-gray-800">
+                      <h5 className="font-extrabold text-white text-xs mb-1">WhatsApp Support</h5>
+                      <p className="text-[11px] text-gray-400 mb-3 leading-snug">Instant Assistance on WhatsApp.</p>
+                      <button onClick={handleWhatsAppSupport} className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2.5 rounded-xl transition-all shadow-lg shadow-emerald-900/30">
                         Chat on WhatsApp
                       </button>
                     </div>
 
-                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-2xs">
-                      <h5 className="font-extrabold text-slate-900 text-xs mb-1">Email Support</h5>
-                      <p className="text-[11px] text-slate-500 mb-2.5 leading-snug">Send us an email inquiry for official ticket assistance.</p>
-                      <button onClick={handleEmailSupport} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-2 rounded-lg transition-colors">
+                    <div className="glass-card rounded-2xl p-4 border border-gray-800">
+                      <h5 className="font-extrabold text-white text-xs mb-1">Email Support</h5>
+                      <p className="text-[11px] text-gray-400 mb-3 leading-snug">Official Ticket Assistance via Email.</p>
+                      <button onClick={handleEmailSupport} className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs py-2.5 rounded-xl transition-all shadow-lg shadow-indigo-900/30">
                         Send Email
                       </button>
                     </div>
                   </div>
                 </div>
 
-                <div className="pt-4 mt-6 border-t border-slate-100 text-center text-[10px] text-slate-400 font-semibold">
-                  SGS Helpdesk • Private Form Filling Facilitation Center
+                <div className="pt-6 border-t border-gray-800 text-center text-[10px] text-gray-500 font-semibold">
+                  SGS Helpdesk • Private Form Facilitation Center
                 </div>
               </div>
             </div>
@@ -597,9 +596,9 @@
 
           {/* FULL SCREEN MODAL VIEW */}
           {activeModalPage ? (
-            <div className="fixed inset-0 bg-slate-100 z-50 flex flex-col h-full w-full overflow-hidden">
-              <div className="bg-gradient-to-r from-blue-800 to-indigo-900 text-white px-4 py-3 shadow-md flex items-center justify-between shrink-0">
-                <h3 className="font-extrabold text-white text-base sm:text-lg flex items-center gap-2">
+            <div className="fixed inset-0 bg-gray-950 z-[140] flex flex-col h-full w-full overflow-hidden">
+              <div className="bg-gray-900/80 backdrop-blur-md border-b border-gray-800 text-white px-5 py-4 flex items-center justify-between shrink-0">
+                <h3 className="font-black text-white text-base sm:text-lg flex items-center gap-2">
                   <Icons.ShieldCheck />
                   <span>
                     {activeModalPage === 'track' && 'Track My Applications'}
@@ -608,24 +607,24 @@
                     {activeModalPage === 'disclaimer' && 'Disclaimer & Service Policy'}
                   </span>
                 </h3>
-                <button onClick={() => setActiveModalPage(null)} className="bg-white/20 text-white px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1">
+                <button onClick={() => setActiveModalPage(null)} className="bg-gray-800 hover:bg-gray-700 text-white px-3.5 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 border border-gray-700">
                   <Icons.X /> Close
                 </button>
               </div>
 
-              <div className="flex-1 overflow-y-auto p-4 sm:p-6 max-w-4xl w-full mx-auto text-xs text-slate-700 space-y-4">
+              <div className="flex-1 overflow-y-auto p-5 sm:p-8 max-w-4xl w-full mx-auto text-xs text-gray-300 space-y-5">
                 
                 {/* TRACK APPLICATION MODAL PAGE */}
                 {activeModalPage === 'track' && (
                   <div className="space-y-4">
-                    <div className="bg-amber-50 border-l-4 border-amber-600 p-4 rounded-r-xl text-slate-900 font-medium flex items-center justify-between gap-2 flex-wrap">
+                    <div className="glass-card border-amber-500/20 p-4 rounded-2xl text-amber-200 font-medium flex items-center justify-between gap-3 flex-wrap">
                       <div>
-                        <strong>📋 Application Tracking Center:</strong> Aapke dwara submit kiye gaye sabhi online assistance requests ke UIDs.
+                        <strong>📋 Application Tracking Center:</strong> Submitted requests tracking list.
                       </div>
                       {userApps.length > 0 && (
                         <button 
                           onClick={clearAllApps}
-                          className="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-2xs"
+                          className="bg-rose-600 hover:bg-rose-500 text-white text-[11px] font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-lg shadow-rose-950/40"
                         >
                           <Icons.Trash /> Clear All
                         </button>
@@ -633,21 +632,21 @@
                     </div>
 
                     {userApps.length === 0 ? (
-                      <div className="bg-white p-8 rounded-2xl border border-slate-200 text-center">
-                        <p className="text-sm font-bold text-slate-500">Aapne abhi tak koi form assistance request submit nahi kiya hai.</p>
+                      <div className="glass-card p-12 rounded-3xl text-center border-dashed border-gray-800">
+                        <p className="text-sm font-bold text-gray-500">Aapne abhi tak koi form request submit nahi kiya hai.</p>
                       </div>
                     ) : (
                       <div className="space-y-3">
                         {userApps.map((app, i) => (
-                          <div key={i} className="bg-white border border-slate-300 rounded-xl p-4 shadow-sm flex items-center justify-between gap-3">
+                          <div key={i} className="glass-card p-4 rounded-2xl border border-gray-800 flex items-center justify-between gap-3">
                             <div>
-                              <span className="font-black text-blue-700 text-sm block">UID: {app.uid}</span>
-                              <p className="text-xs font-bold text-slate-800 mt-1">Form: {app.serviceTitle}</p>
+                              <span className="font-black text-indigo-400 text-sm block">UID: {app.uid}</span>
+                              <p className="text-xs font-bold text-gray-200 mt-1">Form: {app.serviceTitle}</p>
                             </div>
                             <button 
                               onClick={() => deleteSingleApp(app.uid)}
                               title="Delete this record"
-                              className="text-slate-400 hover:text-rose-600 p-2 rounded-lg hover:bg-rose-50 transition-colors"
+                              className="text-gray-500 hover:text-rose-400 p-2 rounded-xl hover:bg-rose-500/10 transition-colors"
                             >
                               <Icons.Trash />
                             </button>
@@ -658,99 +657,47 @@
                   </div>
                 )}
 
-                {/* PRIVACY POLICY MODAL PAGE */}
+                {/* PRIVACY POLICY */}
                 {activeModalPage === 'privacy' && (
-                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <div className="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-r-xl text-slate-900 font-medium">
-                      <strong>📌 Private Form Facilitation Center Privacy Policy:</strong> SGS ONLINE SERVICE operates independently as a private online digital assistance center helping users fill out government, college, and administrative online forms accurately upon request.
+                  <div className="glass-card p-6 rounded-3xl border border-gray-800 space-y-4 leading-relaxed">
+                    <div className="bg-indigo-500/10 border-l-4 border-indigo-500 p-4 rounded-r-xl text-indigo-200 font-medium">
+                      <strong>📌 Private Form Facilitation Center Privacy Policy:</strong> SGS ONLINE SERVICE operates independently as a private online digital assistance center.
                     </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Comprehensive Data Collection Notice</h4>
-                      <p className="mb-2">To assist users in filling online application forms, verifying details via call/WhatsApp, and providing customer support, we collect personal data directly submitted by users during form submission:</p>
-                      <ul className="list-disc pl-5 space-y-1 text-slate-700 font-medium">
-                        <li><strong>Personal Identification Details:</strong> Full Name, Father's Name, Mother's Name, Date of Birth, Gender, Category/Caste, and Religion.</li>
-                        <li><strong>Contact Information:</strong> Mobile Number, Email Address, Full Postal Address, District, Pin Code, and State.</li>
-                        <li><strong>Academic & Identity Records:</strong> Educational Qualification details, Roll Numbers, Registration Numbers, Marksheets, and Certificates.</li>
-                        <li><strong>Uploaded Documents & Media:</strong> Applicant Photograph, Digital Signature Scans, PDF Documents, and Identity Proof files uploaded by the user.</li>
-                        <li><strong>Payment Verification Data:</strong> Payment Screenshots, Fee Receipts, and Date of Payment.</li>
+                    <div className="space-y-2">
+                      <h4 className="font-extrabold text-white text-sm">1. Comprehensive Data Collection Notice</h4>
+                      <p>We collect personal data directly submitted by users during form submission:</p>
+                      <ul className="list-disc pl-5 space-y-1 text-gray-400 font-medium">
+                        <li><strong>Personal Identification:</strong> Full Name, Father's Name, Mother's Name, Date of Birth, Gender, Category/Caste, and Religion.</li>
+                        <li><strong>Contact Details:</strong> Mobile Number, Email Address, Full Postal Address, District, Pin Code, and State.</li>
+                        <li><strong>Academic & Identity:</strong> Educational Qualification details, Roll Numbers, Registration Numbers, Marksheets, and Certificates.</li>
+                        <li><strong>Uploaded Documents:</strong> Applicant Photograph, Digital Signature Scans, PDF Documents, and Identity Proof files.</li>
+                        <li><strong>Payment Proofs:</strong> Payment Screenshots, Fee Receipts, and Date of Payment.</li>
                       </ul>
                     </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Purpose of Data Collection & Usage</h4>
-                      <p>All user-provided data is used exclusively to fill out online application forms on official external portals on behalf of the user after phone verification, generate tracking IDs, and deliver completed receipts via WhatsApp or Email.</p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. End-to-End Secure Telegram Storage</h4>
-                      <p>User-submitted form data, compressed high-resolution images, and uploaded PDF files are transmitted through encrypted connections directly to our admin panel via Telegram. We strictly do NOT sell, lease, trade, or share user personal records with any unauthorized third parties.</p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">4. User Rights & Data Protection</h4>
-                      <p>Users maintain full rights to verify, review, or request corrections or deletion of their application status by contacting our designated support team via WhatsApp or Email along with their unique Support Ticket ID.</p>
-                    </div>
                   </div>
                 )}
 
-                {/* TERMS & CONDITIONS MODAL PAGE */}
+                {/* TERMS & CONDITIONS */}
                 {activeModalPage === 'terms' && (
-                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Private Facilitation Service Overview</h4>
-                      <p>SGS ONLINE SERVICE operates independently as a private cyber cafe and online form-filling assistance center. We help applicants fill out government, university, college, and competitive examination forms accurately based entirely on information provided by the user.</p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. User Responsibility & Accuracy of Data</h4>
-                      <p>The applicant is solely responsible for ensuring that all information, personal details, contact numbers, and uploaded documents provided on this portal are 100% accurate, genuine, and legitimate. SGS ONLINE SERVICE shall not be held liable for form rejections resulting from incorrect user input.</p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. Payment Verification & Fee Policy</h4>
-                      <p>Application processing requires valid payment confirmation covering official portal fees (if applicable) and our nominal service facilitation charge. Users must provide a genuine payment screenshot after scanning the payment QR code or paying via UPI buttons.</p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">4. Non-Affiliation Disclaimer</h4>
-                      <p>SGS ONLINE SERVICE is a private assistance portal and is NOT an official government entity or official college representative. All official form submissions are carried out on respective official government portals on behalf of the user.</p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">5. Support & Query Resolution</h4>
-                      <p>For any queries, submission verification, or support regarding online forms, users can access our WhatsApp or Email support channels available in the side drawer menu to receive automated Ticket tracking support.</p>
-                    </div>
+                  <div className="glass-card p-6 rounded-3xl border border-gray-800 space-y-4 leading-relaxed">
+                    <h4 className="font-extrabold text-white text-sm">1. Private Facilitation Service Overview</h4>
+                    <p className="text-gray-400">SGS ONLINE SERVICE operates independently as a private cyber cafe and online form-filling assistance center.</p>
                   </div>
                 )}
 
-                {/* DISCLAIMER MODAL PAGE */}
+                {/* DISCLAIMER */}
                 {activeModalPage === 'disclaimer' && (
-                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <div className="bg-amber-50 border-l-4 border-amber-600 p-4 rounded-r-xl text-amber-950 font-bold">
+                  <div className="glass-card p-6 rounded-3xl border border-gray-800 space-y-4 leading-relaxed">
+                    <div className="bg-amber-500/10 border-l-4 border-amber-500 p-4 rounded-r-xl text-amber-200 font-bold">
                       ⚠️ DISCLAIMER & NON-AFFILIATION NOTICE
                     </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Swatantra Private Service (Non-Government)</h4>
-                      <p>SGS ONLINE SERVICE ek swatantra private online cyber cafe aur form filling assistance desk hai. Hum kisi bhi sarkari vibhag (Government Department), Bihar RTPS Portal, VKSU University, ya kisi bhi official college/university administration se affiliated ya authorized portal nahi hain.</p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Form Filling Facilitation</h4>
-                      <p>Humare dwaara pradan ki jaane wali seva sirf users ke anurodh par unka online application form sahi tarike se official portals par bharne mein madad karne ki facilitation service hai. Iske badle mein hum ek nominal assistance service charge lete hain.</p>
-                    </div>
-
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. External Links & Official Portals</h4>
-                      <p>Aapke dwara jama kiye gaye sabhi details ko humari team verification ke baad official government / university portals par submit karti hai. Aavedan patra ki manjuri ya aswikriti (Approval/Rejection) puri tarah se sambandhit sarkari/college adhikaariyon ke haath mein hoti hai.</p>
-                    </div>
+                    <p className="text-gray-400">SGS ONLINE SERVICE ek swatantra private online cyber cafe aur form filling assistance desk hai.</p>
                   </div>
                 )}
               </div>
 
-              <div className="p-3 bg-white border-t border-slate-200 flex justify-end shrink-0">
-                <button onClick={() => setActiveModalPage(null)} className="bg-slate-900 text-white font-bold px-6 py-2 rounded-xl text-xs shadow-md">
+              <div className="p-4 bg-gray-900/80 border-t border-gray-800 flex justify-end shrink-0">
+                <button onClick={() => setActiveModalPage(null)} className="bg-white text-gray-950 hover:bg-gray-200 font-extrabold px-6 py-2.5 rounded-xl text-xs transition-all shadow-lg">
                   Close Window
                 </button>
               </div>
@@ -758,45 +705,48 @@
           ) : (
             <>
               {/* STICKY HEADER */}
-              <header className="sticky top-0 z-40 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white shadow-sm py-2 px-3">
-                <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
-                  <button onClick={() => setShowDrawer(true)} className="p-1.5 text-white hover:bg-white/10 rounded-lg">
+              <header className="sticky top-0 z-40 bg-gray-900/80 backdrop-blur-xl border-b border-gray-800 py-3 px-4 shadow-xl">
+                <div className="max-w-6xl mx-auto flex items-center justify-between gap-3">
+                  <button onClick={() => setShowDrawer(true)} className="p-2 text-gray-300 hover:text-white hover:bg-gray-800 rounded-xl transition-colors">
                     <Icons.Menu />
                   </button>
                   <div onClick={() => { setSelectedCat('All Services'); setActiveService(null); }} className="cursor-pointer text-center flex-1">
-                    <h1 className="text-base sm:text-xl font-extrabold text-yellow-300">SGS ONLINE SERVICE</h1>
-                    <p className="text-[9px] sm:text-[11px] font-bold text-amber-200/90 uppercase">Online Form Filling Assistance Portal (Private Service)</p>
+                    <h1 className="text-lg sm:text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-amber-300 via-indigo-300 to-violet-400 tracking-tight">
+                      SGS ONLINE SERVICE
+                    </h1>
+                    <p className="text-[9px] sm:text-[10px] font-extrabold text-indigo-400 tracking-wider uppercase">
+                      Online Form Filling Assistance Portal
+                    </p>
                   </div>
                 </div>
               </header>
 
-              {/* MANDATORY LEGAL NOTICE BANNER BELOW HEADER */}
-              <div className="bg-slate-900 text-slate-200 text-[11px] px-4 py-2 border-b border-slate-800 text-center font-medium">
-                <span className="bg-amber-400 text-slate-950 font-black px-1.5 py-0.5 rounded text-[10px] mr-1.5">NOTICE</span>
-                SGS Online Service is an independent private form filling assistance portal (Cyber Cafe). We are NOT an official government or college portal.
+              {/* LEGAL NOTICE BANNER */}
+              <div className="bg-gray-900/50 text-gray-400 text-[11px] px-4 py-2.5 border-b border-gray-800/80 text-center font-medium backdrop-blur-sm">
+                <span className="bg-amber-400/10 text-amber-300 border border-amber-400/20 font-black px-2 py-0.5 rounded-md text-[10px] mr-2">NOTICE</span>
+                SGS Online Service is an independent private form filling assistance portal (Cyber Cafe).
               </div>
 
-              {/* MAIN SERVICES CONTENT */}
+              {/* MAIN CONTENT */}
               {activeService ? (
-                <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-6">
-                  <button onClick={() => setActiveService(null)} className="inline-flex items-center gap-2 bg-white text-slate-800 font-bold text-xs px-4 py-2 rounded-xl border border-slate-300 mb-4 shadow-2xs">
+                <main className="flex-1 max-w-2xl w-full mx-auto px-4 py-8">
+                  <button onClick={() => setActiveService(null)} className="inline-flex items-center gap-2 bg-gray-900 text-gray-300 font-bold text-xs px-4 py-2.5 rounded-xl border border-gray-800 mb-6 hover:bg-gray-800 transition-colors">
                     <Icons.ArrowLeft /> Back to Services
                   </button>
 
-                  <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden p-5 sm:p-6">
-                    <span className="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">{activeService.category}</span>
-                    <h2 className="text-xl sm:text-2xl font-black text-slate-900 mt-2 mb-2">{activeService.title}</h2>
-                    <p className="text-xs text-slate-600 mb-4">{activeService.description}</p>
+                  <div className="glass-card rounded-3xl border border-gray-800 overflow-hidden p-6 sm:p-8 shadow-2xl">
+                    <span className="bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider">{activeService.category}</span>
+                    <h2 className="text-2xl sm:text-3xl font-black text-white mt-3 mb-2">{activeService.title}</h2>
+                    <p className="text-xs text-gray-400 mb-6 leading-relaxed">{activeService.description}</p>
 
-                    {/* Form Filling Transparency Note */}
-                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-[11px] text-amber-900 font-medium mb-5">
-                      ℹ️ <strong>Assistance Notice:</strong> Information submitted below will be used by our team to fill out your official online form on your behalf after phone confirmation.
+                    <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 text-[11px] text-amber-200 font-medium mb-6">
+                      ℹ️ <strong>Assistance Notice:</strong> Information submitted below will be used to fill out your form on your behalf.
                     </div>
 
-                    <form onSubmit={handleFormSubmit} className="space-y-4">
+                    <form onSubmit={handleFormSubmit} className="space-y-5">
                       {activeService.fields && activeService.fields.map((field, idx) => (
-                        <div key={idx} className="space-y-1">
-                          <label className="block text-xs font-bold text-slate-800">{field.label}:</label>
+                        <div key={idx} className="space-y-1.5">
+                          <label className="block text-xs font-bold text-gray-300">{field.label}:</label>
                           {field.type === 'file' ? (
                             <div>
                               <input 
@@ -805,21 +755,21 @@
                                 accept={field.accept || "image/*, application/pdf"} 
                                 required={field.required}
                                 onChange={(e) => handleFilePreview(e, `prev_img_${field.name}_${idx}`, `prev_pdf_${field.name}_${idx}`)}
-                                className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs" 
+                                className="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs text-gray-400 file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-extrabold file:bg-indigo-600 file:text-white hover:file:bg-indigo-500" 
                               />
                               <img id={`prev_img_${field.name}_${idx}`} className="img-preview" alt="Selected Preview" />
                               <div id={`prev_pdf_${field.name}_${idx}`} className="pdf-preview"></div>
                             </div>
                           ) : field.type === 'radio' ? (
-                            <div className="space-y-2 bg-slate-50 p-3 rounded-lg border border-slate-200">
+                            <div className="space-y-2.5 bg-gray-950 p-4 rounded-xl border border-gray-800">
                               {field.options && field.options.map((opt) => (
-                                <label key={opt.id || opt.value} className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
+                                <label key={opt.id || opt.value} className="flex items-center gap-3 text-xs font-semibold text-gray-300 cursor-pointer">
                                   <input
                                     type="radio"
                                     name={field.name}
                                     value={opt.value}
                                     required={field.required}
-                                    className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                                    className="w-4 h-4 text-indigo-600 focus:ring-indigo-500 bg-gray-900 border-gray-700"
                                   />
                                   <span>{opt.label}</span>
                                 </label>
@@ -831,13 +781,13 @@
                               name={field.name} 
                               required={field.required} 
                               placeholder={field.placeholder || "Details fill karein"}
-                              className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs font-medium focus:outline-none focus:border-blue-600" 
+                              className="w-full bg-gray-950 border border-gray-800 rounded-xl p-3 text-xs text-white font-medium focus:outline-none focus:border-indigo-500 transition-colors" 
                             />
                           )}
                         </div>
                       ))}
 
-                      {/* PAYMENT SECTION WITH QR AND DYNAMIC UPI BUTTONS */}
+                      {/* PAYMENT SECTION */}
                       {(() => {
                         const upi = getUpiDetails(activeService.qrImageUrl);
                         const amParam = upi.am ? `&am=${upi.am}` : "";
@@ -846,54 +796,49 @@
                         const genericUpiUrl = `upi://pay?pa=${upi.pa}&pn=${encodeURIComponent(upi.pn)}${amParam}&cu=INR`;
 
                         return (
-                          <div className="bg-blue-50/80 border border-blue-200 p-4 rounded-xl text-center my-4 space-y-3">
-                            <p className="text-xs font-extrabold text-blue-900">Scan QR or Click Below to Pay {upi.am ? `₹${upi.am}` : ''}</p>
+                          <div className="glass-card border-indigo-500/30 p-5 rounded-2xl text-center my-6 space-y-4">
+                            <p className="text-xs font-black text-indigo-300 uppercase tracking-wider">Scan QR or Click Below to Pay {upi.am ? `₹${upi.am}` : ''}</p>
                             
-                            <img src={activeService.qrImageUrl} alt="Payment QR Code" className="max-w-[180px] mx-auto rounded-lg border-2 border-blue-600 shadow-sm" />
+                            <div className="p-3 bg-white rounded-2xl inline-block shadow-2xl">
+                              <img src={activeService.qrImageUrl} alt="Payment QR Code" className="max-w-[170px] mx-auto rounded-xl" />
+                            </div>
 
-                            {/* DYNAMIC UPI BUTTONS */}
-                            <div className="pt-2 flex flex-col sm:flex-row gap-2 justify-center items-center">
-                              {/* PhonePe Button */}
+                            <div className="pt-2 flex flex-col sm:flex-row gap-2.5 justify-center items-center">
                               <a 
                                 href={phonepeUrl} 
-                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-[#5f259f] hover:bg-[#4a1c7d] text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all"
+                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-[#5f259f] hover:bg-[#4a1c7d] text-white font-bold text-xs py-3 px-4 rounded-xl shadow-lg transition-all"
                               >
-                                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.8 10.2c0-2.4-1.9-4.3-4.3-4.3H8.3c-.6 0-1.1.5-1.1 1.1v10.1c0 .6.5 1.1 1.1 1.1h2.3c.6 0 1.1-.5 1.1-1.1v-2.8h2.8c2.4 0 4.3-1.9 4.3-4.2zm-4.3 1.9h-2.8v-3.8h2.8c1 0 1.9.9 1.9 1.9 0 1-.9 1.9-1.9 1.9z"/></svg>
                                 <span>PhonePe</span>
                               </a>
 
-                              {/* GPay Button */}
                               <a 
                                 href={gpayUrl} 
-                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 font-bold text-xs py-2.5 px-3 rounded-lg shadow-sm transition-all"
+                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-white text-gray-900 hover:bg-gray-100 font-bold text-xs py-3 px-4 rounded-xl shadow-lg transition-all"
                               >
-                                <svg className="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
                                 <span>Google Pay</span>
                               </a>
 
-                              {/* Pay via Other Apps Button */}
                               <a 
                                 href={genericUpiUrl} 
-                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all"
+                                className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-3 px-4 rounded-xl shadow-lg transition-all"
                               >
-                                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
-                                <span>Pay via Other App</span>
+                                <span>Other Apps</span>
                               </a>
                             </div>
                           </div>
                         );
                       })()}
 
-                      {/* PAYMENT SCREENSHOT UPLOAD INSTEAD OF UTR BOX */}
-                      <div className="space-y-1">
-                        <label className="block text-xs font-extrabold text-rose-600">Upload Payment Screenshot (Mandatory):</label>
+                      {/* PAYMENT SCREENSHOT UPLOAD */}
+                      <div className="space-y-1.5">
+                        <label className="block text-xs font-black text-rose-400 uppercase tracking-wider">Upload Payment Screenshot (Mandatory):</label>
                         <input 
                           type="file" 
                           name="main_payment_screenshot" 
                           accept="image/*" 
                           required 
                           onChange={(e) => handleFilePreview(e, 'prev_img_main_payment', 'prev_pdf_main_payment')}
-                          className="w-full bg-slate-50 border border-rose-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-rose-600" 
+                          className="w-full bg-gray-950 border border-rose-500/30 rounded-xl p-3 text-xs text-gray-400 file:mr-4 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-extrabold file:bg-rose-600 file:text-white" 
                         />
                         <img id="prev_img_main_payment" className="img-preview" alt="Payment Screenshot Preview" />
                         <div id="prev_pdf_main_payment" className="pdf-preview"></div>
@@ -902,7 +847,7 @@
                       <button 
                         type="submit" 
                         disabled={isSubmitting}
-                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm py-3.5 rounded-xl shadow-lg transition-all active:scale-95 disabled:bg-slate-400 mt-2"
+                        className="w-full bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-extrabold text-sm py-4 rounded-2xl shadow-xl transition-all active:scale-95 disabled:bg-gray-800 mt-4 border border-indigo-400/30"
                       >
                         {isSubmitting ? "Uploading & Submitting..." : "Submit Application →"}
                       </button>
@@ -910,45 +855,45 @@
                   </div>
                 </main>
               ) : (
-                <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
-                  {/* COLORFUL NOTICE BOARD WITH BLINKING LIVE BUTTON */}
-                  <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border border-indigo-200 rounded-2xl p-4 shadow-sm relative overflow-hidden">
-                    <div className="flex items-center justify-between border-b border-indigo-100 pb-2.5 mb-3">
-                      <div className="flex items-center gap-2">
-                        <span className="text-indigo-600 animate-bounce"><Icons.Bell /></span>
-                        <h2 className="font-black text-indigo-950 text-sm uppercase tracking-wider">Notice Board</h2>
+                <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-8 space-y-8">
+                  {/* NOTICE BOARD */}
+                  <div className="glass-card rounded-3xl p-5 border border-indigo-500/20 shadow-xl relative overflow-hidden">
+                    <div className="flex items-center justify-between border-b border-gray-800 pb-3 mb-4">
+                      <div className="flex items-center gap-2.5">
+                        <span className="text-indigo-400 animate-bounce"><Icons.Bell /></span>
+                        <h2 className="font-black text-white text-xs uppercase tracking-widest">Notice Board</h2>
                       </div>
                       
-                      {/* BLINKING LIVE BUTTON */}
-                      <span className="inline-flex items-center gap-1.5 bg-rose-600 text-white font-extrabold text-[10px] px-2.5 py-0.5 rounded-full shadow-md tracking-wider">
-                        <span className="w-2 h-2 rounded-full bg-amber-300 animate-ping"></span>
+                      <span className="inline-flex items-center gap-1.5 bg-rose-500/20 border border-rose-500/30 text-rose-300 font-black text-[10px] px-3 py-1 rounded-full tracking-widest">
+                        <span className="w-2 h-2 rounded-full bg-rose-400 animate-ping"></span>
                         LIVE
                       </span>
                     </div>
 
-                    <div className="space-y-2.5">
+                    <div className="space-y-3">
                       {notices.map((n) => (
-                        <div key={n.id} className="flex items-start gap-2.5 text-xs font-semibold text-slate-800 bg-white/80 p-2 rounded-xl border border-indigo-100/60 shadow-2xs">
-                          <span className="text-indigo-600 font-extrabold text-sm leading-none">•</span>
+                        <div key={n.id} className="flex items-start gap-3 text-xs font-semibold text-gray-300 bg-gray-950/50 p-3 rounded-2xl border border-gray-800">
+                          <span className="text-indigo-400 font-black text-sm">•</span>
                           <span className="leading-relaxed">{n.text}</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <div className="space-y-3">
+                  {/* SEARCH & FILTERS */}
+                  <div className="space-y-4">
                     <div className="relative">
-                      <div className="absolute left-3.5 top-3 text-slate-400"><Icons.Search /></div>
+                      <div className="absolute left-4 top-3.5 text-gray-500"><Icons.Search /></div>
                       <input
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search form, service..."
-                        className="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-medium focus:outline-none focus:border-blue-600"
+                        className="w-full bg-gray-900 border border-gray-800 rounded-2xl pl-11 pr-4 py-3 text-xs sm:text-sm font-medium text-white focus:outline-none focus:border-indigo-500 transition-colors shadow-inner"
                       />
                     </div>
 
-                    <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+                    <div className="flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-none">
                       {categories.map((catObj) => {
                         const catName = typeof catObj === 'object' ? catObj.name : catObj;
                         const isSelected = selectedCat === catName;
@@ -962,7 +907,7 @@
                               }
                             }}
                             style={getCategoryButtonStyle(catObj, isSelected)}
-                            className="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border shrink-0"
+                            className="px-4 py-2 rounded-xl text-xs font-extrabold transition-all border shrink-0"
                           >
                             {catName}
                           </button>
@@ -971,22 +916,23 @@
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {/* SERVICES GRID */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     {filteredServices.map((srv) => (
                       <div
                         key={srv.id}
                         onClick={() => openServiceDetail(srv)}
-                        className="bg-white rounded-xl border border-slate-300 p-4 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+                        className="glass-card glass-card-hover rounded-3xl p-5 shadow-xl cursor-pointer flex flex-col justify-between"
                       >
                         <div>
-                          <span className="bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-200">
+                          <span className="bg-gray-800 text-gray-400 border border-gray-700 text-[10px] font-black px-2.5 py-1 rounded-lg uppercase tracking-wider">
                             {srv.category}
                           </span>
-                          <h4 className="font-bold text-slate-900 text-sm mt-2">{srv.title}</h4>
-                          <p className="text-xs text-slate-500 mt-1 line-clamp-2">{srv.description}</p>
+                          <h4 className="font-extrabold text-white text-base mt-3">{srv.title}</h4>
+                          <p className="text-xs text-gray-400 mt-2 line-clamp-2 leading-relaxed">{srv.description}</p>
                         </div>
 
-                        <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-700 mt-3">
+                        <div className="pt-5 border-t border-gray-800 flex items-center justify-between text-xs font-extrabold text-indigo-400 mt-4">
                           <span>Apply Now & Fill Details</span>
                           <Icons.ChevronRight />
                         </div>
@@ -996,13 +942,13 @@
                 </main>
               )}
 
-              {/* FOOTER WITH MODAL BUTTONS */}
-              <footer className="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800 text-center px-4">
-                <p className="font-bold text-white">SGS ONLINE SERVICE © 2026</p>
-                <div className="flex flex-wrap items-center justify-center gap-4 text-xs mt-3">
-                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('privacy'); }} className="text-slate-400 hover:text-white underline">Privacy Policy</button>
-                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('terms'); }} className="text-slate-400 hover:text-white underline">Terms & Conditions</button>
-                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('disclaimer'); }} className="text-slate-400 hover:text-white underline">Disclaimer</button>
+              {/* FOOTER */}
+              <footer className="bg-gray-950 text-gray-500 text-xs py-8 mt-16 border-t border-gray-800 text-center px-4">
+                <p className="font-black text-gray-300">SGS ONLINE SERVICE © 2026</p>
+                <div className="flex flex-wrap items-center justify-center gap-6 text-xs mt-4 font-semibold">
+                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('privacy'); }} className="text-gray-400 hover:text-white transition-colors">Privacy Policy</button>
+                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('terms'); }} className="text-gray-400 hover:text-white transition-colors">Terms & Conditions</button>
+                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('disclaimer'); }} className="text-gray-400 hover:text-white transition-colors">Disclaimer</button>
                 </div>
               </footer>
             </>
