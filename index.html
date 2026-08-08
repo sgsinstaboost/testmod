@@ -30,12 +30,12 @@
       color: #ffffff !important;
     }
     /* Main Background Containers */
-    body.neon-blue-mode div[class*="bg-white"],
-    body.neon-blue-mode div[class*="bg-slate"],
-    body.neon-blue-mode div[class*="bg-indigo"],
-    body.neon-blue-mode div[class*="bg-amber"],
-    body.neon-blue-mode div[class*="bg-emerald"],
-    body.neon-blue-mode div[class*="bg-blue"],
+    body.neon-blue-mode div[class*="bg-white"]:not(.slip-card-clean):not(.slip-card-clean *),
+    body.neon-blue-mode div[class*="bg-slate"]:not(.slip-card-clean):not(.slip-card-clean *),
+    body.neon-blue-mode div[class*="bg-indigo"]:not(.slip-card-clean):not(.slip-card-clean *),
+    body.neon-blue-mode div[class*="bg-amber"]:not(.slip-card-clean):not(.slip-card-clean *),
+    body.neon-blue-mode div[class*="bg-emerald"]:not(.slip-card-clean):not(.slip-card-clean *),
+    body.neon-blue-mode div[class*="bg-blue"]:not(.slip-card-clean):not(.slip-card-clean *),
     body.neon-blue-mode nav,
     body.neon-blue-mode main {
       background-color: #0a1128 !important;
@@ -51,29 +51,55 @@
       box-shadow: 0 0 12px rgba(220, 38, 38, 0.7) !important;
     }
     body.neon-blue-mode div[class*="from-blue-50"] h2,
-    body.neon-blue-mode div[class*="from-blue-50"] span,
-    body.neon-blue-mode div[class*="from-blue-50"] div {
+    body.neon-blue-mode div[class*="from-blue-50"] > div:first-child span {
       color: #000000 !important;
       font-weight: 900 !important;
     }
-    body.neon-blue-mode div[class*="from-blue-50"] svg {
+    body.neon-blue-mode div[class*="from-blue-50"] > div:first-child svg {
       stroke: #000000 !important;
     }
+    /* NOTICE LIST ITEMS TEXT COLOR FIX (WHITE TEXT ON DARK BOX) */
+    body.neon-blue-mode div[class*="from-blue-50"] div[class*="space-y"] span,
+    body.neon-blue-mode div[class*="from-blue-50"] div[class*="space-y"] div {
+      color: #ffffff !important;
+      font-weight: 700 !important;
+    }
 
-    /* ALL TEXT INSIDE NEON MODE */
-    body.neon-blue-mode h1, 
-    body.neon-blue-mode h2, 
-    body.neon-blue-mode h3, 
-    body.neon-blue-mode h4, 
-    body.neon-blue-mode h5,
-    body.neon-blue-mode h6,
-    body.neon-blue-mode p,
-    body.neon-blue-mode label,
-    body.neon-blue-mode span:not(.no-neon),
-    body.neon-blue-mode li,
-    body.neon-blue-mode strong {
+    /* ALL TEXT INSIDE NEON MODE (EXCARD SLIP RECEIPT) */
+    body.neon-blue-mode h1:not(.slip-card-clean *), 
+    body.neon-blue-mode h2:not(.slip-card-clean *), 
+    body.neon-blue-mode h3:not(.slip-card-clean *), 
+    body.neon-blue-mode h4:not(.slip-card-clean *), 
+    body.neon-blue-mode h5:not(.slip-card-clean *),
+    body.neon-blue-mode h6:not(.slip-card-clean *),
+    body.neon-blue-mode p:not(.slip-card-clean *), 
+    body.neon-blue-mode label:not(.slip-card-clean *), 
+    body.neon-blue-mode span:not(.no-neon):not(.slip-card-clean *), 
+    body.neon-blue-mode li:not(.slip-card-clean *), 
+    body.neon-blue-mode strong:not(.slip-card-clean *) {
       color: #ffffff !important;
       text-shadow: none !important;
+    }
+
+    /* SLIP RECEIPT CARD ISOLATION CSS RULES (MODE INDEPENDENT) */
+    .slip-card-clean {
+      background-color: #ffffff !important;
+      color: #0f172a !important;
+      border: 2px solid #2563eb !important;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
+    }
+    .slip-card-clean * {
+      text-shadow: none !important;
+    }
+    .slip-text-dark {
+      color: #0f172a !important;
+    }
+    .slip-text-muted {
+      color: #475569 !important;
+    }
+    .slip-box-inner {
+      background-color: #f8fafc !important;
+      border: 1px solid #cbd5e1 !important;
     }
 
     /* DRAWER NAVIGATION LINKS TEXT */
@@ -83,10 +109,10 @@
     }
 
     /* RED BUTTONS & POST CARDS CATEGORY BADGES FOR NEON MODE */
-    body.neon-blue-mode button:not(.no-neon),
+    body.neon-blue-mode button:not(.no-neon):not(.slip-card-clean *),
     body.neon-blue-mode .neon-red-btn,
-    body.neon-blue-mode span[class*="bg-slate-100"],
-    body.neon-blue-mode span[class*="bg-blue-600"] {
+    body.neon-blue-mode span[class*="bg-slate-100"]:not(.slip-card-clean *),
+    body.neon-blue-mode span[class*="bg-blue-600"]:not(.slip-card-clean *) {
       background-color: #dc2626 !important;
       color: #000000 !important;
       font-weight: 900 !important;
@@ -110,7 +136,7 @@
     }
 
     /* SVG ICONS COLOR */
-    body.neon-blue-mode svg {
+    body.neon-blue-mode svg:not(.slip-card-clean *) {
       stroke: #00f3ff !important;
     }
 
@@ -765,57 +791,62 @@
           {/* DYNAMIC SUCCESSFUL APPLICATION RECEIPT SCREEN */}
           {submittedReceipt ? (
             <div className="min-h-screen bg-slate-100 p-4 sm:p-6 flex flex-col items-center justify-center">
-              <div id="printable-receipt" className="bg-white max-w-md w-full rounded-2xl border border-slate-200 shadow-xl overflow-hidden p-6 text-slate-800 space-y-5">
+              <div id="printable-receipt" className="slip-card-clean max-w-md w-full rounded-2xl border-2 border-blue-600 shadow-2xl overflow-hidden p-6 text-slate-900 space-y-5">
                 
-                <div className="text-center space-y-2 border-b border-slate-100 pb-4">
+                {/* THANK YOU BANNER */}
+                <div className="bg-blue-600 text-white p-3 rounded-xl text-center shadow-md mb-2">
+                  <h3 className="font-black text-xs uppercase tracking-wider">🎉 Thanks for applying through SGS Online Service!</h3>
+                </div>
+
+                <div className="text-center space-y-2 border-b border-slate-200 pb-4">
                   <div className="flex justify-center mb-1">
                     <Icons.CheckCircle />
                   </div>
-                  <h2 className="text-xl font-extrabold text-slate-900">Application Submitted!</h2>
-                  <p className="text-xs text-slate-500 font-medium">Your request has been successfully registered with SGS Online Service.</p>
+                  <h2 className="text-xl font-black slip-text-dark">Application Submitted!</h2>
+                  <p className="text-xs slip-text-muted font-bold">Your request has been successfully registered with SGS Online Service.</p>
                 </div>
 
-                <div className="bg-slate-50 rounded-xl border border-slate-200 p-4 space-y-3 text-xs">
-                  <div className="flex items-center justify-between border-b border-slate-200/60 pb-2">
-                    <span className="text-slate-500 font-semibold">Application UID:</span>
+                <div className="slip-box-inner rounded-xl p-4 space-y-3 text-xs">
+                  <div className="flex items-center justify-between border-b border-slate-300 pb-2">
+                    <span className="slip-text-muted font-bold">Application UID:</span>
                     <span className="font-black text-blue-700 text-sm tracking-wide">{submittedReceipt.uid}</span>
                   </div>
 
-                  <div className="flex items-center justify-between border-b border-slate-200/60 pb-2">
-                    <span className="text-slate-500 font-semibold">Service Name:</span>
-                    <span className="font-bold text-slate-900 text-right max-w-[200px] leading-tight">{submittedReceipt.serviceTitle}</span>
+                  <div className="flex items-center justify-between border-b border-slate-300 pb-2">
+                    <span className="slip-text-muted font-bold">Service Name:</span>
+                    <span className="font-black slip-text-dark text-right max-w-[200px] leading-tight">{submittedReceipt.serviceTitle}</span>
                   </div>
 
-                  <div className="flex items-center justify-between border-b border-slate-200/60 pb-2">
-                    <span className="text-slate-500 font-semibold">Category:</span>
-                    <span className="font-bold text-slate-800">{submittedReceipt.category}</span>
+                  <div className="flex items-center justify-between border-b border-slate-300 pb-2">
+                    <span className="slip-text-muted font-bold">Category:</span>
+                    <span className="font-black slip-text-dark">{submittedReceipt.category}</span>
                   </div>
 
-                  <div className="flex items-center justify-between border-b border-slate-200/60 pb-2">
-                    <span className="text-slate-500 font-semibold">Amount Paid:</span>
+                  <div className="flex items-center justify-between border-b border-slate-300 pb-2">
+                    <span className="slip-text-muted font-bold">Amount Paid:</span>
                     <span className="font-black text-emerald-600 text-sm">{submittedReceipt.amount}</span>
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <span className="text-slate-500 font-semibold">Date & Time:</span>
-                    <span className="font-medium text-slate-700 text-[11px]">{submittedReceipt.dateTime}</span>
+                    <span className="slip-text-muted font-bold">Date & Time:</span>
+                    <span className="font-bold slip-text-dark text-[11px]">{submittedReceipt.dateTime}</span>
                   </div>
                 </div>
 
-                <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[11px] text-amber-900 font-medium leading-relaxed">
+                <div className="bg-amber-100 border border-amber-300 rounded-xl p-3 text-[11px] text-amber-950 font-bold leading-relaxed">
                   📌 <strong>Note:</strong> Save your UID for tracking. Our assistance team will process your form and update status shortly.
                 </div>
 
                 <div className="pt-2 flex flex-col sm:flex-row gap-3 no-print">
                   <button 
                     onClick={() => window.print()} 
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 neon-red-btn"
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
                   >
                     <Icons.Download /> Download Receipt
                   </button>
                   <button 
                     onClick={() => setSubmittedReceipt(null)} 
-                    className="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-1 neon-red-btn"
+                    className="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-1"
                   >
                     Done ✓
                   </button>
