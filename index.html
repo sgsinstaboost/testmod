@@ -499,7 +499,7 @@
                     <!-- STEP 2: Document Upload -->
                     <div id="step2" class="space-y-4 hidden">
                         <div class="bg-amber-50 border border-amber-200 text-amber-800 text-xs p-3 rounded-lg">
-                            <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Upload Passport Photo, Signature, Aadhaar Card and Supporting Documents.
+                            <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Upload Passport Photo, Signature, Identification Card and Supporting Documents.
                         </div>
 
                         <div class="space-y-3">
@@ -514,7 +514,7 @@
                             </div>
 
                             <div>
-                                <label class="block text-xs font-bold text-slate-700 mb-1">Aadhaar Card / आधार कार्ड (PDF / JPG) *</label>
+                                <label class="block text-xs font-bold text-slate-700 mb-1">Identification Card / पहचान पत्र (PDF / JPG) *</label>
                                 <input type="file" id="docAadhaar" accept=".pdf,.jpg,.jpeg,.png" class="w-full text-xs border border-slate-300 rounded-lg p-1.5" required>
                             </div>
 
@@ -580,11 +580,8 @@
                                 <p class="text-[11px] font-semibold text-emerald-800">Scan QR or Click App to Pay directly via UPI</p>
                                 
                                 <div class="bg-white p-2 rounded-lg inline-block border border-slate-200 shadow-sm">
-                                    <div class="w-32 h-32 bg-slate-900 text-white flex flex-col items-center justify-center p-2 mx-auto rounded">
-                                        <i class="fa-solid fa-qrcode text-5xl text-white mb-1"></i>
-                                        <span class="text-[8px] tracking-tighter">GANESH DIGITAL UPI</span>
-                                    </div>
-                                    <p class="text-[10px] font-bold text-slate-700 mt-1">UPI ID: 8252880028@upi</p>
+                                    <img id="paymentQrImage" src="https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3D8252880028%2540jio%26pn%3DGanesh%2520Digital%2520world%26am%3D60%26cu%3DINR&size=200&format=png" alt="Payment QR" class="w-32 h-32 mx-auto rounded object-contain border border-slate-100" />
+                                    <p class="text-[10px] font-bold text-slate-700 mt-1">UPI ID: 8252880028@jio</p>
                                 </div>
 
                                 <div class="flex justify-center gap-2 pt-1">
