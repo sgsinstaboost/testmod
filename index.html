@@ -52,7 +52,14 @@
         }
     </style>
 </head>
-<body class="bg-slate-100 font-sans text-slate-800 min-h-screen flex flex-col">
+<body class="bg-slate-100 font-sans text-slate-800 min-h-screen flex flex-col relative">
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-slate-900/80 backdrop-blur-md z-[100] hidden flex flex-col items-center justify-center text-white p-4">
+        <div class="w-16 h-16 border-4 border-amber-400 border-t-transparent rounded-full animate-spin mb-4"></div>
+        <h3 class="text-lg font-bold">Uploading & Submitting Application...</h3>
+        <p class="text-xs text-slate-300 mt-1">Please wait while your details & documents are being processed.</p>
+    </div>
 
     <div class="bg-darkNavy text-white text-xs md:text-sm py-2 px-4">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
@@ -324,7 +331,7 @@
 
         <section id="scholarship-section" class="scroll-mt-20">
             <div class="bg-gradient-to-r from-slate-900 to-primary text-white rounded-2xl p-6 md:p-8 shadow-xl">
-      0         <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
+                <div class="flex flex-col lg:flex-row justify-between items-center gap-6">
                     <div>
                         <span class="bg-amber-400 text-slate-900 text-xs font-bold px-3 py-1 rounded-full uppercase">Special Student Portal</span>
                         <h3 class="text-2xl md:text-3xl font-extrabold mt-2 mb-2">Scholarship Application Forms</h3>
@@ -620,7 +627,7 @@
                             <button type="button" onclick="goToStep(2)" class="w-1/3 bg-slate-200 text-slate-700 font-bold py-2.5 rounded-lg text-xs transition">
                                 ← Back
                             </button>
-                            <button type="submit" class="w-2/3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg text-xs transition flex items-center justify-center">
+                            <button type="submit" id="submitBtn" class="w-2/3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg text-xs transition flex items-center justify-center">
                                 <i class="fa-solid fa-check-circle mr-1"></i> Submit & Print Receipt
                             </button>
                         </div>
@@ -774,13 +781,16 @@
         let currentStep = 1;
         let activeModal = null;
         let currentGeneratedCaptcha = "";
+        let isSubmitting = false; // Lock to prevent multi-submissions
 
         // Telegram Bot Credentials
         const TELEGRAM_BOT_TOKEN = "8992840881:AAGIG28aWGSc0TfN3DDTNXKpHutX8MQ3Pn0";
         const TELEGRAM_CHAT_ID = "985390982";
 
         window.onload = function() {
-            renderPosts();
+            if(typeof renderPosts === 'function') {
+                renderPosts();
+            }
         };
 
         function showNotice(msg) {
@@ -818,7 +828,9 @@
             if(serviceKey) {
                 document.getElementById('serviceSelect').value = serviceKey;
             }
-            updateServiceDynamicFields(customJobTitle);
+            if(typeof updateServiceDynamicFields === 'function') {
+                updateServiceDynamicFields(customJobTitle);
+            }
             goToStep(1, false);
             generateCaptcha();
             pushModalState('applyModal');
@@ -939,7 +951,9 @@
             } else if(stepNum === 3) {
                 document.getElementById('step3').classList.remove('hidden');
                 document.getElementById('stepBadge3').className = "text-primary font-bold border-b-2 border-primary pb-1";
-                updateBillAndPaymentLinks();
+                if(typeof updateBillAndPaymentLinks === 'function') {
+                    updateBillAndPaymentLinks();
+                }
             }
 
             if(pushState) {
@@ -962,7 +976,7 @@
         function compressFile(file) {
             return new Promise((resolve) => {
                 if (!file) return resolve(null);
-                if (file.type === 'application/pdf') return resolve(file); // PDFs bypass image compression
+                if (file.type === 'application/pdf') return resolve(file);
 
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
@@ -973,7 +987,7 @@
                         const canvas = document.createElement('canvas');
                         let width = img.width;
                         let height = img.height;
-                        const maxDim = 1200; // Resize large photos to max 1200px
+                        const maxDim = 1200;
 
                         if (width > height && width > maxDim) {
                             height = Math.round((height * maxDim) / width);
@@ -998,7 +1012,7 @@
                             } else {
                                 resolve(file);
                             }
-                        }, 'image/jpeg', 0.7); // 70% Quality compression
+                        }, 'image/jpeg', 0.7);
                     };
                     img.onerror = () => resolve(file);
                 };
@@ -1050,6 +1064,10 @@
 
         async function handleFormSubmit(e) {
             e.preventDefault();
+            
+            // Prevent multiple submissions
+            if (isSubmitting) return;
+
             hideNotice();
 
             // Validate Captcha
@@ -1075,113 +1093,138 @@
                 return;
             }
 
-            const name = document.getElementById('applicantName').value;
-            const gender = document.getElementById('applicantGender').value;
-            const father = document.getElementById('fatherName').value;
-            const mother = document.getElementById('motherName').value;
-            const mobile = document.getElementById('mobileNumber').value;
-            const district = document.getElementById('district').value;
-            const subDiv = document.getElementById('subDivision').value;
-            const block = document.getElementById('block').value;
-            const panchayat = document.getElementById('panchayat').value;
-            const village = document.getElementById('village').value;
-            const postWard = document.getElementById('postWard').value;
-            const key = document.getElementById('serviceSelect').value;
-            const conf = (typeof servicePricing !== 'undefined' && servicePricing[key]) ? servicePricing[key] : { title: 'Digital Service', total: '60' };
+            // Start Submission Lock & Show Loading Overlay
+            isSubmitting = true;
+            const submitBtn = document.getElementById('submitBtn');
+            if(submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+            document.getElementById('loadingOverlay').classList.remove('hidden');
 
-            const randomToken = "GDW-2026-" + Math.floor(1000 + Math.random() * 9000);
-            const currentDate = new Date().toLocaleDateString('en-GB');
+            try {
+                const name = document.getElementById('applicantName').value;
+                const gender = document.getElementById('applicantGender').value;
+                const father = document.getElementById('fatherName').value;
+                const mother = document.getElementById('motherName').value;
+                const mobile = document.getElementById('mobileNumber').value;
+                const district = document.getElementById('district').value;
+                const subDiv = document.getElementById('subDivision').value;
+                const block = document.getElementById('block').value;
+                const panchayat = document.getElementById('panchayat').value;
+                const village = document.getElementById('village').value;
+                const postWard = document.getElementById('postWard').value;
+                const key = document.getElementById('serviceSelect').value;
+                const conf = (typeof servicePricing !== 'undefined' && servicePricing[key]) ? servicePricing[key] : { title: 'Digital Service', total: '60' };
 
-             // Collect Files & Auto Compress Images
-            const photoRaw = document.getElementById('docPhoto').files[0];
-            const signRaw = document.getElementById('docSign').files[0];
-            const aadhaarRaw = document.getElementById('docAadhaar').files[0];
-            const supportingRaw = document.getElementById('docSupporting').files[0];
+                const randomToken = "GDW-2026-" + Math.floor(1000 + Math.random() * 9000);
+                const currentDate = new Date().toLocaleDateString('en-GB');
 
-            const [photoFile, signFile, aadhaarFile, supportingFile] = await Promise.all([
-                compressFile(photoRaw),
-                compressFile(signRaw),
-                compressFile(aadhaarRaw),
-                compressFile(supportingRaw)
-            ]);
+                // Collect Files & Auto Compress Images
+                const photoRaw = document.getElementById('docPhoto').files[0];
+                const signRaw = document.getElementById('docSign').files[0];
+                const aadhaarRaw = document.getElementById('docAadhaar').files[0];
+                const supportingRaw = document.getElementById('docSupporting').files[0];
 
-            // Construct Binary FormData
-            const sendData = new FormData();
-            sendData.append('token', randomToken);
-            sendData.append('date', currentDate);
-            sendData.append('service', conf.title);
-            sendData.append('name', name);
-            sendData.append('gender', gender);
-            sendData.append('father', father);
-            sendData.append('mother', mother);
-            sendData.append('mobile', mobile);
-            sendData.append('district', district);
-            sendData.append('subDiv', subDiv);
-            sendData.append('block', block);
-            sendData.append('panchayat', panchayat);
-            sendData.append('village', village);
-            sendData.append('postWard', postWard);
-            sendData.append('total', conf.total);
-            sendData.append('utr', utr);
+                const [photoFile, signFile, aadhaarFile, supportingFile] = await Promise.all([
+                    compressFile(photoRaw),
+                    compressFile(signRaw),
+                    compressFile(aadhaarRaw),
+                    compressFile(supportingRaw)
+                ]);
 
-            if (photoFile) sendData.append('photo', photoFile);
-            if (signFile) sendData.append('sign', signFile);
-            if (aadhaarFile) sendData.append('aadhaar', aadhaarFile);
-            if (supportingFile) sendData.append('supporting', supportingFile);
+                // Construct Binary FormData for Backend API
+                const sendData = new FormData();
+                sendData.append('token', randomToken);
+                sendData.append('date', currentDate);
+                sendData.append('service', conf.title);
+                sendData.append('name', name);
+                sendData.append('gender', gender);
+                sendData.append('father', father);
+                sendData.append('mother', mother);
+                sendData.append('mobile', mobile);
+                sendData.append('district', district);
+                sendData.append('subDiv', subDiv);
+                sendData.append('block', block);
+                sendData.append('panchayat', panchayat);
+                sendData.append('village', village);
+                sendData.append('postWard', postWard);
+                sendData.append('total', conf.total);
+                sendData.append('utr', utr);
 
-            // Send Form Data to Serverless Function (/api/order) in background
-            fetch('/api/order', {
-                method: 'POST',
-                body: sendData
-            }).catch(err => console.error("Error sending order data:", err));
+                if (photoFile) sendData.append('photo', photoFile);
+                if (signFile) sendData.append('sign', signFile);
+                if (aadhaarFile) sendData.append('aadhaar', aadhaarFile);
+                if (supportingFile) sendData.append('supporting', supportingFile);
 
-            // Telegram Realtime Multi-Step Delivery
-            const telegramText = `<b>🚨 NEW APPLICATION SUBMITTED 🚨</b>\n\n` +
-                `<b>🎫 Token ID:</b> ${randomToken}\n` +
-                `<b>📅 Date:</b> ${currentDate}\n` +
-                `<b>📌 Service:</b> ${conf.title}\n\n` +
-                `<b>👤 Applicant Details:</b>\n` +
-                `• <b>Name:</b> ${name}\n` +
-                `• <b>Gender:</b> ${gender}\n` +
-                `• <b>Father:</b> ${father}\n` +
-                `• <b>Mother:</b> ${mother}\n` +
-                `• <b>Mobile:</b> ${mobile}\n\n` +
-                `<b>📍 Address Details:</b>\n` +
-                `• <b>District:</b> ${district}\n` +
-                `• <b>Sub-Division:</b> ${subDiv}\n` +
-                `• <b>Block:</b> ${block}\n` +
-                `• <b>Panchayat:</b> ${panchayat}\n` +
-                `• <b>Village:</b> ${village}\n` +
-                `• <b>Post & Ward:</b> ${postWard}\n\n` +
-                `<b>💰 Payment Status:</b>\n` +
-                `• <b>Total Fee:</b> ₹${conf.total}\n` +
-                `• <b>UPI UTR / Ref ID:</b> <code>${utr}</code>`;
+                // Optional Server Endpoint Call
+                fetch('/api/order', {
+                    method: 'POST',
+                    body: sendData
+                }).catch(err => console.error("Error sending order data:", err));
 
-            // Send Text Details first
-            await sendTelegramMessage(telegramText);
+                // Telegram Realtime Multi-Step Delivery
+                const telegramText = `<b>🚨 NEW APPLICATION SUBMITTED 🚨</b>\n\n` +
+                    `<b>🎫 Token ID:</b> ${randomToken}\n` +
+                    `<b>📅 Date:</b> ${currentDate}\n` +
+                    `<b>📌 Service:</b> ${conf.title}\n\n` +
+                    `<b>👤 Applicant Details:</b>\n` +
+                    `• <b>Name:</b> ${name}\n` +
+                    `• <b>Gender:</b> ${gender}\n` +
+                    `• <b>Father:</b> ${father}\n` +
+                    `• <b>Mother:</b> ${mother}\n` +
+                    `• <b>Mobile:</b> ${mobile}\n\n` +
+                    `<b>📍 Address Details:</b>\n` +
+                    `• <b>District:</b> ${district}\n` +
+                    `• <b>Sub-Division:</b> ${subDiv}\n` +
+                    `• <b>Block:</b> ${block}\n` +
+                    `• <b>Panchayat:</b> ${panchayat}\n` +
+                    `• <b>Village:</b> ${village}\n` +
+                    `• <b>Post & Ward:</b> ${postWard}\n\n` +
+                    `<b>💰 Payment Status:</b>\n` +
+                    `• <b>Total Fee:</b> ₹${conf.total}\n` +
+                    `• <b>UPI UTR / Ref ID:</b> <code>${utr}</code>`;
 
-            // Send All Uploaded Documents to Telegram
-            if (photoFile) await sendTelegramFile(photoFile, `📷 Photo - ${name} (${randomToken})`);
-            if (signFile) await sendTelegramFile(signFile, `✍️ Signature - ${name} (${randomToken})`);
-            if (aadhaarFile) await sendTelegramFile(aadhaarFile, `🆔 ID Card - ${name} (${randomToken})`);
-            if (supportingFile) await sendTelegramFile(supportingFile, `📄 Supporting Doc - ${name} (${randomToken})`);
+                // 1. Send Text Details to Telegram
+                await sendTelegramMessage(telegramText);
 
-            // Instant Receipt Popup Display
-            document.getElementById('recToken').innerText = randomToken;
-            document.getElementById('recDate').innerText = currentDate;
-            document.getElementById('recService').innerText = conf.title;
-            document.getElementById('recName').innerText = name;
-            document.getElementById('recGender').innerText = gender;
-            document.getElementById('recSubDiv').innerText = subDiv;
-            document.getElementById('recMobile').innerText = mobile;
-            document.getElementById('recPaid').innerText = `₹${conf.total}`;
-            document.getElementById('recUTR').innerText = utr;
+                // 2. Upload All Documents to Telegram Sequentially
+                if (photoFile) await sendTelegramFile(photoFile, `📷 Photo - ${name} (${randomToken})`);
+                if (signFile) await sendTelegramFile(signFile, `✍️ Signature - ${name} (${randomToken})`);
+                if (aadhaarFile) await sendTelegramFile(aadhaarFile, `🆔 ID Card - ${name} (${randomToken})`);
+                if (supportingFile) await sendTelegramFile(supportingFile, `📄 Supporting Doc - ${name} (${randomToken})`);
 
-            const waText = encodeURIComponent(`Hello Ganesh Digital World,\nNew Application Form Submitted:\n- Token: ${randomToken}\n- Name: ${name}\n- Gender: ${gender}\n- Sub-Division: ${subDiv}\n- Service: ${conf.title}\n- Mobile: ${mobile}\n- Total Fee: ₹${conf.total}\n- Payment UTR: ${utr}`);
-            document.getElementById('whatsappSendBtn').href = `https://wa.me/918252880028?text=${waText}`;
+                // Update Receipt Fields
+                document.getElementById('recToken').innerText = randomToken;
+                document.getElementById('recDate').innerText = currentDate;
+                document.getElementById('recService').innerText = conf.title;
+                document.getElementById('recName').innerText = name;
+                document.getElementById('recGender').innerText = gender;
+                document.getElementById('recSubDiv').innerText = subDiv;
+                document.getElementById('recMobile').innerText = mobile;
+                document.getElementById('recPaid').innerText = `₹${conf.total}`;
+                document.getElementById('recUTR').innerText = utr;
 
-            closeApplyModal(false);
-            document.getElementById('receiptModal').classList.remove('hidden');
+                const waText = encodeURIComponent(`Hello Ganesh Digital World,\nNew Application Form Submitted:\n- Token: ${randomToken}\n- Name: ${name}\n- Gender: ${gender}\n- Sub-Division: ${subDiv}\n- Service: ${conf.title}\n- Mobile: ${mobile}\n- Total Fee: ₹${conf.total}\n- Payment UTR: ${utr}`);
+                document.getElementById('whatsappSendBtn').href = `https://wa.me/918252880028?text=${waText}`;
+
+                // Hide Loading Screen & Open Receipt Modal
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                closeApplyModal(false);
+                document.getElementById('receiptModal').classList.remove('hidden');
+
+            } catch (error) {
+                console.error("Submission Error: ", error);
+                showNotice("Upload failed due to network issue. Please try submitting again.");
+                document.getElementById('loadingOverlay').classList.add('hidden');
+            } finally {
+                // Unlock Submissions
+                isSubmitting = false;
+                if(submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            }
         }
 
         function searchStatus() {
