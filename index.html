@@ -478,6 +478,7 @@
       const [toastMsg, setToastMsg] = useState('');
       const [isSubmitting, setIsSubmitting] = useState(false);
       const [isCashfreeLoading, setIsCashfreeLoading] = useState(false);
+      const [isManualPaymentUnlocked, setIsManualPaymentUnlocked] = useState(false);
       const [submittedReceipt, setSubmittedReceipt] = useState(null);
 
       // Post Selection Confirmation Warning Modal State
@@ -560,10 +561,12 @@
           const matchedSrv = services.find(s => String(s.id) === String(srvId));
           if (matchedSrv) {
             setActiveService(matchedSrv);
+            setIsManualPaymentUnlocked(false);
             return;
           }
         } else {
           setActiveService(null);
+          setIsManualPaymentUnlocked(false);
         }
 
         if (catName) {
@@ -588,6 +591,7 @@
           const newUrl = `${window.location.pathname}?service=${encodeURIComponent(pendingService.id)}`;
           window.history.pushState({ service: pendingService.id }, '', newUrl);
           setActiveService(pendingService);
+          setIsManualPaymentUnlocked(false);
           setPendingService(null);
         }
       };
@@ -596,6 +600,7 @@
         if (catName !== selectedCat) {
           setSelectedCat(catName);
           setActiveService(null);
+          setIsManualPaymentUnlocked(false);
           const newUrl = catName === 'All Services' 
             ? window.location.pathname 
             : `${window.location.pathname}?category=${encodeURIComponent(catName)}`;
@@ -606,6 +611,7 @@
       const handleNavigateHome = () => {
         setSelectedCat('All Services');
         setActiveService(null);
+        setIsManualPaymentUnlocked(false);
         setSubmittedReceipt(null);
         setShowDrawer(false);
         window.history.pushState({}, '', window.location.pathname);
@@ -690,7 +696,7 @@
           textDetails += `⚡ *Cashfree Payment ID / Order:* \`${customPaymentInfo.orderId || 'Verified'}\`\n`;
           textDetails += `💰 *Amount Paid:* ₹${customPaymentInfo.amount}\n`;
         } else {
-          textDetails += `\n💳 *Payment Screenshot:* Attached Below\n`;
+          textDetails += `\n💳 *Payment Screenshot / Mode:* Manual UPI Verified by User\n`;
         }
         textDetails += `📅 *Date:* ${dateStr}`;
 
@@ -748,6 +754,7 @@
 
         showNotification(`Application Submitted! UID: ${submissionId}`);
         form.reset();
+        setIsManualPaymentUnlocked(false);
         document.querySelectorAll('.img-preview').forEach(img => img.style.display = 'none');
         document.querySelectorAll('.pdf-preview').forEach(pdf => pdf.style.display = 'none');
         
@@ -759,6 +766,10 @@
       // Form Submit for manual QR/Screenshot flow
       const handleFormSubmit = async (e) => {
         e.preventDefault();
+        if (!isManualPaymentUnlocked) {
+          showNotification("Please complete online payment or confirm QR payment to submit!");
+          return;
+        }
         setIsSubmitting(true);
         try {
           await processApplicationSubmission(e.target);
@@ -775,7 +786,7 @@
         const form = document.getElementById("sgs-main-form");
         if (!form) return;
 
-        // Check HTML5 validity
+        // Check HTML5 validity for required user inputs before opening payment
         const requiredInputs = form.querySelectorAll("input[required]:not([name='main_payment_screenshot'])");
         let isValid = true;
         for (let inp of requiredInputs) {
@@ -810,7 +821,7 @@
           const orderRes = await res.json();
 
           if (!orderRes || !orderRes.payment_session_id) {
-            throw new Error(orderRes.message || "Could not generate payment session");
+            throw new Error(orderRes.message || orderRes.error || "Could not generate payment session");
           }
 
           if (cashfree) {
@@ -819,13 +830,14 @@
               redirectTarget: "_modal"
             }).then(async (result) => {
               if (result.paymentDetails) {
-                showNotification("Payment verified! Submitting application...");
+                showNotification("Payment verified! Auto-submitting application...");
+                setIsSubmitting(true);
                 await processApplicationSubmission(form, {
                   orderId: orderRes.order_id,
                   amount: payAmount
                 });
               } else {
-                showNotification("Payment was not completed. Please try again.");
+                showNotification("Payment incomplete or cancelled. Form was not submitted.");
               }
             });
           } else {
@@ -1784,29 +1796,29 @@
                               <div className="bg-orange-50/80 border border-orange-200 p-4 rounded-xl text-center my-4 space-y-3">
                                 
                                 {/* INSTANT ONLINE PAYMENT VIA CASHFREE GATEWAY */}
-                                <div className="p-3 bg-white rounded-xl border-2 border-emerald-500 shadow-sm space-y-2">
-                                  <div className="flex items-center justify-center gap-1.5 text-emerald-800 font-extrabold text-xs">
+                                <div className="p-4 bg-white rounded-xl border-2 border-emerald-500 shadow-md space-y-2.5">
+                                  <div className="flex items-center justify-center gap-1.5 text-emerald-800 font-extrabold text-xs sm:text-sm">
                                     <Icons.CreditCard />
-                                    <span>Instant Online Payment Gateway (Fastest)</span>
+                                    <span>Method 1: Pay Online & Auto Submit Form</span>
                                   </div>
+                                  <p className="text-[11px] text-slate-600 font-medium">Click below to pay. Jaise hi payment complete hogi, form auto-submit ho jayega aur receipt mil jayegi.</p>
                                   <button
                                     type="button"
                                     onClick={handleCashfreeOnlinePayment}
-                                    disabled={isCashfreeLoading}
-                                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm py-3 px-4 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
+                                    disabled={isCashfreeLoading || isSubmitting}
+                                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm py-3.5 px-4 rounded-xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
                                   >
-                                    <span>{isCashfreeLoading ? "Connecting Payment Gateway..." : `⚡ Pay ₹${upi.am || '50'} via Cashfree (Cards / UPI / NetBanking)`}</span>
+                                    <span>{isCashfreeLoading ? "Opening Gateway..." : `⚡ Pay ₹${upi.am || '50'} via Cashfree (UPI/Cards/NetBanking)`}</span>
                                   </button>
-                                  <p className="text-[10px] text-slate-500 font-medium">Automatic instant receipt generation after successful payment.</p>
                                 </div>
 
-                                <div className="flex items-center my-2">
+                                <div className="flex items-center my-3">
                                   <div className="flex-1 border-t border-slate-300"></div>
-                                  <span className="px-3 text-[11px] font-bold text-slate-500 uppercase">OR Scan QR Code</span>
+                                  <span className="px-3 text-[11px] font-bold text-slate-500 uppercase">OR Method 2: Scan QR & Submit Manually</span>
                                   <div className="flex-1 border-t border-slate-300"></div>
                                 </div>
 
-                                <p className="text-xs font-extrabold text-orange-950">Scan QR or Click Below to Pay {upi.am ? `₹${upi.am}` : ''}</p>
+                                <p className="text-xs font-extrabold text-orange-950">Scan QR Code to Pay {upi.am ? `₹${upi.am}` : ''}</p>
                                 
                                 <img src={activeService.qrImageUrl} alt="Payment QR Code" className="max-w-[180px] mx-auto rounded-lg border-2 border-orange-500 shadow-sm" />
 
@@ -1839,31 +1851,67 @@
                                     <span>Pay via Other App</span>
                                   </a>
                                 </div>
+
+                                {/* UNLOCK MANUAL SUBMIT CHECKBOX FOR QR FLOW */}
+                                <div className="mt-3 pt-3 border-t border-orange-200 text-left bg-white p-3 rounded-xl">
+                                  <label className="flex items-center gap-2 text-xs font-bold text-slate-800 cursor-pointer">
+                                    <input 
+                                      type="checkbox" 
+                                      checked={isManualPaymentUnlocked} 
+                                      onChange={(e) => setIsManualPaymentUnlocked(e.target.checked)}
+                                      className="w-4 h-4 text-orange-600 rounded focus:ring-orange-500" 
+                                    />
+                                    <span>I have scanned QR & completed payment manually</span>
+                                  </label>
+                                  {isManualPaymentUnlocked && (
+                                    <p className="text-[10px] text-emerald-700 font-bold mt-1">✓ Manual Submit button is now unlocked below.</p>
+                                  )}
+                                </div>
                               </div>
                             );
                           })()}
 
-                          {/* PAYMENT SCREENSHOT UPLOAD */}
-                          <div className="space-y-1">
-                            <label className="block text-xs font-extrabold text-rose-600">Upload Payment Screenshot (Required for QR/Manual UPI):</label>
-                            <input 
-                              type="file" 
-                              name="main_payment_screenshot" 
-                              accept="image/*" 
-                              onChange={(e) => handleFilePreview(e, 'prev_img_main_payment', 'prev_pdf_main_payment')}
-                              className="w-full bg-slate-50 border border-rose-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-rose-600" 
-                            />
-                            <img id="prev_img_main_payment" className="img-preview" alt="Payment Screenshot Preview" />
-                            <div id="prev_pdf_main_payment" className="pdf-preview"></div>
-                          </div>
+                          {/* OPTIONAL PAYMENT SCREENSHOT UPLOAD */}
+                          {isManualPaymentUnlocked && (
+                            <div className="space-y-1 bg-orange-50/60 p-3 rounded-xl border border-orange-200">
+                              <label className="block text-xs font-bold text-slate-800">Upload Payment Screenshot (Optional for manual QR):</label>
+                              <input 
+                                type="file" 
+                                name="main_payment_screenshot" 
+                                accept="image/*" 
+                                onChange={(e) => handleFilePreview(e, 'prev_img_main_payment', 'prev_pdf_main_payment')}
+                                className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-orange-500" 
+                              />
+                              <img id="prev_img_main_payment" className="img-preview" alt="Payment Screenshot Preview" />
+                              <div id="prev_pdf_main_payment" className="pdf-preview"></div>
+                            </div>
+                          )}
 
-                          <button 
-                            type="submit" 
-                            disabled={isSubmitting}
-                            className="w-full tiranga-btn-primary font-extrabold text-sm py-3.5 rounded-xl shadow-lg transition-all active:scale-95 disabled:bg-slate-400 mt-2"
-                          >
-                            {isSubmitting ? "Uploading & Submitting..." : "Submit Application with Screenshot Proof →"}
-                          </button>
+                          {/* LOCKED SUBMIT BUTTON (ENABLES ONLY AFTER MANUAL CHECKBOX OR PAYMENT) */}
+                          <div className="pt-2">
+                            <button 
+                              type="submit" 
+                              disabled={isSubmitting || !isManualPaymentUnlocked}
+                              className={`w-full font-extrabold text-sm py-3.5 rounded-xl shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 ${
+                                isManualPaymentUnlocked 
+                                  ? 'tiranga-btn-primary cursor-pointer' 
+                                  : 'bg-slate-300 text-slate-500 cursor-not-allowed border border-slate-400'
+                              }`}
+                            >
+                              <span>
+                                {isSubmitting 
+                                  ? "Submitting Application..." 
+                                  : isManualPaymentUnlocked 
+                                    ? "Submit Application (Manual QR Paid) →" 
+                                    : "🔒 Submit Button Locked (Pay Online Above to Submit)"}
+                              </span>
+                            </button>
+                            {!isManualPaymentUnlocked && (
+                              <p className="text-[10px] text-center text-slate-500 font-medium mt-1.5">
+                                💡 Form submit karne ke liye upar <strong>Pay via Cashfree</strong> button use karein ya QR scan karke checkbox tick karein.
+                              </p>
+                            )}
+                          </div>
                         </form>
                       </>
                     )}
