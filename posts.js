@@ -1,13 +1,21 @@
 const STATIC_CATEGORIES = [
   { name: 'All Services', color: 'blue' },
-  { name: 'STD College', color: 'purpal' },
+  { name: 'STD College', color: 'purple' },
   { name: 'Internship', color: 'indigo' },
   { name: 'Certificates (Jati/Aaya/Niwas)', color: 'emerald' },
   { name: 'College Admission', color: 'purple' },
   { name: 'Scholarship', color: 'amber' },
-  { name: 'Government Forms', color: 'rose' }
+  { name: 'Government Forms', color: 'rose' },
+  { name: 'Admit Card', color: 'rose' }
+ 
+ 
 ];
-    
+
+
+
+const STATIC_IMP_NOTICE = "🚨 IMP NOTICE: VKSU College Admission & RTPS Certificate Form Filling Active! Apply Now for Fast Processing.";
+
+
 const STATIC_NOTICES = [
   { id: 1, text: "Bihar RTPS Income / Caste Certificate online forms are active." },
   { id: 2, text: "College Admission Forms & Post Matric Scholarship portal open." }
@@ -19,7 +27,17 @@ const ALL_POSTS = [
   title: "Internship Application Online Form",
   category: "Internship",
   description: "Internship ke liye apni personal, academic aur payment details bharein.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D230%26cu%3DINR&size=200&format=png",
+  tags: [
+      "Internship Application Online Form",
+      "Online Internship Form Bihar",
+      "Arrah Internship Apply",
+      "VKSU Internship Form",
+      "SGS Online Service Internship",
+      "sgs store internship form"
+    ],
+  
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D230%26cu%3DINR&size=200&format=png",
+  
   fields: [
     { id: "field_full_name", name: "full_name", label: "Full Name", type: "text", required: true },
     {
@@ -146,7 +164,17 @@ const ALL_POSTS = [
   title: "Bihar RTPS Caste Certificate (जाति प्रमाण पत्र)",
   category: "Certificates (Jati/Aaya/Niwas)",
   description: "Caste Certificate apply karne ke liye niche details bharein, documents upload karein aur QR par pay karein.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D30%26cu%3DINR&size=200&format=png",
+  tags: [
+  "Bihar RTPS Caste Certificate",
+  "Jati Praman Patra Online Apply",
+  "Bihar Jati Praman Patra",
+  "RTPS Bihar Online Service",
+  "RTPS Caste Certificate Form",
+  "SGS Online Service RTPS",
+  "sgs store jati praman patra",
+  "Arrah RTPS Jati Form"
+],
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D28%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
@@ -229,7 +257,17 @@ const ALL_POSTS = [
   title: "Bihar RTPS Income Certificate (आय प्रमाण पत्र)",
   category: "Certificates (Jati/Aaya/Niwas)",
   description: "Income Certificate online form bharein aur required documents upload karein.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D30%26cu%3DINR&size=200&format=png",
+  tags: [
+  "Bihar RTPS Income Certificate",
+  "Aaya Praman Patra Online Apply",
+  "Bihar Income Certificate Online",
+  "RTPS Bihar Income Form",
+  "Aaya Praman Patra Bihar",
+  "SGS Online Service Income Certificate",
+  "sgs store aaya praman patra",
+  "Arrah RTPS Income Form"
+],
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D28%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
@@ -296,12 +334,20 @@ const ALL_POSTS = [
     }
   ]
 },
+
+
+
+
+
+
+
+  
 {
   id: "rtps-residence-04",
   title: "Bihar RTPS Residence Certificate (निवास प्रमाण पत्र)",
   category: "Certificates (Jati/Aaya/Niwas)",
   description: "Niwas Praman Patra ke liye form fill karein.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D30%26cu%3DINR&size=200&format=png",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D28%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
@@ -378,6 +424,16 @@ const ALL_POSTS = [
   title: "VKSU Exam Form All Semester",
   category: "STD College", 
   description: "Veer Kunwar Singh University exam form fill up service all semesters (Sem 1 to Sem 8).",
+  tags: [
+  "VKSU Exam Form All Semester",
+  "VKSU Exam Form Online",
+  "VKSU Semester Exam Form Fill",
+  "Veer Kunwar Singh University Exam Form",
+  "VKSU BA BSc BCom Exam Form",
+  "SGS Online Service VKSU Exam Form",
+  "sgs store vksu exam form",
+  "Arrah VKSU Exam Form Apply"
+],
   qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D630%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_student_name", name: "student_name", label: "Student Name", type: "text", required: true, placeholder: "Apna name likhein" },
@@ -448,7 +504,7 @@ const ALL_POSTS = [
   title: "Bihar RTPS Combo Service (जाति, आय एवं निवास प्रमाण पत्र एक साथ बनवाएं)",
   category: "Certificates (Jati/Aaya/Niwas)",
   description: "जाति, आय एवं निवास प्रमाण पत्र एक साथ आवेदन करने के लिए नीचे अपनी पूरी डिटेल्स भरें, सभी आवश्यक दस्तावेज़ अपलोड करें और QR कोड स्कैन करके ₹90 का भुगतान करें।",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D90%26cu%3DINR&size=200&format=png",
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D80%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
@@ -552,11 +608,21 @@ const ALL_POSTS = [
 
   
 {
-  id: "vksu-admission-sem5-2024-2028-07",
-  title: "VKSU Online Admission Form (Semester 5th)",
+  id: "vksu-admission-sem5-All-session-07",
+  title: "VKSU Online Admission Form (Semester 1st, 2nd, 3rd, 4th, 5th, 6th, 7th, 8th)",
   category: "College Admission",
   description: "Veer Kunwar Singh University, Session 2024-2028 Semester 5th Online Admission Form fill up service.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D30%26cu%3DINR&size=200&format=png",
+  tags: [
+    "VKSU Online Admission Form",
+    "VKSU Admission Form All Semester",
+    "VKSU BA BSc BCom Admission Online",
+    "Veer Kunwar Singh University Admission",
+    "VKSU Semester Admission Form Apply",
+    "SGS Online Service VKSU Admission",
+    "sgs store vksu admission form",
+    "Arrah VKSU Admission Form Online"
+  ],
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D30%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_student_name", name: "student_name", label: "Student Name", type: "text", required: true, placeholder: "Apna name likhein" },
     {
@@ -588,7 +654,7 @@ const ALL_POSTS = [
       type: "radio",
       required: true,
       options: [
-        { id: "opt_session_2024_2028", label: "2024_2028" }
+        { id: "opt_session_2024_2028", label: "2024-2028", value: "2024_2028" }
       ]
     },
     { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number", type: "tel", required: true, placeholder: "10-digit mobile number likhein" },
@@ -619,7 +685,6 @@ const ALL_POSTS = [
 
 
 
-
   
 
 {
@@ -627,7 +692,17 @@ const ALL_POSTS = [
   title: "Bihar Character Certificate (चरित्र प्रमाण पत्र)",
   category: "Government Forms",
   description: "Character Certificate online apply karne ke liye niche details bharein, documents upload karein aur QR par pay karein.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D40%26cu%3DINR&size=200&format=png",
+  tags: [
+  "Bihar Character Certificate",
+  "Charitra Praman Patra Online Apply",
+  "Bihar Charitra Praman Patra",
+  "RTPS Bihar Character Certificate",
+  "Police Verification Certificate Bihar",
+  "SGS Online Service Character Certificate",
+  "sgs store charitra praman patra",
+  "Arrah Character Certificate Form"
+],
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D40%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_father_name", name: "father_name", label: "Father Name / पिता का नाम", type: "text", required: true, placeholder: "Father name likhein" },
@@ -680,7 +755,17 @@ const ALL_POSTS = [
   title: "Intership 120 Hour Complete",
   category: "Internship",
   description: "Internship 120 Hour Complete hone par apne details bharein aur form submit karein.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D100%26cu%3DINR&size=200&format=png",
+    tags: [
+  "Intership 120 Hour Complete",
+  "120 Hours Internship Certificate",
+  "VKSU Internship 120 Hours",
+  "College Internship 120 Hours Form",
+  "Bihar Internship 120 Hours Apply",
+  "SGS Online Service Internship",
+  "sgs store 120 hours internship",
+  "Arrah Internship 120 Hours Form"
+],
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D100%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number / मोबाइल नंबर", type: "tel", required: true, placeholder: "10-digit mobile number" },
@@ -720,7 +805,17 @@ const ALL_POSTS = [
   title: "New PAN Card / Correction Online Form",
   category: "Government Forms",
   description: "New PAN Card apply karne ya correction ke liye niche apne details bharein.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D200%26cu%3DINR&size=200&format=png",
+  tags: [
+  "New PAN Card / Correction Online Form",
+  "New PAN Card Apply Online",
+  "PAN Card Correction Form Bihar",
+  "Online PAN Card Correction",
+  "NSDL NSDL PAN Card Apply",
+  "SGS Online Service PAN Card",
+  "sgs store pan card apply",
+  "Arrah PAN Card Correction Online"
+],
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D200%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_full_name", name: "full_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_father_name", name: "father_name", label: "Father Name / पिता का नाम", type: "text", required: true, placeholder: "Father name likhein" },
@@ -766,7 +861,17 @@ const ALL_POSTS = [
   title: "PMS scholarship 2026-2027",
   category: "Scholarship",
   description: "Post Matric Scholarship 2026-2027 online application form fill up service.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Dsgsonlineservice%2540postbank%26pn%3DGanesh%2520Digital%2520world%26am%3D200%26cu%3DINR&size=200&format=png",
+  tags: [
+  "PMS scholarship 2026-2027",
+  "Post Matric Scholarship Bihar 2026",
+  "Bihar PMS Scholarship Apply Online",
+  "PMS Online Form 2026",
+  "Post Matric Scholarship Portal",
+  "SGS Online Service PMS Scholarship",
+  "sgs store pms scholarship",
+  "Arrah Post Matric Scholarship Form"
+],
+  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D200%26cu%3DINR&size=200&format=png",
   fields: [
     { id: "field_student_name", name: "student_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
     { id: "field_father_name", name: "father_name", label: "Father Name / पिता का नाम", type: "text", required: true, placeholder: "Father name likhein" },
@@ -919,303 +1024,10 @@ const ALL_POSTS = [
       required: true }
     
     ]
-  },
-
-  
+  }
 
 
-{
-  id: "ssb-constable-tradesman-admit-card-2026",
-  title: "SSB Constable Tradesman PET / PST Admit Card 2026",
-  category: "Government Forms",
-  description: "Sashastra Seema Bal (SSB) Constable Tradesman 827 Posts PET / PST Admit Card download link and details.",
-  tags: [
-    "SSB Constable Tradesman",
-    "SSB PET PST Admit Card",
-    "SSB Admit Card 2026",
-    "Government Forms",
-    "SGS Online Service SSB",
-    "SSB Tradesman Recruitment"
-  ],
-  htmlContent: `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSB Constable Tradesman PET / PST Admit Card 2026</title>
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            line-height: 1.6;
-            color: #000;
-            max-width: 1000px;
-            margin: 20px auto;
-            padding: 0 10px;
-        }
-        h1 {
-            color: #008000;
-            text-align: center;
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
-        .subtitle {
-            text-align: center;
-            font-weight: bold;
-            color: #0000ff;
-            font-size: 18px;
-            margin-bottom: 15px;
-        }
-        .description {
-            margin-bottom: 20px;
-            text-align: justify;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        table, th, td {
-            border: 1px solid #000;
-        }
-        th, td {
-            padding: 8px 12px;
-            vertical-align: top;
-        }
-        .header-maroon {
-            background-color: #600020;
-            color: #ffffff;
-            font-size: 18px;
-            text-align: center;
-            font-weight: bold;
-        }
-        .header-green {
-            background-color: #005a2b;
-            color: #ffffff;
-            font-weight: bold;
-        }
-        .header-orange {
-            background-color: #ff3300;
-            color: #ffffff;
-            text-align: center;
-            font-weight: bold;
-            font-size: 18px;
-        }
-        .header-navy {
-            background-color: #000080;
-            color: #ffffff;
-            text-align: center;
-            font-weight: bold;
-            font-size: 18px;
-        }
-        .highlight-yellow {
-            background-color: #ffff00;
-            font-weight: bold;
-        }
-        .text-red {
-            color: #ff0000;
-            font-weight: bold;
-        }
-        .bg-yellow-section {
-            background-color: #fff2a8;
-        }
-        ul {
-            margin: 0;
-            padding-left: 20px;
-        }
-        ul li {
-            margin-bottom: 6px;
-        }
-        .click-link {
-            color: #0000ff;
-            font-weight: bold;
-            text-decoration: underline;
-        }
-        .text-center {
-            text-align: center;
-        }
-        .font-bold {
-            font-weight: bold;
-        }
-        .total-post-box {
-            font-size: 22px;
-            font-weight: bold;
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
 
-    <h1>SSB Constable Tradesman Examination 2026 : Short Details</h1>
-    <div class="subtitle">SarkariResult.Com.Cm</div>
-
-    <p class="description">
-        <strong>Description:</strong> Sashastra Seema Bal (SSB), has released PET / PST Admit Card on the official website for the recruitment of Constable (Tradesman) Posts. This recruitment is for 827 positions. SSB Application Form has started from 21 March 2026 & the candidates can apply until 04 May 2026 (Extended). Minimum age required is 18 Years & The Maximum Age Is 23 – 27 Years (Post Wise).
-    </p>
-
-    <!-- Important Dates & Fee Table -->
-    <table>
-        <tr>
-            <th class="header-maroon" style="width: 50%;">Important Dates</th>
-            <th class="header-maroon" style="width: 50%;">Application Fee</th>
-        </tr>
-        <tr>
-            <td>
-                <ul>
-                    <li>Online Apply Start Date : <strong>21 March 2026</strong></li>
-                    <li>Online Apply Last Date : <strong>04 May 2026 (Extended)</strong></li>
-                    <li>Last Date For Fee Payment : <strong>04 May 2026</strong></li>
-                    <li>Correction Date : <strong>06 – 08 May 2026</strong></li>
-                    <li class="highlight-yellow">PET / PST Date : 3rd Week Of August 2026</li>
-                    <li>Admit Card : <span class="text-red">08 August 2026 Available Now</span></li>
-                    <li>Exam Date : <strong>Notify Later</strong></li>
-                    <li>Admit Card : <strong>Before Exam</strong></li>
-                    <li>Result Declared Date : <strong>Will Be Updated Here Soon</strong></li>
-                    <li>Candidates Are Advised To Confirm From The <strong>SSB Official Website</strong>.</li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li>For <strong>UR, OBC, EWS : ₹ 100/-</strong></li>
-                    <li>For <strong>SC, ST, All Female : ₹ 00/-</strong></li>
-                    <li><strong>Payment Mode (Online):</strong> You Can Make The Payment Using The Following Methods:
-                        <ul>
-                            <li>Debit Card</li>
-                            <li>Credit Card</li>
-                            <li>Internet Banking</li>
-                            <li>IMPS</li>
-                            <li>Cash Card / Mobile Wallet</li>
-                        </ul>
-                    </li>
-                </ul>
-            </td>
-        </tr>
-    </table>
-
-    <!-- Age Limit & Total Post Header -->
-    <table>
-        <tr>
-            <th class="header-green" style="width: 70%;">SSB Constable Tradesman Notification 2026 : Age Limits As On SSB Rules.</th>
-            <th class="header-orange" style="width: 30%;">Total Post</th>
-        </tr>
-        <tr>
-            <td>
-                <ul>
-                    <li>Minimum Age : <strong>18 Years.</strong></li>
-                    <li>Maximum Age : <strong>23 – 27 Years</strong></li>
-                    <li><strong>SSB Provides Age Relaxation For The Constable (Tradesman) Position As Per Their Regulations.</strong></li>
-                </ul>
-            </td>
-            <td class="total-post-box">
-                <br>
-                827 Posts
-            </td>
-        </tr>
-    </table>
-
-    <!-- Vacancies Table -->
-    <p><strong>Vacancies:-</strong> The details of vacancies are as under :-</p>
-    <table class="text-center">
-        <thead>
-            <tr class="font-bold">
-                <td>Sl. No.</td>
-                <td>Name of Posts</td>
-                <td>UR</td>
-                <td>EWS</td>
-                <td>OBC</td>
-                <td>SC</td>
-                <td>ST</td>
-                <td>Total</td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr><td>1</td><td style="text-align: left;">Constable (Veterinary)</td><td>21</td><td>1</td><td>2</td><td>6</td><td>4</td><td>34</td></tr>
-            <tr><td>2</td><td style="text-align: left;">Constable (Driver) only for male</td><td>244</td><td>45</td><td>145</td><td>81</td><td>38</td><td>553</td></tr>
-            <tr><td>3</td><td style="text-align: left;">Constable (Gardener)</td><td>18</td><td>3</td><td>7</td><td>9</td><td>4</td><td>41</td></tr>
-            <tr><td>4</td><td style="text-align: left;">Constable (Water Carrier)</td><td>5</td><td>0</td><td>0</td><td>0</td><td>0</td><td>5</td></tr>
-            <tr><td>5</td><td style="text-align: left;">Constable (Cobbler)</td><td>15</td><td>1</td><td>1</td><td>6</td><td>2</td><td>25</td></tr>
-            <tr><td>6</td><td style="text-align: left;">Constable (Tailor)</td><td>19</td><td>3</td><td>6</td><td>9</td><td>4</td><td>41</td></tr>
-            <tr><td>7</td><td style="text-align: left;">Constable (Washerman)</td><td>32</td><td>7</td><td>19</td><td>11</td><td>5</td><td>74</td></tr>
-            <tr><td>8</td><td style="text-align: left;">Constable (Barber)</td><td>21</td><td>4</td><td>10</td><td>5</td><td>3</td><td>43</td></tr>
-            <tr><td>9</td><td style="text-align: left;">Constable (Waiter)</td><td>3</td><td>0</td><td>0</td><td>0</td><td>0</td><td>3</td></tr>
-            <tr><td>10</td><td style="text-align: left;">Constable (Carpenter)</td><td>4</td><td>0</td><td>1</td><td>1</td><td>1</td><td>7</td></tr>
-            <tr><td>11</td><td style="text-align: left;">Constable (Nursing Orderly)</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
-            <tr class="font-bold">
-                <td colspan="2">Grand Total</td>
-                <td>383</td>
-                <td>64</td>
-                <td>191</td>
-                <td>128</td>
-                <td>61</td>
-                <td>827</td>
-            </tr>
-        </tbody>
-    </table>
-    <p style="font-size: 13px;">
-        *UR: Un-Reserved, EWS: Economically Weaker Section, SC: Scheduled Caste, ST: Schedule Tribe, OBC: Other Backward Class.<br>
-        ** 10 % vacancies are reserved for Ex-Servicemen.
-    </p>
-
-    <!-- Eligibility Criteria -->
-    <table>
-        <thead>
-            <tr class="font-bold text-center">
-                <td style="width: 30%;">Post Name</td>
-                <td style="width: 70%;">Eligibility Criteria</td>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td class="text-center font-bold" style="vertical-align: middle;">Constable (Tradesman)</td>
-                <td>
-                    <ul>
-                        <li>Candidates Must Have Passed The <strong>10th (High School) Examination</strong> From A Recognized Board. In Addition, Applicants Should Meet One Of The Following Conditions: <strong>Minimum 1 Year Of Experience</strong>, Or <strong>A Valid HMV Driving License</strong>, Or <strong>A First Aid Certificate With 1 Year Of Experience</strong>, Or <strong>2 Years Of Experience</strong>, Or <strong>1-Year ITI In The Relevant Trade With 1 Year Of Experience</strong>, Or <strong>2-Year ITI In The Relevant Trade.</strong></li>
-                    </ul>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-    <!-- Mode Of Selection -->
-    <table>
-        <tr>
-            <th class="header-navy">SSB Constable Tradesman Recruitment 2026 : Mode Of Selection</th>
-        </tr>
-        <tr>
-            <td>
-                <ul>
-                    <li>Written Exam</li>
-                    <li>Trade / Skill Test</li>
-                    <li>PET & PST Test</li>
-                    <li>Medical Examination</li>
-                    <li>Document Verification</li>
-                </ul>
-            </td>
-        </tr>
-    </table>
-
-    <!-- Important Links Table (Yellow) -->
-    <table>
-        <tr class="bg-yellow-section">
-            <td class="font-bold text-center" style="width: 50%; font-size: 16px;">Download PET / PST Admit Card</td>
-            <td class="text-center" style="width: 50%;">
-                <a href="https://applyssb.com/ssb_ct_si_pet_admitcards_26_v2/applicationAfterIndex" target="_blank" class="click-link">Click Here</a>
-            </td>
-        </tr>
-        <tr class="bg-yellow-section">
-            <td class="font-bold text-center" style="width: 50%; font-size: 16px;">Check Official Notification</td>
-            <td class="text-center" style="width: 50%;">
-                <a href="https://sarkariresult.com.cm/wp-content/uploads/2026/03/RNoti_210326_125417.pdf" target="_blank" class="click-link">Click Here</a>
-            </td>
-        </tr>
-    </table>
-
-</body>
-</html>
-  `
-}
-
-  
 
 
   
