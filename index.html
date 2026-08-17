@@ -562,11 +562,15 @@
           if (matchedSrv) {
             setActiveService(matchedSrv);
             setIsManualPaymentUnlocked(false);
+            setIsSubmitting(false);
+            setIsCashfreeLoading(false);
             return;
           }
         } else {
           setActiveService(null);
           setIsManualPaymentUnlocked(false);
+          setIsSubmitting(false);
+          setIsCashfreeLoading(false);
         }
 
         if (catName) {
@@ -583,6 +587,9 @@
       }, [services]);
 
       const openServiceDetail = (srv) => {
+        setIsSubmitting(false);
+        setIsCashfreeLoading(false);
+        setIsManualPaymentUnlocked(false);
         setPendingService(srv);
       };
 
@@ -592,6 +599,8 @@
           window.history.pushState({ service: pendingService.id }, '', newUrl);
           setActiveService(pendingService);
           setIsManualPaymentUnlocked(false);
+          setIsSubmitting(false);
+          setIsCashfreeLoading(false);
           setPendingService(null);
         }
       };
@@ -601,6 +610,8 @@
           setSelectedCat(catName);
           setActiveService(null);
           setIsManualPaymentUnlocked(false);
+          setIsSubmitting(false);
+          setIsCashfreeLoading(false);
           const newUrl = catName === 'All Services' 
             ? window.location.pathname 
             : `${window.location.pathname}?category=${encodeURIComponent(catName)}`;
@@ -612,6 +623,8 @@
         setSelectedCat('All Services');
         setActiveService(null);
         setIsManualPaymentUnlocked(false);
+        setIsSubmitting(false);
+        setIsCashfreeLoading(false);
         setSubmittedReceipt(null);
         setShowDrawer(false);
         window.history.pushState({}, '', window.location.pathname);
@@ -755,6 +768,8 @@
         showNotification(`Application Submitted! UID: ${submissionId}`);
         form.reset();
         setIsManualPaymentUnlocked(false);
+        setIsSubmitting(false);
+        setIsCashfreeLoading(false);
         document.querySelectorAll('.img-preview').forEach(img => img.style.display = 'none');
         document.querySelectorAll('.pdf-preview').forEach(pdf => pdf.style.display = 'none');
         
@@ -770,6 +785,15 @@
           showNotification("Please complete online payment or confirm QR payment to submit!");
           return;
         }
+
+        const form = e.target;
+        const mainPayProof = form.querySelector("input[name='main_payment_screenshot']");
+        if (!mainPayProof || !mainPayProof.files || mainPayProof.files.length === 0) {
+          showNotification("Payment screenshot upload karna anivarya hai!");
+          if (mainPayProof) mainPayProof.focus();
+          return;
+        }
+
         setIsSubmitting(true);
         try {
           await processApplicationSubmission(e.target);
@@ -838,15 +862,17 @@
                 });
               } else {
                 showNotification("Payment incomplete or cancelled. Form was not submitted.");
+                setIsSubmitting(false);
+                setIsCashfreeLoading(false);
               }
             });
           } else {
             showNotification("Payment gateway loading error. Please refresh and try again.");
+            setIsCashfreeLoading(false);
           }
         } catch (error) {
           console.error("Cashfree Checkout Error:", error);
           showNotification("Payment initiation failed: " + error.message);
-        } finally {
           setIsCashfreeLoading(false);
         }
       };
@@ -1864,23 +1890,24 @@
                                     <span>I have scanned QR & completed payment manually</span>
                                   </label>
                                   {isManualPaymentUnlocked && (
-                                    <p className="text-[10px] text-emerald-700 font-bold mt-1">✓ Manual Submit button is now unlocked below.</p>
+                                    <p className="text-[10px] text-emerald-700 font-bold mt-1">✓ Manual mode unlocked: Please upload payment screenshot below to submit.</p>
                                   )}
                                 </div>
                               </div>
                             );
                           })()}
 
-                          {/* OPTIONAL PAYMENT SCREENSHOT UPLOAD */}
+                          {/* MANDATORY PAYMENT SCREENSHOT UPLOAD IN MANUAL QR MODE */}
                           {isManualPaymentUnlocked && (
-                            <div className="space-y-1 bg-orange-50/60 p-3 rounded-xl border border-orange-200">
-                              <label className="block text-xs font-bold text-slate-800">Upload Payment Screenshot (Optional for manual QR):</label>
+                            <div className="space-y-1 bg-orange-50/60 p-3 rounded-xl border-2 border-orange-400">
+                              <label className="block text-xs font-extrabold text-rose-600">Upload Payment Screenshot (Mandatory for QR payment):</label>
                               <input 
                                 type="file" 
                                 name="main_payment_screenshot" 
                                 accept="image/*" 
+                                required={isManualPaymentUnlocked}
                                 onChange={(e) => handleFilePreview(e, 'prev_img_main_payment', 'prev_pdf_main_payment')}
-                                className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-orange-500" 
+                                className="w-full bg-white border border-rose-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-rose-600" 
                               />
                               <img id="prev_img_main_payment" className="img-preview" alt="Payment Screenshot Preview" />
                               <div id="prev_pdf_main_payment" className="pdf-preview"></div>
