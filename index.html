@@ -4,7 +4,6 @@
 
 <meta name="google-site-verification" content="n6gutNuaXm4jPFef6_Yxsfz5UcDynkGHi86Py-8IH-0" />
 
-  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>SGS ONLINE SERVICE - Form Filling Assistance & Help Desk</title>
@@ -18,85 +17,126 @@
   <meta property="og:url" content="https://sgsonlineservice.store/" />
   <meta property="og:type" content="website" />
 
-
 <!-- Primary SEO Meta Tags -->
 <meta name="description" content="SGS Online Service - Online form filling assistance in Bihar, VKSU Admission, RTPS Caste Income Residence Certificate, Scholarships & Job Portal." />
 <meta name="keywords" content="SGS Online Service, online form filling, Arrah Cyber Cafe, sachin cyber cafe, sgs online store, sgs store, sgs online services, VKSU admission form, Bihar RTPS certificate online, Caste certificate Bihar, Income certificate Bihar, Bihar scholarship form, job form online assistance, Bihar online helpdesk" />
 <meta name="author" content="SGS Online Service" />
 <meta name="robots" content="index, follow" />
 
-
-  
-
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <!-- Cashfree Checkout SDK -->
+  <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
 
   <style>
     html, body { overscroll-behavior-y: contain; text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
     .scrollbar-none::-webkit-scrollbar { display: none; }
     .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
     #splash-screen { transition: opacity 0.3s ease-out; }
-    .img-preview { max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px dashed #3b82f6; display: none; object-fit: cover; margin-top: 6px; }
-    .pdf-preview { display: none; margin-top: 6px; font-size: 11px; font-weight: bold; color: #1d4ed8; background: #eff6ff; padding: 6px 10px; border-radius: 6px; border: 1px solid #bfdbfe; width: fit-content; }
+    .img-preview { max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px dashed #ea580c; display: none; object-fit: cover; margin-top: 6px; }
+    .pdf-preview { display: none; margin-top: 6px; font-size: 11px; font-weight: bold; color: #1e3a8a; background: #eff6ff; padding: 6px 10px; border-radius: 6px; border: 1px solid #bfdbfe; width: fit-content; }
 
-    /* PERFECT HIGH-CONTRAST NEON BLUE NIGHT MODE OVERRIDES */
+    /* TIRANGA THEME ACCENTS & GRADIENTS */
+    .tiranga-stripe {
+      height: 4px;
+      background: linear-gradient(90deg, #FF9933 0%, #FF9933 33.3%, #FFFFFF 33.3%, #FFFFFF 66.6%, #138808 66.6%, #138808 100%);
+    }
+
+    .tiranga-gradient-bg {
+      background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 50%, #064e3b 100%);
+    }
+
+    .tiranga-card-header {
+      background: linear-gradient(90deg, #ea580c 0%, #0284c7 50%, #16a34a 100%);
+    }
+
+    .tiranga-btn-primary {
+      background: linear-gradient(135deg, #f97316 0%, #ea580c 40%, #16a34a 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
+    }
+    .tiranga-btn-primary:hover {
+      background: linear-gradient(135deg, #ea580c 0%, #c2410c 40%, #15803d 100%);
+    }
+
+    .text-saffron { color: #f97316; }
+    .text-tiranga-green { color: #16a34a; }
+    .text-chakra { color: #1e3a8a; }
+
+    /* HIGH-CONTRAST TIRANGA NEON NIGHT MODE OVERRIDES */
     body.neon-blue-mode {
-      background-color: #030712 !important;
+      background-color: #050811 !important;
       color: #ffffff !important;
     }
-    /* Main Background Containers */
+    
+    /* Main Background Containers in Neon Mode */
     body.neon-blue-mode div[class*="bg-white"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
     body.neon-blue-mode div[class*="bg-slate-50"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
     body.neon-blue-mode div[class*="bg-indigo"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
     body.neon-blue-mode div[class*="bg-amber"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
     body.neon-blue-mode div[class*="bg-emerald"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
     body.neon-blue-mode div[class*="bg-blue"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *) {
-      background-color: #0a1128 !important;
+      background-color: #0b1329 !important;
       color: #ffffff !important;
-      border-color: #00f3ff !important;
-      box-shadow: 0 0 8px rgba(0, 243, 255, 0.25) !important;
+      border-color: #f97316 !important;
+      box-shadow: 0 0 10px rgba(249, 115, 22, 0.2) !important;
     }
 
-    /* DRAWER OVERLAY & PANEL IN NEON BLUE MODE */
+    /* DRAWER OVERLAY & PANEL IN NEON MODE */
     body.neon-blue-mode .drawer-panel {
-      background-color: #0b132b !important;
+      background-color: #090f20 !important;
       color: #ffffff !important;
-      border-right: 2px solid #00f3ff !important;
-      box-shadow: 5px 0 25px rgba(0, 243, 255, 0.4) !important;
+      border-right: 2px solid #f97316 !important;
+      box-shadow: 5px 0 25px rgba(249, 115, 22, 0.3) !important;
     }
 
-    body.neon-blue-mode .drawer-panel div[class*="bg-slate-50"] {
-      background-color: #121e42 !important;
-      border-color: #00f3ff/40 !important;
+    body.neon-blue-mode .drawer-panel div[class*="bg-"] {
+      background-color: #111a36 !important;
+      border-color: rgba(249, 115, 22, 0.5) !important;
     }
 
-    /* NOTICE BOARD FULL RED OVERRIDE IN NEON MODE */
-    body.neon-blue-mode div[class*="from-blue-50"] {
-      background: #dc2626 !important;
-      border: 2px solid #f87171 !important;
-      box-shadow: 0 0 12px rgba(220, 38, 38, 0.7) !important;
+    body.neon-blue-mode .drawer-panel div[class*="bg-"] *,
+    body.neon-blue-mode .drawer-panel nav button,
+    body.neon-blue-mode .drawer-panel nav button span,
+    body.neon-blue-mode .drawer-panel h3,
+    body.neon-blue-mode .drawer-panel h4,
+    body.neon-blue-mode .drawer-panel h5,
+    body.neon-blue-mode .drawer-panel p {
+      color: #ffffff !important;
     }
-    body.neon-blue-mode div[class*="from-blue-50"] h2,
-    body.neon-blue-mode div[class*="from-blue-50"] > div:first-child span {
-      color: #000000 !important;
+
+    /* NOTICE BOARD FULL OVERRIDE IN NEON MODE */
+    body.neon-blue-mode .notice-board-box,
+    body.neon-blue-mode div[class*="from-orange-50"] {
+      background: linear-gradient(135deg, #1f0b02 0%, #062b14 100%) !important;
+      border: 2px solid #f97316 !important;
+      box-shadow: 0 0 16px rgba(249, 115, 22, 0.4) !important;
+    }
+    body.neon-blue-mode .notice-board-box h2,
+    body.neon-blue-mode .notice-board-box span:not(.no-neon) {
+      color: #ffedd5 !important;
       font-weight: 900 !important;
     }
-    body.neon-blue-mode div[class*="from-blue-50"] > div:first-child svg {
-      stroke: #000000 !important;
+    body.neon-blue-mode .notice-board-box svg {
+      stroke: #f97316 !important;
     }
-    /* NOTICE LIST ITEMS TEXT COLOR FIX (WHITE TEXT ON DARK BOX) */
-    body.neon-blue-mode div[class*="from-blue-50"] div[class*="space-y"] span,
-    body.neon-blue-mode div[class*="from-blue-50"] div[class*="space-y"] div {
+    body.neon-blue-mode .notice-board-box div[class*="bg-white"] {
+      background-color: #0b1329 !important;
+      border-color: rgba(234, 88, 12, 0.7) !important;
+      color: #ffffff !important;
+    }
+    body.neon-blue-mode .notice-board-box div[class*="bg-white"] span {
       color: #ffffff !important;
       font-weight: 700 !important;
     }
 
-    /* WARNING / AMBER / ROSE BOX OVERRIDES IN NEON BLUE MODE FOR MAXIMUM CONTRAST & VISIBILITY */
+    /* WARNING / AMBER / ROSE BOX OVERRIDES IN NEON MODE */
     body.neon-blue-mode div[class*="bg-rose-50"],
     body.neon-blue-mode .warning-rose-box {
-      background-color: #ef4444 !important;
+      background-color: #991b1b !important;
       border: 2px solid #fca5a5 !important;
       box-shadow: 0 0 12px rgba(239, 68, 68, 0.8) !important;
     }
@@ -104,14 +144,13 @@
     body.neon-blue-mode div[class*="bg-rose-50"] span,
     body.neon-blue-mode .warning-rose-box p,
     body.neon-blue-mode .warning-rose-box span {
-      color: #000000 !important;
+      color: #ffffff !important;
       font-weight: 900 !important;
-      text-shadow: none !important;
     }
 
     body.neon-blue-mode div[class*="bg-amber-50"],
     body.neon-blue-mode .warning-amber-box {
-      background-color: #f59e0b !important;
+      background-color: #854d0e !important;
       border: 2px solid #fde047 !important;
       box-shadow: 0 0 10px rgba(245, 158, 11, 0.7) !important;
     }
@@ -121,46 +160,39 @@
     body.neon-blue-mode .warning-amber-box p,
     body.neon-blue-mode .warning-amber-box span,
     body.neon-blue-mode .warning-amber-box strong {
-      color: #000000 !important;
+      color: #ffffff !important;
       font-weight: 900 !important;
-      text-shadow: none !important;
     }
 
-    /* YOUTUBE GUIDE BUTTON RED BLACK OVERRIDE IN NEON MODE */
+    /* YOUTUBE GUIDE BUTTON OVERRIDE IN NEON MODE */
     body.neon-blue-mode nav a.youtube-guide-btn,
     body.neon-blue-mode nav a.youtube-guide-btn * {
       background-color: #dc2626 !important;
-      color: #000000 !important;
+      color: #ffffff !important;
       font-weight: 900 !important;
       border-color: #f87171 !important;
-      box-shadow: 0 0 10px rgba(220, 38, 38, 0.7) !important;
-    }
-    body.neon-blue-mode nav a.youtube-guide-btn svg {
-      stroke: #000000 !important;
-      fill: #000000 !important;
     }
 
-    /* ALL TEXT INSIDE NEON MODE (EXCEPT SLIP RECEIPT, WARNING BOXES & YOUTUBE BUTTON) */
+    /* ALL TEXT INSIDE NEON MODE */
     body.neon-blue-mode h1:not(.slip-card-clean *), 
     body.neon-blue-mode h2:not(.slip-card-clean *), 
     body.neon-blue-mode h3:not(.slip-card-clean *), 
     body.neon-blue-mode h4:not(.slip-card-clean *), 
-    body.neon-blue-mode h5:not(.slip-card-clean *),
-    body.neon-blue-mode h6:not(.slip-card-clean *),
+    body.neon-blue-mode h5:not(.slip-card-clean *), 
+    body.neon-blue-mode h6:not(.slip-card-clean *), 
     body.neon-blue-mode p:not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *), 
     body.neon-blue-mode label:not(.slip-card-clean *), 
     body.neon-blue-mode span:not(.no-neon):not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *):not(.youtube-guide-btn *), 
     body.neon-blue-mode li:not(.slip-card-clean *), 
     body.neon-blue-mode strong:not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *) {
       color: #ffffff !important;
-      text-shadow: none !important;
     }
 
-    /* SLIP RECEIPT CARD ISOLATION CSS RULES (MODE INDEPENDENT) */
+    /* SLIP RECEIPT CARD ISOLATION CSS RULES */
     .slip-card-clean {
       background-color: #ffffff !important;
       color: #0f172a !important;
-      border: 2px solid #2563eb !important;
+      border: 2px solid #ea580c !important;
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
     }
     .slip-card-clean * {
@@ -173,8 +205,8 @@
       color: #475569 !important;
     }
     .slip-box-inner {
-      background-color: #f8fafc !important;
-      border: 1px solid #cbd5e1 !important;
+      background-color: #fff7ed !important;
+      border: 1px solid #fed7aa !important;
     }
 
     /* DRAWER NAVIGATION LINKS TEXT */
@@ -185,43 +217,51 @@
       color: #ffffff !important;
     }
 
-    /* RED BUTTONS & POST CARDS CATEGORY BADGES FOR NEON MODE */
+    /* BUTTONS & BADGES FOR NEON MODE */
     body.neon-blue-mode button:not(.no-neon):not(.slip-card-clean *),
     body.neon-blue-mode .neon-red-btn,
     body.neon-blue-mode span[class*="bg-slate-100"]:not(.slip-card-clean *),
     body.neon-blue-mode span[class*="bg-blue-600"]:not(.slip-card-clean *) {
-      background-color: #dc2626 !important;
-      color: #000000 !important;
+      background-color: #ea580c !important;
+      color: #ffffff !important;
       font-weight: 900 !important;
-      border: 1px solid #f87171 !important;
-      box-shadow: 0 0 10px rgba(220, 38, 38, 0.6) !important;
+      border: 1px solid #fb923c !important;
     }
 
-    /* INPUT FIELDS */
+    /* INPUT FIELDS IN NEON MODE */
     body.neon-blue-mode input,
     body.neon-blue-mode select,
     body.neon-blue-mode textarea {
-      background-color: #121e42 !important;
-      color: #00f3ff !important;
-      border: 1px solid #00f3ff !important;
+      background-color: #111a36 !important;
+      color: #fdba74 !important;
+      border: 1px solid #f97316 !important;
     }
 
-    /* FIXED PREFIX BADGE NEON MODE SUPPORT */
+    /* PREFIX BADGE */
     body.neon-blue-mode .prefix-badge {
-      background-color: #0a1128 !important;
-      color: #00f3ff !important;
-      border-color: #00f3ff !important;
+      background-color: #0b1329 !important;
+      color: #fdba74 !important;
+      border-color: #f97316 !important;
     }
 
-    /* HEADER BAR */
+    /* POST CATEGORY BADGES IN NEON MODE FIX */
+    body.neon-blue-mode .post-category-badge {
+      background-color: #0b1329 !important;
+      color: #ffedd5 !important;
+      border: 1px solid #f97316 !important;
+      box-shadow: 0 0 8px rgba(249, 115, 22, 0.35) !important;
+      font-weight: 800 !important;
+    }
+
+    /* HEADER BAR IN NEON MODE */
     body.neon-blue-mode header {
-      background: linear-gradient(to right, #020617, #0f172a, #1e1b4b) !important;
-      border-bottom: 2px solid #00f3ff !important;
+      background: linear-gradient(to right, #431407, #0f172a, #064e3b) !important;
+      border-bottom: 2px solid #f97316 !important;
     }
 
-    /* SVG ICONS COLOR */
+    /* SVG ICONS COLOR IN NEON MODE */
     body.neon-blue-mode svg:not(.slip-card-clean *):not(.youtube-guide-btn *) {
-      stroke: #00f3ff !important;
+      stroke: #fdba74 !important;
     }
 
     @media print {
@@ -243,29 +283,77 @@
     }
   </style>
 
-  <!-- External Static Posts Data File -->
+  <!-- External Static Posts Data Files -->
   <script src="posts.js"></script>
+  <script src="html_posts.js"></script>
+
+  <!-- SEO SCHEMA FOR SEARCH ENGINE CRAWLER -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "GovernmentService",
+    "name": "SGS ONLINE SERVICE",
+    "url": "https://sgsonlineservice.store/",
+    "description": "SGS Online Service - Online form filling assistance in Bihar, VKSU Admission, RTPS Caste Income Residence Certificate, Scholarships & Job Portal.",
+    "provider": {
+      "@type": "LocalBusiness",
+      "name": "SGS Online Service Helpdesk",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Arrah",
+        "addressRegion": "Bihar",
+        "postalCode": "802165",
+        "addressCountry": "IN"
+      }
+    }
+  }
+  </script>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased selection:bg-yellow-200">
+<body class="bg-orange-50/30 text-slate-800 antialiased selection:bg-orange-200">
+
+  <!-- TOP TIRANGA ACCENT RIBBON -->
+  <div class="tiranga-stripe w-full fixed top-0 z-[100]"></div>
   
-  <!-- SPLASH LOADER SCREEN WITH LOGO -->
-  <div id="splash-screen" class="fixed inset-0 z-[100] bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-950 flex flex-col items-center justify-center p-4 text-white">
+  <!-- SPLASH LOADER SCREEN WITH LOGO & TIRANGA THEME -->
+  <div id="splash-screen" class="fixed inset-0 z-[100] bg-gradient-to-br from-orange-950 via-slate-950 to-emerald-950 flex flex-col items-center justify-center p-4 text-white">
     <div class="flex flex-col items-center text-center max-w-sm">
-      <img src="logo.png" alt="SGS Logo" class="w-20 h-20 rounded-2xl shadow-lg mb-4 object-cover animate-pulse border-2 border-yellow-400" onerror="this.onerror=null; this.style.display='none';" />
-      <h1 class="text-xl sm:text-2xl font-black text-yellow-300 tracking-tight leading-tight">
+      <div class="relative mb-4">
+        <img src="logo.png" alt="SGS Logo" class="w-20 h-20 rounded-2xl shadow-xl object-cover animate-pulse border-2 border-orange-400" onerror="this.onerror=null; this.style.display='none';" />
+        <div class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-white animate-ping"></div>
+      </div>
+      <h1 class="text-xl sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-white to-emerald-400 tracking-tight leading-tight">
         SGS ONLINE SERVICE
       </h1>
-      <p class="text-[11px] font-bold text-amber-200/90 uppercase tracking-widest mt-1">
+      <p class="text-[11px] font-bold text-orange-200/90 uppercase tracking-widest mt-1">
         Online Form Filling Assistance & Facilitation Portal
       </p>
       <div class="mt-8 flex flex-col items-center gap-2">
-        <div class="w-8 h-8 border-3 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
+        <div class="w-8 h-8 border-3 border-orange-400 border-t-emerald-500 rounded-full animate-spin"></div>
         <p class="text-[11px] text-slate-300 font-semibold tracking-wide">Loading Assistance Portal...</p>
       </div>
     </div>
   </div>
 
-  <div id="root"></div>
+  <div id="root" class="pt-1">
+    <!-- STATIC NOSCRIPT FOR GOOGLE CRAWLER -->
+    <noscript>
+      <h1>SGS Online Service - Form Filling Assistance</h1>
+      <p>Get expert assistance for college admission forms, RTPS certificates, scholarships, and online job applications.</p>
+      <ul>
+        <li><a href="https://sgsonlineservice.store/?service=internship-application-01">Internship Application Online Form</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=rtps-caste-02">Bihar RTPS Caste Certificate (जाति प्रमाण पत्र)</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=rtps-income-03">Bihar RTPS Income Certificate (आय प्रमाण पत्र)</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=rtps-residence-04">Bihar RTPS Residence Certificate (निवास प्रमाण पत्र)</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=vksu-exam-form-all-sem-05">VKSU Exam Form All Semester</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=rtps-combo-06">Bihar RTPS Combo Service</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=vksu-admission-sem5-All-session-07">VKSU Online Admission Form</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=Government-Forms-08">Bihar Character Certificate</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=internship-120hr-09">Intership 120 Hour Complete</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=pan-card-apply-10">New PAN Card / Correction Online Form</a></li>
+        <li><a href="https://sgsonlineservice.store/?service=pms-scholarship-2026-2027-11">PMS scholarship 2026-2027</a></li>
+      </ul>
+    </noscript>
+  </div>
 
   <script>
     setTimeout(() => {
@@ -288,6 +376,9 @@
     const _0xwa = "OTExNzA4MDE2OQ==";
     const _0xem = "contactsgsonlineservice@gmail.com";
 
+    // Initialize Cashfree SDK instance
+    const cashfree = typeof Cashfree !== "undefined" ? Cashfree({ mode: "sandbox" }) : null;
+
     const Icons = {
       Search: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>,
       ArrowLeft: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>,
@@ -302,13 +393,16 @@
       Trash: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>,
       Moon: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>,
       Download: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>,
-      CheckCircle: () => <svg className="w-12 h-12 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
+      CheckCircle: () => <svg className="w-12 h-12 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
       Info: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
       Receipt: () => <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>,
-      Youtube: () => <svg className="w-4 h-4 fill-current text-red-600 shrink-0" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      Youtube: () => <svg className="w-4 h-4 fill-current text-red-600 shrink-0" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>,
+      CreditCard: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>,
+      Truck: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>,
+      Building: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
     };
 
-    // HIGH QUALITY HD IMAGE COMPRESSION (Maintains Original Dimensions, High Quality 92%)
+    // HIGH QUALITY HD IMAGE COMPRESSION
     const compressImage = (file) => {
       return new Promise((resolve) => {
         if (!file || file.type === 'application/pdf' || !file.type.startsWith('image/')) {
@@ -366,7 +460,13 @@
     };
 
     function App() {
-      const [services, setServices] = useState(typeof ALL_POSTS !== 'undefined' ? ALL_POSTS : []);
+      // Merge normal posts and custom HTML posts seamlessly
+      const combinedAllPosts = [
+        ...(typeof ALL_POSTS !== 'undefined' ? ALL_POSTS : []),
+        ...(typeof HTML_POSTS !== 'undefined' ? HTML_POSTS : [])
+      ];
+
+      const [services, setServices] = useState(combinedAllPosts);
       const [notices, setNotices] = useState(typeof STATIC_NOTICES !== 'undefined' ? STATIC_NOTICES : []);
       const [categories, setCategories] = useState(typeof STATIC_CATEGORIES !== 'undefined' ? STATIC_CATEGORIES : []);
       
@@ -377,12 +477,13 @@
       const [activeModalPage, setActiveModalPage] = useState(null);
       const [toastMsg, setToastMsg] = useState('');
       const [isSubmitting, setIsSubmitting] = useState(false);
+      const [isCashfreeLoading, setIsCashfreeLoading] = useState(false);
       const [submittedReceipt, setSubmittedReceipt] = useState(null);
 
       // Post Selection Confirmation Warning Modal State
       const [pendingService, setPendingService] = useState(null);
 
-      // Neon Blue Theme State
+      // Neon Mode State
       const [isNeonMode, setIsNeonMode] = useState(() => {
         try {
           return localStorage.getItem('sgs_theme') === 'neon';
@@ -449,53 +550,34 @@
         }
       };
 
-      // DYNAMIC HASH URL ROUTING & GOOGLE INDEXING SUPPORT
-      useEffect(() => {
-        const handleURLHashChange = () => {
-          const hash = window.location.hash;
-          if (hash.startsWith('#service=')) {
-            const srvId = hash.replace('#service=', '');
-            const matchedSrv = services.find(s => String(s.id) === String(srvId));
-            if (matchedSrv) {
-              setActiveService(matchedSrv);
-            }
-          } else if (hash.startsWith('#category=')) {
-            const catName = decodeURIComponent(hash.replace('#category=', ''));
-            setSelectedCat(catName);
-            setActiveService(null);
-          } else if (!hash) {
-            setActiveService(null);
+      // STANDARD QUERY URL ROUTING (FULL CLEAN URLS FOR EACH SERVICE)
+      const parseURLParams = () => {
+        const params = new URLSearchParams(window.location.search);
+        const srvId = params.get('service');
+        const catName = params.get('category');
+
+        if (srvId) {
+          const matchedSrv = services.find(s => String(s.id) === String(srvId));
+          if (matchedSrv) {
+            setActiveService(matchedSrv);
+            return;
           }
-        };
+        } else {
+          setActiveService(null);
+        }
 
-        handleURLHashChange();
+        if (catName) {
+          setSelectedCat(decodeURIComponent(catName));
+        } else {
+          setSelectedCat('All Services');
+        }
+      };
 
-        window.addEventListener('hashchange', handleURLHashChange);
-        return () => window.removeEventListener('hashchange', handleURLHashChange);
+      useEffect(() => {
+        parseURLParams();
+        window.addEventListener('popstate', parseURLParams);
+        return () => window.removeEventListener('popstate', parseURLParams);
       }, [services]);
-
-      // Hardware Mobile Back Button Sync
-      useEffect(() => {
-        const handlePopState = () => {
-          if (pendingService) {
-            setPendingService(null);
-          } else if (submittedReceipt) {
-            setSubmittedReceipt(null);
-          } else if (activeService) {
-            setActiveService(null);
-            window.location.hash = '';
-          } else if (activeModalPage) {
-            setActiveModalPage(null);
-          } else if (showDrawer) {
-            setShowDrawer(false);
-          } else if (selectedCat !== 'All Services') {
-            setSelectedCat('All Services');
-            window.location.hash = '';
-          }
-        };
-        window.addEventListener('popstate', handlePopState);
-        return () => window.removeEventListener('popstate', handlePopState);
-      }, [pendingService, submittedReceipt, activeService, activeModalPage, showDrawer, selectedCat]);
 
       const openServiceDetail = (srv) => {
         setPendingService(srv);
@@ -503,7 +585,8 @@
 
       const handleConfirmServiceSelection = () => {
         if (pendingService) {
-          window.history.pushState({ page: 'detail', id: pendingService.id }, '', `#service=${pendingService.id}`);
+          const newUrl = `${window.location.pathname}?service=${encodeURIComponent(pendingService.id)}`;
+          window.history.pushState({ service: pendingService.id }, '', newUrl);
           setActiveService(pendingService);
           setPendingService(null);
         }
@@ -511,10 +594,21 @@
 
       const handleCategorySelect = (catName) => {
         if (catName !== selectedCat) {
-          window.history.pushState({ page: 'category', cat: catName }, '', `#category=${encodeURIComponent(catName)}`);
           setSelectedCat(catName);
           setActiveService(null);
+          const newUrl = catName === 'All Services' 
+            ? window.location.pathname 
+            : `${window.location.pathname}?category=${encodeURIComponent(catName)}`;
+          window.history.pushState({ category: catName }, '', newUrl);
         }
+      };
+
+      const handleNavigateHome = () => {
+        setSelectedCat('All Services');
+        setActiveService(null);
+        setSubmittedReceipt(null);
+        setShowDrawer(false);
+        window.history.pushState({}, '', window.location.pathname);
       };
 
       const handleFilePreview = (e, imgPreviewId, pdfPreviewId) => {
@@ -543,11 +637,8 @@
         }
       };
 
-      const handleFormSubmit = async (e) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-
-        const form = e.target;
+      // Process Application to Telegram & LocalStorage
+      const processApplicationSubmission = async (form, customPaymentInfo = null) => {
         const formData = new FormData(form);
         const submissionId = "SGS-" + Math.floor(100000 + Math.random() * 900000);
 
@@ -573,7 +664,7 @@
                 const optObj = f.options.find(o => o.value === selectedValue);
                 if (optObj) selectedLabel = optObj.label;
               }
-              textDetails += `• *${f.label}:*${selectedLabel || 'Not Selected'}\n`;
+              textDetails += `• *${f.label}:* ${selectedLabel || 'Not Selected'}\n`;
             } else {
               let val = formData.get(f.name);
               const isPhoneField = f.type === 'tel' || f.name?.toLowerCase().includes('mobile') || f.name?.toLowerCase().includes('phone') || f.label?.toLowerCase().includes('mobile') || f.label?.toLowerCase().includes('phone');
@@ -581,89 +672,170 @@
                 val = `+91 ${val}`;
               }
               if (val) {
-                textDetails += `• *${f.label}:*${val}\n`;
+                textDetails += `• *${f.label}:* ${val}\n`;
               }
             }
           });
         }
 
-        // Custom File Input for Main Payment Screenshot
+        // Custom File Input for Main Payment Screenshot (if present)
         const mainPayProof = formData.get("main_payment_screenshot");
         if (mainPayProof && mainPayProof instanceof File && mainPayProof.size > 0) {
           rawFileInputs.push({ label: "Main Payment Screenshot", name: "main_payment_screenshot", file: mainPayProof });
         }
 
         const dateStr = new Date().toLocaleString();
-        textDetails += `\n💳 *Payment Screenshot:* Attached Below\n`;
+        if (customPaymentInfo) {
+          textDetails += `\n💳 *Online Gateway Payment:* SUCCESSFUL\n`;
+          textDetails += `⚡ *Cashfree Payment ID / Order:* \`${customPaymentInfo.orderId || 'Verified'}\`\n`;
+          textDetails += `💰 *Amount Paid:* ₹${customPaymentInfo.amount}\n`;
+        } else {
+          textDetails += `\n💳 *Payment Screenshot:* Attached Below\n`;
+        }
         textDetails += `📅 *Date:* ${dateStr}`;
 
-        try {
-          // 1. Send Complete Text Message First
-          await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              chat_id: TELEGRAM_CHAT_ID,
-              text: textDetails,
-              parse_mode: "Markdown"
-            })
-          });
+        // 1. Send Complete Text Message First
+        await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CHAT_ID,
+            text: textDetails,
+            parse_mode: "Markdown"
+          })
+        });
 
-          // 2. Compress Images
-          const processedFiles = await Promise.all(
-            rawFileInputs.map(async (item) => {
-              const fileObj = await compressImage(item.file);
-              return { label: item.label, name: item.name, file: fileObj };
-            })
-          );
+        // 2. Compress Images
+        const processedFiles = await Promise.all(
+          rawFileInputs.map(async (item) => {
+            const fileObj = await compressImage(item.file);
+            return { label: item.label, name: item.name, file: fileObj };
+          })
+        );
 
-          // 3. Upload Files to Telegram
-          for (const item of processedFiles) {
-            const fileData = new FormData();
-            fileData.append("chat_id", TELEGRAM_CHAT_ID);
-            
-            const isPdf = item.file.type === 'application/pdf';
-            const endpoint = isPdf ? 'sendDocument' : 'sendPhoto';
-            const paramName = isPdf ? 'document' : 'photo';
-
-            fileData.append(paramName, item.file);
-            fileData.append("caption", `📎 ${item.label}\nUID:${submissionId}`);
-
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/${endpoint}`, {
-              method: "POST",
-              body: fileData
-            });
-          }
-
-          // 4. Save UID, Title, Category, Amount & Date to LocalStorage
-          const upi = getUpiDetails(activeService.qrImageUrl);
-          const paidAmount = upi.am ? `₹${upi.am}` : "As Applicable / Paid";
-
-          const newAppItem = {
-            uid: submissionId,
-            serviceTitle: activeService.title,
-            category: activeService.category,
-            amount: paidAmount,
-            dateTime: dateStr
-          };
-          const updatedApps = [newAppItem, ...userApps];
-          setUserApps(updatedApps);
-          localStorage.setItem('sgs_user_applications', JSON.stringify(updatedApps));
-
-          showNotification(`Application Submitted! UID: ${submissionId}`);
-          form.reset();
-          document.querySelectorAll('.img-preview').forEach(img => img.style.display = 'none');
-          document.querySelectorAll('.pdf-preview').forEach(pdf => pdf.style.display = 'none');
+        // 3. Upload Files to Telegram
+        for (const item of processedFiles) {
+          const fileData = new FormData();
+          fileData.append("chat_id", TELEGRAM_CHAT_ID);
           
-          setActiveService(null);
-          window.history.pushState({ page: 'receipt' }, '');
-          setSubmittedReceipt(newAppItem);
+          const isPdf = item.file.type === 'application/pdf';
+          const endpoint = isPdf ? 'sendDocument' : 'sendPhoto';
+          const paramName = isPdf ? 'document' : 'photo';
 
+          fileData.append(paramName, item.file);
+          fileData.append("caption", `📎 ${item.label}\nUID: ${submissionId}`);
+
+          await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/${endpoint}`, {
+            method: "POST",
+            body: fileData
+          });
+        }
+
+        // 4. Save UID, Title, Category, Amount & Date to LocalStorage
+        const upi = getUpiDetails(activeService.qrImageUrl);
+        const paidAmount = customPaymentInfo ? `₹${customPaymentInfo.amount} (Online Paid)` : (upi.am ? `₹${upi.am}` : "As Applicable / Paid");
+
+        const newAppItem = {
+          uid: submissionId,
+          serviceTitle: activeService.title,
+          category: activeService.category,
+          amount: paidAmount,
+          dateTime: dateStr
+        };
+        const updatedApps = [newAppItem, ...userApps];
+        setUserApps(updatedApps);
+        localStorage.setItem('sgs_user_applications', JSON.stringify(updatedApps));
+
+        showNotification(`Application Submitted! UID: ${submissionId}`);
+        form.reset();
+        document.querySelectorAll('.img-preview').forEach(img => img.style.display = 'none');
+        document.querySelectorAll('.pdf-preview').forEach(pdf => pdf.style.display = 'none');
+        
+        setActiveService(null);
+        window.history.pushState({ page: 'receipt' }, '', window.location.pathname);
+        setSubmittedReceipt(newAppItem);
+      };
+
+      // Form Submit for manual QR/Screenshot flow
+      const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        try {
+          await processApplicationSubmission(e.target);
         } catch (err) {
           showNotification("Submission Failed. Please try again.");
           console.error(err);
         } finally {
           setIsSubmitting(false);
+        }
+      };
+
+      // Cashfree Online Payment Gateway Integration Handler
+      const handleCashfreeOnlinePayment = async () => {
+        const form = document.getElementById("sgs-main-form");
+        if (!form) return;
+
+        // Check HTML5 validity
+        const requiredInputs = form.querySelectorAll("input[required]:not([name='main_payment_screenshot'])");
+        let isValid = true;
+        for (let inp of requiredInputs) {
+          if (!inp.checkValidity()) {
+            inp.reportValidity();
+            isValid = false;
+            return;
+          }
+        }
+
+        const formData = new FormData(form);
+        const upi = getUpiDetails(activeService.qrImageUrl);
+        const payAmount = upi.am || 50;
+        const applicantName = formData.get("full_name") || formData.get("student_name") || "Applicant";
+        const applicantMobile = formData.get("mobile_no") || formData.get("contact_number") || "9999999999";
+        const applicantEmail = formData.get("email_address") || formData.get("email_id") || "applicant@sgsonlineservice.store";
+
+        setIsCashfreeLoading(true);
+
+        try {
+          const res = await fetch("/api/create-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              amount: payAmount,
+              customerName: applicantName,
+              customerPhone: applicantMobile,
+              customerEmail: applicantEmail
+            })
+          });
+
+          const orderRes = await res.json();
+
+          if (!orderRes || !orderRes.payment_session_id) {
+            throw new Error(orderRes.message || "Could not generate payment session");
+          }
+
+          if (cashfree) {
+            cashfree.checkout({
+              paymentSessionId: orderRes.payment_session_id,
+              redirectTarget: "_modal"
+            }).then(async (result) => {
+              if (result.paymentDetails) {
+                showNotification("Payment verified! Submitting application...");
+                await processApplicationSubmission(form, {
+                  orderId: orderRes.order_id,
+                  amount: payAmount
+                });
+              } else {
+                showNotification("Payment was not completed. Please try again.");
+              }
+            });
+          } else {
+            showNotification("Payment gateway loading error. Please refresh and try again.");
+          }
+        } catch (error) {
+          console.error("Cashfree Checkout Error:", error);
+          showNotification("Payment initiation failed: " + error.message);
+        } finally {
+          setIsCashfreeLoading(false);
         }
       };
 
@@ -676,7 +848,7 @@
           amount: app.amount || "Paid / Verified"
         };
         setActiveModalPage(null);
-        window.history.pushState({ page: 'receipt' }, '');
+        window.history.pushState({ page: 'receipt' }, '', window.location.pathname);
         setSubmittedReceipt(receiptData);
       };
 
@@ -719,14 +891,14 @@
         window.open(`mailto:${_0xem}?subject=${subject}&body=${body}`, "_blank");
       };
 
-      // Guaranteed Exact Color Renderer
+      // Guaranteed Tiranga Inspired Button Style Renderer
       const getCategoryButtonStyle = (catObj, isSelected) => {
         const color = (typeof catObj === 'object' ? catObj.color : 'blue') || 'blue';
         
         const palette = {
-          blue: { bg: '#2563eb', text: '#ffffff', unBg: '#eff6ff', unText: '#1d4ed8', border: '#bfdbfe' },
-          emerald: { bg: '#059669', text: '#ffffff', unBg: '#ecfdf5', unText: '#047857', border: '#a7f3d0' },
-          purple: { bg: '#7c3aed', text: '#ffffff', unBg: '#f5f3ff', unText: '#6d28d9', border: '#ddd6fe' },
+          blue: { bg: '#ea580c', text: '#ffffff', unBg: '#fff7ed', unText: '#c2410c', border: '#ffedd5' },
+          emerald: { bg: '#16a34a', text: '#ffffff', unBg: '#f0fdf4', unText: '#15803d', border: '#bbf7d0' },
+          purple: { bg: '#1e3a8a', text: '#ffffff', unBg: '#eff6ff', unText: '#1d4ed8', border: '#bfdbfe' },
           amber: { bg: '#d97706', text: '#ffffff', unBg: '#fffbeb', unText: '#b45309', border: '#fde68a' },
           rose: { bg: '#e11d48', text: '#ffffff', unBg: '#fff1f2', unText: '#be123c', border: '#fecdd3' },
           red: { bg: '#dc2626', text: '#ffffff', unBg: '#fef2f2', unText: '#b91c1c', border: '#fca5a5' },
@@ -740,7 +912,7 @@
             backgroundColor: activePalette.bg,
             color: activePalette.text,
             borderColor: activePalette.bg,
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+            boxShadow: '0 4px 8px -1px rgba(234, 88, 12, 0.3)'
           };
         } else {
           return {
@@ -763,16 +935,16 @@
           
           {/* Toast Notification */}
           {toastMsg && (
-            <div className="fixed top-3 right-3 z-[60] bg-slate-900 text-yellow-300 font-bold text-xs px-4 py-2.5 rounded-xl shadow-xl border border-yellow-400/30 animate-bounce">
-              ⚡ {toastMsg}
+            <div className="fixed top-4 right-4 z-[160] bg-gradient-to-r from-orange-600 to-emerald-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-2xl border border-orange-300 animate-bounce">
+              🇮🇳 {toastMsg}
             </div>
           )}
 
           {/* POST CLICK CONFIRMATION WARNING MODAL IN HINDI */}
           {pendingService && (
             <div className="fixed inset-0 z-[130] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-              <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border-2 border-amber-500 overflow-hidden animate-fade-in flex flex-col">
-                <div className="bg-gradient-to-r from-amber-600 via-rose-600 to-red-700 text-white p-4">
+              <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border-2 border-orange-500 overflow-hidden animate-fade-in flex flex-col">
+                <div className="bg-gradient-to-r from-orange-600 via-amber-600 to-emerald-700 text-white p-4">
                   <div className="flex items-center gap-2">
                     <span className="text-yellow-300 text-xl"><Icons.ShieldCheck /></span>
                     <h3 className="font-extrabold text-sm sm:text-base tracking-wide">घोषणा एवं महत्वपूर्ण चेतावनी</h3>
@@ -780,7 +952,7 @@
                 </div>
 
                 <div className="p-5 text-xs sm:text-sm text-slate-800 space-y-3.5 leading-relaxed">
-                  <div className="bg-amber-50 warning-amber-box border-l-4 border-amber-500 p-3 rounded-r-lg text-amber-950 font-bold">
+                  <div className="bg-orange-50 warning-amber-box border-l-4 border-orange-500 p-3 rounded-r-lg text-orange-950 font-bold">
                     ⚠️ <strong>आवश्यक सूचना:</strong> आवेदन भरने से पहले नीचे दिए गए निर्देशों को ध्यान से पढ़ें।
                   </div>
 
@@ -790,7 +962,7 @@
 
                   <div className="bg-rose-50 warning-rose-box border border-rose-200 rounded-xl p-3 text-rose-950 text-xs font-bold space-y-1">
                     <p className="text-rose-950">• आपके द्वारा दी गई जानकारी गलत होने पर यदि फॉर्म आधिकारिक पोर्टल से रिजेक्ट (Reject) होता है, तो इसकी पूरी जिम्मेदारी आपकी होगी।</p>
-                    <p className="text-rose-950">• गलत विवरण के कारण फॉर्म रिजेक्ट होने पर आपका भुगतान (Payment) रिफंड (Refund) नहीं किया जाएगा।</p>
+                    <p className="text-rose-950">• गलत विवरण के कारण फॉर्म रिजेक्ट होने पर आपका भुगतान (Payment) रिफंड (Refund) नहीं किया जाएगा。</p>
                   </div>
 
                   <p className="text-[11px] text-slate-500 font-medium">
@@ -801,7 +973,7 @@
                 <div className="p-4 bg-slate-50 border-t border-slate-200 flex justify-center">
                   <button 
                     onClick={handleConfirmServiceSelection} 
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm py-3 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-1.5 neon-red-btn"
+                    className="w-full tiranga-btn-primary font-black text-xs sm:text-sm py-3 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-1.5"
                   >
                     <span>I Agree & Continue</span> →
                   </button>
@@ -814,21 +986,21 @@
           {!hasAgreed && (
             <div className="fixed inset-0 z-[120] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
               <div className="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden animate-fade-in flex flex-col">
-                <div className="bg-gradient-to-r from-blue-800 to-indigo-900 text-white p-4">
+                <div className="bg-gradient-to-r from-orange-600 via-blue-900 to-emerald-700 text-white p-4">
                   <div className="flex items-center gap-2">
-                    <span className="text-yellow-400 text-lg"><Icons.ShieldCheck /></span>
-                    <h3 className="font-extrabold text-sm sm:text-base tracking-wide">Terms, Privacy Policy & Disclaimer Notice</h3>
+                    <span className="text-amber-300 text-lg"><Icons.ShieldCheck /></span>
+                    <h3 className="font-extrabold text-sm sm:text-base tracking-wide">Terms, Privacy, Pricing & Disclaimer Notice</h3>
                   </div>
                 </div>
 
                 <div className="p-5 text-xs text-slate-700 space-y-4 leading-relaxed max-h-[65vh] overflow-y-auto">
-                  <div className="bg-amber-50 warning-amber-box border-l-4 border-amber-500 p-3 rounded-r-lg text-amber-950 font-semibold">
-                    Please read our complete Privacy Policy, Terms & Conditions, and Disclaimer before proceeding to use SGS ONLINE SERVICE.
+                  <div className="bg-orange-50 warning-amber-box border-l-4 border-orange-500 p-3 rounded-r-lg text-orange-950 font-semibold">
+                    Please read our complete Privacy Policy, Terms & Conditions, Payment & No-Refund Policy, Service Delivery Timeline, and Disclaimer before proceeding to use SGS ONLINE SERVICE.
                   </div>
 
                   {/* 1. PRIVACY POLICY DETAILS */}
                   <div className="border border-slate-200 p-3.5 rounded-xl bg-slate-50 space-y-2">
-                    <h4 className="font-extrabold text-blue-900 text-xs uppercase tracking-wider flex items-center gap-1">
+                    <h4 className="font-extrabold text-orange-700 text-xs uppercase tracking-wider flex items-center gap-1">
                       🔒 1. Privacy Policy & Data Collection
                     </h4>
                     <p className="text-slate-600">
@@ -841,10 +1013,32 @@
                     </ul>
                   </div>
 
-                  {/* 2. TERMS & CONDITIONS DETAILS */}
+                  {/* 2. PAYMENT, PRICING & STRICT NO-REFUND POLICY */}
+                  <div className="border border-slate-200 p-3.5 rounded-xl bg-rose-50 warning-rose-box space-y-2">
+                    <h4 className="font-extrabold text-rose-900 text-xs uppercase tracking-wider flex items-center gap-1">
+                      💳 2. Payment, Pricing & Strict No-Refund Policy
+                    </h4>
+                    <ul className="list-disc pl-4 space-y-1 text-slate-700 font-medium text-[11px]">
+                      <li><strong>Clear Transparent Pricing:</strong> Service fees include the government/university portal application fee (if applicable) plus our nominal cyber cafe form-filling facilitation charge. All amounts are displayed in INR (₹) before submission.</li>
+                      <li><strong>Strict No-Refund Rule:</strong> Once an online form assistance request (RTPS, VKSU Admission, Scholarship, Jobs) is submitted and data entry or document processing starts, fees are <strong>strictly NON-REFUNDABLE</strong> and non-transferable under any circumstances.</li>
+                      <li><strong>User Accuracy & Rejections:</strong> If an application is rejected by the official portal due to incorrect data, invalid certificates, or mismatched documents provided by the applicant, no refund will be issued.</li>
+                    </ul>
+                  </div>
+
+                  {/* 3. SERVICE DELIVERY & TURNAROUND TIME */}
+                  <div className="border border-slate-200 p-3.5 rounded-xl bg-slate-50 space-y-2">
+                    <h4 className="font-extrabold text-indigo-900 text-xs uppercase tracking-wider flex items-center gap-1">
+                      🚚 3. Service Fulfillment & Delivery Timeline (TAT)
+                    </h4>
+                    <p className="text-slate-600 text-[11px]">
+                      Application data entry and document verification begins within 15–30 minutes of payment confirmation. Official submission receipts, acknowledgements, or tracking application slips are delivered to applicants via WhatsApp / Email within <strong>24 to 48 working hours</strong>.
+                    </p>
+                  </div>
+
+                  {/* 4. TERMS & CONDITIONS DETAILS */}
                   <div className="border border-slate-200 p-3.5 rounded-xl bg-slate-50 space-y-2">
                     <h4 className="font-extrabold text-blue-900 text-xs uppercase tracking-wider flex items-center gap-1">
-                      📜 2. Terms & Conditions
+                      📜 4. Terms & Conditions
                     </h4>
                     <ul className="list-disc pl-4 space-y-1 text-slate-700 font-medium text-[11px]">
                       <li><strong>Private Facilitation:</strong> SGS ONLINE SERVICE is an independent cyber cafe / form assistance center and NOT an official government entity or college portal.</li>
@@ -853,12 +1047,12 @@
                     </ul>
                   </div>
 
-                  {/* 3. DISCLAIMER NOTICE DETAILS */}
-                  <div className="border border-slate-200 p-3.5 rounded-xl bg-amber-50/60 warning-amber-box space-y-2">
-                    <h4 className="font-extrabold text-amber-900 text-xs uppercase tracking-wider flex items-center gap-1">
-                      ⚠️ 3. Non-Government Disclaimer
+                  {/* 5. DISCLAIMER NOTICE DETAILS */}
+                  <div className="border border-slate-200 p-3.5 rounded-xl bg-emerald-50 warning-amber-box space-y-2">
+                    <h4 className="font-extrabold text-emerald-900 text-xs uppercase tracking-wider flex items-center gap-1">
+                      ⚠️ 5. Non-Government Disclaimer
                     </h4>
-                    <p className="text-amber-950 font-medium text-[11px]">
+                    <p className="text-emerald-950 font-medium text-[11px]">
                       We do NOT claim to be an official government portal. All official form submissions are carried out on respective official government / university websites on behalf of the applicant. Final approval/rejection rests with the official authority.
                     </p>
                   </div>
@@ -867,54 +1061,57 @@
                 <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-col gap-2">
                   <button 
                     onClick={handleAcceptTerms} 
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 neon-red-btn"
+                    className="w-full tiranga-btn-primary font-extrabold text-xs py-3 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
                   >
                     <span>I Agree & Continue</span> →
                   </button>
                   <p className="text-[10px] text-center text-slate-400 font-medium">
-                    By clicking "I Agree & Continue", you accept all Privacy Policy, Terms & Disclaimer conditions.
+                    By clicking "I Agree & Continue", you accept all Privacy Policy, Payment & Refund Rules, Terms & Disclaimer conditions.
                   </p>
                 </div>
               </div>
             </div>
           )}
 
-          {/* SIDE DRAWER MENU (NORMAL CLEAR BACKDROP - NO BLUR) */}
+          {/* SIDE DRAWER MENU */}
           {showDrawer && (
             <div className="fixed inset-0 z-[80] flex">
-              <div className="fixed inset-0 bg-black/40 transition-opacity" onClick={() => setShowDrawer(false)}></div>
-              <div className="relative w-80 max-w-[85%] bg-white h-full shadow-2xl flex flex-col justify-between z-10 p-5 overflow-y-auto drawer-panel">
+              <div className="fixed inset-0 bg-black/50 transition-opacity" onClick={() => setShowDrawer(false)}></div>
+              <div className="relative w-80 max-w-[85%] bg-white h-full shadow-2xl flex flex-col justify-between z-10 p-5 overflow-y-auto drawer-panel border-r-4 border-orange-500">
                 <div>
                   <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
                     <div className="flex items-center gap-2">
-                      <img src="logo.png" alt="SGS" className="w-7 h-7 rounded-lg object-cover border border-blue-600" onError={(e)=>{e.target.onerror=null; e.target.style.display='none';}} />
-                      <h3 className="font-extrabold text-blue-800 text-base">SGS ONLINE SERVICE</h3>
+                      <img src="logo.png" alt="SGS" className="w-8 h-8 rounded-lg object-cover border-2 border-orange-500" onError={(e)=>{e.target.onerror=null; e.target.style.display='none';}} />
+                      <div>
+                        <h3 className="font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-emerald-700 text-sm sm:text-base">SGS ONLINE SERVICE</h3>
+                        <p className="text-[9px] font-bold text-orange-600 uppercase">Tiranga Edition</p>
+                      </div>
                     </div>
-                    <button onClick={() => setShowDrawer(false)} className="text-slate-400"><Icons.X /></button>
+                    <button onClick={() => setShowDrawer(false)} className="text-slate-400 hover:text-slate-600"><Icons.X /></button>
                   </div>
 
                   {/* NAV LINKS */}
                   <nav className="space-y-2 text-xs font-bold text-slate-700">
-                    <button onClick={() => { setSelectedCat('All Services'); setActiveService(null); setSubmittedReceipt(null); setShowDrawer(false); window.location.hash = ''; }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between text-blue-700">
+                    <button onClick={handleNavigateHome} className="w-full text-left p-2.5 rounded-lg hover:bg-orange-50 flex items-center justify-between text-orange-700 bg-orange-50/50 border border-orange-200">
                       <span>🏠 Home Page / All Services</span>
                       <Icons.ChevronRight />
                     </button>
 
                     {/* ABOUT US NAVIGATION LINK */}
-                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('about'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                    <button onClick={() => { setActiveModalPage('about'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
                       <span className="flex items-center gap-1.5 font-bold"><Icons.Info /> About Us</span>
                       <Icons.ChevronRight />
                     </button>
 
-                    {/* NEON BLUE NIGHT MODE TOGGLE BUTTON */}
-                    <div className="p-2.5 rounded-lg bg-indigo-50/80 border border-indigo-200 flex items-center justify-between">
-                      <span className="flex items-center gap-1.5 font-extrabold text-indigo-900">
-                        <Icons.Moon /> Neon Blue Mode
+                    {/* NEON NIGHT MODE TOGGLE BUTTON */}
+                    <div className="p-2.5 rounded-lg bg-orange-50 border border-orange-200 flex items-center justify-between">
+                      <span className="flex items-center gap-1.5 font-extrabold text-orange-950">
+                        <Icons.Moon /> Neon Tiranga Mode
                       </span>
                       <button 
                         onClick={() => setIsNeonMode(!isNeonMode)} 
                         className={`px-3 py-1 rounded-md font-bold text-[11px] transition-all no-neon ${
-                          isNeonMode ? 'bg-cyan-400 text-slate-950 shadow-[0_0_10px_rgba(0,243,255,0.8)]' : 'bg-indigo-600 text-white'
+                          isNeonMode ? 'bg-orange-500 text-white shadow-[0_0_10px_rgba(249,115,22,0.8)]' : 'bg-slate-800 text-white'
                         }`}
                       >
                         {isNeonMode ? 'ON ⚡' : 'OFF'}
@@ -923,7 +1120,7 @@
 
                     {/* TRACK MY APPLICATION BUTTON */}
                     <button 
-                      onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('track'); setShowDrawer(false); }} 
+                      onClick={() => { setActiveModalPage('track'); setShowDrawer(false); }} 
                       className="w-full text-left p-2.5 rounded-lg bg-amber-50 text-amber-900 flex items-center justify-between border border-amber-300 shadow-2xs"
                     >
                       <span className="flex items-center gap-1.5 font-extrabold text-amber-800">
@@ -938,15 +1135,28 @@
                       <Icons.ChevronRight />
                     </button>
                     
-                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('privacy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                    <button onClick={() => { setActiveModalPage('privacy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
                       <span>🔒 Privacy Policy</span>
                       <Icons.ChevronRight />
                     </button>
-                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('terms'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+
+                    {/* PAYMENT & NO-REFUND POLICY IN DRAWER */}
+                    <button onClick={() => { setActiveModalPage('payment_policy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                      <span className="flex items-center gap-1.5">💳 Payment & Refund Policy</span>
+                      <Icons.ChevronRight />
+                    </button>
+
+                    {/* SERVICE DELIVERY TIMELINE IN DRAWER */}
+                    <button onClick={() => { setActiveModalPage('delivery_policy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                      <span className="flex items-center gap-1.5">🚚 Delivery & Fulfillment Policy</span>
+                      <Icons.ChevronRight />
+                    </button>
+
+                    <button onClick={() => { setActiveModalPage('terms'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
                       <span>📜 Terms & Conditions</span>
                       <Icons.ChevronRight />
                     </button>
-                    <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('disclaimer'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
+                    <button onClick={() => { setActiveModalPage('disclaimer'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
                       <span>⚠️ Disclaimer Notice</span>
                       <Icons.ChevronRight />
                     </button>
@@ -955,7 +1165,7 @@
                     <a 
                       href="https://www.youtube.com/@rojgarwithberojgar-2" 
                       target="_blank" 
-                      rel="noopener noreferrer"
+                      rel="noopener noreferrer" 
                       onClick={() => setShowDrawer(false)}
                       className="youtube-guide-btn w-full text-left p-2.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 flex items-center justify-between transition-colors mt-2 font-extrabold"
                     >
@@ -975,7 +1185,7 @@
                     <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-2xs">
                       <h5 className="font-extrabold text-slate-900 text-xs mb-1">WhatsApp Support</h5>
                       <p className="text-[11px] text-slate-500 mb-2.5 leading-snug">Fast Reply (Instant Assistance). Connect directly on WhatsApp.</p>
-                      <button onClick={handleWhatsAppSupport} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2 rounded-lg transition-colors neon-red-btn">
+                      <button onClick={handleWhatsAppSupport} className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2 rounded-lg transition-colors">
                         Chat on WhatsApp
                       </button>
                     </div>
@@ -983,9 +1193,15 @@
                     <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-2xs">
                       <h5 className="font-extrabold text-slate-900 text-xs mb-1">Email Support</h5>
                       <p className="text-[11px] text-slate-500 mb-2.5 leading-snug">Send us an email inquiry for official ticket assistance.</p>
-                      <button onClick={handleEmailSupport} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-2 rounded-lg transition-colors neon-red-btn">
+                      <button onClick={handleEmailSupport} className="w-full bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs py-2 rounded-lg transition-colors">
                         Send Email
                       </button>
+                    </div>
+
+                    {/* PHYSICAL OFFICE ADDRESS IN DRAWER */}
+                    <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 shadow-2xs text-[11px] text-slate-600 space-y-1">
+                      <p className="font-bold text-slate-800 flex items-center gap-1">📍 Center Address:</p>
+                      <p>SGS Online Service Helpdesk, District Arrah, Bhojpur, Bihar, India - 802165.</p>
                     </div>
                   </div>
                 </div>
@@ -999,12 +1215,12 @@
 
           {/* DYNAMIC SUCCESSFUL APPLICATION RECEIPT SCREEN */}
           {submittedReceipt ? (
-            <div className="min-h-screen bg-slate-100 p-4 sm:p-6 flex flex-col items-center justify-center">
-              <div id="printable-receipt" className="slip-card-clean max-w-md w-full rounded-2xl border-2 border-blue-600 shadow-2xl overflow-hidden p-6 text-slate-900 space-y-5">
+            <div className="min-h-screen bg-orange-50/40 p-4 sm:p-6 flex flex-col items-center justify-center">
+              <div id="printable-receipt" className="slip-card-clean max-w-md w-full rounded-2xl border-2 border-orange-500 shadow-2xl overflow-hidden p-6 text-slate-900 space-y-5">
                 
                 {/* THANK YOU BANNER */}
-                <div className="bg-blue-600 text-white p-3 rounded-xl text-center shadow-md mb-2">
-                  <h3 className="font-black text-xs uppercase tracking-wider">🎉 Thanks for applying through SGS Online Service!</h3>
+                <div className="bg-gradient-to-r from-orange-600 to-emerald-700 text-white p-3 rounded-xl text-center shadow-md mb-2">
+                  <h3 className="font-black text-xs uppercase tracking-wider">🇮🇳 Thanks for applying through SGS Online Service!</h3>
                 </div>
 
                 <div className="text-center space-y-2 border-b border-slate-200 pb-4">
@@ -1016,22 +1232,22 @@
                 </div>
 
                 <div className="slip-box-inner rounded-xl p-4 space-y-3 text-xs">
-                  <div className="flex items-center justify-between border-b border-slate-300 pb-2">
+                  <div className="flex items-center justify-between border-b border-orange-200 pb-2">
                     <span className="slip-text-muted font-bold">Application UID:</span>
-                    <span className="font-black text-blue-700 text-sm tracking-wide">{submittedReceipt.uid}</span>
+                    <span className="font-black text-orange-700 text-sm tracking-wide">{submittedReceipt.uid}</span>
                   </div>
 
-                  <div className="flex items-center justify-between border-b border-slate-300 pb-2">
+                  <div className="flex items-center justify-between border-b border-orange-200 pb-2">
                     <span className="slip-text-muted font-bold">Service Name:</span>
                     <span className="font-black slip-text-dark text-right max-w-[200px] leading-tight">{submittedReceipt.serviceTitle}</span>
                   </div>
 
-                  <div className="flex items-center justify-between border-b border-slate-300 pb-2">
+                  <div className="flex items-center justify-between border-b border-orange-200 pb-2">
                     <span className="slip-text-muted font-bold">Category:</span>
                     <span className="font-black slip-text-dark">{submittedReceipt.category}</span>
                   </div>
 
-                  <div className="flex items-center justify-between border-b border-slate-300 pb-2">
+                  <div className="flex items-center justify-between border-b border-orange-200 pb-2">
                     <span className="slip-text-muted font-bold">Amount Paid:</span>
                     <span className="font-black text-emerald-600 text-sm">{submittedReceipt.amount}</span>
                   </div>
@@ -1043,14 +1259,14 @@
                 </div>
 
                 <div className="bg-amber-100 warning-amber-box border border-amber-300 rounded-xl p-3 text-[11px] text-amber-950 font-bold leading-relaxed">
-                  📌 <strong>Note:</strong> Save your UID for tracking. Our assistance team will process your form and update status shortly.
+                  📌 <strong>Note:</strong> Save your UID for tracking. Processing starts in 15–30 mins and completed acknowledgement slip will be delivered via WhatsApp/Email within 24–48 hours. All fees are strictly non-refundable.
                 </div>
 
                 <div className="pt-2 flex flex-col gap-2.5 no-print">
                   <div className="flex flex-col sm:flex-row gap-2">
                     <button 
                       onClick={() => window.print()} 
-                      className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs py-3 px-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
+                      className="flex-1 bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-xs py-3 px-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-2"
                     >
                       <Icons.Download /> Download Receipt
                     </button>
@@ -1066,7 +1282,7 @@
                   </div>
 
                   <button 
-                    onClick={() => { setSubmittedReceipt(null); window.location.hash = ''; }} 
+                    onClick={handleNavigateHome} 
                     className="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs py-3 px-4 rounded-xl shadow-md transition-all flex items-center justify-center gap-1"
                   >
                     Done ✓
@@ -1076,40 +1292,42 @@
             </div>
           ) : activeModalPage ? (
             <div className="fixed inset-0 bg-slate-100 z-50 flex flex-col h-full w-full overflow-hidden">
-              <div className="bg-gradient-to-r from-blue-800 to-indigo-900 text-white px-4 py-3 shadow-md flex items-center justify-between shrink-0">
+              <div className="bg-gradient-to-r from-orange-600 via-indigo-900 to-emerald-700 text-white px-4 py-3 shadow-md flex items-center justify-between shrink-0">
                 <h3 className="font-extrabold text-white text-base sm:text-lg flex items-center gap-2">
                   <Icons.ShieldCheck />
                   <span>
                     {activeModalPage === 'track' && 'Track My Applications'}
-                    {activeModalPage === 'about' && 'About Us'}
-                    {activeModalPage === 'support' && 'Instant Customer Support'}
+                    {activeModalPage === 'about' && 'About Us & Operational Details'}
+                    {activeModalPage === 'support' && 'Instant Customer Support & Grievance'}
                     {activeModalPage === 'privacy' && 'Privacy Policy'}
+                    {activeModalPage === 'payment_policy' && 'Payment, Pricing & Strict No-Refund Policy'}
+                    {activeModalPage === 'delivery_policy' && 'Service Delivery & Fulfillment Policy'}
                     {activeModalPage === 'terms' && 'Terms & Conditions'}
                     {activeModalPage === 'disclaimer' && 'Disclaimer & Service Policy'}
                   </span>
                 </h3>
-                <button onClick={() => setActiveModalPage(null)} className="bg-white/20 text-white px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1">
+                <button onClick={() => setActiveModalPage(null)} className="bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1">
                   <Icons.X /> Close
                 </button>
               </div>
 
               <div className="flex-1 overflow-y-auto p-4 sm:p-6 max-w-4xl w-full mx-auto text-xs text-slate-700 space-y-4">
                 
-                {/* DEDICATED CUSTOMER SUPPORT MODAL PAGE */}
+                {/* DEDICATED CUSTOMER SUPPORT & GRIEVANCE OFFICER MODAL PAGE */}
                 {activeModalPage === 'support' && (
                   <div className="space-y-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
                     <div className="bg-emerald-50 border-l-4 border-emerald-600 p-4 rounded-r-xl text-slate-900 font-bold flex items-center justify-between flex-wrap gap-2">
                       <div className="flex items-center gap-2">
                         <Icons.Headphones />
-                        <span>SGS Instant Helpdesk & Assistance Center</span>
+                        <span>SGS Helpdesk & Customer Support Desk</span>
                       </div>
                       <span className="bg-emerald-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider animate-pulse">
-                        24/7 Live Support
+                        24/7 Digital Support
                       </span>
                     </div>
 
                     <p className="text-slate-600 text-xs leading-relaxed">
-                      Need help regarding form submissions, application updates, fee verification, or tracking numbers? Our dedicated customer support desk is available to assist you. Select your preferred channel below:
+                      Need help regarding form submissions, fee verification, turnaround timelines, or application status? Connect directly with our helpdesk team:
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
@@ -1140,15 +1358,30 @@
                         </p>
                         <button 
                           onClick={handleEmailSupport} 
-                          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs py-3 rounded-lg transition-colors mt-2 shadow flex items-center justify-center gap-2"
+                          className="w-full bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-xs py-3 rounded-lg transition-colors mt-2 shadow flex items-center justify-center gap-2"
                         >
                           Send Email Ticket
                         </button>
                       </div>
                     </div>
 
-                    <div className="bg-blue-50 border border-blue-200 p-3 rounded-xl text-[11px] text-blue-900 font-semibold">
-                      📌 <strong>Support Hours:</strong> Online chat available 24/7. Phone verification calls are conducted between 9:00 AM to 8:00 PM IST.
+                    {/* NODAL GRIEVANCE OFFICER & PHYSICAL ADDRESS BLOCK */}
+                    <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2 text-xs">
+                      <h4 className="font-extrabold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
+                        <Icons.Building /> Registered Business & Grievance Redressal Office
+                      </h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px] text-slate-600 pt-1">
+                        <div>
+                          <p><strong>Business Name:</strong> SGS ONLINE SERVICE</p>
+                          <p><strong>Primary Address:</strong> District Arrah, Bhojpur, Bihar, India - 802301</p>
+                          <p><strong>Official Email:</strong> contactsgsonlineservice@gmail.com</p>
+                        </div>
+                        <div>
+                          <p><strong>Grievance Officer:</strong> Customer Support Desk Head</p>
+                          <p><strong>Support Operating Hours:</strong> 09:00 AM to 08:00 PM IST (Mon - Sat)</p>
+                          <p><strong>Resolution SLA:</strong> Within 24 to 48 working hours</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -1156,8 +1389,8 @@
                 {/* ABOUT US MODAL PAGE */}
                 {activeModalPage === 'about' && (
                   <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <div className="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-r-xl text-slate-900 font-bold">
-                      🏢 ABOUT SGS ONLINE SERVICE
+                    <div className="bg-orange-50 border-l-4 border-orange-600 p-4 rounded-r-xl text-slate-900 font-bold">
+                      🏢 ABOUT SGS ONLINE SERVICE & PHYSICAL OPERATIONS
                     </div>
 
                     <div>
@@ -1167,7 +1400,7 @@
 
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">2. Location & Operating Area</h4>
-                      <p className="font-semibold text-slate-800">📍 Primary Location: District Arrah, Bhojpur, Bihar, India.</p>
+                      <p className="font-semibold text-slate-800">📍 Physical Address: SGS Online Service Desk, District Arrah, Bhojpur, Bihar, India - 802301.</p>
                       <p className="mt-1">We cater specifically to applicants across Bihar requiring assistance with university admissions (e.g., VKSU), RTPS certificates (Caste, Income, Residence), scholarships, and national competitive exam form submissions.</p>
                     </div>
 
@@ -1183,6 +1416,35 @@
                   </div>
                 )}
 
+                {/* SERVICE DELIVERY & FULFILLMENT MODAL PAGE */}
+                {activeModalPage === 'delivery_policy' && (
+                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
+                    <div className="bg-indigo-50 border-l-4 border-indigo-600 p-4 rounded-r-xl text-slate-900 font-bold flex items-center justify-between">
+                      <span>🚚 SERVICE DELIVERY, FULFILLMENT & TURNAROUND TIMELINE (TAT)</span>
+                      <span className="text-[10px] bg-indigo-600 text-white px-2 py-0.5 rounded font-mono font-bold">24-48 Hours</span>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Digital Service Delivery Overview</h4>
+                      <p>SGS ONLINE SERVICE provides digital form-filling and online submission facilitation services. As our services are digital and electronic in nature, there is no physical shipping of tangible goods.</p>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Standard Turnaround Time (TAT)</h4>
+                      <ul className="list-disc pl-5 space-y-1.5 text-slate-700 font-medium">
+                        <li><strong>Order Initiation:</strong> Once your application request and payment screenshot are received, our desk initiates data entry and document verification within <strong>15 to 30 minutes</strong> during operational hours.</li>
+                        <li><strong>Form Submission & Acknowledgement:</strong> The complete form submission is carried out on the respective official university/government portal, and the official PDF receipt/acknowledgement slip is dispatched to the user's WhatsApp or Email within <strong>24 to 48 working hours</strong>.</li>
+                        <li><strong>Live Tracking:</strong> Users can track their submitted requests anytime using their unique 6-digit Application UID in the 'Track My Application' section.</li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. Delivery Delays & External Portal Downtime</h4>
+                      <p>In case of scheduled maintenance or server downtime on official government/university servers, form processing will be queued and completed immediately upon server restoration. Applicants will be updated accordingly via WhatsApp.</p>
+                    </div>
+                  </div>
+                )}
+
                 {/* TRACK APPLICATION MODAL PAGE WITH VIEW RECEIPT BUTTON */}
                 {activeModalPage === 'track' && (
                   <div className="space-y-4">
@@ -1193,7 +1455,7 @@
                       {userApps.length > 0 && (
                         <button 
                           onClick={clearAllApps}
-                          className="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-2xs neon-red-btn"
+                          className="bg-rose-600 hover:bg-rose-700 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg flex items-center gap-1 shadow-2xs"
                         >
                           <Icons.Trash /> Clear All
                         </button>
@@ -1209,7 +1471,7 @@
                         {userApps.map((app, i) => (
                           <div key={i} className="bg-white border border-slate-300 rounded-xl p-4 shadow-sm flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
                             <div>
-                              <span className="font-black text-blue-700 text-sm block">UID: {app.uid}</span>
+                              <span className="font-black text-orange-600 text-sm block">UID: {app.uid}</span>
                               <p className="text-xs font-bold text-slate-800 mt-0.5">Form: {app.serviceTitle}</p>
                               {app.dateTime && <p className="text-[10px] text-slate-400 mt-0.5">Submitted: {app.dateTime}</p>}
                             </div>
@@ -1218,7 +1480,7 @@
                               {/* VIEW RECEIPT BUTTON */}
                               <button 
                                 onClick={() => handleViewPastReceipt(app)} 
-                                className="bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-extrabold px-3 py-1.5 rounded-lg shadow-2xs flex items-center gap-1 transition-all no-neon"
+                                className="bg-orange-600 hover:bg-orange-700 text-white text-[11px] font-extrabold px-3 py-1.5 rounded-lg shadow-2xs flex items-center gap-1 transition-all no-neon"
                               >
                                 <Icons.Receipt /> View Receipt
                               </button>
@@ -1238,10 +1500,54 @@
                   </div>
                 )}
 
+                {/* PAYMENT, PRICING & STRICT NO-REFUND POLICY MODAL PAGE */}
+                {activeModalPage === 'payment_policy' && (
+                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
+                    <div className="bg-orange-50 border-l-4 border-orange-600 p-4 rounded-r-xl text-slate-900 font-bold flex items-center justify-between">
+                      <span>💳 PAYMENT, PRICING & STRICT NO-REFUND POLICY</span>
+                      <span className="text-[10px] bg-orange-600 text-white px-2 py-0.5 rounded font-mono font-bold">Standard Policy</span>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">1. Transparent Pricing & Facilitation Service Charge</h4>
+                      <p>All service charges are clearly displayed in Indian Rupees (₹ INR) for every online application listed on SGS ONLINE SERVICE. Our fee structure consists of:</p>
+                      <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-700 font-medium">
+                        <li><strong>Official Portal Fee:</strong> Examination / Admission / Processing fee charged directly by government portals or university boards (where applicable).</li>
+                        <li><strong>Private Facilitation & Cyber Cafe Fee:</strong> Nominal service fee for digital data entry, telephone verification, high-resolution document scanning, image resizing, and error-free submission.</li>
+                        <li>There are zero hidden recurring charges or subscription fees.</li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">2. Accepted Payment Methods</h4>
+                      <p>We accept secure payments via Cashfree Payment Gateway (Cards, Net Banking, Wallets), NPCI Standard Dynamic UPI Intent, and UPI QR Code scanning (PhonePe, Google Pay, Paytm, BHIM). Valid proof of payment (screenshot or Online Payment ID) is mandatory for processing.</p>
+                    </div>
+
+                    <div className="bg-rose-50 border border-rose-200 rounded-xl p-3.5 text-rose-950 space-y-2">
+                      <h4 className="font-black text-rose-900 text-xs uppercase tracking-wider flex items-center gap-1">
+                        ⚠️ 3. Strict No-Refund Policy (Non-Refundable Services)
+                      </h4>
+                      <p className="text-[11px] font-bold">
+                        Please note our strict policy regarding cancellations and refunds:
+                      </p>
+                      <ul className="list-disc pl-4 space-y-1 text-[11px] text-rose-900 font-semibold">
+                        <li>Once an application request is submitted and our team initiates the online form filling or document verification process, <strong>all fees paid are 100% NON-REFUNDABLE</strong> and non-cancellable.</li>
+                        <li><strong>Government & RTPS Certificates:</strong> In the event of application rejection by official block/sub-division officers due to invalid caste claims, mismatched income declarations, or improper residential proofs provided by the applicant, no refund will be provided.</li>
+                        <li><strong>University & College Forms:</strong> Admission or merit list rejection by VKSU or any college due to cut-off criteria or inaccurate academic data does not entitle the user to a refund.</li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">4. Payment Disputes & Duplicate Debits</h4>
+                      <p>In rare cases where an amount is debited from your bank account twice for a single service request or if a payment fails to link, contact our support team immediately at <strong>contactsgsonlineservice@gmail.com</strong> or via WhatsApp with your Bank UTR Reference ID. Verified accidental duplicate transactions will be refunded within 5–7 business days to the source account.</p>
+                    </div>
+                  </div>
+                )}
+
                 {/* PRIVACY POLICY MODAL PAGE */}
                 {activeModalPage === 'privacy' && (
                   <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <div className="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-r-xl text-slate-900 font-medium">
+                    <div className="bg-orange-50 border-l-4 border-orange-600 p-4 rounded-r-xl text-slate-900 font-medium">
                       <strong>📌 Private Form Facilitation Center Privacy Policy:</strong> SGS ONLINE SERVICE operates independently as a private online digital assistance center helping users fill out government, college, and administrative online forms accurately upon request.
                     </div>
 
@@ -1253,7 +1559,7 @@
                         <li><strong>Contact Information:</strong> Mobile Number, Email Address, Full Postal Address, District, Pin Code, and State.</li>
                         <li><strong>Academic & Identity Records:</strong> Educational Qualification details, Roll Numbers, Registration Numbers, Marksheets, and Certificates.</li>
                         <li><strong>Uploaded Documents & Media:</strong> Applicant Photograph, Digital Signature Scans, PDF Documents, and Identity Proof files uploaded by the user.</li>
-                        <li><strong>Payment Verification Data:</strong> Payment Screenshots, Fee Receipts, and Date of Payment.</li>
+                        <li><strong>Payment Verification Data:</strong> Payment Screenshots, Gateway Transaction IDs, Fee Receipts, and Date of Payment.</li>
                       </ul>
                     </div>
 
@@ -1289,7 +1595,7 @@
 
                     <div>
                       <h4 className="font-extrabold text-slate-900 text-sm mb-1">3. Payment Verification & Fee Policy</h4>
-                      <p>Application processing requires valid payment confirmation covering official portal fees (if applicable) and our nominal service facilitation charge. Users must provide a genuine payment screenshot after scanning the payment QR code or paying via UPI buttons.</p>
+                      <p>Application processing requires valid payment confirmation covering official portal fees (if applicable) and our nominal service facilitation charge. Users must provide payment confirmation via the integrated Cashfree gateway or a genuine payment screenshot after scanning the payment QR code.</p>
                     </div>
 
                     <div>
@@ -1304,7 +1610,7 @@
                   </div>
                 )}
 
-                {/* DISCLAIMER MODAL PAGE (FULL ENGLISH TRANSLATION) */}
+                {/* DISCLAIMER MODAL PAGE */}
                 {activeModalPage === 'disclaimer' && (
                   <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
                     <div className="bg-amber-50 warning-amber-box border-l-4 border-amber-600 p-4 rounded-r-xl text-amber-950 font-bold">
@@ -1330,51 +1636,54 @@
               </div>
 
               <div className="p-3 bg-white border-t border-slate-200 flex justify-end shrink-0">
-                <button onClick={() => setActiveModalPage(null)} className="bg-slate-900 text-white font-bold px-6 py-2 rounded-xl text-xs shadow-md neon-red-btn">
+                <button onClick={() => setActiveModalPage(null)} className="bg-slate-900 text-white font-bold px-6 py-2 rounded-xl text-xs shadow-md">
                   Close Window
                 </button>
               </div>
             </div>
           ) : (
             <>
-              {/* STICKY HEADER WITH LOGO */}
-              <header className="sticky top-0 z-40 bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white shadow-sm py-2 px-3">
+              {/* STICKY TIRANGA HEADER WITH LOGO */}
+              <header className="sticky top-1 z-40 bg-gradient-to-r from-orange-600 via-indigo-950 to-emerald-700 text-white shadow-md py-2.5 px-3">
                 <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
                   <button onClick={() => setShowDrawer(true)} className="p-1.5 text-white hover:bg-white/10 rounded-lg">
                     <Icons.Menu />
                   </button>
                   
-                  <div onClick={() => { setSelectedCat('All Services'); setActiveService(null); window.location.hash = ''; }} className="cursor-pointer text-center flex-1 flex items-center justify-center gap-2">
+                  <div onClick={handleNavigateHome} className="cursor-pointer text-center flex-1 flex items-center justify-center gap-2">
                     {/* WEBSITE LOGO IMAGE IN HEADER */}
                     <img 
                       src="logo.png" 
                       alt="SGS Logo" 
-                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg object-cover border border-yellow-300 shadow-sm" 
+                      className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg object-cover border-2 border-orange-400 shadow-sm" 
                       onError={(e) => { e.target.onerror = null; e.target.style.display = 'none'; }} 
                     />
                     <div>
-                      <h1 className="text-base sm:text-xl font-extrabold text-yellow-300 leading-tight">SGS ONLINE SERVICE</h1>
-                      <p className="text-[9px] sm:text-[11px] font-bold text-amber-200/90 uppercase">Online Form Filling Assistance Portal (Private Service)</p>
+                      <h1 className="text-base sm:text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-300 via-white to-emerald-300 leading-tight">
+                        SGS ONLINE SERVICE
+                      </h1>
+                      <p className="text-[9px] sm:text-[11px] font-bold text-orange-200/90 uppercase">Online Form Filling Assistance Portal (Private Service)</p>
                     </div>
                   </div>
                 </div>
               </header>
 
               {/* MANDATORY LEGAL NOTICE BANNER BELOW HEADER */}
-              <div className="bg-slate-900 text-slate-200 text-[11px] px-4 py-2 border-b border-slate-800 text-center font-medium">
-                <span className="bg-amber-400 text-slate-950 font-black px-1.5 py-0.5 rounded text-[10px] mr-1.5">NOTICE</span>
+              <div className="bg-slate-900 text-slate-200 text-[11px] px-4 py-2 border-b border-orange-500/30 text-center font-medium">
+                <span className="bg-gradient-to-r from-orange-500 to-emerald-600 text-white font-black px-2 py-0.5 rounded text-[10px] mr-1.5 shadow">🇮🇳 NOTICE</span>
                 SGS Online Service is an independent private form filling assistance portal (Cyber Cafe). We are NOT an official government or college portal.
               </div>
 
               {/* MAIN SERVICES CONTENT */}
               {activeService ? (
                 <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
-                  <button onClick={() => { setActiveService(null); window.location.hash = ''; }} className="inline-flex items-center gap-2 bg-white text-slate-800 font-bold text-xs px-4 py-2 rounded-xl border border-slate-300 mb-4 shadow-2xs neon-red-btn">
+                  <button onClick={handleNavigateHome} className="inline-flex items-center gap-2 bg-white text-slate-800 font-bold text-xs px-4 py-2 rounded-xl border border-orange-200 mb-4 shadow-2xs hover:bg-orange-50">
                     <Icons.ArrowLeft /> Back to Services
                   </button>
 
-                  <div className="bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden p-4 sm:p-6">
-                    <span className="bg-blue-600 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">{activeService.category}</span>
+                  <div className="bg-white rounded-xl shadow-md border-2 border-orange-400 overflow-hidden p-4 sm:p-6 relative">
+                    <div className="absolute top-0 left-0 right-0 h-1.5 tiranga-stripe"></div>
+                    <span className="bg-gradient-to-r from-orange-600 to-emerald-600 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded uppercase mt-2 inline-block">{activeService.category}</span>
                     <h2 className="text-xl sm:text-2xl font-black text-slate-900 mt-2 mb-2">{activeService.title}</h2>
                     <p className="text-xs text-slate-600 mb-4">{activeService.description}</p>
 
@@ -1391,11 +1700,11 @@
                     ) : (
                       <>
                         {/* Form Filling Transparency Note */}
-                        <div className="bg-amber-50 warning-amber-box border border-amber-200 rounded-lg p-3 text-[11px] text-amber-900 font-medium mb-5">
-                          ℹ️ <strong>Assistance Notice:</strong> Information submitted below will be used by our team to fill out your official online form on your behalf after phone confirmation.
+                        <div className="bg-orange-50 warning-amber-box border border-orange-200 rounded-lg p-3 text-[11px] text-orange-950 font-medium mb-5">
+                          ℹ️ <strong>Assistance Notice:</strong> Information submitted below will be used by our team to fill out your official online form on your behalf after phone confirmation. Turnaround time: 24 to 48 working hours.
                         </div>
 
-                        <form onSubmit={handleFormSubmit} className="space-y-4">
+                        <form id="sgs-main-form" onSubmit={handleFormSubmit} className="space-y-4">
                           {activeService.fields && activeService.fields.map((field, idx) => {
                             const isPhoneField = field.type === 'tel' || field.name?.toLowerCase().includes('mobile') || field.name?.toLowerCase().includes('phone') || field.label?.toLowerCase().includes('mobile') || field.label?.toLowerCase().includes('phone');
 
@@ -1410,7 +1719,7 @@
                                       accept={field.accept || "image/*, application/pdf"} 
                                       required={field.required}
                                       onChange={(e) => handleFilePreview(e, `prev_img_${field.name}_${idx}`, `prev_pdf_${field.name}_${idx}`)}
-                                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs" 
+                                      className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs focus:border-orange-500" 
                                     />
                                     <img id={`prev_img_${field.name}_${idx}`} className="img-preview" alt="Selected Preview" />
                                     <div id={`prev_pdf_${field.name}_${idx}`} className="pdf-preview"></div>
@@ -1424,7 +1733,7 @@
                                           name={field.name}
                                           value={opt.value}
                                           required={field.required}
-                                          className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                                          className="w-4 h-4 text-orange-600 focus:ring-orange-500"
                                         />
                                         <span>{opt.label}</span>
                                       </label>
@@ -1433,7 +1742,7 @@
                                 ) : isPhoneField ? (
                                   /* MOBILE NUMBER DIALER FIELD WITH FIXED +91 PREFIX & 10 DIGIT LIMIT */
                                   <div className="flex items-center">
-                                    <span className="bg-slate-200 border border-r-0 border-slate-300 rounded-l-lg p-2.5 text-xs font-bold text-slate-700 prefix-badge shrink-0">
+                                    <span className="bg-orange-100 border border-r-0 border-orange-300 rounded-l-lg p-2.5 text-xs font-bold text-orange-900 prefix-badge shrink-0">
                                       +91
                                     </span>
                                     <input 
@@ -1447,7 +1756,7 @@
                                       onInput={(e) => {
                                         e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10);
                                       }}
-                                      className="w-full bg-slate-50 border border-slate-300 rounded-r-lg p-2.5 text-xs font-bold tracking-wide text-slate-900 focus:outline-none focus:border-blue-600" 
+                                      className="w-full bg-slate-50 border border-slate-300 rounded-r-lg p-2.5 text-xs font-bold tracking-wide text-slate-900 focus:outline-none focus:border-orange-500" 
                                     />
                                   </div>
                                 ) : (
@@ -1456,14 +1765,14 @@
                                     name={field.name} 
                                     required={field.required} 
                                     placeholder={field.placeholder || "Details fill karein"}
-                                    className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs font-medium focus:outline-none focus:border-blue-600" 
+                                    className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs font-medium focus:outline-none focus:border-orange-500" 
                                   />
                                 )}
                               </div>
                             );
                           })}
 
-                          {/* PAYMENT SECTION WITH QR AND DYNAMIC UPI BUTTONS */}
+                          {/* CASHFREE ONLINE PAYMENT & MANUAL UPI SECTION */}
                           {activeService.qrImageUrl && (() => {
                             const upi = getUpiDetails(activeService.qrImageUrl);
                             const amParam = upi.am ? `&am=${upi.am}` : "";
@@ -1472,17 +1781,41 @@
                             const genericUpiUrl = `upi://pay?pa=${upi.pa}&pn=${encodeURIComponent(upi.pn)}${amParam}&cu=INR`;
 
                             return (
-                              <div className="bg-blue-50/80 border border-blue-200 p-4 rounded-xl text-center my-4 space-y-3">
-                                <p className="text-xs font-extrabold text-blue-900">Scan QR or Click Below to Pay {upi.am ? `₹${upi.am}` : ''}</p>
+                              <div className="bg-orange-50/80 border border-orange-200 p-4 rounded-xl text-center my-4 space-y-3">
                                 
-                                <img src={activeService.qrImageUrl} alt="Payment QR Code" className="max-w-[180px] mx-auto rounded-lg border-2 border-blue-600 shadow-sm" />
+                                {/* INSTANT ONLINE PAYMENT VIA CASHFREE GATEWAY */}
+                                <div className="p-3 bg-white rounded-xl border-2 border-emerald-500 shadow-sm space-y-2">
+                                  <div className="flex items-center justify-center gap-1.5 text-emerald-800 font-extrabold text-xs">
+                                    <Icons.CreditCard />
+                                    <span>Instant Online Payment Gateway (Fastest)</span>
+                                  </div>
+                                  <button
+                                    type="button"
+                                    onClick={handleCashfreeOnlinePayment}
+                                    disabled={isCashfreeLoading}
+                                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm py-3 px-4 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
+                                  >
+                                    <span>{isCashfreeLoading ? "Connecting Payment Gateway..." : `⚡ Pay ₹${upi.am || '50'} via Cashfree (Cards / UPI / NetBanking)`}</span>
+                                  </button>
+                                  <p className="text-[10px] text-slate-500 font-medium">Automatic instant receipt generation after successful payment.</p>
+                                </div>
+
+                                <div className="flex items-center my-2">
+                                  <div className="flex-1 border-t border-slate-300"></div>
+                                  <span className="px-3 text-[11px] font-bold text-slate-500 uppercase">OR Scan QR Code</span>
+                                  <div className="flex-1 border-t border-slate-300"></div>
+                                </div>
+
+                                <p className="text-xs font-extrabold text-orange-950">Scan QR or Click Below to Pay {upi.am ? `₹${upi.am}` : ''}</p>
+                                
+                                <img src={activeService.qrImageUrl} alt="Payment QR Code" className="max-w-[180px] mx-auto rounded-lg border-2 border-orange-500 shadow-sm" />
 
                                 {/* DYNAMIC UPI BUTTONS */}
                                 <div className="pt-2 flex flex-col sm:flex-row gap-2 justify-center items-center">
                                   {/* PhonePe Button */}
                                   <a 
                                     href={phonepeUrl} 
-                                    className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-[#5f259f] hover:bg-[#4a1c7d] text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all neon-red-btn"
+                                    className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-[#5f259f] hover:bg-[#4a1c7d] text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all"
                                   >
                                     <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.8 10.2c0-2.4-1.9-4.3-4.3-4.3H8.3c-.6 0-1.1.5-1.1 1.1v10.1c0 .6.5 1.1 1.1 1.1h2.3c.6 0 1.1-.5 1.1-1.1v-2.8h2.8c2.4 0 4.3-1.9 4.3-4.2zm-4.3 1.9h-2.8v-3.8h2.8c1 0 1.9.9 1.9 1.9 0 1-.9 1.9-1.9 1.9z"/></svg>
                                     <span>PhonePe</span>
@@ -1491,7 +1824,7 @@
                                   {/* GPay Button */}
                                   <a 
                                     href={gpayUrl} 
-                                    className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 font-bold text-xs py-2.5 px-3 rounded-lg shadow-sm transition-all neon-red-btn"
+                                    className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-white text-slate-800 border border-slate-300 hover:bg-slate-50 font-bold text-xs py-2.5 px-3 rounded-lg shadow-sm transition-all"
                                   >
                                     <svg className="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
                                     <span>Google Pay</span>
@@ -1500,7 +1833,7 @@
                                   {/* Pay via Other Apps Button */}
                                   <a 
                                     href={genericUpiUrl} 
-                                    className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all neon-red-btn"
+                                    className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow transition-all"
                                   >
                                     <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/></svg>
                                     <span>Pay via Other App</span>
@@ -1510,14 +1843,13 @@
                             );
                           })()}
 
-                          {/* PAYMENT SCREENSHOT UPLOAD INSTEAD OF UTR BOX */}
+                          {/* PAYMENT SCREENSHOT UPLOAD */}
                           <div className="space-y-1">
-                            <label className="block text-xs font-extrabold text-rose-600">Upload Payment Screenshot (Mandatory):</label>
+                            <label className="block text-xs font-extrabold text-rose-600">Upload Payment Screenshot (Required for QR/Manual UPI):</label>
                             <input 
                               type="file" 
                               name="main_payment_screenshot" 
                               accept="image/*" 
-                              required 
                               onChange={(e) => handleFilePreview(e, 'prev_img_main_payment', 'prev_pdf_main_payment')}
                               className="w-full bg-slate-50 border border-rose-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-rose-600" 
                             />
@@ -1528,9 +1860,9 @@
                           <button 
                             type="submit" 
                             disabled={isSubmitting}
-                            className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm py-3.5 rounded-xl shadow-lg transition-all active:scale-95 disabled:bg-slate-400 mt-2 neon-red-btn"
+                            className="w-full tiranga-btn-primary font-extrabold text-sm py-3.5 rounded-xl shadow-lg transition-all active:scale-95 disabled:bg-slate-400 mt-2"
                           >
-                            {isSubmitting ? "Uploading & Submitting..." : "Submit Application →"}
+                            {isSubmitting ? "Uploading & Submitting..." : "Submit Application with Screenshot Proof →"}
                           </button>
                         </form>
                       </>
@@ -1539,25 +1871,25 @@
                 </main>
               ) : (
                 <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
-                  {/* COLORFUL NOTICE BOARD WITH BLINKING LIVE BUTTON */}
-                  <div className="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border border-indigo-200 rounded-2xl p-4 shadow-sm relative overflow-hidden">
-                    <div className="flex items-center justify-between border-b border-indigo-100 pb-2.5 mb-3">
+                  {/* COLORFUL TIRANGA NOTICE BOARD WITH BLINKING LIVE BUTTON */}
+                  <div className="notice-board-box bg-gradient-to-r from-orange-50 via-white to-emerald-50 border-2 border-orange-300 rounded-2xl p-4 shadow-sm relative overflow-hidden">
+                    <div className="flex items-center justify-between border-b border-orange-200 pb-2.5 mb-3">
                       <div className="flex items-center gap-2">
-                        <span className="text-indigo-600 animate-bounce"><Icons.Bell /></span>
-                        <h2 className="font-black text-indigo-950 text-sm uppercase tracking-wider">Notice Board</h2>
+                        <span className="text-orange-600 animate-bounce"><Icons.Bell /></span>
+                        <h2 className="font-black text-orange-950 text-sm uppercase tracking-wider">Notice Board</h2>
                       </div>
                       
                       {/* BLINKING LIVE BUTTON */}
-                      <span className="inline-flex items-center gap-1.5 bg-rose-600 text-white font-extrabold text-[10px] px-2.5 py-0.5 rounded-full shadow-md tracking-wider">
-                        <span className="w-2 h-2 rounded-full bg-amber-300 animate-ping"></span>
+                      <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-orange-600 to-emerald-600 text-white font-extrabold text-[10px] px-2.5 py-0.5 rounded-full shadow-md tracking-wider">
+                        <span className="w-2 h-2 rounded-full bg-white animate-ping"></span>
                         LIVE
                       </span>
                     </div>
 
                     <div className="space-y-2.5">
                       {notices.map((n) => (
-                        <div key={n.id} className="flex items-start gap-2.5 text-xs font-semibold text-slate-800 bg-white/80 p-2 rounded-xl border border-indigo-100/60 shadow-2xs">
-                          <span className="text-indigo-600 font-extrabold text-sm leading-none">•</span>
+                        <div key={n.id} className="flex items-start gap-2.5 text-xs font-semibold text-slate-800 bg-white/90 p-2.5 rounded-xl border border-orange-200/80 shadow-2xs">
+                          <span className="text-orange-600 font-extrabold text-sm leading-none">•</span>
                           <span className="leading-relaxed">{n.text}</span>
                         </div>
                       ))}
@@ -1572,7 +1904,7 @@
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         placeholder="Search form, service..."
-                        className="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-medium focus:outline-none focus:border-blue-600"
+                        className="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-medium focus:outline-none focus:border-orange-500"
                       />
                     </div>
 
@@ -1585,7 +1917,7 @@
                             key={catName}
                             onClick={() => handleCategorySelect(catName)}
                             style={getCategoryButtonStyle(catObj, isSelected)}
-                            className="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border shrink-0 neon-red-btn"
+                            className="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border shrink-0"
                           >
                             {catName}
                           </button>
@@ -1599,17 +1931,18 @@
                       <div
                         key={srv.id}
                         onClick={() => openServiceDetail(srv)}
-                        className="bg-white rounded-xl border border-slate-300 p-4 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between"
+                        className="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs hover:shadow-md hover:border-orange-400 transition-all cursor-pointer flex flex-col justify-between relative overflow-hidden group"
                       >
+                        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-amber-300 to-emerald-500 opacity-80 group-hover:opacity-100 transition-opacity"></div>
                         <div>
-                          <span className="bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded border border-slate-200">
+                          <span className="post-category-badge bg-orange-100 text-orange-900 text-[10px] font-bold px-2 py-0.5 rounded border border-orange-200">
                             {srv.category}
                           </span>
                           <h4 className="font-bold text-slate-900 text-sm mt-2">{srv.title}</h4>
                           <p className="text-xs text-slate-500 mt-1 line-clamp-2">{srv.description}</p>
                         </div>
 
-                        <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-700 mt-3">
+                        <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-orange-600 mt-3 group-hover:text-emerald-700">
                           <span>Apply Now & Fill Details</span>
                           <Icons.ChevronRight />
                         </div>
@@ -1619,15 +1952,18 @@
                 </main>
               )}
 
-              {/* FOOTER WITH MODAL BUTTONS & DEDICATED CUSTOMER SUPPORT MODAL TRIGGER */}
-              <footer className="bg-slate-900 text-slate-400 text-xs py-6 mt-12 border-t border-slate-800 text-center px-4">
-                <p className="font-bold text-white">SGS ONLINE SERVICE © 2026</p>
+              {/* FOOTER WITH COMPLETE COMPLIANCE MODAL BUTTONS, TIMELINE & ADDRESS */}
+              <footer className="bg-slate-950 text-slate-400 text-xs py-6 mt-12 border-t-4 border-orange-500 text-center px-4 relative">
+                <p className="font-extrabold text-white">SGS ONLINE SERVICE © 2026 • Private Online Assistance Desk</p>
+                <p className="text-[11px] text-slate-500 mt-1">📍 Registered Office: District Arrah, Bhojpur, Bihar, India - 802301 | Support: contactsgsonlineservice@gmail.com</p>
                 <div className="flex flex-wrap items-center justify-center gap-4 text-xs mt-3">
-                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('about'); }} className="text-slate-400 hover:text-white underline">About Us</button>
-                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('support'); }} className="text-slate-400 hover:text-white underline">Customer Support</button>
-                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('privacy'); }} className="text-slate-400 hover:text-white underline">Privacy Policy</button>
-                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('terms'); }} className="text-slate-400 hover:text-white underline">Terms & Conditions</button>
-                  <button onClick={() => { window.history.pushState({ page: 'modal' }, ''); setActiveModalPage('disclaimer'); }} className="text-slate-400 hover:text-white underline">Disclaimer</button>
+                  <button onClick={() => { setActiveModalPage('about'); }} className="text-slate-400 hover:text-orange-400 underline">About Us</button>
+                  <button onClick={() => { setActiveModalPage('support'); }} className="text-slate-400 hover:text-emerald-400 underline">Customer Support & Grievance</button>
+                  <button onClick={() => { setActiveModalPage('delivery_policy'); }} className="text-slate-400 hover:text-orange-400 underline">Fulfillment Timeline</button>
+                  <button onClick={() => { setActiveModalPage('privacy'); }} className="text-slate-400 hover:text-orange-400 underline">Privacy Policy</button>
+                  <button onClick={() => { setActiveModalPage('payment_policy'); }} className="text-slate-400 hover:text-emerald-400 underline">Payment & Refund Policy</button>
+                  <button onClick={() => { setActiveModalPage('terms'); }} className="text-slate-400 hover:text-emerald-400 underline">Terms & Conditions</button>
+                  <button onClick={() => { setActiveModalPage('disclaimer'); }} className="text-slate-400 hover:text-orange-400 underline">Disclaimer</button>
                 </div>
               </footer>
             </>
