@@ -4,7 +4,7 @@
     <meta name="google-site-verification" content="n6gutNuaXm4jPFef6_Yxsfz5UcDynkGHi86Py-8IH-0" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>SGS Premium SMM Engine - Global Enterprise Hub</title>
+    <title>SGS Premium SMM Engine - Enterprise Hub</title>
     
     <!-- Tailwind CSS Integration -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -23,11 +23,10 @@
                         mono: ['"JetBrains Mono"', 'monospace'],
                     },
                     boxShadow: {
-                        'glow-rose': '0 0 35px rgba(244, 63, 94, 0.25)',
-                        'glow-emerald': '0 0 35px rgba(16, 185, 129, 0.25)',
-                        'glow-purple': '0 0 35px rgba(168, 85, 247, 0.25)',
-                        'glow-amber': '0 0 35px rgba(245, 158, 11, 0.25)',
-                        'glow-whatsapp': '0 0 30px rgba(37, 211, 102, 0.35)',
+                        'glow-rose': '0 0 30px rgba(244, 63, 94, 0.25)',
+                        'glow-emerald': '0 0 30px rgba(16, 185, 129, 0.25)',
+                        'glow-purple': '0 0 30px rgba(168, 85, 247, 0.25)',
+                        'glow-amber': '0 0 30px rgba(245, 158, 11, 0.25)',
                     }
                 }
             }
@@ -35,6 +34,7 @@
     </script>
 
     <style>
+        /* Mobile Single-Finger Smooth Touch Scrolling Optimization */
         html {
             overflow-x: hidden;
             -webkit-tap-highlight-color: transparent;
@@ -57,21 +57,21 @@
 
         /* Glassmorphic VIP Paneling */
         .glass-panel {
-            background: rgba(13, 17, 28, 0.85);
-            backdrop-filter: blur(24px) saturate(200%);
-            -webkit-backdrop-filter: blur(24px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(13, 17, 28, 0.75);
+            backdrop-filter: blur(20px) saturate(190%);
+            -webkit-backdrop-filter: blur(20px) saturate(190%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .glass-panel-active {
-            border: 1px solid rgba(244, 63, 94, 0.5);
-            background: rgba(244, 63, 94, 0.12);
-            box-shadow: 0 0 30px rgba(244, 63, 94, 0.2);
+            border: 1px solid rgba(244, 63, 94, 0.4);
+            background: rgba(244, 63, 94, 0.08);
+            box-shadow: 0 0 25px rgba(244, 63, 94, 0.15);
         }
 
         /* Premium Visual Gradients */
         .vip-gradient-text {
-            background: linear-gradient(135deg, #fbbf24 0%, #f43f5e 50%, #e11d48 100%);
+            background: linear-gradient(135deg, #fbbf24 0%, #f43f5e 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -82,10 +82,10 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* Custom Scrollbar Styling */
+        /* Hide Scrollbars */
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 4px;
+            height: 4px;
         }
         ::-webkit-scrollbar-track {
             background: #030712;
@@ -93,9 +93,6 @@
         ::-webkit-scrollbar-thumb {
             background: #1f2937;
             border-radius: 99px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #374151;
         }
 
         @keyframes pulse-slow {
@@ -105,25 +102,45 @@
         .animate-pulse-slow {
             animation: pulse-slow 6s infinite ease-in-out;
         }
+
+        /* Responsive Desktop Portal Architecture Overrides */
+        @media (min-width: 1024px) {
+            #authContainer .glass-panel {
+                max-width: 32rem;
+                padding: 2.5rem;
+            }
+            #google-login-btn {
+                display: flex !important;
+            }
+            #google-login-divider {
+                display: flex !important;
+            }
+        }
+        #google-login-btn {
+            display: flex !important;
+        }
+        #google-login-divider {
+            display: flex !important;
+        }
     </style>
 </head>
-<body class="text-[#f1f5f9] font-sans min-h-screen flex flex-col antialiased selection:bg-rose-500 selection:text-white">
+<body class="text-[#f1f5f9] font-sans min-h-screen flex flex-col antialiased selection:bg-rose-500 selection:text-white pb-24 lg:pb-0">
 
-    <!-- Global Fullscreen Data Loading Overlay with automatic fadeout failsafe -->
-    <div id="globalLoadingScreen" class="fixed inset-0 bg-[#030712] z-[9999] flex flex-col items-center justify-center transition-opacity duration-500">
+    <!-- Global Fullscreen Data Loading Overlay -->
+    <div id="globalLoadingScreen" class="fixed inset-0 bg-[#030712] z-[9999] flex flex-col items-center justify-center transition-opacity duration-300">
         <div class="relative flex items-center justify-center">
-            <div class="w-20 h-20 border-4 border-rose-500/20 border-t-rose-500 rounded-full animate-spin"></div>
-            <i class="fa-solid fa-bolt text-rose-500 text-2xl absolute animate-pulse"></i>
+            <div class="w-16 h-16 border-4 border-rose-500/20 border-t-rose-500 rounded-full animate-spin"></div>
+            <i class="fa-solid fa-bolt text-rose-500 text-xl absolute animate-pulse"></i>
         </div>
-        <p class="mt-5 text-xs font-mono text-slate-400 uppercase tracking-widest animate-pulse">Synchronizing Enterprise Engine Data...</p>
+        <p class="mt-4 text-xs font-mono text-slate-400 uppercase tracking-widest animate-pulse">Synchronizing Node Data...</p>
     </div>
 
-    <!-- Ambient Glow Background Effects -->
-    <div class="fixed -top-40 -left-40 w-96 h-96 bg-rose-600/10 rounded-full blur-[120px] pointer-events-none z-0 animate-pulse-slow"></div>
-    <div class="fixed top-1/2 -right-40 w-96 h-96 bg-amber-600/10 rounded-full blur-[120px] pointer-events-none z-0 animate-pulse-slow" style="animation-delay: 2s;"></div>
+    <!-- Ambient Glow Effects -->
+    <div class="fixed -top-40 -left-40 w-80 h-80 bg-rose-600/10 rounded-full blur-[100px] pointer-events-none z-0 animate-pulse-slow"></div>
+    <div class="fixed top-1/2 -right-40 w-80 h-80 bg-amber-600/10 rounded-full blur-[100px] pointer-events-none z-0 animate-pulse-slow" style="animation-delay: 2s;"></div>
 
     <!-- Top Level Realtime Banner -->
-    <div id="topSuccessBanner" class="hidden bg-emerald-950/95 backdrop-blur-md text-emerald-300 font-medium text-xs sm:text-sm px-6 py-3.5 text-center sticky top-0 z-50 shadow-glow-emerald border-b border-emerald-500/30 flex items-center justify-center space-x-3 transition-all duration-300">
+    <div id="topSuccessBanner" class="hidden bg-emerald-950/95 backdrop-blur-md text-emerald-300 font-medium text-xs sm:text-sm px-6 py-4 text-center sticky top-0 z-50 shadow-glow-emerald border-b border-emerald-500/30 flex items-center justify-center space-x-3 transition-all duration-300">
         <span class="flex h-2.5 w-2.5 relative">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
@@ -135,47 +152,46 @@
     <!-- Toast Notifications Container -->
     <div id="toastContainer" class="fixed top-4 right-4 left-4 sm:left-auto sm:right-6 z-50 flex flex-col gap-2 max-w-sm"></div>
 
-    <!-- Authentication Container Modal -->
-    <div id="authContainer" class="fixed inset-0 bg-[#030712]/95 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto backdrop-blur-md">
-        <div class="glass-panel p-6 sm:p-10 rounded-[36px] w-full max-w-lg shadow-2xl relative overflow-hidden transition-all duration-300 my-auto border-slate-800">
-            <div class="absolute top-0 left-0 right-0 h-[4px] bg-gradient-to-r from-amber-500 via-rose-500 to-amber-500"></div>
+    <div id="authContainer" class="fixed inset-0 bg-[#030712] z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="glass-panel p-6 sm:p-8 rounded-[32px] w-full max-w-md shadow-2xl relative overflow-hidden transition-all duration-300">
+            <div class="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-amber-500 via-rose-500 to-amber-500"></div>
             
-            <div class="text-center mb-7">
-                <div class="inline-flex items-center space-x-2 bg-rose-500/10 border border-rose-500/20 px-4 py-1.5 rounded-full text-[10px] text-rose-400 font-bold tracking-widest mb-3 uppercase">
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center space-x-2 bg-rose-500/10 border border-rose-500/20 px-3.5 py-1.5 rounded-full text-[10px] text-rose-400 font-bold tracking-widest mb-3 uppercase">
                     <i class="fa-solid fa-shield-halved animate-pulse"></i>
-                    <span>Enterprise Identity Gateway</span>
+                    <span>Secure Node Handshake</span>
                 </div>
-                <h1 class="text-3xl sm:text-4xl font-black tracking-tight text-white mb-2">
+                <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white mb-1.5">
                     <span class="vip-gradient-text">SGS INSTABOOST</span>
                 </h1>
-                <p id="authSubTitle" class="text-[10px] text-slate-400 font-mono tracking-wider uppercase">Live Database Identity Validation Gateway</p>
+                <p id="authSubTitle" class="text-[9px] text-slate-400 font-mono tracking-wider uppercase">Live Database Identity Validation Gateway</p>
             </div>
 
             <!-- Login Form view -->
             <div id="loginForm" class="space-y-4">
-                <button id="google-login-btn" type="button" class="w-full py-3.5 bg-[#0d1220]/90 hover:bg-slate-900 border border-slate-800 text-slate-200 font-bold text-xs rounded-2xl flex items-center justify-center space-x-3 transition active:scale-[0.98] shadow-md">
+                <button id="google-login-btn" type="button" class="hidden w-full py-3.5 bg-[#0d1220]/90 hover:bg-slate-900 border border-slate-800 text-slate-200 font-bold text-xs rounded-2xl flex items-center justify-center space-x-3 transition active:scale-[0.98] shadow-md">
                     <i class="fa-brands fa-google text-rose-500 text-base"></i>
-                    <span>Continue with Google Identity</span>
+                    <span>Continue with Google</span>
                 </button>
 
-                <div class="relative flex py-1 items-center">
+                <div id="google-login-divider" class="relative flex py-1 items-center hidden">
                     <div class="flex-grow border-t border-slate-800"></div>
-                    <span class="flex-shrink mx-3 text-[9px] uppercase font-mono text-slate-500">Or Access With Email Identity</span>
+                    <span class="flex-shrink mx-3 text-[9px] uppercase font-mono text-slate-500">Or Access With Email</span>
                     <div class="flex-grow border-t border-slate-800"></div>
                 </div>
 
                 <div>
                     <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1.5 tracking-wider">Access Email Identity</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-500"><i class="fa-solid fa-envelope text-sm"></i></span>
-                        <input type="email" id="loginEmail" placeholder="name@domain.com" class="w-full bg-[#0d1220]/80 pl-11 pr-4 py-3.5 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-200 text-sm font-semibold transition placeholder:text-slate-600 focus:ring-1 focus:ring-rose-500">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500"><i class="fa-solid fa-envelope text-sm"></i></span>
+                        <input type="email" id="loginEmail" placeholder="name@domain.com" class="w-full bg-[#0d1220]/80 pl-10 pr-4 py-3 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-200 text-sm font-semibold transition placeholder:text-slate-600 focus:ring-1 focus:ring-rose-500">
                     </div>
                 </div>
                 <div>
                     <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1.5 tracking-wider">Passphrase</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-500"><i class="fa-solid fa-lock text-sm"></i></span>
-                        <input type="password" id="loginPass" placeholder="••••••••" class="w-full bg-[#0d1220]/80 pl-11 pr-4 py-3.5 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-200 text-sm font-semibold transition placeholder:text-slate-600 focus:ring-1 focus:ring-rose-500">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500"><i class="fa-solid fa-lock text-sm"></i></span>
+                        <input type="password" id="loginPass" placeholder="••••••••" class="w-full bg-[#0d1220]/80 pl-10 pr-4 py-3 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-200 text-sm font-semibold transition placeholder:text-slate-600 focus:ring-1 focus:ring-rose-500">
                     </div>
                 </div>
                 
@@ -188,7 +204,7 @@
                 </div>
 
                 <div class="pt-2">
-                    <button id="login-submit-btn" class="w-full py-4 bg-gradient-to-r from-rose-600 via-amber-600 to-rose-600 hover:from-rose-500 hover:to-rose-500 text-white font-extrabold uppercase text-xs tracking-widest rounded-2xl shadow-glow-rose transition active:scale-[0.98]">
+                    <button id="login-submit-btn" class="w-full py-3.5 bg-gradient-to-r from-rose-600 via-amber-600 to-rose-600 hover:from-rose-500 hover:to-rose-500 text-white font-extrabold uppercase text-xs tracking-widest rounded-2xl shadow-glow-rose transition active:scale-[0.98]">
                         Establish Secure Session
                     </button>
                 </div>
@@ -196,20 +212,10 @@
                 <p class="text-xs text-center text-slate-400 mt-4">Unregistered Node? <span id="trigger-signup-btn" class="text-rose-400 font-bold cursor-pointer hover:underline">Create New Account</span></p>
 
                 <!-- Footer Legal Policy Links on Login Page -->
-                <div class="mt-6 pt-4 border-t border-slate-800/60 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1.5 text-[10px] text-slate-400 font-mono">
-                    <span class="hover:text-rose-400 cursor-pointer underline transition" id="btn-show-about-login">About Us</span>
+                <div class="mt-4 pt-3 border-t border-slate-800/40 flex items-center justify-center space-x-4 text-[10px] text-slate-500 font-mono">
+                    <span class="hover:text-slate-300 cursor-pointer underline" id="btn-show-privacy-login">Privacy Policy</span>
                     <span>•</span>
-                    <span class="hover:text-rose-400 cursor-pointer underline transition" id="btn-show-support-login">Customer Support</span>
-                    <span>•</span>
-                    <span class="hover:text-rose-400 cursor-pointer underline transition" id="btn-show-fulfillment-login">Fulfillment Policy</span>
-                    <span>•</span>
-                    <span class="hover:text-rose-400 cursor-pointer underline transition" id="btn-show-privacy-login">Privacy Policy</span>
-                    <span>•</span>
-                    <span class="hover:text-rose-400 cursor-pointer underline transition" id="btn-show-refund-login">Refund & Deposit</span>
-                    <span>•</span>
-                    <span class="hover:text-rose-400 cursor-pointer underline transition" id="btn-show-terms-login">Terms of Agreement</span>
-                    <span>•</span>
-                    <span class="hover:text-rose-400 cursor-pointer underline transition" id="btn-show-disclaimer-login">Disclaimer</span>
+                    <span class="hover:text-slate-300 cursor-pointer underline" id="btn-show-terms-login">Terms of Agreement</span>
                 </div>
             </div>
 
@@ -218,31 +224,31 @@
                 <div>
                     <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1.5 tracking-wider">Provide Target Email</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-500"><i class="fa-solid fa-at text-sm"></i></span>
-                        <input type="email" id="registerEmail" placeholder="Enter registration email" class="w-full bg-[#0d1220]/80 pl-11 pr-4 py-3.5 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-200 text-sm font-semibold transition placeholder:text-slate-600 focus:ring-1 focus:ring-rose-500">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500"><i class="fa-solid fa-at text-sm"></i></span>
+                        <input type="email" id="registerEmail" placeholder="Enter registration email" class="w-full bg-[#0d1220]/80 pl-10 pr-4 py-3 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-200 text-sm font-semibold transition placeholder:text-slate-600 focus:ring-1 focus:ring-rose-500">
                     </div>
                 </div>
                 <div>
                     <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1.5 tracking-wider">Configure Secure Password</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-500"><i class="fa-solid fa-key text-sm"></i></span>
-                        <input type="password" id="registerPass" placeholder="Min 6 characters required" class="w-full bg-[#0d1220]/80 pl-11 pr-4 py-3.5 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-200 text-sm font-semibold transition placeholder:text-slate-600 focus:ring-1 focus:ring-rose-500">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500"><i class="fa-solid fa-key text-sm"></i></span>
+                        <input type="password" id="registerPass" placeholder="Min 6 characters required" class="w-full bg-[#0d1220]/80 pl-10 pr-4 py-3 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-200 text-sm font-semibold transition placeholder:text-slate-600 focus:ring-1 focus:ring-rose-500">
                     </div>
                 </div>
                 <div>
                     <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1.5 tracking-wider">Referral Code (Optional)</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-500"><i class="fa-solid fa-ticket text-sm"></i></span>
-                        <input type="text" id="registerRefCode" placeholder="Ex: SGS-8A3B2C" class="w-full bg-[#0d1220]/80 pl-11 pr-4 py-3.5 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-200 text-sm font-mono uppercase transition placeholder:text-slate-600 focus:ring-1 focus:ring-rose-500">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500"><i class="fa-solid fa-ticket text-sm"></i></span>
+                        <input type="text" id="registerRefCode" placeholder="Ex: SGS-8A3B2C" class="w-full bg-[#0d1220]/80 pl-10 pr-4 py-3 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-200 text-sm font-mono uppercase transition placeholder:text-slate-600 focus:ring-1 focus:ring-rose-500">
                     </div>
                 </div>
 
-                <div class="text-[11px] text-slate-400 leading-relaxed bg-[#0d1220]/85 p-3.5 rounded-2xl border border-slate-850 flex items-start space-x-2.5">
+                <div class="text-[11px] text-slate-400 leading-relaxed bg-[#0d1220]/85 p-3 rounded-xl border border-slate-850 flex items-start space-x-2">
                     <input type="checkbox" id="agree-terms" checked class="mt-0.5 rounded bg-slate-900 border-slate-850 text-rose-500 focus:ring-rose-500">
                     <label for="agree-terms">I authorize the secure <span class="text-rose-400 cursor-pointer underline" id="btn-show-privacy">Privacy Mandate</span> and <span class="text-rose-400 cursor-pointer underline" id="btn-show-terms">Terms of Agreement</span>.</label>
                 </div>
 
-                <button id="register-submit-btn" type="button" class="w-full py-4 bg-gradient-to-r from-amber-600 via-rose-600 to-amber-600 hover:from-amber-500 hover:to-rose-500 text-white font-extrabold uppercase text-xs tracking-widest rounded-2xl shadow-glow-rose transition active:scale-[0.98]">
+                <button id="register-submit-btn" type="button" class="w-full py-3.5 bg-gradient-to-r from-amber-600 via-rose-600 to-amber-600 hover:from-amber-500 hover:to-rose-500 text-white font-extrabold uppercase text-xs tracking-widest rounded-2xl shadow-glow-rose transition active:scale-[0.98]">
                     Verify & Create Session Token
                 </button>
                 <p class="text-xs text-center text-slate-400">Already registered? <span id="trigger-login-btn" class="text-amber-400 font-bold cursor-pointer hover:underline">Access Terminal</span></p>
@@ -253,11 +259,11 @@
                 <div>
                     <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1.5 tracking-wider">Recovery Target Email</label>
                     <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-500"><i class="fa-solid fa-paper-plane text-sm"></i></span>
-                        <input type="email" id="forgotEmail" placeholder="Enter registered email address" class="w-full bg-[#0d1220]/80 pl-11 pr-4 py-3.5 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-200 text-sm font-semibold transition placeholder:text-slate-600 focus:ring-1 focus:ring-rose-500">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500"><i class="fa-solid fa-paper-plane text-sm"></i></span>
+                        <input type="email" id="forgotEmail" placeholder="Enter registered email address" class="w-full bg-[#0d1220]/80 pl-10 pr-4 py-3 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-200 text-sm font-semibold transition placeholder:text-slate-600 focus:ring-1 focus:ring-rose-500">
                     </div>
                 </div>
-                <button id="reset-submit-btn" class="w-full py-4 bg-purple-600 hover:bg-purple-500 text-white font-bold uppercase text-xs tracking-widest rounded-2xl transition shadow-glow-purple active:scale-[0.98]">
+                <button id="reset-submit-btn" class="w-full py-3.5 bg-purple-600 hover:bg-purple-500 text-white font-bold uppercase text-xs tracking-widest rounded-2xl transition shadow-glow-purple active:scale-[0.98]">
                     Transmit Recovery Token
                 </button>
                 <p class="text-xs text-center text-slate-400"><span id="trigger-login-btn-2" class="text-slate-400 hover:text-white cursor-pointer underline font-medium font-mono">Return to Gateway Access</span></p>
@@ -270,97 +276,66 @@
         </div>
     </div>
 
-    <!-- Main Application Container -->
-    <div id="appContainer" class="hidden flex-col min-h-screen relative z-10">
-        <!-- Enterprise Top Live Ticker Bar -->
-        <div class="bg-[#030712] border-b border-slate-900/80 px-6 py-2 text-[10px] text-slate-400 font-mono tracking-widest flex items-center justify-between overflow-x-auto whitespace-nowrap select-none">
-            <div class="flex items-center space-x-3">
-                <span class="flex h-2 w-2 relative">
+    <div id="appContainer" class="hidden flex-col min-h-screen relative z-10 pb-16 lg:pb-0">
+        <div class="bg-[#030712] border-b border-slate-900/60 px-4 py-1.5 text-[9px] text-slate-500 font-mono tracking-widest flex items-center justify-between overflow-x-auto whitespace-nowrap select-none">
+            <div class="flex items-center space-x-2">
+                <span class="flex h-1.5 w-1.5 relative">
                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
                 </span>
-                <span>SGS ENTERPRISE NODE • ONLINE SLA SECURED</span>
-                <span class="hidden md:inline text-slate-600">•</span>
-                <span class="hidden md:inline text-slate-400">PROPRIETOR: SACHIN KUMAR</span>
+                <span>LIVE AUTH HANDSHAKE COMPLETED SECURELY</span>
             </div>
-            <div class="flex items-center space-x-6">
-                <span class="hidden sm:inline"><i class="fa-solid fa-location-dot text-rose-500 mr-1"></i> ARA, BHOJPUR, BIHAR (802165)</span>
+            <div class="hidden sm:flex items-center space-x-4">
                 <span>LATENCY: 8ms</span>
                 <span>ENC: AES-256</span>
             </div>
         </div>
 
-        <!-- Desktop Web Header -->
-        <header class="glass-panel sticky top-0 z-40 border-b border-slate-800/60 px-6 md:px-12 py-4 flex justify-between items-center shadow-2xl">
-            <div class="flex items-center space-x-4">
-                <button id="drawer-toggle-btn" class="text-slate-400 hover:text-rose-500 p-2.5 hover:bg-slate-900 rounded-2xl border border-slate-800/60 transition">
-                    <i class="fa-solid fa-bars text-lg"></i>
+        <header class="glass-panel sticky top-0 z-40 border-b border-slate-800/50 px-4 md:px-8 py-3.5 flex justify-between items-center shadow-2xl">
+            <div class="flex items-center space-x-3">
+                <button id="drawer-toggle-btn" class="text-slate-400 hover:text-rose-500 p-2.5 hover:bg-slate-900 rounded-xl border border-slate-800/40 transition">
+                    <i class="fa-solid fa-bars text-base sm:text-lg"></i>
                 </button>
-                <span class="text-lg sm:text-2xl font-black tracking-tight text-white flex items-center space-x-2">
-                    <span class="vip-gradient-text font-black tracking-tight">SGS INSTABOOST</span>
+                <span class="text-base sm:text-lg font-black tracking-tight text-white flex items-center space-x-2">
+                    <span class="vip-gradient-text font-black">SGS INSTABOOST</span>
                 </span>
             </div>
             
-            <div class="flex items-center space-x-3 sm:space-x-4">
-                <!-- Direct WhatsApp Header Action -->
-                <a href="https://wa.me/917462986977" target="_blank" rel="noopener noreferrer" class="hidden sm:flex items-center space-x-2 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 px-3.5 py-2 rounded-2xl text-xs font-bold transition shadow-glow-whatsapp">
-                    <i class="fa-brands fa-whatsapp text-emerald-400 text-sm"></i>
-                    <span>+91 7462986977</span>
-                </a>
-
-                <!-- User Wallet Balance Card -->
-                <div class="bg-[#090d16] border border-emerald-500/30 shadow-glow-emerald px-4 py-2 rounded-2xl flex items-center space-x-2.5">
-                    <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400 hidden sm:inline font-mono">Wallet</span>
-                    <span class="text-sm font-black tracking-wide text-white">₹<span id="userBalance">0.00</span></span>
-                </div>
-
-                <!-- Google User Profile Avatar Display -->
-                <img id="headerUserAvatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=SGS" class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-slate-900 p-0.5 border border-rose-500/40 object-cover shadow-glow-rose cursor-pointer hover:scale-105 transition" alt="Google Profile Avatar" title="User Profile">
+            <div class="bg-[#090d16] border border-emerald-500/20 shadow-glow-emerald px-3 sm:px-4 py-2 rounded-2xl flex items-center space-x-2">
+                <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="text-[9px] uppercase font-bold tracking-wider text-slate-400 hidden sm:inline font-mono">Balance</span>
+                <span class="text-xs sm:text-sm font-black tracking-wide text-white">₹<span id="userBalance">0.00</span></span>
             </div>
         </header>
 
-        <!-- Main Desktop & Web Portal Layout -->
-        <div class="flex flex-1 flex-col lg:flex-row max-w-7xl w-full mx-auto p-4 sm:p-6 md:p-8 gap-8">
+        <div class="flex flex-1 flex-col lg:flex-row max-w-7xl w-full mx-auto p-4 md:p-6 gap-6">
             
-            <!-- Enterprise Desktop Sidebar Navigation -->
-            <aside class="hidden lg:flex lg:w-72 flex-col gap-2.5 shrink-0 border-r border-slate-800/50 pr-6">
-                <div class="px-3 py-2 text-[10px] uppercase font-mono tracking-widest text-slate-500 font-bold">Portal Directives</div>
-                
-                <button id="tab-btn-dashboard" class="text-left p-4 rounded-2xl flex items-center space-x-3.5 font-semibold transition tab-btn glass-panel-active text-white">
-                    <i class="fa-solid fa-circle-plus text-rose-500 text-base"></i><span>New Order Hub</span>
+            <aside class="hidden lg:flex lg:w-64 flex-col gap-2 shrink-0 border-r border-slate-800/30 pr-6">
+                <button id="tab-btn-dashboard" class="text-left p-3.5 rounded-2xl flex items-center space-x-3 font-semibold transition tab-btn glass-panel-active text-white">
+                    <i class="fa-solid fa-circle-plus text-rose-500"></i><span>New Order Hub</span>
                 </button>
-                <button id="tab-btn-myorders" class="text-left p-4 rounded-2xl flex items-center space-x-3.5 font-medium transition text-slate-400 hover:text-slate-200 hover:bg-slate-900 tab-btn">
-                    <i class="fa-solid fa-folder-open text-sky-400 text-base"></i><span>Order Logs Ledger</span>
+                <button id="tab-btn-myorders" class="text-left p-3.5 rounded-2xl flex items-center space-x-3 font-medium transition text-slate-400 hover:text-slate-200 hover:bg-slate-900 tab-btn">
+                    <i class="fa-solid fa-folder-open text-sky-400"></i><span>Order Logs</span>
                 </button>
-                <button id="tab-btn-addfunds" class="text-left p-4 rounded-2xl flex items-center space-x-3.5 font-medium transition text-slate-400 hover:text-slate-200 hover:bg-slate-900 tab-btn">
-                    <i class="fa-solid fa-wallet text-emerald-400 text-base"></i><span>Settle Wallet</span>
+                <button id="tab-btn-addfunds" class="text-left p-3.5 rounded-2xl flex items-center space-x-3 font-medium transition text-slate-400 hover:text-slate-200 hover:bg-slate-900 tab-btn">
+                    <i class="fa-solid fa-wallet text-emerald-400"></i><span>Settle Wallet</span>
                 </button>
-                <button id="tab-btn-refer" class="text-left p-4 rounded-2xl flex items-center space-x-3.5 font-medium transition text-slate-400 hover:text-slate-200 hover:bg-slate-900 tab-btn">
-                    <i class="fa-solid fa-gift text-amber-500 text-base"></i><span>Affiliate Program</span>
+                <button id="tab-btn-refer" class="text-left p-3.5 rounded-2xl flex items-center space-x-3 font-medium transition text-slate-400 hover:text-slate-200 hover:bg-slate-900 tab-btn">
+                    <i class="fa-solid fa-gift text-amber-500"></i><span>Affiliate Program</span>
                 </button>
                 
-                <div class="my-3 border-t border-slate-800/80"></div>
+                <div class="my-4 border-t border-slate-800/60"></div>
                 
-                <button id="btn-desktop-main" class="text-left p-3.5 rounded-xl flex items-center space-x-3 text-xs text-slate-400 hover:text-white transition">
-                    <i class="fa-solid fa-globe text-blue-500"></i><span>Main Website Portal</span>
+                <button id="btn-desktop-main" class="text-left p-3 rounded-xl flex items-center space-x-3 text-xs text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-globe text-blue-500"></i><span>Main Website</span>
                 </button>
-                <button id="btn-desktop-security" class="text-left p-3.5 rounded-xl flex items-center space-x-3 text-xs text-slate-400 hover:text-white transition">
+                <button id="btn-desktop-security" class="text-left p-3 rounded-xl flex items-center space-x-3 text-xs text-slate-400 hover:text-white transition">
                     <i class="fa-solid fa-shield-halved text-emerald-500"></i><span>Security Directives</span>
                 </button>
-
-                <!-- Quick Merchant Info Card in Sidebar -->
-                <div class="mt-auto bg-[#090d16] p-4 rounded-2xl border border-slate-800/80 space-y-2 text-[10px] font-mono text-slate-400">
-                    <p class="font-bold text-slate-300 uppercase tracking-wider">Merchant Hub</p>
-                    <p><i class="fa-solid fa-user text-rose-400 mr-1.5"></i> Sachin Kumar</p>
-                    <p><i class="fa-solid fa-envelope text-sky-400 mr-1.5"></i> contactsgsinstaboost@gmail.com</p>
-                    <p><i class="fa-solid fa-phone text-emerald-400 mr-1.5"></i> +91 7462986977</p>
-                    <p><i class="fa-solid fa-location-dot text-amber-400 mr-1.5"></i> Ara, Bhojpur, Bihar 802165</p>
-                </div>
             </aside>
 
             <!-- Drawer Profile Side Panel -->
-            <div id sideDrawer class="fixed inset-y-0 left-0 w-80 bg-[#090d16] border-r border-slate-800 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl overflow-y-auto">
+            <div id="sideDrawer" class="fixed inset-y-0 left-0 w-80 bg-[#090d16] border-r border-slate-850 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl overflow-y-auto">
                 <div class="p-6 border-b border-slate-800/80 bg-[#0d1220]/50 flex items-center justify-between">
                     <div class="flex items-center space-x-3 overflow-hidden">
                         <img id="drawerUserLogo" src="https://api.dicebear.com/7.x/bottts/svg?seed=SGS" class="w-12 h-12 rounded-2xl bg-slate-900 p-1 border border-rose-500/20 shadow-md" alt="User Vector">
@@ -405,37 +380,32 @@
                             <span>Terminate Active Session</span>
                         </button>
 
-                        <div class="flex flex-wrap items-center justify-center gap-2 text-[10px] text-slate-500 font-mono px-1">
-                            <span class="hover:underline cursor-pointer" id="btn-show-about-2">About</span>
-                            <span>•</span>
+                        <div class="flex items-center justify-between text-[10px] text-slate-500 font-mono px-1">
                             <span class="hover:underline cursor-pointer" id="btn-show-privacy-2">Privacy Policy</span>
-                            <span>•</span>
                             <span class="hover:underline cursor-pointer" id="btn-show-terms-2">Terms-of-Agreement</span>
-                            <span>•</span>
-                            <span class="hover:underline cursor-pointer" id="btn-show-refund-2">Refund Policy</span>
                         </div>
                     </div>
                 </div>
             </div>
             <div id="drawerOverlay" class="fixed inset-0 bg-[#030712]/85 z-40 hidden backdrop-blur-md transition-all duration-300"></div>
 
-            <main class="flex-1 space-y-6 z-10 pb-12">
+            <main class="flex-1 space-y-6 z-10 pb-6">
                 <!-- TAB 1: NEW SMM ORDER HUB -->
                 <section id="tab-dashboard" class="space-y-6 tab-content">
                     <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                        <div class="xl:col-span-2 glass-panel p-6 sm:p-8 rounded-[32px] space-y-6 relative">
-                            <div class="flex items-center justify-between border-b border-slate-800/80 pb-4">
-                                <h2 class="text-base sm:text-xl font-extrabold text-white flex items-center space-x-3">
-                                    <i class="fa-brands fa-instagram text-rose-500 text-2xl"></i>
+                        <div class="xl:col-span-2 glass-panel p-5 sm:p-7 rounded-[32px] space-y-5 relative">
+                            <div class="flex items-center justify-between border-b border-slate-800/60 pb-3">
+                                <h2 class="text-base sm:text-lg font-bold text-white flex items-center space-x-2">
+                                    <i class="fa-brands fa-instagram text-rose-500"></i>
                                     <span>INSTANT PIPELINE ENTRY</span>
                                 </h2>
-                                <span class="text-[9px] text-slate-400 font-mono bg-[#0d1220] px-3.5 py-1.5 rounded-full border border-slate-800">AUTOMATED DISPATCH</span>
+                                <span class="text-[9px] text-slate-400 font-mono bg-[#0d1220] px-3 py-1 rounded-full border border-slate-850">AUTOMATED DISPATCH</span>
                             </div>
 
-                            <div class="space-y-5">
+                            <div class="space-y-4.5">
                                 <div>
                                     <label class="block text-[10px] uppercase font-bold tracking-widest text-slate-300 mb-2">1. Target Category Module</label>
-                                    <select id="categorySelect" class="w-full bg-[#0d1220] p-4 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-200 text-sm font-semibold transition">
+                                    <select id="categorySelect" class="w-full bg-[#0d1220] p-3.5 sm:p-4 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-200 text-sm font-semibold transition">
                                         <option value="views">🎬 Instagram Reels Views</option>
                                         <option value="likes">❤️ Instagram Premium Likes</option>
                                         <option value="followers">👥 Instagram Real Followers</option>
@@ -452,35 +422,35 @@
 
                                 <div>
                                     <label class="block text-[10px] uppercase font-bold tracking-widest text-slate-300 mb-2">2. Specific Service Node Package</label>
-                                    <select id="serviceSelect" class="w-full bg-[#0d1220] p-4 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-300 text-xs font-semibold transition leading-relaxed">
+                                    <select id="serviceSelect" class="w-full bg-[#0d1220] p-3.5 sm:p-4 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-300 text-xs font-semibold transition leading-relaxed">
                                     </select>
                                 </div>
 
                                 <div>
                                     <label class="block text-[10px] uppercase font-bold tracking-widest text-slate-300 mb-2">3. Destination Link URL</label>
                                     <div class="relative">
-                                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-500"><i class="fa-solid fa-link text-sm"></i></span>
-                                        <input type="url" id="targetOrderLink" placeholder="https://www.instagram.com/reel/..." class="w-full bg-[#0d1220] pl-11 pr-4 py-4 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-200 text-sm font-mono transition">
+                                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500"><i class="fa-solid fa-link text-sm"></i></span>
+                                        <input type="url" id="targetOrderLink" placeholder="https://www.instagram.com/reel/..." class="w-full bg-[#0d1220] pl-10 pr-4 py-3.5 sm:py-4 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-200 text-sm font-mono transition">
                                     </div>
                                 </div>
 
                                 <div>
                                     <label class="block text-[10px] uppercase font-bold tracking-widest text-slate-300 mb-2">4. Dispatch Request Quantity</label>
                                     <div class="relative">
-                                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-500"><i class="fa-solid fa-arrow-up-9-1 text-sm"></i></span>
-                                        <input type="number" id="targetOrderQty" placeholder="Min: 100 - Max: 500,000" class="w-full bg-[#0d1220] pl-11 pr-4 py-4 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-200 text-sm font-bold transition">
+                                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500"><i class="fa-solid fa-arrow-up-9-1 text-sm"></i></span>
+                                        <input type="number" id="targetOrderQty" placeholder="Min: 100 - Max: 500,000" class="w-full bg-[#0d1220] pl-10 pr-4 py-3.5 sm:py-4 rounded-2xl border border-slate-800 focus:outline-none focus:border-rose-500 text-slate-200 text-sm font-bold transition">
                                     </div>
                                 </div>
 
-                                <div id="costDisplayBox" class="bg-[#030712] border border-slate-800 p-5 rounded-2xl flex justify-between items-center">
+                                <div id="costDisplayBox" class="bg-[#030712] border border-slate-850 p-4 rounded-2xl flex justify-between items-center">
                                     <div>
                                         <span class="text-[10px] uppercase tracking-wider font-bold text-slate-400 font-mono">Total Estimated Cost</span>
                                         <p class="text-[9px] text-slate-500 font-mono mt-0.5">Charged in Indian Rupees (INR)</p>
                                     </div>
-                                    <span class="text-2xl sm:text-3xl font-black text-rose-500 tracking-tight">₹<span id="calculatedCostText">0.00</span></span>
+                                    <span class="text-xl sm:text-2xl font-black text-rose-500 tracking-tight">₹<span id="calculatedCostText">0.00</span></span>
                                 </div>
 
-                                <button id="submit-order-pipeline-btn" class="w-full py-4.5 rounded-2xl bg-gradient-to-r from-rose-600 via-amber-600 to-rose-600 hover:from-rose-500 hover:to-amber-500 text-white font-extrabold uppercase tracking-widest text-xs shadow-glow-rose active:scale-[0.98] transition flex items-center justify-center space-x-2">
+                                <button id="submit-order-pipeline-btn" class="w-full py-4 rounded-2xl bg-gradient-to-r from-rose-600 via-amber-600 to-rose-600 hover:from-rose-500 hover:to-amber-500 text-white font-extrabold uppercase tracking-widest text-xs shadow-glow-rose active:scale-[0.98] transition flex items-center justify-center space-x-2">
                                     <span>DISPATCH SMM PIPELINE</span>
                                     <i class="fa-solid fa-paper-plane animate-pulse"></i>
                                 </button>
@@ -488,20 +458,16 @@
                         </div>
 
                         <div class="space-y-6">
-                            <div class="glass-panel p-6 rounded-[28px] relative overflow-hidden">
-                                <h3 class="text-[10px] uppercase font-black text-slate-400 tracking-widest mb-4">Health Status Monitor</h3>
-                                <div class="space-y-4 text-xs">
+                            <div class="glass-panel p-5 rounded-[24px] relative overflow-hidden">
+                                <h3 class="text-[10px] uppercase font-black text-slate-400 tracking-widest mb-3">Health Status Monitor</h3>
+                                <div class="space-y-3 text-xs">
                                     <div class="flex items-center justify-between text-slate-300">
-                                        <span class="flex items-center gap-2.5"><span class="h-2 w-2 bg-emerald-500 rounded-full animate-pulse"></span> Server Connection</span>
-                                        <span class="font-mono text-emerald-400 font-bold">ONLINE (100%)</span>
+                                        <span class="flex items-center gap-2"><span class="h-1.5 w-1.5 bg-emerald-500 rounded-full animate-pulse"></span> Active Connection</span>
+                                        <span class="font-mono text-emerald-400 font-bold">ONLINE</span>
                                     </div>
                                     <div class="flex items-center justify-between text-slate-300">
-                                        <span class="flex items-center gap-2.5"><i class="fa-solid fa-bolt text-amber-500"></i> Dispatch Node</span>
-                                        <span class="font-mono text-slate-300">INSTANT API SYNC</span>
-                                    </div>
-                                    <div class="flex items-center justify-between text-slate-300">
-                                        <span class="flex items-center gap-2.5"><i class="fa-solid fa-shield text-sky-400"></i> Data Encryption</span>
-                                        <span class="font-mono text-slate-300">AES-256 SSL</span>
+                                        <span class="flex items-center gap-2"><i class="fa-solid fa-bolt text-amber-500"></i> Dispatch System</span>
+                                        <span class="font-mono text-slate-300">INSTANT DISPATCH</span>
                                     </div>
                                 </div>
                             </div>
@@ -511,29 +477,29 @@
 
                 <!-- TAB 2: MY ORDERS LEDGER -->
                 <section id="tab-myorders" class="space-y-6 tab-content hidden">
-                    <div class="glass-panel p-6 sm:p-8 rounded-[32px] shadow-xl">
-                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800/80 pb-4 mb-4">
+                    <div class="glass-panel p-5 sm:p-7 rounded-[32px] shadow-xl">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800/60 pb-4 mb-4">
                             <div>
-                                <h2 class="text-base sm:text-xl font-bold text-sky-400 uppercase tracking-wider flex items-center space-x-3">
-                                    <i class="fa-solid fa-folder-open text-2xl"></i>
+                                <h2 class="text-base sm:text-lg font-bold text-sky-400 uppercase tracking-wider flex items-center space-x-2">
+                                    <i class="fa-solid fa-folder-open"></i>
                                     <span>Engine Dispatch Ledger</span>
                                 </h2>
-                                <p class="text-xs text-slate-400 font-mono mt-1">Real-time order execution logs synced from Aapkaprovider</p>
+                                <p class="text-xs text-slate-400 font-mono mt-0.5">Real-time order execution logs synced from Aapkaprovider</p>
                             </div>
                         </div>
                         
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
-                                    <tr class="border-b border-slate-800 text-[10px] uppercase font-mono tracking-wider text-slate-400 bg-[#0d1220]/80">
-                                        <th class="p-3.5 rounded-l-xl">ID</th>
-                                        <th class="p-3.5">Date</th>
-                                        <th class="p-3.5">Link</th>
-                                        <th class="p-3.5 font-mono">Charge</th>
-                                        <th class="p-3.5 font-mono">Start count</th>
-                                        <th class="p-3.5 font-mono">Quantity</th>
-                                        <th class="p-3.5">Service</th>
-                                        <th class="p-3.5 rounded-r-xl">Status</th>
+                                    <tr class="border-b border-slate-850 text-[10px] uppercase font-mono tracking-wider text-slate-400 bg-[#0d1220]/60">
+                                        <th class="p-3 rounded-l-xl">ID</th>
+                                        <th class="p-3">Date</th>
+                                        <th class="p-3">Link</th>
+                                        <th class="p-3 font-mono">Charge</th>
+                                        <th class="p-3 font-mono">Start count</th>
+                                        <th class="p-3 font-mono">Quantity</th>
+                                        <th class="p-3">Service</th>
+                                        <th class="p-3 rounded-r-xl">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody id="myOrdersTableStream" class="text-xs font-semibold divide-y divide-slate-850">
@@ -551,33 +517,33 @@
                 <!-- TAB 3: ADD DEPOSIT FUNDS CENTER -->
                 <section id="tab-addfunds" class="space-y-6 tab-content hidden">
                     <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                        <div class="xl:col-span-2 glass-panel p-6 sm:p-8 rounded-[32px] space-y-6">
-                            <div class="border-b border-slate-800/80 pb-4">
-                                <h2 class="text-base sm:text-xl font-bold text-emerald-400 uppercase tracking-wider flex items-center space-x-3">
-                                    <i class="fa-solid fa-shield-halved text-2xl"></i>
+                        <div class="xl:col-span-2 glass-panel p-5 sm:p-7 rounded-[32px] space-y-5">
+                            <div class="border-b border-slate-800/60 pb-3">
+                                <h2 class="text-base sm:text-lg font-bold text-emerald-400 uppercase tracking-wider flex items-center space-x-2">
+                                    <i class="fa-solid fa-shield-halved"></i>
                                     <span>Wallet Settlement Clearance</span>
                                 </h2>
-                                <p class="text-xs text-slate-400 font-mono mt-1">Initialize and settle transactions via instant UPI QR</p>
+                                <p class="text-xs text-slate-400 font-mono mt-0.5">Initialize and settle transactions via instant UPI QR</p>
                             </div>
 
-                            <div class="space-y-5">
+                            <div class="space-y-4">
                                 <div>
                                     <label class="block text-[10px] uppercase font-bold text-slate-300 mb-2 tracking-wider">A. Specify Desired Amount (₹)</label>
                                     <div class="relative">
-                                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-500"><i class="fa-solid fa-indian-rupee-sign text-sm"></i></span>
-                                        <input type="number" id="fundAmount" placeholder="Enter INR value (Ex: 500)" class="w-full bg-[#0d1220] pl-11 pr-4 py-4 rounded-2xl border border-slate-800 focus:outline-none focus:border-emerald-500 text-slate-200 text-sm font-bold transition">
+                                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500"><i class="fa-solid fa-indian-rupee-sign text-sm"></i></span>
+                                        <input type="number" id="fundAmount" placeholder="Enter INR value (Ex: 500)" class="w-full bg-[#0d1220] pl-10 pr-4 py-3.5 sm:py-4 rounded-2xl border border-slate-800 focus:outline-none focus:border-emerald-500 text-slate-200 text-sm font-bold transition">
                                     </div>
                                 </div>
                                 <div>
                                     <label class="block text-[10px] uppercase font-bold text-slate-300 mb-2 tracking-wider">B. Sender Name / PhonePe UPI Name</label>
                                     <div class="relative">
-                                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center text-slate-500"><i class="fa-solid fa-user text-sm"></i></span>
-                                        <input type="text" id="utrInput" placeholder="Enter Your Name" class="w-full bg-[#0d1220] pl-11 pr-4 py-4 rounded-2xl border border-slate-800 focus:outline-none focus:border-emerald-500 text-slate-200 text-sm font-semibold transition">
+                                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-500"><i class="fa-solid fa-user text-sm"></i></span>
+                                        <input type="text" id="utrInput" placeholder="Enter Your Name" class="w-full bg-[#0d1220] pl-10 pr-4 py-3.5 sm:py-4 rounded-2xl border border-slate-800 focus:outline-none focus:border-emerald-500 text-slate-200 text-sm font-semibold transition">
                                     </div>
                                     <p class="text-[9px] text-slate-500 font-mono mt-2 leading-relaxed">Apne PhonePe/Bank account me likha Sender Name .</p>
                                 </div>
 
-                                <button id="submit-deposit-btn" class="w-full py-4.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold uppercase tracking-widest text-xs rounded-2xl shadow-glow-emerald transition active:scale-[0.98]">
+                                <button id="submit-deposit-btn" class="w-full py-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold uppercase tracking-widest text-xs rounded-2xl shadow-glow-emerald transition active:scale-[0.98]">
                                     Submit Payments
                                 </button>
                             </div>
@@ -599,18 +565,18 @@
                         </div>
                     </div>
 
-                    <div class="glass-panel p-6 sm:p-8 rounded-[32px]">
-                        <h3 class="text-xs font-black uppercase text-slate-400 tracking-wider mb-4">
-                            <i class="fa-solid fa-clock-history mr-2 text-emerald-400"></i>
+                    <div class="glass-panel p-5 sm:p-7 rounded-[32px]">
+                        <h3 class="text-xs font-black uppercase text-slate-400 tracking-wider mb-3">
+                            <i class="fa-solid fa-clock-history mr-1.5 text-emerald-400"></i>
                             <span>Account Settle Ledger Records</span>
                         </h3>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left">
                                 <thead>
-                                    <tr class="text-slate-400 border-b border-slate-800 text-[10px] font-mono uppercase bg-[#0d1220]/60">
-                                        <th class="p-3.5">Value</th>
-                                        <th class="p-3.5">Sender / UTR Ref</th>
-                                        <th class="p-3.5">Status</th>
+                                    <tr class="text-slate-400 border-b border-slate-850 text-[10px] font-mono uppercase bg-[#0d1220]/40">
+                                        <th class="p-3">Value</th>
+                                        <th class="p-3">Sender / UTR Ref</th>
+                                        <th class="p-3">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody id="userLedgerRows" class="text-xs divide-y divide-slate-850">
@@ -624,38 +590,38 @@
                 </section>
 
                 <!-- TAB 4: REFFERAL AFFILIATE CENTER -->
-                <section id="tab-refer" class="tab-content hidden max-w-2xl mx-auto">
-                    <div class="glass-panel p-8 sm:p-10 rounded-[36px] text-center space-y-6 relative overflow-hidden border-amber-500/20">
-                        <div class="w-20 h-20 bg-amber-500/10 text-amber-400 rounded-3xl flex items-center justify-center mx-auto text-3xl border border-amber-500/30 shadow-glow-amber">
+                <section id="tab-refer" class="tab-content hidden max-w-xl mx-auto">
+                    <div class="glass-panel p-6 sm:p-8 rounded-[32px] text-center space-y-5 relative overflow-hidden">
+                        <div class="w-16 h-16 bg-amber-500/10 text-amber-400 rounded-full flex items-center justify-center mx-auto text-2xl border border-amber-500/20 shadow-glow-rose">
                             <i class="fa-solid fa-gift animate-bounce"></i>
                         </div>
                         
                         <div class="space-y-2">
-                            <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">Refer & Earn Capital</h2>
-                            <p class="text-xs sm:text-sm text-slate-400 max-w-lg mx-auto leading-relaxed">
+                            <h2 class="text-xl sm:text-2xl font-black uppercase tracking-tight text-white">Refer & Earn Capital</h2>
+                            <p class="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
                                 Share your platform node link or referral code. Upon successful verification of their first deposit, your wallet balance increases by a random reward of <span class="text-amber-400 font-bold">₹1.00 to ₹2.00</span> automatically.
                             </p>
                         </div>
 
-                        <div class="space-y-4 pt-2">
+                        <div class="space-y-3">
                             <!-- Referral Code Card -->
-                            <div class="bg-[#030712] p-4 rounded-2xl border border-slate-800 flex items-center justify-between gap-4">
+                            <div class="bg-[#030712] p-3.5 rounded-2xl border border-slate-850 flex items-center justify-between gap-3">
                                 <div class="text-left">
-                                    <span class="text-[9px] uppercase font-mono text-slate-500 block font-bold">Your Referral Code</span>
-                                    <span id="referCode" class="text-base font-extrabold font-mono text-amber-400 select-all">SGS-LOADING</span>
+                                    <span class="text-[9px] uppercase font-mono text-slate-500 block">Your Referral Code</span>
+                                    <span id="referCode" class="text-sm font-extrabold font-mono text-amber-400 select-all">SGS-LOADING</span>
                                 </div>
-                                <button id="btn-copy-ref-code" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 font-bold px-5 py-2.5 rounded-xl text-xs whitespace-nowrap tracking-wider uppercase transition active:scale-[0.98]">
+                                <button id="btn-copy-ref-code" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 font-bold px-4 py-2 rounded-xl text-xs whitespace-nowrap tracking-wider uppercase transition active:scale-[0.98]">
                                     Copy Code
                                 </button>
                             </div>
 
                             <!-- Referral Link Card -->
-                            <div class="bg-[#030712] p-4 rounded-2xl border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div class="bg-[#030712] p-3.5 rounded-2xl border border-slate-850 flex flex-col sm:flex-row items-center justify-between gap-3">
                                 <div class="text-left overflow-hidden w-full sm:w-auto">
-                                    <span class="text-[9px] uppercase font-mono text-slate-500 block font-bold">Your Node Link</span>
+                                    <span class="text-[9px] uppercase font-mono text-slate-500 block">Your Node Link</span>
                                     <span id="referLink" class="text-xs font-mono text-slate-300 select-all overflow-hidden text-left truncate block">https://sgsboost.net/ref?id=loading</span>
                                 </div>
-                                <button id="btn-copy-ref" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-6 py-2.5 rounded-xl text-xs whitespace-nowrap tracking-wider uppercase transition active:scale-[0.98]">
+                                <button id="btn-copy-ref" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-5 py-2 rounded-xl text-xs whitespace-nowrap tracking-wider uppercase transition active:scale-[0.98]">
                                     Copy Link
                                 </button>
                             </div>
@@ -665,27 +631,35 @@
             </main>
         </div>
 
-        <!-- Desktop Platform Footer -->
-        <footer class="mt-auto border-t border-slate-800/80 bg-[#030712] py-6 px-8">
-            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] text-slate-400 font-mono">
+        <!-- Mobile Bottom Navigation Menu -->
+        <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#090d16]/95 border-t border-slate-800/80 backdrop-blur-lg z-40 flex justify-around items-center py-2.5 px-3 shadow-[0_-10px_35px_rgba(0,0,0,0.6)]">
+            <button id="mbtn-dashboard" class="flex flex-col items-center justify-center space-y-1 text-slate-400 transition active:scale-90 focus:outline-none mobile-nav-btn">
+                <i class="fa-solid fa-circle-plus text-lg"></i>
+                <span class="text-[9px] font-bold tracking-wider uppercase">Order</span>
+            </button>
+            <button id="mbtn-myorders" class="flex flex-col items-center justify-center space-y-1 text-slate-400 transition active:scale-90 focus:outline-none mobile-nav-btn">
+                <i class="fa-solid fa-list-ul text-lg"></i>
+                <span class="text-[9px] font-bold tracking-wider uppercase">Logs</span>
+            </button>
+            <button id="mbtn-addfunds" class="flex flex-col items-center justify-center space-y-1 text-slate-400 transition active:scale-90 focus:outline-none mobile-nav-btn">
+                <i class="fa-solid fa-wallet text-lg"></i>
+                <span class="text-[9px] font-bold tracking-wider uppercase">Deposit</span>
+            </button>
+            <button id="mbtn-refer" class="flex flex-col items-center justify-center space-y-1 text-slate-400 transition active:scale-90 focus:outline-none mobile-nav-btn">
+                <i class="fa-solid fa-gift text-lg"></i>
+                <span class="text-[9px] font-bold tracking-wider uppercase">Earn</span>
+            </button>
+        </nav>
+
+        <footer class="hidden lg:block mt-auto border-t border-slate-800/60 bg-[#030712] py-5 px-8">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] text-slate-500 font-mono">
                 <div class="flex items-center space-x-2">
                     <i class="fa-solid fa-shield text-emerald-500"></i>
-                    <span>SGS PLATFORM ARCHITECTURE • PROPRIETOR: SACHIN KUMAR • ARA, BIHAR (802165)</span>
+                    <span>SGS PLATFORM ARCHITECTURE • SECURE SHA-256 COMPLIANCE PROTOCOLS</span>
                 </div>
-                <div class="flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-                    <span class="hover:text-rose-400 cursor-pointer underline transition" id="btn-show-about-3">About Us</span>
-                    <span>•</span>
-                    <span class="hover:text-rose-400 cursor-pointer underline transition" id="btn-show-support-3">Customer Support</span>
-                    <span>•</span>
-                    <span class="hover:text-rose-400 cursor-pointer underline transition" id="btn-show-fulfillment-3">Fulfillment</span>
-                    <span>•</span>
-                    <span class="hover:text-rose-400 cursor-pointer underline transition" id="btn-show-privacy-3">Privacy Policy</span>
-                    <span>•</span>
-                    <span class="hover:text-rose-400 cursor-pointer underline transition" id="btn-show-refund-3">Payment & Refund</span>
-                    <span>•</span>
-                    <span class="hover:text-rose-400 cursor-pointer underline transition" id="btn-show-terms-3">Terms-of-Agreement</span>
-                    <span>•</span>
-                    <span class="hover:text-rose-400 cursor-pointer underline transition" id="btn-show-disclaimer-3">Disclaimer</span>
+                <div class="flex items-center gap-6">
+                    <span class="hover:text-slate-300 cursor-pointer" id="btn-show-privacy-3">Privacy Policy</span>
+                    <span class="hover:text-slate-300 cursor-pointer" id="btn-show-terms-3">Terms-of-Agreement</span>
                 </div>
             </div>
         </footer>
@@ -893,23 +867,17 @@
         </div>
     </div>
 
-    <!-- Floating WhatsApp Instant Button -->
-    <a href="https://wa.me/917462986977" target="_blank" rel="noopener noreferrer" class="fixed bottom-6 left-6 z-40 bg-[#25D366] hover:bg-[#20ba5a] text-white p-3.5 sm:px-5 sm:py-3.5 rounded-full shadow-glow-whatsapp flex items-center space-x-3 transition-all duration-300 hover:scale-105 active:scale-95 group" title="Chat on WhatsApp (+91 7462986977)">
-        <i class="fa-brands fa-whatsapp text-2xl sm:text-2xl group-hover:rotate-12 transition"></i>
-        <span class="hidden sm:inline font-bold text-xs tracking-wider uppercase">WhatsApp Support</span>
-    </a>
-
     <!-- SGS AI Support Desk Widget -->
-    <div class="fixed bottom-6 right-6 z-40">
-        <button id="aiWidgetToggle" class="bg-gradient-to-tr from-rose-600 to-purple-600 hover:from-rose-500 hover:to-purple-500 text-white w-14 h-14 rounded-full shadow-glow-rose flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 relative group focus:outline-none">
-            <span class="absolute -top-0.5 -right-0.5 h-3.5 w-3.5 bg-emerald-500 rounded-full border-2 border-[#030712] animate-pulse"></span>
-            <i class="fa-solid fa-headset text-xl group-hover:rotate-12 transition"></i>
+    <div class="fixed bottom-24 lg:bottom-6 right-4 sm:right-6 z-40">
+        <button id="aiWidgetToggle" class="bg-gradient-to-tr from-rose-600 to-purple-600 hover:from-rose-500 hover:to-purple-500 text-white w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-glow-rose flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 relative group focus:outline-none">
+            <span class="absolute -top-0.5 -right-0.5 h-3 w-3 bg-emerald-500 rounded-full border-2 border-[#030712] animate-pulse"></span>
+            <i class="fa-solid fa-headset text-lg sm:text-xl group-hover:rotate-12 transition"></i>
         </button>
 
-        <div id="aiSupportWidget" class="hidden absolute bottom-18 right-0 w-80 sm:w-96 max-w-[calc(100vw-2rem)] h-[480px] sm:h-[520px] glass-panel rounded-[32px] shadow-glow-purple flex-col overflow-hidden transition-all duration-300 z-50 border-purple-500/30">
-            <div class="bg-[#0d1220] p-4 border-b border-slate-800 flex items-center justify-between">
+        <div id="aiSupportWidget" class="hidden absolute bottom-16 sm:bottom-18 right-0 w-80 sm:w-96 max-w-[calc(100vw-2rem)] h-[440px] sm:h-[500px] glass-panel rounded-[28px] shadow-glow-purple flex-col overflow-hidden transition-all duration-300 z-50">
+            <div class="bg-[#0d1220] p-4 border-b border-slate-800/80 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
-                    <div class="w-9 h-9 bg-rose-500/10 border border-rose-500/20 rounded-xl flex items-center justify-center text-rose-400 font-bold text-sm">
+                    <div class="w-8.5 h-8.5 bg-rose-500/10 border border-rose-500/20 rounded-xl flex items-center justify-center text-rose-400 font-bold text-sm">
                         <i class="fa-solid fa-robot animate-pulse"></i>
                     </div>
                     <div>
@@ -926,14 +894,14 @@
             <div id="aiMessagesStream" class="flex-1 p-4 overflow-y-auto space-y-4 text-[11px] sm:text-xs font-mono bg-[#030712]/50">
                 <div class="flex items-start space-x-2.5">
                     <div class="w-6 h-6 bg-rose-500/10 rounded-lg flex items-center justify-center text-rose-400 text-[9px] shrink-0 font-bold">AI</div>
-                    <div class="bg-[#0d1220]/80 border border-slate-800/40 p-3 rounded-2xl rounded-tl-none max-w-[85%] text-slate-300 leading-relaxed">
-                        Hello! I am <span class="text-rose-400 font-bold">SGS AI Desk</span>. You can ask me regarding SMM dispatches, UPI/Cashfree balance clearance, or contact Sachin Kumar directly at <span class="text-emerald-400 font-bold">+91 7462986977</span>.
+                    <div class="bg-[#0d1220]/80 border border-slate-800/40 p-3 rounded-2xl rounded-tl-none max-w-[80%] text-slate-300 leading-relaxed">
+                        Secure hello connection! I am <span class="text-rose-400 font-bold">SGS AI</span>. How can I assist you with SMM dispatches, balance settlement reports, or system validations today?
                     </div>
                 </div>
             </div>
 
-            <div class="p-3 bg-[#0d1220] border-t border-slate-800 flex items-center gap-2">
-                <input type="text" id="aiUserInput" placeholder="Type support question..." class="flex-1 bg-[#030712] border border-slate-800 focus:outline-none focus:border-rose-500 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 placeholder:text-slate-600 font-mono">
+            <div class="p-2.5 bg-[#0d1220] border-t border-slate-800/80 flex items-center gap-2">
+                <input type="text" id="aiUserInput" placeholder="Type support question..." class="flex-1 bg-[#030712] border border-slate-800 focus:outline-none focus:border-rose-500 rounded-xl px-3 py-2.5 text-xs text-slate-200 placeholder:text-slate-600 font-mono">
                 <button id="ai-send-btn" class="w-9 h-9 bg-rose-600 hover:bg-rose-500 text-white rounded-xl flex items-center justify-center transition shrink-0 active:scale-95">
                     <i class="fa-solid fa-paper-plane text-[11px]"></i>
                 </button>
@@ -942,507 +910,19 @@
     </div>
 
     <!-- Dynamic Policy Modal Overlay -->
-    <div id="legalModalOverlay" class="fixed inset-0 bg-[#030712]/95 z-[100] hidden items-center justify-center p-4 sm:p-6 backdrop-blur-md">
-        <div class="glass-panel max-w-3xl w-full rounded-[36px] p-6 sm:p-9 space-y-6 relative max-h-[88vh] overflow-y-auto border-slate-800 shadow-2xl">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-4 sticky top-0 bg-[#0d1220]/95 backdrop-blur-md z-10 -mt-2 pt-2">
-                <h3 id="legalModalTitle" class="text-base sm:text-lg font-black uppercase text-white tracking-wider flex items-center space-x-2"></h3>
-                <button id="legal-close-btn" class="text-slate-400 hover:text-rose-500 p-2 hover:bg-slate-900 rounded-xl transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+    <div id="legalModalOverlay" class="fixed inset-0 bg-[#030712]/90 z-[100] hidden items-center justify-center p-4 backdrop-blur-md">
+        <div class="glass-panel max-w-2xl w-full rounded-[32px] p-5 sm:p-7 space-y-5 relative max-h-[85vh] overflow-y-auto border-slate-800/80 shadow-2xl">
+            <div class="flex items-center justify-between border-b border-slate-800/60 pb-3 sticky top-0 bg-[#0d1220]/90 backdrop-blur-md z-10 pt-1">
+                <h3 id="legalModalTitle" class="text-sm sm:text-base font-black uppercase text-white tracking-wider flex items-center space-x-2"></h3>
+                <button id="legal-close-btn" class="text-slate-400 hover:text-rose-500 p-1 hover:bg-slate-900 rounded-lg transition"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
-            <div id="legalModalContent" class="text-xs sm:text-sm text-slate-300 leading-relaxed space-y-5 font-sans">
+            <div id="legalModalContent" class="text-xs text-slate-300 leading-relaxed space-y-4 font-sans">
             </div>
-            <div class="pt-4 border-t border-slate-800 flex justify-end sticky bottom-0 bg-[#0d1220]/95 backdrop-blur-md pb-1">
-                <button id="legal-acknowledge-btn" class="px-6 py-2.5 bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-xs font-extrabold text-white uppercase tracking-widest rounded-xl transition shadow-glow-rose">Acknowledge & Accept Directives</button>
+            <div class="pt-3 border-t border-slate-800/60 flex justify-end sticky bottom-0 bg-[#0d1220]/90 backdrop-blur-md pb-1">
+                <button id="legal-acknowledge-btn" class="px-5 py-2 bg-gradient-to-r from-rose-600 to-amber-600 hover:from-rose-500 hover:to-amber-500 text-[10px] font-bold text-white uppercase tracking-widest rounded-xl transition shadow-md">Acknowledge & Accept</button>
             </div>
         </div>
     </div>
-
-    <script>
-        // Automatic Safety Dismissal for Loading Screen
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                const loader = document.getElementById('globalLoadingScreen');
-                if (loader) {
-                    loader.style.opacity = '0';
-                    setTimeout(() => {
-                        loader.style.display = 'none';
-                    }, 500);
-                }
-            }, 600);
-        });
-
-        // Failsafe timeout in case load event is delayed
-        setTimeout(function() {
-            const loader = document.getElementById('globalLoadingScreen');
-            if (loader && loader.style.display !== 'none') {
-                loader.style.opacity = '0';
-                setTimeout(() => {
-                    loader.style.display = 'none';
-                }, 500);
-            }
-        }, 2000);
-
-        // Global Helper to Update User Avatar across Header & Drawer when logged in via Google
-        window.updateUserProfileAvatar = function(photoUrl) {
-            if (!photoUrl) return;
-            const headerAvatar = document.getElementById('headerUserAvatar');
-            const drawerAvatar = document.getElementById('drawerUserLogo');
-            if (headerAvatar) headerAvatar.src = photoUrl;
-            if (drawerAvatar) drawerAvatar.src = photoUrl;
-        };
-
-        // Attach Click to Header Avatar to toggle Side Drawer
-        document.addEventListener('DOMContentLoaded', function() {
-            const headerAvatar = document.getElementById('headerUserAvatar');
-            const drawerBtn = document.getElementById('drawer-toggle-btn');
-            if (headerAvatar && drawerBtn) {
-                headerAvatar.addEventListener('click', () => drawerBtn.click());
-            }
-        });
-
-        // Enterprise Legal Policies Database (Compliant with Google Ad Policies, Cashfree Merchant Guidelines, and IT Intermediary Rules 2021)
-        const LEGAL_POLICIES_DATABASE = {
-            about: {
-                title: '<i class="fa-solid fa-building text-rose-500 mr-2"></i> About Us - SGS INSTABOOST Enterprise',
-                content: `
-                    <div class="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                        <p class="font-bold text-base text-rose-400">Welcome to SGS INSTABOOST SMM Engine Portal.</p>
-                        <p><strong>SGS INSTABOOST</strong> is an enterprise-grade digital optimization and Social Media Marketing (SMM) SaaS platform independently owned and operated by <strong>Sachin Kumar</strong>. We specialize in providing automated social media management tools, analytics tracking, brand engagement services, and reseller API endpoints for content creators, agencies, digital marketers, and businesses worldwide.</p>
-                        
-                        <div class="bg-[#0d1220] p-4 sm:p-5 rounded-2xl border border-slate-800 space-y-2 font-mono text-xs">
-                            <p class="font-extrabold text-white text-sm uppercase tracking-wider mb-2 text-rose-400">Official Merchant Profile</p>
-                            <p><strong>Entity / Brand Name:</strong> SGS INSTABOOST</p>
-                            <p><strong>Proprietor Name:</strong> Sachin Kumar</p>
-                            <p><strong>Registered Operating Address:</strong> Ara, District Bhojpur, Bihar, PIN Code: 802165, India</p>
-                            <p><strong>Official Web Domain:</strong> sgsboost.net</p>
-                            <p><strong>Customer Support Email:</strong> contactsgsinstaboost@gmail.com</p>
-                            <p><strong>Official Phone & WhatsApp:</strong> +91 7462986977</p>
-                            <p><strong>Operational Hours:</strong> Monday through Saturday | 09:00 AM – 09:00 PM IST</p>
-                        </div>
-
-                        <p>Our cloud infrastructure is engineered with 256-bit SSL transport encryption, ensuring transparent transaction logging, instant API dispatching, and zero credential retention. Our mission is to provide transparent, affordable, and high-efficiency social media growth tools while maintaining complete regulatory compliance.</p>
-                    </div>
-                `
-            },
-            support: {
-                title: '<i class="fa-solid fa-headset text-emerald-400 mr-2"></i> Customer Support & Grievance Redressal Policy',
-                content: `
-                    <div class="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                        <p>In compliance with the <strong>Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021</strong>, as well as Indian Consumer Protection Act guidelines, SGS INSTABOOST maintains dedicated support desks and a appointed Grievance Officer.</p>
-                        
-                        <div class="bg-[#0d1220] p-4 sm:p-5 rounded-2xl border border-slate-800 space-y-2 font-mono text-xs">
-                            <p class="font-extrabold text-emerald-400 text-sm uppercase tracking-wider mb-2">Customer Support Desk</p>
-                            <p><strong>Support Email ID:</strong> contactsgsinstaboost@gmail.com</p>
-                            <p><strong>WhatsApp Support Line:</strong> +91 7462986977 (Direct WhatsApp Chat Available)</p>
-                            <p><strong>Physical Address:</strong> Sachin Kumar, Ara, District Bhojpur, Bihar, PIN: 802165, India</p>
-                            <p><strong>Ticket Resolution SLA:</strong> 12 to 24 Business Hours</p>
-                        </div>
-
-                        <div class="bg-[#0d1220] p-4 sm:p-5 rounded-2xl border border-slate-800 space-y-2 font-mono text-xs">
-                            <p class="font-extrabold text-amber-400 text-sm uppercase tracking-wider mb-2">Designated Grievance Redressal Officer</p>
-                            <p><strong>Grievance Officer Name:</strong> Sachin Kumar</p>
-                            <p><strong>Email Identity:</strong> contactsgsinstaboost@gmail.com</p>
-                            <p><strong>Contact Phone:</strong> +91 7462986977</p>
-                            <p><strong>Grievance Response Time:</strong> Within 48 Hours as per Statutory Directives.</p>
-                        </div>
-
-                        <p>When contacting support regarding payment issues or order delays, please provide your registered user email, order ID, and transaction UTR reference to expedite investigation.</p>
-                    </div>
-                `
-            },
-            fulfillment: {
-                title: '<i class="fa-solid fa-truck-fast text-sky-400 mr-2"></i> Service Fulfillment & Digital Delivery Policy',
-                content: `
-                    <div class="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                        <p>All SMM services offered on SGS INSTABOOST are delivered <strong>electronically and digitally</strong>. No physical commodities, parcel shipments, or physical invoices are shipped.</p>
-                        
-                        <div class="bg-[#0d1220] p-4 sm:p-5 rounded-2xl border border-slate-800 space-y-2">
-                            <p class="font-extrabold text-white text-xs uppercase tracking-wider text-sky-400">Fulfillment Workflow & Timelines</p>
-                            <ul class="list-disc pl-5 space-y-1.5 text-xs font-mono text-slate-300">
-                                <li><strong>Order Initiation:</strong> Once an order is placed from the "New Order Hub", our automated API server nodes begin processing immediately (typically within 0 to 60 minutes).</li>
-                                <li><strong>Turnaround Time (TAT):</strong> Delivery duration depends on the specific service module and quantity selected. Standard execution times range from 1 Hour to 72 Hours.</li>
-                                <li><strong>Target Link Validity:</strong> The user must provide a valid, public URL (e.g., public Instagram Reel link, YouTube Video link). Orders submitted with private or broken links will be flagged as failed.</li>
-                                <li><strong>Real-time Ledger Tracking:</strong> Users can inspect current fulfillment status (In Progress, Processing, Completed, Partial) inside the <strong>"Order Logs Ledger"</strong> tab.</li>
-                            </ul>
-                        </div>
-                    </div>
-                `
-            },
-            privacy: {
-                title: '<i class="fa-solid fa-user-shield text-purple-400 mr-2"></i> Privacy Policy & Data Security Mandate',
-                content: `
-                    <div class="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                        <p>At SGS INSTABOOST, operating under <strong>Sachin Kumar (Ara, Bihar - 802165)</strong>, protecting user data privacy is fundamental to our enterprise.</p>
-                        
-                        <div class="space-y-3 font-mono text-xs">
-                            <div class="bg-[#0d1220] p-3.5 rounded-2xl border border-slate-800">
-                                <p class="font-bold text-rose-400 mb-1"><i class="fa-solid fa-key mr-2"></i> No Account Passwords Demanded</p>
-                                <p class="text-slate-400">We NEVER request, store, or access your Instagram, YouTube, Facebook, or social media account login passwords under any circumstances. We only require public URL links.</p>
-                            </div>
-
-                            <div class="bg-[#0d1220] p-3.5 rounded-2xl border border-slate-800">
-                                <p class="font-bold text-emerald-400 mb-1"><i class="fa-solid fa-lock mr-2"></i> Data Encryption & Minimization</p>
-                                <p class="text-slate-400">We collect minimal information necessary for session authentication and payment logging (User Email, UTR Numbers, Order Target Links). All data transfers use 256-bit SSL encryption protocols.</p>
-                            </div>
-
-                            <div class="bg-[#0d1220] p-3.5 rounded-2xl border border-slate-800">
-                                <p class="font-bold text-sky-400 mb-1"><i class="fa-solid fa-user-xmark mr-2"></i> Third-Party Sharing Prohibition</p>
-                                <p class="text-slate-400">We do not sell, rent, trade, or distribute your email identity or financial transaction history to external marketing agencies or data aggregators.</p>
-                            </div>
-                        </div>
-                    </div>
-                `
-            },
-            refund: {
-                title: '<i class="fa-solid fa-wallet text-emerald-400 mr-2"></i> Payment Gateway & Refund Policy',
-                content: `
-                    <div class="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                        <div class="bg-rose-500/10 border border-rose-500/30 p-4 sm:p-5 rounded-2xl">
-                            <p class="font-extrabold text-rose-400 uppercase text-xs tracking-wider mb-2"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Strict Wallet Deposit Policy</p>
-                            <p><strong>Once funds/money are deposited or added into your SGS INSTABOOST account wallet balance (via UPI, PhonePe, Paytm, QR, or Cashfree Payment Gateway), they are strictly NON-REFUNDABLE back to your bank account, credit card, or UPI source under any circumstances.</strong> Added funds must be used exclusively to dispatch SMM services on sgsboost.net.</p>
-                        </div>
-                        
-                        <div class="bg-emerald-500/10 border border-emerald-500/30 p-4 sm:p-5 rounded-2xl space-y-2">
-                            <p class="font-extrabold text-emerald-400 uppercase text-xs tracking-wider"><i class="fa-solid fa-circle-check mr-1.5"></i> Payment Debited But Balance Not Updated? (Manual Verification)</p>
-                            <p class="text-slate-300 text-xs">If money was deducted from your bank account, payment app, or payment gateway but failed to automatically credit your SGS INSTABOOST wallet balance:</p>
-                            <ul class="list-disc pl-5 space-y-1.5 font-mono text-xs text-slate-300">
-                                <li>Navigate to the <strong>"Settle Wallet"</strong> tab and submit your PhonePe/Bank Sender Name along with the UTR / Payment Reference ID.</li>
-                                <li>Or contact our support desk immediately at <strong>contactsgsinstaboost@gmail.com</strong> or WhatsApp <strong>+91 7462986977</strong> with payment proof screenshot.</li>
-                                <li>Proprietor <strong>Sachin Kumar</strong> and our audit team will verify the payment logs with the bank/Cashfree gateway and manually credit the missing amount to your wallet within <strong>24 to 48 hours</strong>.</li>
-                            </ul>
-                        </div>
-
-                        <div class="bg-[#0d1220] p-4 rounded-2xl border border-slate-800">
-                            <p class="font-extrabold text-white text-xs uppercase tracking-wider mb-1">Canceled Orders Auto-Credit Policy</p>
-                            <p class="text-xs text-slate-400 font-mono">If an order cannot be completed due to a broken link or server issue, the cost of the unfulfilled portion is automatically refunded back to your internal SGS INSTABOOST wallet balance.</p>
-                        </div>
-                    </div>
-                `
-            },
-            terms: {
-                title: '<i class="fa-solid fa-file-contract text-amber-400 mr-2"></i> Terms of Service & Master Agreement',
-                content: `
-                    <div class="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                        <p>By registering an account, making a wallet deposit, or utilizing SGS INSTABOOST services, you explicitly accept the following binding terms:</p>
-                        
-                        <ol class="list-decimal pl-5 space-y-2 font-mono text-xs text-slate-300">
-                            <li><strong>Acceptable Use:</strong> SGS INSTABOOST is designed solely as an analytical and promotional visibility platform. You agree not to use our services for spamming, harassment, impersonation, or illegal content.</li>
-                            <li><strong>Public Links Mandate:</strong> Users are responsible for providing correct, public target URLs. Orders placed on private accounts or invalid links are non-refundable.</li>
-                            <li><strong>Account Credentials Security:</strong> You are responsible for keeping your access passphrase secure.</li>
-                            <li><strong>Jurisdiction & Laws:</strong> This agreement is governed by the laws of India. Any legal disputes are subject to the exclusive jurisdiction of the courts in Ara, District Bhojpur, Bihar, India (PIN: 802165).</li>
-                        </ol>
-                    </div>
-                `
-            },
-            disclaimer: {
-                title: '<i class="fa-solid fa-shield text-slate-400 mr-2"></i> Platform Legal Disclaimer',
-                content: `
-                    <div class="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                        <p><strong>SGS INSTABOOST</strong> is an independent digital software service operated by <strong>Sachin Kumar</strong>, located in Ara, Bhojpur, Bihar, PIN: 802165, India.</p>
-                        
-                        <div class="bg-[#0d1220] p-4 sm:p-5 rounded-2xl border border-slate-800 space-y-2">
-                            <p class="font-extrabold text-rose-400 text-xs uppercase tracking-wider">Non-Affiliation Notice</p>
-                            <p class="text-xs text-slate-400 font-mono">SGS INSTABOOST is NOT affiliated, associated, authorized, endorsed by, or in any way officially connected with Instagram, Meta Platforms Inc., YouTube, Google LLC, Facebook, or any of their subsidiaries or affiliates.</p>
-                        </div>
-
-                        <p>All product names, trademarks, logos, and brands mentioned on this website belong to their respective owners and are used here solely for descriptive and navigational purposes.</p>
-                    </div>
-                `
-            }
-        };
-
-        window.openLegalPolicyModal = function(policyKey) {
-            const modal = document.getElementById('legalModalOverlay');
-            const titleEl = document.getElementById('legalModalTitle');
-            const contentEl = document.getElementById('legalModalContent');
-            
-            const policy = LEGAL_POLICIES_DATABASE[policyKey] || LEGAL_POLICIES_DATABASE.privacy;
-            if (modal && titleEl && contentEl) {
-                titleEl.innerHTML = policy.title;
-                contentEl.innerHTML = policy.content;
-                modal.classList.remove('hidden');
-                modal.classList.add('flex');
-            }
-        };
-
-        // Admin Detail Modal Close Handler
-        window.closeAdminUserDetailModal = function() {
-            const modal = document.getElementById('adminUserDetailModalOverlay');
-            if (modal) {
-                modal.classList.add('hidden');
-                modal.classList.remove('flex');
-            }
-        };
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const legalCloseBtn = document.getElementById('legal-close-btn');
-            const legalAckBtn = document.getElementById('legal-acknowledge-btn');
-            const legalModal = document.getElementById('legalModalOverlay');
-
-            const closeModal = () => {
-                if (legalModal) {
-                    legalModal.classList.add('hidden');
-                    legalModal.classList.remove('flex');
-                }
-            };
-
-            if (legalCloseBtn) legalCloseBtn.addEventListener('click', closeModal);
-            if (legalAckBtn) legalAckBtn.addEventListener('click', closeModal);
-
-            const bindClick = (id, key) => {
-                const el = document.getElementById(id);
-                if (el) {
-                    el.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        window.openLegalPolicyModal(key);
-                    });
-                }
-            };
-
-            // Login Screen Footer Buttons
-            bindClick('btn-show-about-login', 'about');
-            bindClick('btn-show-support-login', 'support');
-            bindClick('btn-show-fulfillment-login', 'fulfillment');
-            bindClick('btn-show-privacy-login', 'privacy');
-            bindClick('btn-show-refund-login', 'refund');
-            bindClick('btn-show-terms-login', 'terms');
-            bindClick('btn-show-disclaimer-login', 'disclaimer');
-
-            // Signup Form Links
-            bindClick('btn-show-privacy', 'privacy');
-            bindClick('btn-show-terms', 'terms');
-
-            // Side Drawer Links
-            bindClick('btn-show-about-2', 'about');
-            bindClick('btn-show-privacy-2', 'privacy');
-            bindClick('btn-show-terms-2', 'terms');
-            bindClick('btn-show-refund-2', 'refund');
-
-            // Main Desktop Footer Links
-            bindClick('btn-show-about-3', 'about');
-            bindClick('btn-show-support-3', 'support');
-            bindClick('btn-show-fulfillment-3', 'fulfillment');
-            bindClick('btn-show-privacy-3', 'privacy');
-            bindClick('btn-show-refund-3', 'refund');
-            bindClick('btn-show-terms-3', 'terms');
-            bindClick('btn-show-disclaimer-3', 'disclaimer');
-
-            // 1. Session Login Handlers
-            const authContainer = document.getElementById('authContainer');
-            const appContainer = document.getElementById('appContainer');
-            const loginSubmitBtn = document.getElementById('login-submit-btn');
-            const googleLoginBtn = document.getElementById('google-login-btn');
-            const registerSubmitBtn = document.getElementById('register-submit-btn');
-
-            const enterAppSession = () => {
-                if (authContainer) authContainer.style.display = 'none';
-                if (appContainer) {
-                    appContainer.classList.remove('hidden');
-                    appContainer.style.display = 'flex';
-                }
-            };
-
-            if (loginSubmitBtn) loginSubmitBtn.addEventListener('click', enterAppSession);
-            if (googleLoginBtn) googleLoginBtn.addEventListener('click', enterAppSession);
-            if (registerSubmitBtn) registerSubmitBtn.addEventListener('click', enterAppSession);
-
-            // 2. Session Terminate / Logout Handler
-            const drawerLogoutBtn = document.getElementById('drawer-logout-btn');
-            if (drawerLogoutBtn) {
-                drawerLogoutBtn.addEventListener('click', () => {
-                    if (appContainer) {
-                        appContainer.classList.add('hidden');
-                        appContainer.style.display = 'none';
-                    }
-                    if (authContainer) {
-                        authContainer.style.display = 'flex';
-                    }
-                    closeSideDrawer();
-                });
-            }
-
-            // 3. Admin Console Close & Logout Handlers
-            const adminConsole = document.getElementById('adminCoreConsole');
-            const adminCloseBtn = document.getElementById('admin-close-btn');
-            const adminLogoutBtn = document.getElementById('admin-logout-btn');
-            const drawerAdminLink = document.getElementById('drawerAdminLink');
-
-            const closeAdminConsole = () => {
-                if (adminConsole) {
-                    adminConsole.classList.add('hidden');
-                    adminConsole.style.display = 'none';
-                }
-            };
-
-            if (adminCloseBtn) adminCloseBtn.addEventListener('click', closeAdminConsole);
-            
-            if (adminLogoutBtn) {
-                adminLogoutBtn.addEventListener('click', () => {
-                    closeAdminConsole();
-                    if (appContainer) {
-                        appContainer.classList.add('hidden');
-                        appContainer.style.display = 'none';
-                    }
-                    if (authContainer) {
-                        authContainer.style.display = 'flex';
-                    }
-                });
-            }
-
-            if (drawerAdminLink) {
-                drawerAdminLink.addEventListener('click', () => {
-                    closeSideDrawer();
-                    if (adminConsole) {
-                        adminConsole.classList.remove('hidden');
-                        adminConsole.style.display = 'flex';
-                    }
-                });
-            }
-
-            // 4. Auth View Switchers (Login / Signup / Forgot)
-            const loginForm = document.getElementById('loginForm');
-            const signupForm = document.getElementById('signupForm');
-            const forgotForm = document.getElementById('forgotForm');
-
-            const triggerSignup = document.getElementById('trigger-signup-btn');
-            const triggerLogin = document.getElementById('trigger-login-btn');
-            const triggerLogin2 = document.getElementById('trigger-login-btn-2');
-            const triggerForgot = document.getElementById('trigger-forgot-btn');
-
-            if (triggerSignup) {
-                triggerSignup.addEventListener('click', () => {
-                    if (loginForm) loginForm.classList.add('hidden');
-                    if (forgotForm) forgotForm.classList.add('hidden');
-                    if (signupForm) signupForm.classList.remove('hidden');
-                });
-            }
-
-            if (triggerLogin) {
-                triggerLogin.addEventListener('click', () => {
-                    if (signupForm) signupForm.classList.add('hidden');
-                    if (forgotForm) forgotForm.classList.add('hidden');
-                    if (loginForm) loginForm.classList.remove('hidden');
-                });
-            }
-
-            if (triggerLogin2) {
-                triggerLogin2.addEventListener('click', () => {
-                    if (signupForm) signupForm.classList.add('hidden');
-                    if (forgotForm) forgotForm.classList.add('hidden');
-                    if (loginForm) loginForm.classList.remove('hidden');
-                });
-            }
-
-            if (triggerForgot) {
-                triggerForgot.addEventListener('click', () => {
-                    if (loginForm) loginForm.classList.add('hidden');
-                    if (signupForm) signupForm.classList.add('hidden');
-                    if (forgotForm) forgotForm.classList.remove('hidden');
-                });
-            }
-
-            // 5. Side Drawer Toggle Controls
-            const sideDrawer = document.getElementById('sideDrawer');
-            const drawerToggleBtn = document.getElementById('drawer-toggle-btn');
-            const drawerCloseBtn = document.getElementById('drawer-close-btn');
-            const drawerOverlay = document.getElementById('drawerOverlay');
-
-            const openSideDrawer = () => {
-                if (sideDrawer) sideDrawer.classList.remove('-translate-x-full');
-                if (drawerOverlay) drawerOverlay.classList.remove('hidden');
-            };
-
-            const closeSideDrawer = () => {
-                if (sideDrawer) sideDrawer.classList.add('-translate-x-full');
-                if (drawerOverlay) drawerOverlay.classList.add('hidden');
-            };
-
-            if (drawerToggleBtn) drawerToggleBtn.addEventListener('click', openSideDrawer);
-            if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeSideDrawer);
-            if (drawerOverlay) drawerOverlay.addEventListener('click', closeSideDrawer);
-
-            // 6. Main Portal Tab Navigation Handlers
-            const tabs = ['dashboard', 'myorders', 'addfunds', 'refer'];
-            const switchTab = (targetTab) => {
-                tabs.forEach(tabKey => {
-                    const contentEl = document.getElementById(`tab-${tabKey}`);
-                    const btnEl = document.getElementById(`tab-btn-${tabKey}`);
-                    
-                    if (contentEl) {
-                        if (tabKey === targetTab) {
-                            contentEl.classList.remove('hidden');
-                        } else {
-                            contentEl.classList.add('hidden');
-                        }
-                    }
-
-                    if (btnEl) {
-                        if (tabKey === targetTab) {
-                            btnEl.classList.add('glass-panel-active', 'text-white');
-                            btnEl.classList.remove('text-slate-400');
-                        } else {
-                            btnEl.classList.remove('glass-panel-active', 'text-white');
-                            btnEl.classList.add('text-slate-400');
-                        }
-                    }
-                });
-            };
-
-            tabs.forEach(tabKey => {
-                const btnEl = document.getElementById(`tab-btn-${tabKey}`);
-                if (btnEl) {
-                    btnEl.addEventListener('click', () => switchTab(tabKey));
-                }
-            });
-
-            // 7. Admin Console Tab Handlers
-            const adminTabDepositsBtn = document.getElementById('admin-tab-deposits-btn');
-            const adminTabUsersBtn = document.getElementById('admin-tab-users-btn');
-            const adminDepositsSection = document.getElementById('adminDepositsSection');
-            const adminUsersSection = document.getElementById('adminUsersSection');
-
-            if (adminTabDepositsBtn && adminTabUsersBtn) {
-                adminTabDepositsBtn.addEventListener('click', () => {
-                    if (adminDepositsSection) adminDepositsSection.classList.remove('hidden');
-                    if (adminUsersSection) adminUsersSection.classList.add('hidden');
-                    adminTabDepositsBtn.classList.add('bg-purple-600', 'text-white', 'shadow-glow-purple');
-                    adminTabUsersBtn.classList.remove('bg-purple-600', 'text-white', 'shadow-glow-purple');
-                    adminTabUsersBtn.classList.add('bg-slate-900', 'text-slate-300');
-                });
-
-                adminTabUsersBtn.addEventListener('click', () => {
-                    if (adminUsersSection) adminUsersSection.classList.remove('hidden');
-                    if (adminDepositsSection) adminDepositsSection.classList.add('hidden');
-                    adminTabUsersBtn.classList.add('bg-purple-600', 'text-white', 'shadow-glow-purple');
-                    adminTabDepositsBtn.classList.remove('bg-purple-600', 'text-white', 'shadow-glow-purple');
-                    adminTabDepositsBtn.classList.add('bg-slate-900', 'text-slate-300');
-                });
-            }
-
-            // 8. AI Support Desk Widget Toggle Controls
-            const aiWidgetToggle = document.getElementById('aiWidgetToggle');
-            const aiSupportWidget = document.getElementById('aiSupportWidget');
-            const aiWidgetCloseBtn = document.getElementById('ai-widget-close-btn');
-
-            if (aiWidgetToggle && aiSupportWidget) {
-                aiWidgetToggle.addEventListener('click', () => {
-                    if (aiSupportWidget.classList.contains('hidden')) {
-                        aiSupportWidget.classList.remove('hidden');
-                        aiSupportWidget.classList.add('flex');
-                    } else {
-                        aiSupportWidget.classList.add('hidden');
-                        aiSupportWidget.classList.remove('flex');
-                    }
-                });
-            }
-
-            if (aiWidgetCloseBtn && aiSupportWidget) {
-                aiWidgetCloseBtn.addEventListener('click', () => {
-                    aiSupportWidget.classList.add('hidden');
-                    aiSupportWidget.classList.remove('flex');
-                });
-            }
-        });
-    </script>
 
     <!-- LINKING POSTS.JS -->
     <script type="module" src="posts.js"></script>
