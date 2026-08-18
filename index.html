@@ -153,12 +153,12 @@
 
             <!-- Login Form view -->
             <div id="loginForm" class="space-y-4">
-                <button id="google-login-btn" type="button" class="hidden w-full py-3.5 bg-[#0d1220]/90 hover:bg-slate-900 border border-slate-800 text-slate-200 font-bold text-xs rounded-2xl flex items-center justify-center space-x-3 transition active:scale-[0.98] shadow-md">
+                <button id="google-login-btn" type="button" class="w-full py-3.5 bg-[#0d1220]/90 hover:bg-slate-900 border border-slate-800 text-slate-200 font-bold text-xs rounded-2xl flex items-center justify-center space-x-3 transition active:scale-[0.98] shadow-md">
                     <i class="fa-brands fa-google text-rose-500 text-base"></i>
                     <span>Continue with Google Identity</span>
                 </button>
 
-                <div class="relative flex py-1 items-center hidden">
+                <div class="relative flex py-1 items-center">
                     <div class="flex-grow border-t border-slate-800"></div>
                     <span class="flex-shrink mx-3 text-[9px] uppercase font-mono text-slate-500">Or Access With Email Identity</span>
                     <div class="flex-grow border-t border-slate-800"></div>
@@ -314,6 +314,9 @@
                     <span class="text-[10px] uppercase font-bold tracking-wider text-slate-400 hidden sm:inline font-mono">Wallet</span>
                     <span class="text-sm font-black tracking-wide text-white">₹<span id="userBalance">0.00</span></span>
                 </div>
+
+                <!-- Google User Profile Avatar Display -->
+                <img id="headerUserAvatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=SGS" class="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-slate-900 p-0.5 border border-rose-500/40 object-cover shadow-glow-rose cursor-pointer hover:scale-105 transition" alt="Google Profile Avatar" title="User Profile">
             </div>
         </header>
 
@@ -978,6 +981,24 @@
             }
         }, 2000);
 
+        // Global Helper to Update User Avatar across Header & Drawer when logged in via Google
+        window.updateUserProfileAvatar = function(photoUrl) {
+            if (!photoUrl) return;
+            const headerAvatar = document.getElementById('headerUserAvatar');
+            const drawerAvatar = document.getElementById('drawerUserLogo');
+            if (headerAvatar) headerAvatar.src = photoUrl;
+            if (drawerAvatar) drawerAvatar.src = photoUrl;
+        };
+
+        // Attach Click to Header Avatar to toggle Side Drawer
+        document.addEventListener('DOMContentLoaded', function() {
+            const headerAvatar = document.getElementById('headerUserAvatar');
+            const drawerBtn = document.getElementById('drawer-toggle-btn');
+            if (headerAvatar && drawerBtn) {
+                headerAvatar.addEventListener('click', () => drawerBtn.click());
+            }
+        });
+
         // Enterprise Legal Policies Database (Compliant with Google Ad Policies, Cashfree Merchant Guidelines, and IT Intermediary Rules 2021)
         const LEGAL_POLICIES_DATABASE = {
             about: {
@@ -1143,6 +1164,15 @@
             }
         };
 
+        // Admin Detail Modal Close Handler
+        window.closeAdminUserDetailModal = function() {
+            const modal = document.getElementById('adminUserDetailModalOverlay');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        };
+
         document.addEventListener('DOMContentLoaded', function() {
             const legalCloseBtn = document.getElementById('legal-close-btn');
             const legalAckBtn = document.getElementById('legal-acknowledge-btn');
@@ -1195,6 +1225,222 @@
             bindClick('btn-show-refund-3', 'refund');
             bindClick('btn-show-terms-3', 'terms');
             bindClick('btn-show-disclaimer-3', 'disclaimer');
+
+            // 1. Session Login Handlers
+            const authContainer = document.getElementById('authContainer');
+            const appContainer = document.getElementById('appContainer');
+            const loginSubmitBtn = document.getElementById('login-submit-btn');
+            const googleLoginBtn = document.getElementById('google-login-btn');
+            const registerSubmitBtn = document.getElementById('register-submit-btn');
+
+            const enterAppSession = () => {
+                if (authContainer) authContainer.style.display = 'none';
+                if (appContainer) {
+                    appContainer.classList.remove('hidden');
+                    appContainer.style.display = 'flex';
+                }
+            };
+
+            if (loginSubmitBtn) loginSubmitBtn.addEventListener('click', enterAppSession);
+            if (googleLoginBtn) googleLoginBtn.addEventListener('click', enterAppSession);
+            if (registerSubmitBtn) registerSubmitBtn.addEventListener('click', enterAppSession);
+
+            // 2. Session Terminate / Logout Handler
+            const drawerLogoutBtn = document.getElementById('drawer-logout-btn');
+            if (drawerLogoutBtn) {
+                drawerLogoutBtn.addEventListener('click', () => {
+                    if (appContainer) {
+                        appContainer.classList.add('hidden');
+                        appContainer.style.display = 'none';
+                    }
+                    if (authContainer) {
+                        authContainer.style.display = 'flex';
+                    }
+                    closeSideDrawer();
+                });
+            }
+
+            // 3. Admin Console Close & Logout Handlers
+            const adminConsole = document.getElementById('adminCoreConsole');
+            const adminCloseBtn = document.getElementById('admin-close-btn');
+            const adminLogoutBtn = document.getElementById('admin-logout-btn');
+            const drawerAdminLink = document.getElementById('drawerAdminLink');
+
+            const closeAdminConsole = () => {
+                if (adminConsole) {
+                    adminConsole.classList.add('hidden');
+                    adminConsole.style.display = 'none';
+                }
+            };
+
+            if (adminCloseBtn) adminCloseBtn.addEventListener('click', closeAdminConsole);
+            
+            if (adminLogoutBtn) {
+                adminLogoutBtn.addEventListener('click', () => {
+                    closeAdminConsole();
+                    if (appContainer) {
+                        appContainer.classList.add('hidden');
+                        appContainer.style.display = 'none';
+                    }
+                    if (authContainer) {
+                        authContainer.style.display = 'flex';
+                    }
+                });
+            }
+
+            if (drawerAdminLink) {
+                drawerAdminLink.addEventListener('click', () => {
+                    closeSideDrawer();
+                    if (adminConsole) {
+                        adminConsole.classList.remove('hidden');
+                        adminConsole.style.display = 'flex';
+                    }
+                });
+            }
+
+            // 4. Auth View Switchers (Login / Signup / Forgot)
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const forgotForm = document.getElementById('forgotForm');
+
+            const triggerSignup = document.getElementById('trigger-signup-btn');
+            const triggerLogin = document.getElementById('trigger-login-btn');
+            const triggerLogin2 = document.getElementById('trigger-login-btn-2');
+            const triggerForgot = document.getElementById('trigger-forgot-btn');
+
+            if (triggerSignup) {
+                triggerSignup.addEventListener('click', () => {
+                    if (loginForm) loginForm.classList.add('hidden');
+                    if (forgotForm) forgotForm.classList.add('hidden');
+                    if (signupForm) signupForm.classList.remove('hidden');
+                });
+            }
+
+            if (triggerLogin) {
+                triggerLogin.addEventListener('click', () => {
+                    if (signupForm) signupForm.classList.add('hidden');
+                    if (forgotForm) forgotForm.classList.add('hidden');
+                    if (loginForm) loginForm.classList.remove('hidden');
+                });
+            }
+
+            if (triggerLogin2) {
+                triggerLogin2.addEventListener('click', () => {
+                    if (signupForm) signupForm.classList.add('hidden');
+                    if (forgotForm) forgotForm.classList.add('hidden');
+                    if (loginForm) loginForm.classList.remove('hidden');
+                });
+            }
+
+            if (triggerForgot) {
+                triggerForgot.addEventListener('click', () => {
+                    if (loginForm) loginForm.classList.add('hidden');
+                    if (signupForm) signupForm.classList.add('hidden');
+                    if (forgotForm) forgotForm.classList.remove('hidden');
+                });
+            }
+
+            // 5. Side Drawer Toggle Controls
+            const sideDrawer = document.getElementById('sideDrawer');
+            const drawerToggleBtn = document.getElementById('drawer-toggle-btn');
+            const drawerCloseBtn = document.getElementById('drawer-close-btn');
+            const drawerOverlay = document.getElementById('drawerOverlay');
+
+            const openSideDrawer = () => {
+                if (sideDrawer) sideDrawer.classList.remove('-translate-x-full');
+                if (drawerOverlay) drawerOverlay.classList.remove('hidden');
+            };
+
+            const closeSideDrawer = () => {
+                if (sideDrawer) sideDrawer.classList.add('-translate-x-full');
+                if (drawerOverlay) drawerOverlay.classList.add('hidden');
+            };
+
+            if (drawerToggleBtn) drawerToggleBtn.addEventListener('click', openSideDrawer);
+            if (drawerCloseBtn) drawerCloseBtn.addEventListener('click', closeSideDrawer);
+            if (drawerOverlay) drawerOverlay.addEventListener('click', closeSideDrawer);
+
+            // 6. Main Portal Tab Navigation Handlers
+            const tabs = ['dashboard', 'myorders', 'addfunds', 'refer'];
+            const switchTab = (targetTab) => {
+                tabs.forEach(tabKey => {
+                    const contentEl = document.getElementById(`tab-${tabKey}`);
+                    const btnEl = document.getElementById(`tab-btn-${tabKey}`);
+                    
+                    if (contentEl) {
+                        if (tabKey === targetTab) {
+                            contentEl.classList.remove('hidden');
+                        } else {
+                            contentEl.classList.add('hidden');
+                        }
+                    }
+
+                    if (btnEl) {
+                        if (tabKey === targetTab) {
+                            btnEl.classList.add('glass-panel-active', 'text-white');
+                            btnEl.classList.remove('text-slate-400');
+                        } else {
+                            btnEl.classList.remove('glass-panel-active', 'text-white');
+                            btnEl.classList.add('text-slate-400');
+                        }
+                    }
+                });
+            };
+
+            tabs.forEach(tabKey => {
+                const btnEl = document.getElementById(`tab-btn-${tabKey}`);
+                if (btnEl) {
+                    btnEl.addEventListener('click', () => switchTab(tabKey));
+                }
+            });
+
+            // 7. Admin Console Tab Handlers
+            const adminTabDepositsBtn = document.getElementById('admin-tab-deposits-btn');
+            const adminTabUsersBtn = document.getElementById('admin-tab-users-btn');
+            const adminDepositsSection = document.getElementById('adminDepositsSection');
+            const adminUsersSection = document.getElementById('adminUsersSection');
+
+            if (adminTabDepositsBtn && adminTabUsersBtn) {
+                adminTabDepositsBtn.addEventListener('click', () => {
+                    if (adminDepositsSection) adminDepositsSection.classList.remove('hidden');
+                    if (adminUsersSection) adminUsersSection.classList.add('hidden');
+                    adminTabDepositsBtn.classList.add('bg-purple-600', 'text-white', 'shadow-glow-purple');
+                    adminTabUsersBtn.classList.remove('bg-purple-600', 'text-white', 'shadow-glow-purple');
+                    adminTabUsersBtn.classList.add('bg-slate-900', 'text-slate-300');
+                });
+
+                adminTabUsersBtn.addEventListener('click', () => {
+                    if (adminUsersSection) adminUsersSection.classList.remove('hidden');
+                    if (adminDepositsSection) adminDepositsSection.classList.add('hidden');
+                    adminTabUsersBtn.classList.add('bg-purple-600', 'text-white', 'shadow-glow-purple');
+                    adminTabDepositsBtn.classList.remove('bg-purple-600', 'text-white', 'shadow-glow-purple');
+                    adminTabDepositsBtn.classList.add('bg-slate-900', 'text-slate-300');
+                });
+            }
+
+            // 8. AI Support Desk Widget Toggle Controls
+            const aiWidgetToggle = document.getElementById('aiWidgetToggle');
+            const aiSupportWidget = document.getElementById('aiSupportWidget');
+            const aiWidgetCloseBtn = document.getElementById('ai-widget-close-btn');
+
+            if (aiWidgetToggle && aiSupportWidget) {
+                aiWidgetToggle.addEventListener('click', () => {
+                    if (aiSupportWidget.classList.contains('hidden')) {
+                        aiSupportWidget.classList.remove('hidden');
+                        aiSupportWidget.classList.add('flex');
+                    } else {
+                        aiSupportWidget.classList.add('hidden');
+                        aiSupportWidget.classList.remove('flex');
+                    }
+                });
+            }
+
+            if (aiWidgetCloseBtn && aiSupportWidget) {
+                aiWidgetCloseBtn.addEventListener('click', () => {
+                    aiSupportWidget.classList.add('hidden');
+                    aiSupportWidget.classList.remove('flex');
+                });
+            }
         });
     </script>
 
