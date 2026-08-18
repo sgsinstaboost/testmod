@@ -356,6 +356,78 @@
         #submit-order-pipeline-btn:active {
             transform: translateY(1px) scale(0.98) !important;
         }
+
+        /* --- FULL SMM PANEL WEB ARCHITECTURE ENHANCEMENTS --- */
+        @media (min-width: 1024px) {
+            body {
+                padding-bottom: 0 !important;
+            }
+            #appContainer {
+                max-width: 100% !important;
+                padding-bottom: 0 !important;
+            }
+            #appContainer > .flex-1 {
+                max-width: 1440px !important;
+                margin-left: auto !important;
+                margin-right: auto !important;
+                padding: 2rem 2.5rem !important;
+                gap: 2rem !important;
+            }
+            aside.lg\:flex {
+                width: 18rem !important;
+                background: rgba(255, 255, 255, 0.7) !important;
+                border-radius: 1.5rem !important;
+                padding: 1.25rem !important;
+                border: 1px solid rgba(254, 205, 211, 0.6) !important;
+                box-shadow: 0 10px 30px -5px rgba(244, 63, 94, 0.05) !important;
+                height: fit-content !important;
+                position: sticky !important;
+                top: 5.5rem !important;
+            }
+            aside.lg\:flex button {
+                padding: 0.95rem 1.25rem !important;
+                font-size: 0.875rem !important;
+                font-weight: 600 !important;
+                border-radius: 1rem !important;
+            }
+            /* Wide form controls for PC users */
+            select, input[type="url"], input[type="number"], input[type="text"], input[type="email"], input[type="password"] {
+                padding: 1rem 1.25rem !important;
+                font-size: 0.95rem !important;
+                border-radius: 1rem !important;
+            }
+            /* Broad Full Width Grid Layouts */
+            #tab-dashboard .grid, #tab-addfunds .grid {
+                grid-template-columns: 2.2fr 1fr !important;
+                gap: 2rem !important;
+            }
+            /* Table Web Layout Optimization */
+            table {
+                font-size: 0.875rem !important;
+            }
+            table th {
+                padding: 1rem 1.25rem !important;
+                font-size: 0.75rem !important;
+            }
+            table td {
+                padding: 1.15rem 1.25rem !important;
+            }
+            /* SMM Panel Large Web Card Styling */
+            .glass-panel {
+                border-radius: 1.5rem !important;
+            }
+            #authContainer .glass-panel {
+                max-width: 30rem !important;
+                border-radius: 2rem !important;
+                box-shadow: 0 25px 50px -12px rgba(244, 63, 94, 0.2) !important;
+            }
+            #submit-order-pipeline-btn, #submit-deposit-btn, #login-submit-btn, #register-submit-btn {
+                padding: 1.15rem 2rem !important;
+                font-size: 0.95rem !important;
+                letter-spacing: 0.08em !important;
+                border-radius: 1rem !important;
+            }
+        }
     </style>
 </head>
 <body class="text-[#f1f5f9] font-sans min-h-screen flex flex-col antialiased selection:bg-rose-500 selection:text-white pb-24 lg:pb-0">
