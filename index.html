@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    <title>SGS Mock Test: All Exams Preparation</title>
+    <title>SGS Mock Test: All Exams Preparation with Gemini AI</title>
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -20,7 +20,7 @@
         .splash-logo-fallback { font-size: 32px; font-weight: 900; color: #ec4899; }
         @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
 
-        /* Policy Consent Container (Replaces Login View) */
+        /* Policy Consent Container */
         .auth-view { min-height: 100vh; background: linear-gradient(180deg, #fdf2f8 0%, #f8fafc 100%); padding: 30px 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .auth-card { background: #ffffff; width: 100%; max-width: 380px; border-radius: 20px; padding: 28px 22px; box-shadow: 0 10px 30px rgba(236, 72, 153, 0.12); border: 1.5px solid #fbcfe8; }
         .auth-title { font-size: 22px; font-weight: 800; text-align: center; color: #831843; margin-bottom: 8px; }
@@ -33,7 +33,6 @@
         .auth-checkbox-container { display: flex; align-items: flex-start; gap: 10px; margin: 16px 0; font-size: 13px; color: #334155; line-height: 1.4; }
         .auth-checkbox-container input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; accent-color: #ec4899; cursor: pointer; }
 
-        /* Buttons with Loading Effect */
         .btn-gradient {
             width: 100%; padding: 14px; border: none; border-radius: 10px;
             background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #fff;
@@ -55,171 +54,42 @@
         .drawer-item { padding: 13px 18px; display: flex; align-items: center; gap: 12px; font-size: 14.5px; font-weight: 600; color: #334155; cursor: pointer; border-bottom: 1px solid #f1f5f9; text-decoration: none; }
         .drawer-item:active { background: #fdf2f8; color: #db2777; }
 
-        /* Top App Bars */
         .top-bar { background: linear-gradient(135deg, #ec4899, #8b5cf6, #3b82f6); color: #fff; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; box-shadow: 0 4px 12px rgba(236, 72, 153, 0.25); }
         .top-bar-left { display: flex; align-items: center; gap: 10px; }
         .top-logo-img { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; background: #fff; }
         .top-bar .title { font-size: 17px; font-weight: 800; letter-spacing: 0.5px; }
         .menu-btn { font-size: 22px; cursor: pointer; background: transparent; border: none; color: #fff; line-height: 1; }
         .sub-bar { background: #ffffff; border-bottom: 1px solid #f1f5f9; padding: 10px 16px; font-size: 13px; font-weight: 600; color: #64748b; display: flex; justify-content: space-between; align-items: center; }
-        
-        /* Below Header Dedicated Back Navigation Bar */
-        .nav-back-strip {
-            background: #ffffff;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 8px 16px;
-            display: none;
-            align-items: center;
-        }
-        .btn-below-header-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #fdf2f8;
-            border: 1.5px solid #f472b6;
-            color: #be185d;
-            font-size: 13px;
-            font-weight: 800;
-            padding: 6px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(236, 72, 153, 0.15);
-            transition: all 0.2s ease;
-        }
-        .btn-below-header-back:active {
-            transform: scale(0.96);
-            background: #fce7f3;
-        }
-        body.dark-theme .nav-back-strip {
-            background: #111827 !important;
-            border-bottom-color: #1f2937 !important;
-        }
-        body.dark-theme .btn-below-header-back {
-            background: #31133f !important;
-            color: #f472b6 !important;
-            border-color: #db2777 !important;
-        }
 
-        .user-greeting { padding: 16px 16px 8px 16px; font-size: 16px; color: #1e293b; font-weight: 700; }
+        .nav-back-strip { background: #ffffff; border-bottom: 1px solid #e2e8f0; padding: 8px 16px; display: none; align-items: center; }
+        .btn-below-header-back { display: inline-flex; align-items: center; gap: 6px; background: #fdf2f8; border: 1.5px solid #f472b6; color: #be185d; font-size: 13px; font-weight: 800; padding: 6px 14px; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 5px rgba(236, 72, 153, 0.15); transition: all 0.2s ease; }
+        .btn-below-header-back:active { transform: scale(0.96); background: #fce7f3; }
 
+        .user-greeting { padding: 16px 16px 8px 16px; font-size: 16px; color: #1e293b; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
         .container { padding: 8px 16px 24px 16px; }
         .view { display: none; }
         .view.active { display: block; }
 
-        /* Colorful Gradient Cards */
         .item-card {
-            background: linear-gradient(135deg, #ffffff, #fdf2f8);
-            border: 1.5px solid #f472b6;
-            padding: 14px 16px;
-            border-radius: 12px;
-            margin-bottom: 14px;
-            font-size: 15.5px;
-            font-weight: 700;
-            cursor: pointer;
-            color: #831843;
-            box-shadow: 0 4px 10px rgba(244, 114, 182, 0.15);
-            transition: all 0.2s ease;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            text-align: left;
-            gap: 12px;
+            background: linear-gradient(135deg, #ffffff, #fdf2f8); border: 1.5px solid #f472b6; padding: 14px 16px; border-radius: 12px; margin-bottom: 14px; font-size: 15.5px; font-weight: 700; cursor: pointer; color: #831843; box-shadow: 0 4px 10px rgba(244, 114, 182, 0.15); transition: all 0.2s ease; position: relative; display: flex; align-items: center; justify-content: space-between; text-align: left; gap: 12px;
         }
         .item-card:active { transform: scale(0.98); background: #fce7f3; }
-        .item-card:nth-child(2n) {
-            background: linear-gradient(135deg, #ffffff, #f5f3ff);
-            border-color: #a78bfa;
-            color: #4c1d95;
-            box-shadow: 0 4px 10px rgba(167, 139, 250, 0.15);
-        }
-        .item-card:nth-child(3n) {
-            background: linear-gradient(135deg, #ffffff, #eff6ff);
-            border-color: #60a5fa;
-            color: #1e3a8a;
-            box-shadow: 0 4px 10px rgba(96, 165, 250, 0.15);
-        }
+        .item-card:nth-child(2n) { background: linear-gradient(135deg, #ffffff, #f5f3ff); border-color: #a78bfa; color: #4c1d95; box-shadow: 0 4px 10px rgba(167, 139, 250, 0.15); }
+        .item-card:nth-child(3n) { background: linear-gradient(135deg, #ffffff, #eff6ff); border-color: #60a5fa; color: #1e3a8a; box-shadow: 0 4px 10px rgba(96, 165, 250, 0.15); }
 
-        .item-card-title {
-            flex: 1;
-            line-height: 1.4;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            word-break: break-word;
-        }
-
-        .item-card-action-btn {
-            background: linear-gradient(135deg, #ec4899, #8b5cf6);
-            color: #ffffff !important;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 12.5px;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3);
-            white-space: nowrap;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            pointer-events: none;
-        }
+        .item-card-title { flex: 1; line-height: 1.4; display: flex; align-items: center; gap: 8px; word-break: break-word; }
+        .item-card-action-btn { background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #ffffff !important; border: none; padding: 8px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 800; cursor: pointer; box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3); white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; pointer-events: none; }
         .badge-attempted { font-size: 10px; background: #16a34a; color: #fff; padding: 2px 6px; border-radius: 6px; font-weight: 700; white-space: nowrap; }
 
-        /* PDF Card Row Layout with Right Align View Button */
-        .pdf-item-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            text-align: left;
-            padding: 14px 16px;
-            gap: 12px;
-        }
-        .pdf-item-title {
-            font-size: 14.5px;
-            font-weight: 700;
-            flex: 1;
-            line-height: 1.4;
-        }
-        .btn-pdf-view {
-            background: linear-gradient(135deg, #ec4899, #8b5cf6);
-            color: #ffffff;
-            border: none;
-            padding: 7px 14px;
-            border-radius: 8px;
-            font-size: 12.5px;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3);
-            white-space: nowrap;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .btn-pdf-view:active { transform: scale(0.96); }
+        #view-pdf-reader { position: fixed; inset: 0; background: #ffffff; z-index: 2000; display: none; flex-direction: column; }
+        .pdf-reader-topbar { background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #fff; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.15); }
+        .pdf-frame-wrapper { flex: 1; width: 100%; height: 100%; position: relative; overflow: hidden; background: #f8fafc; }
+        .pdf-iframe-box { position: absolute; top: -56px; left: 0; width: 100%; height: calc(100% + 56px); border: none; background: #ffffff; }
 
-        /* Fullscreen PDF Reader */
-        #view-pdf-reader {
-            position: fixed; inset: 0; background: #ffffff; z-index: 2000; display: none; flex-direction: column;
-        }
-        .pdf-reader-topbar {
-            background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #fff; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-        }
-        .pdf-frame-wrapper {
-            flex: 1; width: 100%; height: 100%; position: relative; overflow: hidden; background: #f8fafc;
-        }
-        .pdf-iframe-box {
-            position: absolute; top: -56px; left: 0; width: 100%; height: calc(100% + 56px); border: none; background: #ffffff;
-        }
-
-        /* Test Header & Timer */
-        .test-status-bar { display: flex; justify-content: space-between; align-items: center; margin: 12px 0; font-size: 14px; }
+        .test-status-bar { display: flex; justify-content: space-between; align-items: center; margin: 12px 0; font-size: 14px; flex-wrap: wrap; gap: 6px; }
         .timer-badge { background: #fdf2f8; color: #db2777; font-weight: 800; padding: 6px 14px; border-radius: 20px; border: 1.5px solid #f472b6; }
         .btn-submit-test { background: #dc2626; color: #ffffff; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 14px; box-shadow: 0 2px 6px rgba(220, 38, 38, 0.35); }
-        .btn-submit-test:active { background: #b91c1c; }
 
-        /* Question Box */
         .question-box { background: #ffffff; padding: 18px; border-radius: 12px; border: 1px solid #e2e8f0; font-size: 16px; font-weight: 600; line-height: 1.5; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
 
         .option-item { background: #ffffff; border: 1.5px solid #e2e8f0; padding: 14px 16px; border-radius: 10px; margin-bottom: 10px; cursor: pointer; display: flex; align-items: center; font-size: 15px; }
@@ -227,194 +97,66 @@
         .opt-circle { width: 24px; height: 24px; border: 2px solid #94a3b8; border-radius: 50%; margin-right: 12px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; }
         .option-item.selected .opt-circle { border-color: #ec4899; background: #ec4899; color: #fff; }
 
-        /* Action Buttons */
         .nav-actions { display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 8px; margin-top: 16px; }
         .action-btn { padding: 12px 6px; border: 1.5px solid #cbd5e1; background: #fff; font-weight: 700; border-radius: 8px; cursor: pointer; font-size: 14px; }
         .action-btn.primary { background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #fff; border: none; }
 
-        /* Palette */
         .palette-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 12px; max-height: 180px; overflow-y: auto; padding: 4px; }
         .palette-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #cbd5e1; background: #fff; font-weight: bold; cursor: pointer; }
         .palette-btn.answered { background: #22c55e; color: #fff; border-color: #22c55e; }
         .palette-btn.current { border: 2px solid #ec4899; transform: scale(1.08); font-weight: 800; }
 
-        /* Modals */
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); justify-content: center; align-items: center; z-index: 9999; padding: 16px; }
-        .modal-box { background: #ffffff; padding: 24px 20px; border-radius: 16px; width: 100%; max-width: 320px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.75); justify-content: center; align-items: center; z-index: 9999; padding: 16px; backdrop-filter: blur(4px); }
+        .modal-box { background: #ffffff; padding: 24px 20px; border-radius: 16px; width: 100%; max-width: 360px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
         .modal-box h3 { margin-bottom: 8px; font-size: 18px; color: #0f172a; }
         .modal-box p { color: #64748b; font-size: 14px; margin-bottom: 20px; }
         .modal-btns { display: flex; gap: 10px; flex-wrap: wrap; }
         .modal-btns button { flex: 1; min-width: 80px; padding: 12px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; font-size: 14px; }
+        .modal-scrollable-box { max-height: 80vh; overflow-y: auto; text-align: left; max-width: 480px; width: 100%; }
 
-        .modal-scrollable-box { max-height: 75vh; overflow-y: auto; text-align: left; max-width: 420px; }
-
-        /* In-App Force Update Modal Box */
-        #updateModal {
-            display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.88);
-            z-index: 999999; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;
+        /* Gemini AI Custom Stylings */
+        .btn-ai-guru {
+            background: linear-gradient(135deg, #a855f7, #6366f1);
+            color: #ffffff; border: none; padding: 10px 14px; border-radius: 10px;
+            font-size: 13.5px; font-weight: 800; cursor: pointer; width: 100%; margin-top: 10px;
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3); display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s;
         }
-        .update-card-box {
-            background: #ffffff; padding: 26px 20px; border-radius: 20px; width: 100%;
-            max-width: 340px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.35); border: 2px solid #fbcfe8;
+        .btn-ai-guru:active { transform: scale(0.98); }
+
+        .ai-result-box {
+            background: #f3e8ff; border: 1.5px solid #c084fc; border-radius: 12px; padding: 14px; margin-top: 12px;
+            font-size: 14px; line-height: 1.6; color: #581c87; white-space: pre-line;
         }
-        .update-progress-track {
-            width: 100%; background: #f1f5f9; height: 10px; border-radius: 6px; overflow: hidden; border: 1px solid #e2e8f0;
+        .ai-loading-spinner {
+            display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: #fff; animation: spin 1s ease-in-out infinite;
         }
-        .update-progress-fill {
-            width: 0%; height: 100%; background: linear-gradient(135deg, #ec4899, #8b5cf6); transition: width 0.2s ease;
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .ai-source-badge {
+            display: inline-block; background: #e0e7ff; color: #3730a3; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; margin: 4px 4px 0 0; text-decoration: none;
         }
 
-        /* Result */
-        .score-summary { background: linear-gradient(135deg, #ffffff, #fdf2f8); border: 1.5px solid #f472b6; border-radius: 16px; padding: 20px; text-align: center; margin: 16px 0; }
-        .score-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 14px; }
-        .score-stat { background: #ffffff; padding: 12px 8px; border-radius: 10px; border: 1px solid #fbcfe8; }
-        .stat-val { font-size: 20px; font-weight: 800; }
-        .stat-lbl { font-size: 12px; color: #64748b; margin-top: 2px; }
-
-        .review-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
-        .badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; margin-bottom: 8px; }
-        .badge.correct { background: #dcfce7; color: #166534; }
-        .badge.wrong { background: #fee2e2; color: #991b1b; }
-        .badge.skipped { background: #f1f5f9; color: #475569; }
-        .explanation-box { background: #fdf2f8; border-left: 3px solid #ec4899; padding: 8px 10px; font-size: 13px; color: #831843; margin-top: 8px; border-radius: 0 4px 4px 0; }
-
-        .error-msg { color: #dc2626; font-size: 13px; font-weight: 600; margin-top: 8px; text-align: center; display: none; }
-
-        .history-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; margin-bottom: 10px; }
-        .history-card-header { display: flex; justify-content: space-between; font-weight: 700; color: #0f172a; margin-bottom: 4px; font-size: 14px; }
-
-        /* Toast notification for double back to exit */
         #exit-toast {
-            visibility: hidden;
-            min-width: 240px;
-            background-color: rgba(15, 23, 42, 0.9);
-            color: #fff;
-            text-align: center;
-            border-radius: 25px;
-            padding: 12px 20px;
-            position: fixed;
-            z-index: 10001;
-            left: 50%;
-            bottom: 40px;
-            transform: translateX(-50%);
-            font-size: 14px;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-            opacity: 0;
-            transition: opacity 0.3s, visibility 0.3s;
+            visibility: hidden; min-width: 240px; background-color: rgba(15, 23, 42, 0.9); color: #fff; text-align: center; border-radius: 25px; padding: 12px 20px; position: fixed; z-index: 10001; left: 50%; bottom: 40px; transform: translateX(-50%); font-size: 14px; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.25); opacity: 0; transition: opacity 0.3s, visibility 0.3s;
         }
-        #exit-toast.show {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        /* Result Graph & Filter Styling */
-        .chart-container-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 16px 0 10px 0;
-        }
-        .donut-chart-circle {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            background: conic-gradient(#16a34a 0deg 180deg, #dc2626 180deg 270deg, #94a3b8 270deg 360deg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        .donut-chart-inner {
-            width: 95px;
-            height: 95px;
-            background: #ffffff;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .donut-percentage {
-            font-size: 20px;
-            font-weight: 900;
-            color: #831843;
-        }
-        .donut-subtext {
-            font-size: 10px;
-            color: #64748b;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-        .chart-legend {
-            display: flex;
-            gap: 12px;
-            margin-top: 12px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .legend-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-        .result-filter-tabs {
-            display: flex;
-            gap: 8px;
-            margin: 14px 0 16px 0;
-        }
-        .filter-btn {
-            flex: 1;
-            padding: 10px 4px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 700;
-            border: 1.5px solid #cbd5e1;
-            background: #ffffff;
-            color: #475569;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .filter-btn.active-filter-all {
-            background: #0f172a;
-            color: #ffffff;
-            border-color: #0f172a;
-        }
-        .filter-btn.active-filter-right {
-            background: #16a34a;
-            color: #ffffff;
-            border-color: #16a34a;
-        }
-        .filter-btn.active-filter-wrong {
-            background: #dc2626;
-            color: #ffffff;
-            border-color: #dc2626;
-        }
+        #exit-toast.show { visibility: visible; opacity: 1; }
     </style>
 </head>
 <body>
 
-<!-- Toast Notification -->
 <div id="exit-toast">Press back again to exit</div>
 
-<!-- 0. Animated Splash Screen -->
+<!-- Splash Screen -->
 <div id="splash-screen">
     <div class="splash-logo-container">
         <img src="logo.png" alt="SGS" class="splash-logo-img" onerror="if(this.src.indexOf('file:///android_asset/')===-1){this.src='file:///android_asset/logo.png';}else{this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='block';}" />
         <span class="splash-logo-fallback" style="display:none;">SGS</span>
     </div>
-    <h2 style="font-size: 20px; font-weight: 800; letter-spacing: 0.5px; text-align: center;">SGS MOCK TEST</h2>
-    <p id="splash-status-text" style="font-size: 13px; opacity: 0.9; margin-top: 6px;">All Exams Preparation...</p>
+    <h2 style="font-size: 20px; font-weight: 800; letter-spacing: 0.5px; text-align: center;">SGS MOCK TEST + GEMINI AI</h2>
+    <p id="splash-status-text" style="font-size: 13px; opacity: 0.9; margin-top: 6px;">All Exams Preparation & AI Doubt Solver...</p>
 </div>
 
-<!-- ================= FULLSCREEN PDF READER VIEW ================= -->
+<!-- Fullscreen PDF Reader View -->
 <div id="view-pdf-reader">
     <div class="pdf-reader-topbar">
         <div style="display:flex; align-items:center; gap:10px;">
@@ -428,7 +170,6 @@
     </div>
 </div>
 
-<!-- ================= NAVIGATION DRAWER ================= -->
 <div id="drawer-overlay" class="drawer-overlay" onclick="closeDrawer()"></div>
 <div id="drawer-sidebar" class="drawer-sidebar">
     <div class="drawer-header">
@@ -436,13 +177,16 @@
             <img src="logo.png" alt="SGS" class="drawer-logo-img" onerror="if(this.src.indexOf('file:///android_asset/')===-1){this.src='file:///android_asset/logo.png';}else{this.style.display='none';}" />
             <div>
                 <h3>SGS Mock Test</h3>
-                <p>All Exams Free Preparation</p>
+                <p>Powered by Gemini AI 🤖</p>
             </div>
         </div>
     </div>
     <div class="drawer-content">
-        <div class="drawer-item" onclick="handleDrawerHomeClick()">
+        <div class="drawer-item" onclick="handleHomeClick()">
             <span>🏠</span> HOME
+        </div>
+        <div class="drawer-item" onclick="openGeminiDoubtModal()">
+            <span>🤖</span> Ask AI Doubt Solver
         </div>
         <div class="drawer-item" onclick="openTrackMyTestModal()">
             <span>📊</span> Track My Tests
@@ -462,7 +206,6 @@
     </div>
 </div>
 
-<!-- ================= POLICY CONSENT VIEW ================= -->
 <div id="view-policy-consent" class="view auth-view">
     <div class="auth-card">
         <h2 class="auth-title">Welcome to SGS Test 🎯</h2>
@@ -470,16 +213,13 @@
 
         <div class="policy-btn-group">
             <a href="https://www.termsfeed.com/live/50b7338c-6eba-408f-bd5a-21bb644f9e56" target="_blank" class="policy-link-btn">
-                <span>🛡️ Read Privacy Policy</span>
-                <span>↗</span>
+                <span>🛡️ Read Privacy Policy</span> <span>↗</span>
             </a>
             <a href="https://www.termsfeed.com/live/af841b41-788e-480a-90ad-1838eea308cd" target="_blank" class="policy-link-btn">
-                <span>📜 Read Terms & Conditions</span>
-                <span>↗</span>
+                <span>📜 Read Terms & Conditions</span> <span>↗</span>
             </a>
             <a href="https://www.termsfeed.com/live/d15e3366-cb7a-4b6f-9726-5b1603e62231" target="_blank" class="policy-link-btn">
-                <span>⚠️ Read Disclaimer</span>
-                <span>↗</span>
+                <span>⚠️ Read Disclaimer</span> <span>↗</span>
             </a>
         </div>
 
@@ -496,7 +236,7 @@
     </div>
 </div>
 
-<!-- ================= APP MAIN SCREENS ================= -->
+<!-- APP MAIN SCREENS -->
 <div id="main-app-wrapper" style="display: none;">
     <!-- Top Bar -->
     <div class="top-bar">
@@ -505,34 +245,42 @@
             <img src="logo.png" alt="SGS" class="top-logo-img" onerror="if(this.src.indexOf('file:///android_asset/')===-1){this.src='file:///android_asset/logo.png';}else{this.style.display='none';}" />
             <span class="title">SGS MOCK TEST</span>
         </div>
-        <div style="cursor: pointer; font-size: 18px;" onclick="shareApp()">📲</div>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <div style="cursor: pointer; font-size: 18px;" onclick="openGeminiDoubtModal()" title="Ask AI Guru">🤖</div>
+            <div style="cursor: pointer; font-size: 18px;" onclick="shareApp()">📲</div>
+        </div>
     </div>
     <div class="sub-bar">
-        <span>Free Mock Test: All Exams Preparation</span>
-        <span style="font-size:12px; font-weight:700; color:#ec4899;">FREE ACCESS</span>
+        <span>Free Mock Test & Gemini AI Tutor</span>
+        <span style="font-size:12px; font-weight:700; color:#ec4899;">AI ENABLED</span>
     </div>
 
-    <!-- Below Header Back Navigation Bar -->
+    <!-- Below Header Navigation Strip -->
     <div id="below-header-nav-bar" class="nav-back-strip">
         <button type="button" class="btn-below-header-back" onclick="handleAppBack()">
-            <span>←</span>
-            <span>Back</span>
+            <span>←</span> <span>Back</span>
         </button>
     </div>
 
     <!-- 1. Categories View -->
     <div id="view-categories" class="view active">
-        <div class="user-greeting">✨ Choose Subject:</div>
+        <div class="user-greeting">
+            <span>✨ Choose Subject:</span>
+            <button type="button" onclick="generateAiRevisionNotes()" style="background: linear-gradient(135deg,#a855f7,#6366f1); color:#fff; border:none; padding:6px 12px; border-radius:20px; font-size:12px; font-weight:800; cursor:pointer;">⚡ AI Quick Notes</button>
+        </div>
         <div class="container" id="category-container"></div>
     </div>
 
-    <!-- 2. Topics View (Topics/Chapters Screen: jaise Sindhu Ghati Sabhyata) -->
+    <!-- 2. Topics View -->
     <div id="view-topics" class="view">
-        <div class="user-greeting" id="topic-header-title"></div>
+        <div class="user-greeting">
+            <span id="topic-header-title"></span>
+            <button type="button" onclick="generateAiTopicNotes()" style="background: linear-gradient(135deg,#a855f7,#6366f1); color:#fff; border:none; padding:6px 12px; border-radius:20px; font-size:12px; font-weight:800; cursor:pointer;">✨ Topic AI Notes</button>
+        </div>
         <div class="container" id="topic-container"></div>
     </div>
 
-    <!-- 3. Chapters/Tests View (Test 1, Test 2, Test 3) -->
+    <!-- 3. Chapters/Tests View -->
     <div id="view-chapters" class="view">
         <div class="user-greeting" id="chapter-header-title"></div>
         <div class="container" id="chapter-container"></div>
@@ -549,6 +297,10 @@
 
             <div class="question-box" id="current-question-text"></div>
             <div id="current-options-box"></div>
+
+            <button type="button" class="btn-ai-guru" onclick="askAiGuruForCurrentQuestion()">
+                <span>🤖 AI Guru Explanation (व्याख्या समझें)</span>
+            </button>
 
             <div class="nav-actions">
                 <button type="button" class="action-btn" onclick="goToPrev()">Previous</button>
@@ -568,8 +320,6 @@
         <div class="container">
             <div class="score-summary">
                 <h2 style="font-size: 22px; color: #831843;">Test Result</h2>
-
-                <!-- Performance Graph / Pie Chart -->
                 <div class="chart-container-box">
                     <div class="donut-chart-circle" id="result-donut-chart">
                         <div class="donut-chart-inner">
@@ -600,44 +350,102 @@
                 </div>
             </div>
 
-            <!-- Right / Wrong Filter Buttons -->
             <div class="result-filter-tabs">
                 <button type="button" class="filter-btn active-filter-all" id="btn-filter-all" onclick="filterReviewQuestions('all')">📋 All</button>
                 <button type="button" class="filter-btn" id="btn-filter-right" onclick="filterReviewQuestions('correct')">✅ Right</button>
                 <button type="button" class="filter-btn" id="btn-filter-wrong" onclick="filterReviewQuestions('wrong')">❌ Wrong</button>
             </div>
 
-            <h3 style="margin-bottom: 12px; font-size: 16px; font-weight: 700;">Answers Review:</h3>
+            <h3 style="margin-bottom: 12px; font-size: 16px; font-weight: 700;">Answers Review & AI Insights:</h3>
             <div id="result-review-container"></div>
             <button type="button" class="item-card" style="background: linear-gradient(135deg, #ec4899, #8b5cf6); color:#fff; border:none; margin-top:16px; width: 100%; font-size: 16px; justify-content: center;" onclick="navigateToCategories()">Back to Home</button>
         </div>
     </div>
 </div>
 
-<!-- ================= ALL POPUP MODALS ================= -->
 
-<!-- In-App Force Update Modal -->
+<!-- Exit Test Modal -->
+<div id="modal-exit-test" class="modal-overlay">
+    <div class="modal-box">
+        <h3>Exit Test?</h3>
+        <p>Are you sure you want to exit this test?</p>
+        <div class="modal-btns">
+            <button type="button" style="background:#f1f5f9; color:#475569;" onclick="closeExitTestModal()">No</button>
+            <button type="button" style="background: #dc2626; color:#fff;" onclick="confirmExitTestAndGoHome()">Yes</button>
+        </div>
+    </div>
+</div>
+
+<!-- Gemini AI Guru Explanation Modal -->
+<div id="modal-ai-explanation" class="modal-overlay">
+    <div class="modal-box modal-scrollable-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <h3 style="margin:0; color:#6b21a8; display:flex; align-items:center; gap:6px;">🤖 Gemini AI Guru Explanation</h3>
+            <span style="font-size:20px; cursor:pointer;" onclick="closeAiExplanationModal()">✕</span>
+        </div>
+        <div id="ai-explanation-content" style="font-size:14px; line-height:1.6; color:#334155;">
+            Generating AI explanation...
+        </div>
+        <div id="ai-tts-container" style="margin-top:14px; display:none;">
+            <button type="button" id="btn-play-tts" onclick="playGeminiTTS()" style="background:#a855f7; color:#fff; border:none; padding:10px 14px; border-radius:8px; font-weight:700; cursor:pointer; width:100%; display:flex; align-items:center; justify-content:center; gap:8px;">
+                <span>🔊 Listen AI Audio Explanation</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Gemini Multimodal AI Doubt Solver Modal -->
+<div id="modal-gemini-doubt" class="modal-overlay">
+    <div class="modal-box modal-scrollable-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="margin:0; color:#6b21a8;">🤖 AI Doubt Solver & Clarifier</h3>
+            <span style="font-size:20px; cursor:pointer;" onclick="closeGeminiDoubtModal()">✕</span>
+        </div>
+        <p style="font-size:13px; color:#64748b; margin-bottom:12px;">Ask any exam question or upload a photo of your book page!</p>
+
+        <textarea id="ai-doubt-input" placeholder="Type your doubt or question here..." style="width:100%; height:80px; padding:10px; border-radius:10px; border:1.5px solid #cbd5e1; font-size:14px; outline:none; font-family:inherit; resize:none;"></textarea>
+
+        <div style="margin:10px 0;">
+            <label style="font-size:12.5px; font-weight:700; color:#475569; display:block; margin-bottom:4px;">📷 Attach Question Photo (Optional):</label>
+            <input type="file" id="ai-doubt-image" accept="image/*" onchange="previewDoubtImage(event)" style="font-size:12px; width:100%;" />
+            <img id="ai-image-preview" style="max-width:100%; max-height:120px; margin-top:8px; border-radius:8px; display:none; border:1px solid #e2e8f0;" />
+        </div>
+
+        <button type="button" class="btn-gradient" id="btn-solve-doubt" onclick="solveDoubtWithGemini()">
+            <span>Solve with AI 🚀</span>
+        </button>
+
+        <div id="ai-doubt-response" class="ai-result-box" style="display:none;"></div>
+    </div>
+</div>
+
+<!-- AI Notes Revision Modal -->
+<div id="modal-ai-notes" class="modal-overlay">
+    <div class="modal-box modal-scrollable-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="margin:0; color:#6b21a8;">⚡ AI Quick Revision Notes</h3>
+            <span style="font-size:20px; cursor:pointer;" onclick="closeAiNotesModal()">✕</span>
+        </div>
+        <div id="ai-notes-content" style="font-size:14.5px; line-height:1.6; color:#1e293b;">
+            Generating revision notes...
+        </div>
+    </div>
+</div>
+
+<!-- Included Modals -->
 <div id="updateModal">
     <div class="update-card-box">
         <div style="font-size: 40px; margin-bottom: 10px;">🚀</div>
         <h3 style="font-size: 20px; font-weight: 800; color: #831843; margin-bottom: 8px;">Update Available!</h3>
         <p id="updateMessageText" style="color: #64748b; font-size: 13.5px; line-height: 1.5; margin-bottom: 20px;">Naya update aa gaya hai. Kripya app use karne ke liye update karein.</p>
-
-        <!-- Progress Bar (1% to 100%) -->
         <div id="progressArea" style="display: none; margin-bottom: 18px;">
-            <div class="update-progress-track">
-                <div id="updateProgressBar" class="update-progress-fill"></div>
-            </div>
+            <div class="update-progress-track"><div id="updateProgressBar" class="update-progress-fill"></div></div>
             <div id="updateProgressText" style="font-size: 13px; font-weight: 800; color: #be185d; margin-top: 10px;">Downloading: 0%</div>
         </div>
-
-        <button type="button" id="updateBtn" class="btn-gradient" style="margin-top: 0;" onclick="startUpdateDownload()">
-            <span>Update Now 📲</span>
-        </button>
+        <button type="button" id="updateBtn" class="btn-gradient" style="margin-top: 0;" onclick="startUpdateDownload()"><span>Update Now 📲</span></button>
     </div>
 </div>
 
-<!-- Start Test Modal -->
 <div id="modal-start" class="modal-overlay">
     <div class="modal-box">
         <h3 id="modal-start-title">Start Test</h3>
@@ -649,7 +457,6 @@
     </div>
 </div>
 
-<!-- Re-attempt or View Result Modal -->
 <div id="modal-reattempt" class="modal-overlay">
     <div class="modal-box">
         <h3 id="reattempt-chapter-title">Test Attempted</h3>
@@ -662,7 +469,6 @@
     </div>
 </div>
 
-<!-- Submit Confirmation Modal -->
 <div id="modal-submit" class="modal-overlay">
     <div class="modal-box">
         <h3>Submit Your Test?</h3>
@@ -674,19 +480,6 @@
     </div>
 </div>
 
-<!-- Exit Test Confirmation Modal -->
-<div id="modal-exit-test-confirm" class="modal-overlay">
-    <div class="modal-box">
-        <h3 style="color:#dc2626;">Exit Test?</h3>
-        <p>Are you sure you want to exit this test?</p>
-        <div class="modal-btns">
-            <button type="button" style="background:#f1f5f9; color:#475569;" onclick="closeExitTestConfirmModal()">No</button>
-            <button type="button" style="background:#dc2626; color:#fff;" onclick="confirmExitTestSession()">Yes, Exit</button>
-        </div>
-    </div>
-</div>
-
-<!-- Track My Test Modal -->
 <div id="modal-track" class="modal-overlay">
     <div class="modal-box modal-scrollable-box">
         <h3>📊 Track My Tests</h3>
@@ -698,7 +491,7 @@
     </div>
 </div>
 
-<!-- Subject Posts Scripts (Linked) -->
+<!-- Linked Subject Post Data Files -->
 <script src="posts.js"></script>
 <script src="computer_posts.js"></script>
 <script src="gk_posts.js"></script>
@@ -706,7 +499,375 @@
 <script src="pdf_posts.js"></script>
 
 <script>
-    // 0. Auto-Merge all subject post arrays (Full 3-level support: Subject -> Topic -> Tests with Deduping)
+    /* Gemini API Core Services Implementation */
+    const GEMINI_TEXT_MODEL = "gemini-3-flash-preview";
+    const GEMINI_TTS_MODEL = "gemini-2.5-flash-preview-tts";
+
+    // Exponential Backoff Fetch Engine
+    async function fetchGeminiWithBackoff(apiUrl, payload, maxRetries = 3) {
+        let delay = 1000;
+        for (let attempt = 0; attempt < maxRetries; attempt++) {
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (response.status === 429 || response.status >= 500) {
+                    if (attempt === maxRetries - 1) throw new Error("API rate limited or server busy.");
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2;
+                    continue;
+                }
+                return await response.json();
+            } catch (err) {
+                if (attempt === maxRetries - 1) throw err;
+                await new Promise(resolve => setTimeout(resolve, delay));
+                delay *= 2;
+            }
+        }
+    }
+
+    // 1. Text Generation with Grounded Search Option
+    async function callGeminiTextAPI(userPrompt, systemInstruction = "", useSearch = false) {
+        const apiKey = ""; // Canvas runtime injection
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_TEXT_MODEL}:generateContent?key=${apiKey}`;
+
+        const payload = {
+            contents: [{ parts: [{ text: userPrompt }] }]
+        };
+
+        if (systemInstruction) {
+            payload.systemInstruction = { parts: [{ text: systemInstruction }] };
+        }
+
+        if (useSearch) {
+            payload.tools = [{ "google_search": {} }];
+        }
+
+        const data = await fetchGeminiWithBackoff(apiUrl, payload);
+        const candidate = data.candidates?.[0];
+
+        if (candidate && candidate.content?.parts?.[0]?.text) {
+            const text = candidate.content.parts[0].text;
+            let sources = [];
+            const groundingMetadata = candidate.groundingMetadata;
+            if (groundingMetadata && groundingMetadata.groundingAttributions) {
+                sources = groundingMetadata.groundingAttributions
+                    .map(att => ({ uri: att.web?.uri, title: att.web?.title }))
+                    .filter(s => s.uri && s.title);
+            }
+            return { text, sources };
+        } else {
+            throw new Error("Invalid response received from Gemini AI.");
+        }
+    }
+
+    // 2. Multimodal Vision API (Text + Image understanding)
+    async function callGeminiVisionAPI(promptText, base64ImageData, mimeType = "image/jpeg") {
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_TEXT_MODEL}:generateContent?key=${apiKey}`;
+
+        const payload = {
+            contents: [{
+                role: "user",
+                parts: [
+                    { text: promptText },
+                    {
+                        inlineData: {
+                            mimeType: mimeType,
+                            data: base64ImageData
+                        }
+                    }
+                ]
+            }],
+            tools: [{ "google_search": {} }]
+        };
+
+        const data = await fetchGeminiWithBackoff(apiUrl, payload);
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (text) return text;
+        throw new Error("Unable to analyze image doubt.");
+    }
+
+    // 3. Audio TTS Synthesis Engine
+    async function callGeminiTTSAPI(textToSpeak, voiceName = "Kore") {
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_TTS_MODEL}:generateContent?key=${apiKey}`;
+
+        const payload = {
+            contents: [{
+                parts: [{ text: `Speak clearly in a warm, encouraging teacher voice: ${textToSpeak}` }]
+            }],
+            generationConfig: {
+                responseModalities: ["AUDIO"],
+                speechConfig: {
+                    voiceConfig: {
+                        prebuiltVoiceConfig: { voiceName: voiceName }
+                    }
+                }
+            }
+        };
+
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+        const candidatePart = result?.candidates?.[0]?.content?.parts?.[0];
+        const audioDataBase64 = candidatePart?.inlineData?.data;
+        const mimeType = candidatePart?.inlineData?.mimeType;
+
+        if (audioDataBase64 && mimeType) {
+            const sampleRateMatch = mimeType.match(/rate=(\d+)/);
+            const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 24000;
+            const pcmBuffer = base64ToArrayBuffer(audioDataBase64);
+            const pcm16 = new Int16Array(pcmBuffer);
+            const wavBlob = pcmToWav(pcm16, sampleRate);
+            return URL.createObjectURL(wavBlob);
+        }
+        throw new Error("Audio TTS generation failed.");
+    }
+
+    // PCM To WAV Helpers
+    function base64ToArrayBuffer(base64) {
+        const binaryString = atob(base64);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        return bytes.buffer;
+    }
+
+    function pcmToWav(pcm16Array, sampleRate) {
+        const buffer = new ArrayBuffer(44 + pcm16Array.length * 2);
+        const view = new DataView(buffer);
+        writeString(view, 0, 'RIFF');
+        view.setUint32(4, 36 + pcm16Array.length * 2, true);
+        writeString(view, 8, 'WAVE');
+        writeString(view, 12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true); // PCM format
+        view.setUint16(22, 1, true); // Mono channel
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, sampleRate * 2, true);
+        view.setUint16(32, 2, true);
+        view.setUint16(34, 16, true);
+        writeString(view, 36, 'data');
+        view.setUint32(40, pcm16Array.length * 2, true);
+        for (let i = 0; i < pcm16Array.length; i++) {
+            view.setInt16(44 + i * 2, pcm16Array[i], true);
+        }
+        return new Blob([buffer], { type: 'audio/wav' });
+    }
+
+    function writeString(view, offset, string) {
+        for (let i = 0; i < string.length; i++) {
+            view.setUint8(offset + i, string.charCodeAt(i));
+        }
+    }
+</script>
+
+<script>
+    /* Gemini AI Feature Interactive Event Handlers */
+    let currentAiExplanationText = "";
+    let activeAudioObject = null;
+
+    // 1. AI Guru Explanation Modal Handler
+    async function askAiGuruForCurrentQuestion() {
+        const q = activeQuestions[currentQIdx];
+        if (!q) return;
+
+        const lang = window.appLanguage || 'hi';
+        const qText = q.q || q.question || '';
+        const opts = (q.options || []).join(', ');
+        const correctOpt = q.options ? q.options[q.answer] : '';
+
+        const modal = document.getElementById('modal-ai-explanation');
+        const contentEl = document.getElementById('ai-explanation-content');
+        const ttsBtn = document.getElementById('ai-tts-container');
+
+        modal.style.display = 'flex';
+        ttsBtn.style.display = 'none';
+        contentEl.innerHTML = '<div style="text-align:center; padding:20px;"><div class="ai-loading-spinner"></div><p style="margin-top:10px; font-weight:700;">AI Guru thinking & generating deep explanation...</p></div>';
+
+        const sysPrompt = "Act as an expert Indian competitive exam professor (SSC, UPSC, Railways, Banking). Provide a concise, highly informative, clear explanation of the given question. State the correct answer, explain the background context, key facts, and give a short trick or mnemonic to remember it easily.";
+        const userQuery = `Language: ${lang}\nQuestion: ${qText}\nOptions: ${opts}\nCorrect Answer: ${correctOpt}\nContext/Notes: ${q.explanation || 'N/A'}`;
+
+        try {
+            const res = await callGeminiTextAPI(userQuery, sysPrompt, true);
+            currentAiExplanationText = res.text;
+
+            let html = `
+                <div style="background:#faf5ff; border:1px solid #e9d5ff; border-radius:10px; padding:12px; margin-bottom:10px;">
+                    <b style="color:#7e22ce;">Question:</b> ${qText}<br/>
+                    <b style="color:#15803d;">Correct Answer:</b> ${correctOpt}
+                </div>
+                <div style="font-size:14px; line-height:1.6; white-space:pre-line;">${res.text}</div>
+            `;
+
+            if (res.sources && res.sources.length > 0) {
+                html += '<div style="margin-top:12px; font-size:12px; font-weight:700; color:#475569;">Grounded Web Sources:</div>';
+                res.sources.forEach(src => {
+                    html += `<a href="${src.uri}" target="_blank" class="ai-source-badge">🌐 ${src.title}</a>`;
+                });
+            }
+
+            contentEl.innerHTML = html;
+            ttsBtn.style.display = 'block';
+        } catch (err) {
+            contentEl.innerHTML = `<p style="color:#dc2626; font-weight:700;">Failed to generate AI explanation. Please check your internet connection and try again.</p>`;
+        }
+    }
+
+    function closeAiExplanationModal() {
+        document.getElementById('modal-ai-explanation').style.display = 'none';
+        if (activeAudioObject) {
+            activeAudioObject.pause();
+            activeAudioObject = null;
+        }
+    }
+
+    // 2. Play Gemini Voice Teacher TTS
+    async function playGeminiTTS() {
+        if (!currentAiExplanationText) return;
+        const btn = document.getElementById('btn-play-tts');
+        const origText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳ Generating AI Voice...</span>';
+
+        try {
+            // Truncate text to fit clean audio response
+            const speechText = currentAiExplanationText.substring(0, 300);
+            const audioUrl = await callGeminiTTSAPI(speechText, "Kore");
+            if (activeAudioObject) activeAudioObject.pause();
+
+            activeAudioObject = new Audio(audioUrl);
+            activeAudioObject.play();
+
+            btn.innerHTML = '<span>⏸️ Playing Voice Explanation...</span>';
+            activeAudioObject.onended = () => {
+                btn.innerHTML = origText;
+                btn.disabled = false;
+            };
+        } catch (err) {
+            btn.innerHTML = '<span>❌ Voice Error, Retry</span>';
+            setTimeout(() => { btn.innerHTML = origText; btn.disabled = false; }, 2000);
+        }
+    }
+
+    // 3. Multimodal Doubt Solver Modal
+    let uploadedDoubtBase64 = "";
+    let uploadedDoubtMime = "image/jpeg";
+
+    function openGeminiDoubtModal() {
+        closeDrawer();
+        document.getElementById('ai-doubt-input').value = "";
+        document.getElementById('ai-doubt-image').value = "";
+        document.getElementById('ai-image-preview').style.display = 'none';
+        document.getElementById('ai-doubt-response').style.display = 'none';
+        uploadedDoubtBase64 = "";
+        document.getElementById('modal-gemini-doubt').style.display = 'flex';
+    }
+
+    function closeGeminiDoubtModal() {
+        document.getElementById('modal-gemini-doubt').style.display = 'none';
+    }
+
+    function previewDoubtImage(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        uploadedDoubtMime = file.type || 'image/jpeg';
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            const img = document.getElementById('ai-image-preview');
+            img.src = evt.target.result;
+            img.style.display = 'block';
+            uploadedDoubtBase64 = evt.target.result.split(',')[1];
+        };
+        reader.readAsDataURL(file);
+    }
+
+    async function solveDoubtWithGemini() {
+        const query = document.getElementById('ai-doubt-input').value.trim();
+        if (!query && !uploadedDoubtBase64) {
+            alert("Please type a question or attach a photo!");
+            return;
+        }
+
+        const btn = document.getElementById('btn-solve-doubt');
+        const responseBox = document.getElementById('ai-doubt-response');
+
+        btn.disabled = true;
+        btn.innerHTML = '<span><div class="ai-loading-spinner"></div> Analyzing with Gemini AI...</span>';
+        responseBox.style.display = 'block';
+        responseBox.innerHTML = 'Gemini AI is analyzing your question & generating a detailed solution...';
+
+        try {
+            let replyText = "";
+            if (uploadedDoubtBase64) {
+                const prompt = query ? query : "Solve and explain the question shown in this image clearly with step-by-step logic and correct option.";
+                replyText = await callGeminiVisionAPI(prompt, uploadedDoubtBase64, uploadedDoubtMime);
+            } else {
+                const sysInstruction = "Act as an expert tutor for Indian government exam aspirants. Solve the doubt clearly step by step.";
+                const res = await callGeminiTextAPI(query, sysInstruction, true);
+                replyText = res.text;
+            }
+
+            responseBox.innerHTML = `<b>🤖 Gemini AI Solution:</b>\n\n${replyText}`;
+        } catch (err) {
+            responseBox.innerHTML = `<span style="color:#dc2626;">Error: Could not process doubt. Please try again.</span>`;
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<span>Solve with AI 🚀</span>';
+        }
+    }
+
+    // 4. AI Quick Revision Notes Modal Generator
+    async function generateAiRevisionNotes() {
+        const modal = document.getElementById('modal-ai-notes');
+        const content = document.getElementById('ai-notes-content');
+        modal.style.display = 'flex';
+        content.innerHTML = '<div style="text-align:center; padding:20px;"><div class="ai-loading-spinner"></div><p style="margin-top:10px; font-weight:700;">Generating Subject Revision Notes...</p></div>';
+
+        const subjectName = (quizData[activeCatIdx] && quizData[activeCatIdx].category) ? quizData[activeCatIdx].category : "General Knowledge & GS";
+        const prompt = `Generate high-yield rapid revision notes for the competitive exam subject: "${subjectName}". Include key dates, formulas, important articles/laws, top 5 memory tricks, and 10 bullet points most frequently asked in exams. Language: ${window.appLanguage || 'hi'}.`;
+
+        try {
+            const res = await callGeminiTextAPI(prompt, "You are a master study notes creator for exam revision.", true);
+            content.innerHTML = `<div style="white-space:pre-line;">${res.text}</div>`;
+        } catch (err) {
+            content.innerHTML = `<p style="color:#dc2626; font-weight:700;">Unable to generate AI notes right now.</p>`;
+        }
+    }
+
+    async function generateAiTopicNotes() {
+        const modal = document.getElementById('modal-ai-notes');
+        const content = document.getElementById('ai-notes-content');
+        modal.style.display = 'flex';
+        content.innerHTML = '<div style="text-align:center; padding:20px;"><div class="ai-loading-spinner"></div><p style="margin-top:10px; font-weight:700;">Generating Topic Revision Notes...</p></div>';
+
+        const currentTopic = (quizData[activeCatIdx] && quizData[activeCatIdx].topics) ? quizData[activeCatIdx].topics[activeTopIdx] : null;
+        const topicName = currentTopic ? currentTopic.topicName : "Topic Study";
+        const prompt = `Generate quick revision summary notes for the topic: "${topicName}". Include top 7 facts, memory mnemonics, and previous year exam questions summary. Language: ${window.appLanguage || 'hi'}.`;
+
+        try {
+            const res = await callGeminiTextAPI(prompt, "You are an expert exam revision coach.", true);
+            content.innerHTML = `<div style="white-space:pre-line;">${res.text}</div>`;
+        } catch (err) {
+            content.innerHTML = `<p style="color:#dc2626; font-weight:700;">Unable to generate AI topic notes.</p>`;
+        }
+    }
+
+    function closeAiNotesModal() {
+        document.getElementById('modal-ai-notes').style.display = 'none';
+    }
+</script>
+
+<script>
     var quizData = [];
 
     function mergeQuizData() {
@@ -720,7 +881,6 @@
 
                     var topicsList = [];
 
-                    // Format A: Agar 3-level topics -> tests format hai
                     if (item.topics && Array.isArray(item.topics)) {
                         item.topics.forEach(function(tp) {
                             var testsList = [];
@@ -740,9 +900,7 @@
                                 chapters: testsList
                             });
                         });
-                    }
-                    // Format B: Agar purana direct chapters format hai
-                    else if (item.chapters && Array.isArray(item.chapters)) {
+                    } else if (item.chapters && Array.isArray(item.chapters)) {
                         topicsList.push({
                             topicName: item.category,
                             chapters: item.chapters
@@ -768,60 +926,41 @@
                 });
             }
 
-            if (typeof hindiQuizData !== 'undefined') {
-                processRawData(hindiQuizData);
-            } else if (typeof postsQuizData !== 'undefined') {
-                processRawData(postsQuizData);
-            } else if (typeof window.quizData !== 'undefined' && Array.isArray(window.quizData) && window.quizData.length > 0) {
-                processRawData(window.quizData);
-            }
+            if (typeof hindiQuizData !== 'undefined') processRawData(hindiQuizData);
+            else if (typeof postsQuizData !== 'undefined') processRawData(postsQuizData);
+            else if (typeof window.quizData !== 'undefined' && Array.isArray(window.quizData) && window.quizData.length > 0) processRawData(window.quizData);
 
             if (typeof computerQuizData !== 'undefined') processRawData(computerQuizData);
-            if (typeof gkQuizData !== 'undefined') {
-                processRawData(gkQuizData);
-            } else if (typeof gkPosts !== 'undefined') {
-                processRawData(gkPosts);
-            }
+            if (typeof gkQuizData !== 'undefined') processRawData(gkQuizData);
+            else if (typeof gkPosts !== 'undefined') processRawData(gkPosts);
 
-            if (typeof gsQuizData !== 'undefined') {
-                processRawData(gsQuizData);
-            } else if (typeof gsPosts !== 'undefined') {
-                processRawData(gsPosts);
-            }
+            if (typeof gsQuizData !== 'undefined') processRawData(gsQuizData);
+            else if (typeof gsPosts !== 'undefined') processRawData(gsPosts);
 
-            if (typeof pdfQuizData !== 'undefined') {
-                processRawData(pdfQuizData);
-            }
+            if (typeof pdfQuizData !== 'undefined') processRawData(pdfQuizData);
         } catch (e) {
             console.error("Quiz merge error: ", e);
         }
     }
 
-    // Local Storage based User History
     let userTestHistory = {};
 
     function loadLocalTestHistory() {
         try {
             const saved = localStorage.getItem('sgs_user_test_history');
             userTestHistory = saved ? JSON.parse(saved) : {};
-        } catch (e) {
-            userTestHistory = {};
-        }
+        } catch (e) { userTestHistory = {}; }
     }
 
     function saveLocalTestHistory() {
-        try {
-            localStorage.setItem('sgs_user_test_history', JSON.stringify(userTestHistory));
-        } catch (e) {}
+        try { localStorage.setItem('sgs_user_test_history', JSON.stringify(userTestHistory)); } catch (e) {}
     }
 
     function dismissSplashScreen() {
         const splash = document.getElementById('splash-screen');
         if (splash) {
             splash.style.opacity = '0';
-            setTimeout(() => {
-                splash.style.display = 'none';
-            }, 500);
+            setTimeout(() => { splash.style.display = 'none'; }, 500);
         }
     }
 
@@ -835,28 +974,35 @@
         if (!toast) return;
         if (msg) toast.innerText = msg;
         toast.className = 'show';
-        setTimeout(function() {
-            toast.className = toast.className.replace('show', '');
-        }, 2000);
+        setTimeout(function() { toast.className = toast.className.replace('show', ''); }, 2000);
     }
 
-    function handleAppBack() {
-        window.history.back();
+    function handleAppBack() { window.history.back(); }
+
+    function handleHomeClick() {
+        closeDrawer();
+        if (currentActiveView === 'test') {
+            document.getElementById('modal-exit-test').style.display = 'flex';
+        } else {
+            navigateToCategories();
+        }
     }
 
-    // ================= IN-APP FORCE UPDATE JS LOGIC =================
+    function closeExitTestModal() { document.getElementById('modal-exit-test').style.display = 'none'; }
+
+    function confirmExitTestAndGoHome() {
+        closeExitTestModal();
+        clearInterval(timerInterval);
+        navigateToCategories();
+    }
+
     var currentDownloadApkUrl = "";
-
     function showUpdatePopup(apkUrl, message) {
         currentDownloadApkUrl = apkUrl;
         var modal = document.getElementById('updateModal');
         var msgElem = document.getElementById('updateMessageText');
-        if (msgElem && message) {
-            msgElem.innerText = message;
-        }
-        if (modal) {
-            modal.style.display = 'flex';
-        }
+        if (msgElem && message) msgElem.innerText = message;
+        if (modal) modal.style.display = 'flex';
     }
 
     function startUpdateDownload() {
@@ -864,7 +1010,6 @@
         var progressArea = document.getElementById('progressArea');
         if (btn) btn.style.display = 'none';
         if (progressArea) progressArea.style.display = 'block';
-
         if (window.AndroidApp && typeof window.AndroidApp.downloadAndInstallUpdate === 'function') {
             window.AndroidApp.downloadAndInstallUpdate(currentDownloadApkUrl);
         }
@@ -877,33 +1022,9 @@
         if (txt) txt.innerText = 'Downloading: ' + progress + '%';
     }
 
-    function onDownloadFinished() {
-        var txt = document.getElementById('updateProgressText');
-        if (txt) txt.innerText = 'Installing update...';
-    }
-
-    function onDownloadError(errorMsg) {
-        var txt = document.getElementById('updateProgressText');
-        var btn = document.getElementById('updateBtn');
-        if (txt) txt.innerText = 'Download failed. Please try again.';
-        if (btn) {
-            btn.style.display = 'flex';
-            btn.innerHTML = '<span>Retry Download 🔄</span>';
-        }
-    }
-
-    function handleAppBackButton() {
-        var updateModal = document.getElementById('updateModal');
-        if (updateModal && updateModal.style.display === 'flex') {
-            return 'HANDLED';
-        }
-        return 'UNHANDLED';
-    }
-
     function initApp() {
         if (isAppInitialized) return;
         isAppInitialized = true;
-
         mergeQuizData();
         loadLocalTestHistory();
 
@@ -913,7 +1034,6 @@
             if (window.AndroidApp && typeof window.AndroidApp.hideNativeSplash === 'function') {
                 window.AndroidApp.hideNativeSplash();
             }
-
             dismissSplashScreen();
 
             if (isPolicyAccepted) {
@@ -933,33 +1053,26 @@
         }, 2200);
     }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initApp);
-    } else {
-        initApp();
-    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initApp);
+    else initApp();
     window.addEventListener('load', initApp);
 
     function acceptPoliciesAndEnter() {
         const agreed = document.getElementById('policy-agree-check').checked;
         const errorEl = document.getElementById('policy-error');
-
         if (!agreed) {
             errorEl.innerText = "Please accept the policies to continue.";
             errorEl.style.display = "block";
             return;
         }
-
         errorEl.style.display = "none";
         localStorage.setItem('sgs_policy_agreed', 'true');
-
         document.getElementById('view-policy-consent').classList.remove('active');
         document.getElementById('view-policy-consent').style.display = 'none';
         document.getElementById('main-app-wrapper').style.display = 'block';
         navigateToCategories(false);
     }
 
-    // ================= DRAWER & UTILS =================
     function openDrawer() {
         document.getElementById('drawer-overlay').style.display = 'block';
         document.getElementById('drawer-sidebar').style.left = '0px';
@@ -972,21 +1085,16 @@
 
     function shareApp() {
         closeDrawer();
-        const shareTitle = 'SGS Mock Test: All Exams Preparation';
-        const shareText = 'Download SGS Mock Test App for free mock tests in GK, GS, Hindi & Computer exams preparation!\n\nGet it here: ';
+        const shareTitle = 'SGS Mock Test: All Exams Preparation with Gemini AI';
+        const shareText = 'Download SGS Mock Test App for free mock tests & Gemini AI doubt solver in GK, GS, Hindi & Computer exams!\n\nGet it here: ';
         const shareUrl = 'https://play.google.com/store/apps/details?id=com.sgs.sgsfreemocktest';
 
         if (window.AndroidApp && window.AndroidApp.shareApp) {
             window.AndroidApp.shareApp(shareTitle, shareText + shareUrl);
             return;
         }
-
         if (navigator.share) {
-            navigator.share({
-                title: shareTitle,
-                text: shareText + shareUrl,
-                url: shareUrl
-            }).catch(function(e) {});
+            navigator.share({ title: shareTitle, text: shareText + shareUrl, url: shareUrl }).catch(function(e) {});
         } else {
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(shareText + shareUrl);
@@ -1023,30 +1131,21 @@
         document.getElementById('modal-track').style.display = 'flex';
     }
 
-    function closeTrackModal() {
-        document.getElementById('modal-track').style.display = 'none';
-    }
+    function closeTrackModal() { document.getElementById('modal-track').style.display = 'none'; }
 
-    // ================= PDF VIEWER FUNCTIONS =================
     function openPdfReader(title, pdfUrl) {
         document.getElementById('pdf-reader-title').innerText = title || 'Document';
         var finalPdfUrl = pdfUrl;
-
-        // Extract Google Drive ID & convert to clean preview
         if (pdfUrl.indexOf('drive.google.com') !== -1) {
             var fileId = "";
             var idMatch = pdfUrl.match(/id=([a-zA-Z0-9_-]+)/);
-            if (idMatch && idMatch[1]) {
-                fileId = idMatch[1];
-            } else {
+            if (idMatch && idMatch[1]) fileId = idMatch[1];
+            else {
                 var pathMatch = pdfUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-            if (pathMatch && pathMatch[1]) fileId = pathMatch[1];
+                if (pathMatch && pathMatch[1]) fileId = pathMatch[1];
             }
-            if (fileId) {
-                finalPdfUrl = "https://drive.google.com/file/d/" + fileId + "/preview";
-            }
+            if (fileId) finalPdfUrl = "https://drive.google.com/file/d/" + fileId + "/preview";
         }
-
         document.getElementById('pdf-viewer-iframe').src = finalPdfUrl;
         document.getElementById('view-pdf-reader').style.display = 'flex';
         history.pushState({ view: 'pdfreader' }, '');
@@ -1057,8 +1156,9 @@
         document.getElementById('pdf-viewer-iframe').src = "";
         window.history.back();
     }
+</script>
 
-    // ================= QUIZ ENGINE =================
+<script>
     var activeCatIdx = null;
     var activeTopIdx = null;
     var activeChapIdx = null;
@@ -1069,117 +1169,102 @@
     var timeLeft = 0;
 
     function showView(viewId) {
-      currentActiveView = viewId.replace('view-', '');
-      var views = document.querySelectorAll('#main-app-wrapper .view');
-      for (var i = 0; i < views.length; i++) {
-        views[i].classList.remove('active');
-      }
-      document.getElementById(viewId).classList.add('active');
-      
-      // Control dedicated below-header Back Strip visibility
-      var backStrip = document.getElementById('below-header-nav-bar');
-      if (backStrip) {
-          backStrip.style.display = (viewId === 'view-categories') ? 'none' : 'flex';
-      }
-      window.scrollTo(0,0);
+        currentActiveView = viewId.replace('view-', '');
+        var views = document.querySelectorAll('#main-app-wrapper .view');
+        for (var i = 0; i < views.length; i++) {
+            views[i].classList.remove('active');
+        }
+        document.getElementById(viewId).classList.add('active');
+
+        var backStrip = document.getElementById('below-header-nav-bar');
+        if (backStrip) {
+            backStrip.style.display = (viewId === 'view-categories') ? 'none' : 'flex';
+        }
+        window.scrollTo(0,0);
     }
 
-    // 1. Subject Screen
-    function navigateToCategories(pushHistory) {
-      if (pushHistory === undefined) pushHistory = true;
-      clearInterval(timerInterval);
-      mergeQuizData();
-      var container = document.getElementById('category-container');
-      container.innerHTML = (quizData || []).map(function(cat, idx) {
-        return `
-          <div class="item-card" onclick="navigateToTopics(${idx})">
-            <span class="item-card-title">${cat.category || 'Subject'}</span>
-            <button type="button" class="item-card-action-btn">View Topic ➔</button>
-          </div>
-        `;
-      }).join('');
-      if (pushHistory) {
-        history.pushState({ view: 'categories' }, '');
-      } else {
-        history.replaceState({ view: 'categories' }, '');
-      }
-      showView('view-categories');
-    }
-
-    // 2. Topics Screen (jaise: सिंधु घाटी सभ्यता)
-    function navigateToTopics(catIdx, pushHistory) {
-      if (pushHistory === undefined) pushHistory = true;
-      activeCatIdx = catIdx;
-      var data = quizData[activeCatIdx];
-      if (!data) return;
-
-      document.getElementById('topic-header-title').innerText = 'Subject: ' + (data.category || '');
-      var container = document.getElementById('topic-container');
-
-      if (!data.topics || !Array.isArray(data.topics) || data.topics.length === 0) {
-        container.innerHTML = '<p style="text-align:center; color:#64748b; font-size:14px; padding:20px;">Is subject me abhi koi topics uplabdh nahi hain.</p>';
-      } else {
-        container.innerHTML = data.topics.map(function(tp, idx) {
-          return `
-            <div class="item-card" onclick="navigateToChapters(${idx})">
-              <span class="item-card-title">${tp.topicName || 'Topic'}</span>
-              <button type="button" class="item-card-action-btn">Open Test ➔</button>
-            </div>
-          `;
+    function navigateToCategories(pushHistory = true) {
+        clearInterval(timerInterval);
+        mergeQuizData();
+        var container = document.getElementById('category-container');
+        container.innerHTML = (quizData || []).map(function(cat, idx) {
+            return `
+                <div class="item-card" onclick="navigateToTopics(${idx})">
+                    <span class="item-card-title">${cat.category || 'Subject'}</span>
+                    <button type="button" class="item-card-action-btn">View Topic ➔</button>
+                </div>
+            `;
         }).join('');
-      }
-
-      if (pushHistory) {
-        history.pushState({ view: 'topics', catIdx: catIdx }, '');
-      }
-      showView('view-topics');
+        if (pushHistory) history.pushState({ view: 'categories' }, '');
+        else history.replaceState({ view: 'categories' }, '');
+        showView('view-categories');
     }
 
-    // 3. Tests Screen (Test 1, Test 2, Test 3)
-    function navigateToChapters(topIdx, pushHistory) {
-      if (pushHistory === undefined) pushHistory = true;
-      activeTopIdx = topIdx;
-      renderChaptersList();
-      if (pushHistory) {
-        history.pushState({ view: 'chapters', catIdx: activeCatIdx, topIdx: topIdx }, '');
-      }
-      showView('view-chapters');
+    function navigateToTopics(catIdx, pushHistory = true) {
+        activeCatIdx = catIdx;
+        var data = quizData[activeCatIdx];
+        if (!data) return;
+
+        document.getElementById('topic-header-title').innerText = 'Subject: ' + (data.category || '');
+        var container = document.getElementById('topic-container');
+
+        if (!data.topics || !Array.isArray(data.topics) || data.topics.length === 0) {
+            container.innerHTML = '<p style="text-align:center; color:#64748b; font-size:14px; padding:20px;">Is subject me abhi koi topics uplabdh nahi hain.</p>';
+        } else {
+            container.innerHTML = data.topics.map(function(tp, idx) {
+                return `
+                    <div class="item-card" onclick="navigateToChapters(${idx})">
+                        <span class="item-card-title">${tp.topicName || 'Topic'}</span>
+                        <button type="button" class="item-card-action-btn">Open Test ➔</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        if (pushHistory) history.pushState({ view: 'topics', catIdx: catIdx }, '');
+        showView('view-topics');
+    }
+
+    function navigateToChapters(topIdx, pushHistory = true) {
+        activeTopIdx = topIdx;
+        renderChaptersList();
+        if (pushHistory) history.pushState({ view: 'chapters', catIdx: activeCatIdx, topIdx: topIdx }, '');
+        showView('view-chapters');
     }
 
     function renderChaptersList() {
-      var data = quizData[activeCatIdx];
-      if (!data || !data.topics || !data.topics[activeTopIdx]) return;
-      var currentTopic = data.topics[activeTopIdx];
+        var data = quizData[activeCatIdx];
+        if (!data || !data.topics || !data.topics[activeTopIdx]) return;
+        var currentTopic = data.topics[activeTopIdx];
 
-      document.getElementById('chapter-header-title').innerText = currentTopic.topicName || '';
-      var container = document.getElementById('chapter-container');
+        document.getElementById('chapter-header-title').innerText = currentTopic.topicName || '';
+        var container = document.getElementById('chapter-container');
 
-      if (!currentTopic.chapters || !Array.isArray(currentTopic.chapters) || currentTopic.chapters.length === 0) {
-        container.innerHTML = '<p style="text-align:center; color:#64748b; font-size:14px; padding:20px;">Is topic me abhi koi tests uplabdh nahi hain.</p>';
-        return;
-      }
-
-      container.innerHTML = currentTopic.chapters.map(function(chap, idx) {
-        if (chap.isPdf) {
-            return `
-              <div class="item-card pdf-item-row" onclick="openPdfReader('${chap.chapterName}', '${chap.pdfUrl}')">
-                <span class="pdf-item-title">📄 ${chap.chapterName}</span>
-                <button type="button" class="btn-pdf-view">View ↗</button>
-              </div>
-            `;
+        if (!currentTopic.chapters || !Array.isArray(currentTopic.chapters) || currentTopic.chapters.length === 0) {
+            container.innerHTML = '<p style="text-align:center; color:#64748b; font-size:14px; padding:20px;">Is topic me abhi koi tests uplabdh nahi hain.</p>';
+            return;
         }
 
-        const isAttempted = checkChapterAttempted(data.category, (currentTopic.topicName || '') + " - " + (chap.chapterName || ''));
-        return `
-          <div class="item-card" onclick="handleChapterClick(${idx})">
-            <div class="item-card-title">
-              <span>${chap.chapterName || 'Test'}</span>
-              ${isAttempted ? '<span class="badge-attempted">Attempted</span>' : ''}
-            </div>
-            <button type="button" class="item-card-action-btn">Start Test ➔</button>
-          </div>
-        `;
-      }).join('');
+        container.innerHTML = currentTopic.chapters.map(function(chap, idx) {
+            if (chap.isPdf) {
+                return `
+                    <div class="item-card pdf-item-row" onclick="openPdfReader('${chap.chapterName}', '${chap.pdfUrl}')">
+                        <span class="pdf-item-title">📄 ${chap.chapterName}</span>
+                        <button type="button" class="btn-pdf-view">View ↗</button>
+                    </div>
+                `;
+            }
+            const isAttempted = checkChapterAttempted(data.category, (currentTopic.topicName || '') + " - " + (chap.chapterName || ''));
+            return `
+                <div class="item-card" onclick="handleChapterClick(${idx})">
+                    <div class="item-card-title">
+                        <span>${chap.chapterName || 'Test'}</span>
+                        ${isAttempted ? '<span class="badge-attempted">Attempted</span>' : ''}
+                    </div>
+                    <button type="button" class="item-card-action-btn">Start Test ➔</button>
+                </div>
+            `;
+        }).join('');
     }
 
     function checkChapterAttempted(catName, chapName) {
@@ -1202,7 +1287,6 @@
         }
 
         const attempt = getLatestAttempt(quizData[activeCatIdx].category, (currentTopic.topicName || '') + " - " + (chap.chapterName || ''));
-
         if (attempt) {
             document.getElementById('reattempt-chapter-title').innerText = chap.chapterName || 'Test';
             document.getElementById('reattempt-info-desc').innerText = `Pichhla Score: ${attempt[1].score}/${attempt[1].total}`;
@@ -1212,17 +1296,14 @@
         }
     }
 
-    function closeReattemptModal() {
-        document.getElementById('modal-reattempt').style.display = 'none';
-    }
+    function closeReattemptModal() { document.getElementById('modal-reattempt').style.display = 'none'; }
 
     function launchTestSessionFromReattempt() {
         closeReattemptModal();
         openStartModal(activeChapIdx);
     }
 
-    function viewSavedTestResult(pushHistory) {
-        if (pushHistory === undefined) pushHistory = true;
+    function viewSavedTestResult(pushHistory = true) {
         closeReattemptModal();
         const currentTopic = quizData[activeCatIdx].topics[activeTopIdx];
         const chap = currentTopic.chapters[activeChapIdx];
@@ -1241,143 +1322,101 @@
         document.getElementById('stat-wrong').innerText = wrong;
 
         renderResultReviewUI(correct, wrong, total);
-
-        if (pushHistory) {
-            history.pushState({ view: 'result', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
-        }
+        if (pushHistory) history.pushState({ view: 'result', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
         showView('view-result');
     }
 
     function openStartModal(chapIdx) {
-      activeChapIdx = chapIdx;
-      var chap = quizData[activeCatIdx].topics[activeTopIdx].chapters[chapIdx];
-      document.getElementById('modal-start-title').innerText = chap.chapterName || 'Test';
-      document.getElementById('modal-start-desc').innerText = 'Questions: ' + (chap.questions ? chap.questions.length : 0) + ' | Time: ' + (chap.timeInMinutes || 15) + ' Mins';
-      document.getElementById('modal-start').style.display = 'flex';
+        activeChapIdx = chapIdx;
+        var chap = quizData[activeCatIdx].topics[activeTopIdx].chapters[chapIdx];
+        document.getElementById('modal-start-title').innerText = chap.chapterName || 'Test';
+        document.getElementById('modal-start-desc').innerText = 'Questions: ' + (chap.questions ? chap.questions.length : 0) + ' | Time: ' + (chap.timeInMinutes || 15) + ' Mins';
+        document.getElementById('modal-start').style.display = 'flex';
     }
 
-    function closeStartModal() {
-      document.getElementById('modal-start').style.display = 'none';
-    }
+    function closeStartModal() { document.getElementById('modal-start').style.display = 'none'; }
+    function openSubmitModal() { document.getElementById('modal-submit').style.display = 'flex'; }
+    function closeSubmitModal() { document.getElementById('modal-submit').style.display = 'none'; }
 
-    function openSubmitModal() {
-      document.getElementById('modal-submit').style.display = 'flex';
-    }
+    function launchTestSession(pushHistory = true) {
+        closeStartModal();
+        var chap = quizData[activeCatIdx].topics[activeTopIdx].chapters[activeChapIdx];
+        activeQuestions = (chap && chap.questions) ? chap.questions : [];
+        currentQIdx = 0;
+        userSelections = {};
+        timeLeft = (chap.timeInMinutes || 15) * 60;
 
-    function closeSubmitModal() {
-      document.getElementById('modal-submit').style.display = 'none';
-    }
-
-    function launchTestSession(pushHistory) {
-      if (pushHistory === undefined) pushHistory = true;
-      closeStartModal();
-      var chap = quizData[activeCatIdx].topics[activeTopIdx].chapters[chapIdx];
-      activeQuestions = (chap && chap.questions) ? chap.questions : [];
-      currentQIdx = 0;
-      userSelections = {};
-      timeLeft = (chap.timeInMinutes || 15) * 60;
-
-      if (pushHistory) {
-        history.pushState({ view: 'test', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
-      }
-      showView('view-test');
-      renderCurrentQuestion();
-      startTimer();
+        if (pushHistory) history.pushState({ view: 'test', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
+        showView('view-test');
+        renderCurrentQuestion();
+        startTimer();
     }
 
     function startTimer() {
-      clearInterval(timerInterval);
-      updateTimerDisplay();
-      timerInterval = setInterval(function() {
-        timeLeft--;
+        clearInterval(timerInterval);
         updateTimerDisplay();
-        if (timeLeft <= 0) {
-          clearInterval(timerInterval);
-          executeSubmit();
-        }
-      }, 1000);
+        timerInterval = setInterval(function() {
+            timeLeft--;
+            updateTimerDisplay();
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                executeSubmit();
+            }
+        }, 1000);
     }
 
     function updateTimerDisplay() {
-      var min = Math.floor(timeLeft / 60);
-      var sec = timeLeft % 60;
-      document.getElementById('timer-display').innerText =
-        (min < 10 ? '0' : '') + min + ':' + (sec < 10 ? '0' : '') + sec;
+        var min = Math.floor(timeLeft / 60);
+        var sec = timeLeft % 60;
+        document.getElementById('timer-display').innerText = (min < 10 ? '0' : '') + min + ':' + (sec < 10 ? '0' : '') + sec;
     }
 
     function renderCurrentQuestion() {
-      var q = activeQuestions[currentQIdx];
-      if (!q) return;
-      document.getElementById('q-indicator').innerText = 'Question ' + (currentQIdx + 1) + '/' + activeQuestions.length;
-      document.getElementById('current-question-text').innerText = (currentQIdx + 1) + '. ' + (q.q || q.question || '');
+        var q = activeQuestions[currentQIdx];
+        if (!q) return;
 
-      var optLetters = ['A', 'B', 'C', 'D'];
-      var optContainer = document.getElementById('current-options-box');
-      var optionsList = Array.isArray(q.options) ? q.options : [];
+        document.getElementById('q-indicator').innerText = 'Question ' + (currentQIdx + 1) + '/' + activeQuestions.length;
+        document.getElementById('current-question-text').innerText = (currentQIdx + 1) + '. ' + (q.q || q.question || '');
 
-      optContainer.innerHTML = optionsList.map(function(opt, idx) {
-        var isSelected = userSelections[currentQIdx] === idx;
-        return '<div class="option-item ' + (isSelected ? 'selected' : '') + '" onclick="selectAnswer(' + idx + ')">' +
-               '<span class="opt-circle">' + (optLetters[idx] || (idx + 1)) + '</span>' +
-               '<span>' + opt + '</span></div>';
-      }).join('');
+        var optLetters = ['A', 'B', 'C', 'D'];
+        var optContainer = document.getElementById('current-options-box');
+        var optionsList = Array.isArray(q.options) ? q.options : [];
 
-      renderPalette();
+        optContainer.innerHTML = optionsList.map(function(opt, idx) {
+            var isSelected = userSelections[currentQIdx] === idx;
+            return '<div class="option-item ' + (isSelected ? 'selected' : '') + '" onclick="selectAnswer(' + idx + ')">' +
+                   '<span class="opt-circle">' + (optLetters[idx] || (idx + 1)) + '</span>' +
+                   '<span>' + opt + '</span></div>';
+        }).join('');
+
+        renderPalette();
     }
 
     function selectAnswer(idx) {
-      userSelections[currentQIdx] = idx;
-      renderCurrentQuestion();
+        userSelections[currentQIdx] = idx;
+        renderCurrentQuestion();
     }
 
     function renderPalette() {
-      var pContainer = document.getElementById('palette-container');
-      pContainer.innerHTML = (activeQuestions || []).map(function(_, idx) {
-        var isAnswered = userSelections[idx] !== undefined;
-        var isCur = currentQIdx === idx;
-        return '<button type="button" class="palette-btn ' + (isAnswered ? 'answered' : '') + ' ' + (isCur ? 'current' : '') + '" onclick="jumpToQuestion(' + idx + ')">' + (idx + 1) + '</button>';
-      }).join('');
+        var pContainer = document.getElementById('palette-container');
+        pContainer.innerHTML = (activeQuestions || []).map(function(_, idx) {
+            var isAnswered = userSelections[idx] !== undefined;
+            var isCur = currentQIdx === idx;
+            return '<button type="button" class="palette-btn ' + (isAnswered ? 'answered' : '') + ' ' + (isCur ? 'current' : '') + '" onclick="jumpToQuestion(' + idx + ')">' + (idx + 1) + '</button>';
+        }).join('');
     }
 
-    function jumpToQuestion(idx) {
-      currentQIdx = idx;
-      renderCurrentQuestion();
-    }
+    function jumpToQuestion(idx) { currentQIdx = idx; renderCurrentQuestion(); }
+    function goToNext() { if (currentQIdx < activeQuestions.length - 1) { currentQIdx++; renderCurrentQuestion(); } }
+    function goToPrev() { if (currentQIdx > 0) { currentQIdx--; renderCurrentQuestion(); } }
+    function saveAndNext() { if (currentQIdx < activeQuestions.length - 1) { currentQIdx++; renderCurrentQuestion(); } else openSubmitModal(); }
 
-    function goToNext() {
-      if (currentQIdx < activeQuestions.length - 1) {
-        currentQIdx++;
-        renderCurrentQuestion();
-      }
-    }
-
-    function goToPrev() {
-      if (currentQIdx > 0) {
-        currentQIdx--;
-        renderCurrentQuestion();
-    }
-    }
-
-    function saveAndNext() {
-      if (currentQIdx < activeQuestions.length - 1) {
-        currentQIdx++;
-        renderCurrentQuestion();
-      } else {
-        openSubmitModal();
-      }
-    }
-
-    // Filter Review Questions Helper
     function filterReviewQuestions(filterType) {
         var cards = document.querySelectorAll('#result-review-container .review-card');
         cards.forEach(function(card) {
-            if (filterType === 'all') {
-                card.style.display = 'block';
-            } else if (card.getAttribute('data-status') === filterType) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
+            if (filterType === 'all') card.style.display = 'block';
+            else if (card.getAttribute('data-status') === filterType) card.style.display = 'block';
+            else card.style.display = 'none';
         });
 
         document.getElementById('btn-filter-all').className = 'filter-btn' + (filterType === 'all' ? ' active-filter-all' : '');
@@ -1385,7 +1424,6 @@
         document.getElementById('btn-filter-wrong').className = 'filter-btn' + (filterType === 'wrong' ? ' active-filter-wrong' : '');
     }
 
-    // Render Review Cards & Graphical Donut Chart
     function renderResultReviewUI(correct, wrong, total) {
         var skipped = total - (correct + wrong);
         if (skipped < 0) skipped = 0;
@@ -1394,16 +1432,11 @@
         var elAccuracy = document.getElementById('donut-accuracy-text');
         if (elAccuracy) elAccuracy.innerText = accuracy + '%';
 
-        // Calculate Angles for Chart
         var cDeg = total > 0 ? (correct / total) * 360 : 0;
         var wDeg = total > 0 ? (wrong / total) * 360 : 0;
-        var endCDeg = cDeg;
-        var endWDeg = cDeg + wDeg;
 
         var chart = document.getElementById('result-donut-chart');
-        if (chart) {
-            chart.style.background = 'conic-gradient(#16a34a 0deg ' + endCDeg + 'deg, #dc2626 ' + endCDeg + 'deg ' + endWDeg + 'deg, #94a3b8 ' + endWDeg + 'deg 360deg)';
-        }
+        if (chart) chart.style.background = 'conic-gradient(#16a34a 0deg ' + cDeg + 'deg, #dc2626 ' + cDeg + 'deg ' + (cDeg + wDeg) + 'deg, #94a3b8 ' + (cDeg + wDeg) + 'deg 360deg)';
 
         var reviewHtml = '';
         (activeQuestions || []).forEach(function(q, idx) {
@@ -1416,15 +1449,8 @@
             var statusAttr = 'skipped';
 
             if (isAnswered) {
-                if (isCorrect) {
-                    badgeClass = 'correct';
-                    badgeText = 'Correct';
-                    statusAttr = 'correct';
-                } else {
-                    badgeClass = 'wrong';
-                    badgeText = 'Wrong';
-                    statusAttr = 'wrong';
-                }
+                if (isCorrect) { badgeClass = 'correct'; badgeText = 'Correct'; statusAttr = 'correct'; }
+                else { badgeClass = 'wrong'; badgeText = 'Wrong'; statusAttr = 'wrong'; }
             }
 
             var opts = Array.isArray(q.options) ? q.options : [];
@@ -1432,12 +1458,13 @@
             var correctAns = (opts[q.answer] !== undefined) ? opts[q.answer] : "N/A";
 
             reviewHtml += '<div class="review-card" data-status="' + statusAttr + '">' +
-              '<span class="badge ' + badgeClass + '">' + badgeText + '</span>' +
-              '<div style="font-weight:700; margin-bottom:6px; font-size:15px;">Q' + (idx + 1) + '. ' + (q.q || q.question || '') + '</div>' +
-              '<div style="font-size:14px; margin-bottom:4px;"><b>Aapka Answer:</b> ' + yourAns + '</div>' +
-              '<div style="font-size:14px; color:#166534; margin-bottom:4px;"><b>Sahi Answer:</b> ' + correctAns + '</div>' +
-              (q.explanation ? '<div class="explanation-box"><b>Explanation:</b> ' + q.explanation + '</div>' : '') +
-              '</div>';
+                '<span class="badge ' + badgeClass + '">' + badgeText + '</span>' +
+                '<div style="font-weight:700; margin-bottom:6px; font-size:15px;">Q' + (idx + 1) + '. ' + (q.q || q.question || '') + '</div>' +
+                '<div style="font-size:14px; margin-bottom:4px;"><b>Aapka Answer:</b> ' + yourAns + '</div>' +
+                '<div style="font-size:14px; color:#166534; margin-bottom:4px;"><b>Sahi Answer:</b> ' + correctAns + '</div>' +
+                (q.explanation ? '<div class="explanation-box"><b>Explanation:</b> ' + q.explanation + '</div>' : '') +
+                `<button type="button" class="btn-ai-guru" onclick="currentQIdx=${idx}; askAiGuruForCurrentQuestion();">🤖 Ask AI Guru Insights</button>` +
+                '</div>';
         });
 
         document.getElementById('result-review-container').innerHTML = reviewHtml;
@@ -1445,639 +1472,17 @@
     }
 
     function executeSubmit() {
-      closeSubmitModal();
-      clearInterval(timerInterval);
-      var correct = 0;
-      var wrong = 0;
-      var total = activeQuestions.length;
+        closeSubmitModal();
+        clearInterval(timerInterval);
+        var correct = 0, wrong = 0, total = activeQuestions.length;
 
-      (activeQuestions || []).forEach(function(q, idx) {
-        var choice = userSelections[idx];
-        var isAnswered = choice !== undefined;
-        var isCorrect = choice === q.answer;
-
-        if (isAnswered) {
-          if (isCorrect) {
-            correct++;
-          } else {
-            wrong++;
-        }
-        }
-      });
-
-      document.getElementById('stat-score').innerText = correct + '/' + total;
-      document.getElementById('stat-correct').innerText = correct;
-      document.getElementById('stat-wrong').innerText = wrong;
-
-      renderResultReviewUI(correct, wrong, total);
-
-      const currentTopic = quizData[activeCatIdx].topics[activeTopIdx];
-      const chap = currentTopic.chapters[activeChapIdx];
-      const testId = 'test_' + Date.now();
-      userTestHistory[testId] = {
-          category: quizData[activeCatIdx].category,
-          chapter: (currentTopic.topicName || '') + " - " + (chap.chapterName || ''),
-          score: correct,
-          total: total,
-          userAnswers: userSelections,
-          timestamp: new Date().toISOString()
-      };
-      saveLocalTestHistory();
-
-      history.pushState({ view: 'result', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
-      showView('view-result');
-    }
-
-    function setupBrowserNavigation() {
-      window.onpopstate = function(e) {
-        var pdfReader = document.getElementById('view-pdf-reader');
-        if (pdfReader && pdfReader.style.display === 'flex') {
-            pdfReader.style.display = 'none';
-            document.getElementById('pdf-viewer-iframe').src = "";
-            return;
-        }
-
-        var openModals = document.querySelectorAll('.modal-overlay');
-        var modalWasOpen = false;
-        openModals.forEach(function(m) {
-          if (m.style.display === 'flex' || m.style.display === 'block') {
-            m.style.display = 'none';
-            modalWasOpen = true;
-          }
-        });
-        var drawer = document.getElementById('drawer-overlay');
-        if (drawer && drawer.style.display === 'block') {
-            closeDrawer();
-            modalWasOpen = true;
-        }
-
-        if (modalWasOpen) {
-            return;
-        }
-
-        if (currentActiveView === 'test') {
-            var nowTest = Date.now();
-            if (nowTest - lastTestBackPressTime < 2000) {
-                clearInterval(timerInterval);
-                navigateToChapters(activeTopIdx, false);
-                return;
-            }
-            lastTestBackPressTime = nowTest;
-            showExitToast("Press back again to exit test");
-            history.pushState({ view: 'test', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
-            return;
-        }
-
-        if (currentActiveView === 'result') {
-            if (activeTopIdx !== null && activeTopIdx !== undefined) {
-                navigateToChapters(activeTopIdx, false);
-            } else {
-                navigateToCategories(false);
-            }
-            return;
-        }
-
-        if (currentActiveView === 'chapters') {
-            navigateToTopics(activeCatIdx, false);
-            return;
-        }
-
-        if (currentActiveView === 'topics') {
-            navigateToCategories(false);
-            return;
-        }
-
-        if (!e.state || e.state.view === 'categories') {
-          if (currentActiveView === 'categories') {
-            var now = Date.now();
-            if (now - lastBackPressTime < 2000) {
-              if (window.AndroidApp && window.AndroidApp.exitApp) {
-                window.AndroidApp.exitApp();
-              } else {
-                window.history.go(-1);
-              }
-              return;
-            }
-            lastBackPressTime = now;
-            showExitToast("Press back again to exit");
-            history.pushState({ view: 'categories' }, '');
-            return;
-        }
-          navigateToCategories(false);
-        } else if (e.state.view === 'topics') {
-          if (e.state.catIdx !== undefined) activeCatIdx = e.state.catIdx;
-          navigateToTopics(activeCatIdx, false);
-        } else if (e.state.view === 'chapters') {
-          if (e.state.topIdx !== undefined) activeTopIdx = e.state.topIdx;
-          navigateToChapters(activeTopIdx, false);
-        } else if (e.state.view === 'test') {
-          showView('view-test');
-        } else if (e.state.view === 'result') {
-          showView('view-result');
-        }
-      };
-    }
-</script>
-
-<!-- AUTO OVERRIDE FIX SCRIPT (Bina purani line delete kiye test start ko fix karta hai) -->
-<script>
-    window.launchTestSession = function(pushHistory) {
-      if (pushHistory === undefined) pushHistory = true;
-      closeStartModal();
-      var chap = quizData[activeCatIdx].topics[activeTopIdx].chapters[activeChapIdx];
-      activeQuestions = (chap && chap.questions) ? chap.questions : [];
-      currentQIdx = 0;
-      userSelections = {};
-      timeLeft = (chap.timeInMinutes || 15) * 60;
-
-      if (pushHistory) {
-        history.pushState({ view: 'test', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
-      }
-      showView('view-test');
-      renderCurrentQuestion();
-      startTimer();
-    };
-</script>
-
-<!-- ================= NEW ADVANCED FEATURES INJECTION (NO LINES DELETED) ================= -->
-<style>
-    .palette-btn.marked-review {
-        border-color: #8b5cf6 !important;
-        background: #f5f3ff !important;
-        color: #7c3aed !important;
-        box-shadow: 0 0 0 2px #c4b5fd inset;
-      }
-    .palette-btn.marked-review.answered {
-        background: #7c3aed !important;
-        color: #ffffff !important;
-        border-color: #6d28d9 !important;
-    }
-    .btn-mark-review {
-        background: #f5f3ff;
-        border: 1.5px solid #8b5cf6;
-        color: #7c3aed;
-        font-weight: 700;
-        border-radius: 8px;
-        padding: 10px;
-        cursor: pointer;
-        width: 100%;
-        margin-top: 10px;
-        font-size: 13.5px;
-        transition: all 0.2s;
-    }
-    .btn-mark-review.is-marked {
-        background: #7c3aed;
-        color: #ffffff;
-    }
-    .btn-clear-history {
-        background: #fee2e2;
-        color: #dc2626;
-        border: 1.5px solid #f87171;
-        padding: 8px 12px;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 800;
-        cursor: pointer;
-        margin-bottom: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        width: 100%;
-    }
-    .time-stat-pill {
-        display: inline-block;
-        background: #f8fafc;
-        border: 1px solid #cbd5e1;
-        color: #475569;
-        font-size: 11.5px;
-        font-weight: 700;
-        padding: 3px 8px;
-        border-radius: 6px;
-        margin-top: 4px;
-    }
-</style>
-
-<!-- Marked For Review Modal -->
-<div id="modal-marked-review" class="modal-overlay">
-    <div class="modal-box modal-scrollable-box">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <h3 style="margin:0;">🔖 Marked For Review</h3>
-        </div>
-        <p style="margin-bottom:12px; font-size:13px;">Aapke dwara review ke liye mark kiye gaye sabhi questions:</p>
-        <button type="button" class="btn-clear-history" onclick="clearAllMarkedQuestions()">🗑️ Clean All Marked Reviews</button>
-        <div id="marked-review-container"></div>
-        <div style="margin-top: 16px; text-align: center;">
-            <button type="button" class="item-card" style="margin:0; padding:10px; width:100%; background:#0f172a; color:#fff; justify-content: center;" onclick="closeMarkedReviewModal()">Close</button>
-        </div>
-    </div>
-</div>
-
-<script>
-    // Variables for New Features
-    var markedReviewQuestions = {}; // { qIdx: true }
-    var questionTimeSpent = {}; // { qIdx: seconds }
-    var lastQuestionSwitchTime = 0;
-    var testSessionStartTime = 0;
-    var totalTimeTakenFormatted = "0m 0s";
-    var globalSavedMarkedStore = {};
-
-    function loadSavedMarkedStore() {
-        try {
-            var raw = localStorage.getItem('sgs_saved_marked_questions');
-            globalSavedMarkedStore = raw ? JSON.parse(raw) : {};
-        } catch(e) { globalSavedMarkedStore = {}; }
-    }
-    function saveMarkedStoreToLocal() {
-        try {
-            localStorage.setItem('sgs_saved_marked_questions', JSON.stringify(globalSavedMarkedStore));
-        } catch(e) {}
-    }
-    loadSavedMarkedStore();
-
-    function formatTimeDuration(totalSecs) {
-        if (!totalSecs || totalSecs < 0) totalSecs = 0;
-        var m = Math.floor(totalSecs / 60);
-        var s = totalSecs % 60;
-        if (m > 0) return m + "m " + s + "s";
-        return s + "s";
-    }
-
-    function recordCurrentQTime() {
-        if (lastQuestionSwitchTime > 0) {
-            var elapsed = Math.round((Date.now() - lastQuestionSwitchTime) / 1000);
-            if (!questionTimeSpent[currentQIdx]) questionTimeSpent[currentQIdx] = 0;
-            questionTimeSpent[currentQIdx] += elapsed;
-        }
-        lastQuestionSwitchTime = Date.now();
-    }
-
-    // Inject 'Mark For Review' in Drawer (Right before Privacy Policy)
-    function injectDrawerMarkedOption() {
-        var drawer = document.querySelector('.drawer-content');
-        if (!drawer || document.getElementById('drawer-item-marked')) return;
-
-        var markedItem = document.createElement('div');
-        markedItem.id = 'drawer-item-marked';
-        markedItem.className = 'drawer-item';
-        markedItem.innerHTML = '<span>🔖</span> Marked Review Questions';
-        markedItem.onclick = function() {
-            closeDrawer();
-            openMarkedReviewModal();
-        };
-
-        var trackItem = drawer.querySelector('.drawer-item');
-        if (trackItem && trackItem.nextElementSibling) {
-            drawer.insertBefore(markedItem, trackItem.nextElementSibling);
-        } else {
-            drawer.appendChild(markedItem);
-        }
-    }
-    setTimeout(injectDrawerMarkedOption, 500);
-
-    // Override Track My Test Modal to add Clean / Delete button
-    window.openTrackMyTestModal = function() {
-        closeDrawer();
-        const container = document.getElementById('track-tests-container');
-        const keys = Object.keys(userTestHistory || {});
-
-        if (keys.length === 0) {
-            container.innerHTML = '<p style="color:#64748b; font-size:13px; text-align:center; padding:20px 0;">Abhi tak koi test submit nahi kiya hai.</p>';
-        } else {
-            var clearBtn = '<button type="button" class="btn-clear-history" onclick="clearAllTestHistory()">🗑️ Clean All Test History</button>';
-            container.innerHTML = clearBtn + keys.reverse().map(k => {
-                const item = userTestHistory[k];
-                if (!item) return '';
-                const date = item.timestamp ? new Date(item.timestamp).toLocaleDateString() : 'Recent';
-                const timeTakenTxt = item.timeTaken ? ` | ⏱️ Time: ${item.timeTaken}` : '';
-                return `
-                    <div class="history-card">
-                        <div class="history-card-header">
-                            <span>${item.chapter || 'Test'}</span>
-                            <span style="color:#16a34a;">${item.score || 0}/${item.total || 0}</span>
-                        </div>
-                        <div style="font-size:12px; color:#64748b;">Subject: ${item.category || ''} | Date: ${date}${timeTakenTxt}</div>
-                    </div>
-                `;
-            }).join('');
-        }
-        document.getElementById('modal-track').style.display = 'flex';
-    };
-
-    window.clearAllTestHistory = function() {
-        if (confirm("Kya aap sach me sabhi test records clean / delete karna chahte hain?")) {
-            userTestHistory = {};
-            localStorage.removeItem('sgs_user_test_history');
-            openTrackMyTestModal();
-            if (typeof renderChaptersList === 'function') renderChaptersList();
-        }
-    };
-
-    // Marked Questions Drawer Modal Handlers
-    window.openMarkedReviewModal = function() {
-        var container = document.getElementById('marked-review-container');
-        var keys = Object.keys(globalSavedMarkedStore || {});
-        if (keys.length === 0) {
-            container.innerHTML = '<p style="color:#64748b; font-size:13px; text-align:center; padding:20px 0;">Abhi tak koi bhi question mark nahi kiya gaya hai.</p>';
-        } else {
-            container.innerHTML = keys.reverse().map(k => {
-                var item = globalSavedMarkedStore[k];
-                if (!item) return '';
-                var opts = Array.isArray(item.options) ? item.options : [];
-                var optHtml = opts.map((op, i) => {
-                    var isCor = i === item.answer;
-                    return `<div style="font-size:13px; margin:3px 0; color:${isCor ? '#166534' : '#475569'}; font-weight:${isCor ? '700' : 'normal'};">• ${op} ${isCor ? '✅' : ''}</div>`;
-                }).join('');
-                return `
-                    <div class="review-card" style="margin-bottom:10px;">
-                        <span class="badge" style="background:#f5f3ff; color:#7c3aed;">${item.testName || 'Test'}</span>
-                        <div style="font-weight:700; font-size:14.5px; margin:6px 0;">${item.question || ''}</div>
-                        ${optHtml}
-                        ${item.explanation ? `<div class="explanation-box" style="margin-top:6px;">${item.explanation}</div>` : ''}
-                    </div>
-                `;
-            }).join('');
-        }
-        document.getElementById('modal-marked-review').style.display = 'flex';
-    };
-
-    window.closeMarkedReviewModal = function() {
-        document.getElementById('modal-marked-review').style.display = 'none';
-    };
-
-    window.clearAllMarkedQuestions = function() {
-        if (confirm("Kya aap sabhi Marked Questions ko clean / delete karna chahte hain?")) {
-            globalSavedMarkedStore = {};
-            saveMarkedStoreToLocal();
-            openMarkedReviewModal();
-        }
-    };
-
-    // Override launchTestSession with full timing and features
-    window.launchTestSession = function(pushHistory) {
-      if (pushHistory === undefined) pushHistory = true;
-      closeStartModal();
-      var chap = quizData[activeCatIdx].topics[activeTopIdx].chapters[activeChapIdx];
-      activeQuestions = (chap && chap.questions) ? chap.questions : [];
-      currentQIdx = 0;
-      userSelections = {};
-      markedReviewQuestions = {};
-      questionTimeSpent = {};
-      testSessionStartTime = Date.now();
-      lastQuestionSwitchTime = Date.now();
-      timeLeft = (chap.timeInMinutes || 15) * 60;
-
-      if (pushHistory) {
-        history.pushState({ view: 'test', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
-      }
-      showView('view-test');
-      renderCurrentQuestion();
-      startTimer();
-    };
-
-    // Override Navigation Functions to record per-question time
-    window.goToNext = function() {
-      recordCurrentQTime();
-      if (currentQIdx < activeQuestions.length - 1) {
-        currentQIdx++;
-        renderCurrentQuestion();
-      }
-    };
-
-    window.goToPrev = function() {
-      recordCurrentQTime();
-      if (currentQIdx > 0) {
-        currentQIdx--;
-        renderCurrentQuestion();
-      }
-    };
-
-    window.saveAndNext = function() {
-      recordCurrentQTime();
-      if (currentQIdx < activeQuestions.length - 1) {
-        currentQIdx++;
-        renderCurrentQuestion();
-    } else {
-        openSubmitModal();
-      }
-    };
-
-    window.jumpToQuestion = function(idx) {
-      recordCurrentQTime();
-      currentQIdx = idx;
-      renderCurrentQuestion();
-    };
-
-    window.toggleMarkCurrentQuestion = function() {
-        markedReviewQuestions[currentQIdx] = !markedReviewQuestions[currentQIdx];
-        var q = activeQuestions[currentQIdx];
-        if (q) {
-            var storeKey = (quizData[activeCatIdx].category || '') + '_' + currentQIdx + '_' + (q.q || q.question || '').substring(0, 20);
-            if (markedReviewQuestions[currentQIdx]) {
-                var curChap = quizData[activeCatIdx].topics[activeTopIdx].chapters[activeChapIdx];
-                globalSavedMarkedStore[storeKey] = {
-                    testName: (curChap ? curChap.chapterName : 'Test'),
-                    question: (q.q || q.question || ''),
-                    options: q.options || [],
-                    answer: q.answer,
-                    explanation: q.explanation || ''
-                };
-            } else {
-                delete globalSavedMarkedStore[storeKey];
-            }
-            saveMarkedStoreToLocal();
-        }
-        renderCurrentQuestion();
-    };
-
-    // Override renderCurrentQuestion to append Mark For Review Button
-    window.renderCurrentQuestion = function() {
-      var q = activeQuestions[currentQIdx];
-      if (!q) return;
-      document.getElementById('q-indicator').innerText = 'Question ' + (currentQIdx + 1) + '/' + activeQuestions.length;
-      document.getElementById('current-question-text').innerText = (currentQIdx + 1) + '. ' + (q.q || q.question || '');
-
-      var optLetters = ['A', 'B', 'C', 'D'];
-      var optContainer = document.getElementById('current-options-box');
-      var optionsList = Array.isArray(q.options) ? q.options : [];
-
-      var isMarked = !!markedReviewQuestions[currentQIdx];
-
-      var optionsHtml = optionsList.map(function(opt, idx) {
-        var isSelected = userSelections[currentQIdx] === idx;
-        return '<div class="option-item ' + (isSelected ? 'selected' : '') + '" onclick="selectAnswer(' + idx + ')">' +
-               '<span class="opt-circle">' + (optLetters[idx] || (idx + 1)) + '</span>' +
-               '<span>' + opt + '</span></div>';
-      }).join('');
-
-      var markBtnHtml = `
-        <button type="button" class="btn-mark-review ${isMarked ? 'is-marked' : ''}" onclick="toggleMarkCurrentQuestion()">
-            ${isMarked ? '🔖 Marked For Review (Click to Unmark)' : '🔖 Mark Question For Review'}
-        </button>
-      `;
-
-      optContainer.innerHTML = optionsHtml + markBtnHtml;
-      renderPalette();
-    };
-
-    // Override renderPalette with Marked for Review colors
-    window.renderPalette = function() {
-      var pContainer = document.getElementById('palette-container');
-      pContainer.innerHTML = (activeQuestions || []).map(function(_, idx) {
-        var isAnswered = userSelections[idx] !== undefined;
-        var isCur = currentQIdx === idx;
-        var isMarked = !!markedReviewQuestions[idx];
-        return '<button type="button" class="palette-btn ' +
-               (isAnswered ? 'answered ' : '') +
-               (isMarked ? 'marked-review ' : '') +
-               (isCur ? 'current ' : '') +
-               '" onclick="jumpToQuestion(' + idx + ')">' + (idx + 1) + '</button>';
-      }).join('');
-    };
-
-    // Override renderResultReviewUI to show Total Time + Question Wise Time
-    window.renderResultReviewUI = function(correct, wrong, total) {
-        var skipped = total - (correct + wrong);
-        if (skipped < 0) skipped = 0;
-
-        var accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
-        var elAccuracy = document.getElementById('donut-accuracy-text');
-        if (elAccuracy) elAccuracy.innerText = accuracy + '%';
-
-        // Fix Score Grid to 4 Columns for Total Time Display
-        var grid = document.querySelector('#view-result .score-grid');
-        if (grid) {
-            grid.style.gridTemplateColumns = "1fr 1fr 1fr 1fr";
-            if (!document.getElementById('stat-time-box')) {
-                var timeStat = document.createElement('div');
-                timeStat.id = 'stat-time-box';
-                timeStat.className = 'score-stat';
-                timeStat.innerHTML = '<div class="stat-val" id="stat-total-time" style="color:#8b5cf6; font-size:17px;">0s</div><div class="stat-lbl">Time Taken</div>';
-                grid.appendChild(timeStat);
-            }
-            var elTime = document.getElementById('stat-total-time');
-            if (elTime) elTime.innerText = totalTimeTakenFormatted;
-        }
-
-        var cDeg = total > 0 ? (correct / total) * 360 : 0;
-        var wDeg = total > 0 ? (wrong / total) * 360 : 0;
-        var endCDeg = cDeg;
-        var endWDeg = cDeg + wDeg;
-
-        var chart = document.getElementById('result-donut-chart');
-        if (chart) {
-            chart.style.background = 'conic-gradient(#16a34a 0deg ' + endCDeg + 'deg, #dc2626 ' + endCDeg + 'deg ' + endWDeg + 'deg, #94a3b8 ' + endWDeg + 'deg 360deg)';
-        }
-
-        var reviewHtml = '';
         (activeQuestions || []).forEach(function(q, idx) {
             var choice = userSelections[idx];
-            var isAnswered = choice !== undefined;
-            var isCorrect = choice === q.answer;
-
-            var badgeClass = 'skipped';
-            var badgeText = 'Skipped';
-            var statusAttr = 'skipped';
-
-            if (isAnswered) {
-                if (isCorrect) {
-                    badgeClass = 'correct';
-                    badgeText = 'Correct';
-                    statusAttr = 'correct';
-                } else {
-                    badgeClass = 'wrong';
-                    badgeText = 'Wrong';
-                    statusAttr = 'wrong';
-                }
+            if (choice !== undefined) {
+                if (choice === q.answer) correct++;
+                else wrong++;
             }
-
-            var opts = Array.isArray(q.options) ? q.options : [];
-            var yourAns = isAnswered && opts[choice] !== undefined ? opts[choice] : "Not Attempted";
-            var correctAns = (opts[q.answer] !== undefined) ? opts[q.answer] : "N/A";
-            var qSpent = formatTimeDuration(questionTimeSpent[idx] || 0);
-
-            reviewHtml += '<div class="review-card" data-status="' + statusAttr + '">' +
-              '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">' +
-                  '<span class="badge ' + badgeClass + '">' + badgeText + '</span>' +
-                  '<span class="time-stat-pill">⏱️ ' + qSpent + '</span>' +
-              '</div>' +
-              '<div style="font-weight:700; margin-bottom:6px; font-size:15px;">Q' + (idx + 1) + '. ' + (q.q || q.question || '') + '</div>' +
-              '<div style="font-size:14px; margin-bottom:4px;"><b>Aapka Answer:</b> ' + yourAns + '</div>' +
-              '<div style="font-size:14px; color:#166534; margin-bottom:4px;"><b>Sahi Answer:</b> ' + correctAns + '</div>' +
-              (q.explanation ? '<div class="explanation-box"><b>Explanation:</b> ' + q.explanation + '</div>' : '') +
-              '</div>';
         });
-
-        document.getElementById('result-review-container').innerHTML = reviewHtml;
-        filterReviewQuestions('all');
-    };
-
-    // Override executeSubmit to save full duration
-    window.executeSubmit = function() {
-      recordCurrentQTime();
-      closeSubmitModal();
-      clearInterval(timerInterval);
-
-      var elapsedTotalSecs = testSessionStartTime > 0 ? Math.round((Date.now() - testSessionStartTime) / 1000) : 0;
-      totalTimeTakenFormatted = formatTimeDuration(elapsedTotalSecs);
-
-      var correct = 0;
-      var wrong = 0;
-      var total = activeQuestions.length;
-
-      (activeQuestions || []).forEach(function(q, idx) {
-        var choice = userSelections[idx];
-        var isAnswered = choice !== undefined;
-        var isCorrect = choice === q.answer;
-
-        if (isAnswered) {
-          if (isCorrect) correct++;
-          else wrong++;
-        }
-      });
-
-      document.getElementById('stat-score').innerText = correct + '/' + total;
-      document.getElementById('stat-correct').innerText = correct;
-      document.getElementById('stat-wrong').innerText = wrong;
-
-      renderResultReviewUI(correct, wrong, total);
-
-      const currentTopic = quizData[activeCatIdx].topics[activeTopIdx];
-      const chap = currentTopic.chapters[activeChapIdx];
-      const testId = 'test_' + Date.now();
-      userTestHistory[testId] = {
-          category: quizData[activeCatIdx].category,
-          chapter: (currentTopic.topicName || '') + " - " + (chap.chapterName || ''),
-          score: correct,
-          total: total,
-          userAnswers: userSelections,
-          timeTaken: totalTimeTakenFormatted,
-          perQuestionTime: questionTimeSpent,
-          timestamp: new Date().toISOString()
-      };
-      saveLocalTestHistory();
-
-      history.pushState({ view: 'result', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
-      showView('view-result');
-    };
-
-    // Override viewSavedTestResult to restore saved time stats
-    window.viewSavedTestResult = function(pushHistory) {
-        if (pushHistory === undefined) pushHistory = true;
-        closeReattemptModal();
-        const currentTopic = quizData[activeCatIdx].topics[activeTopIdx];
-        const chap = currentTopic.chapters[activeChapIdx];
-        const attempt = getLatestAttempt(quizData[activeCatIdx].category, (currentTopic.topicName || '') + " - " + (chap.chapterName || ''));
-        if (!attempt) return;
-
-        activeQuestions = (chap && chap.questions) ? chap.questions : [];
-        userSelections = attempt[1].userAnswers || {};
-        totalTimeTakenFormatted = attempt[1].timeTaken || "N/A";
-        questionTimeSpent = attempt[1].perQuestionTime || {};
-
-        let correct = attempt[1].score || 0;
-        let total = attempt[1].total || 0;
-        let wrong = total - correct;
 
         document.getElementById('stat-score').innerText = correct + '/' + total;
         document.getElementById('stat-correct').innerText = correct;
@@ -2085,739 +1490,94 @@
 
         renderResultReviewUI(correct, wrong, total);
 
-        if (pushHistory) {
-            history.pushState({ view: 'result', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
-        }
+        const currentTopic = quizData[activeCatIdx].topics[activeTopIdx];
+        const chap = currentTopic.chapters[activeChapIdx];
+        const testId = 'test_' + Date.now();
+        userTestHistory[testId] = {
+            category: quizData[activeCatIdx].category,
+            chapter: (currentTopic.topicName || '') + " - " + (chap.chapterName || ''),
+            score: correct,
+            total: total,
+            userAnswers: userSelections,
+            timestamp: new Date().toISOString()
+        };
+        saveLocalTestHistory();
+
+        history.pushState({ view: 'result', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
         showView('view-result');
-    };
-</script>
-
-<!-- ================= PHASE 3: DARK MODE + BILINGUAL SWITCH + DOWNLOAD & SHARE RESULT CARD ================= -->
-<style>
-    /* Modern UI Refinements */
-    .top-bar {
-        background: linear-gradient(135deg, #ec4899, #8b5cf6, #3b82f6) !important;
-        backdrop-filter: blur(10px);
-    }
-    .item-card {
-        border-radius: 14px !important;
-        box-shadow: 0 4px 14px rgba(236, 72, 153, 0.12) !important;
     }
 
-    /* Dark Theme Styles */
-    body.dark-theme {
-        background-color: #0b0f19 !important;
-        color: #f1f5f9 !important;
-    }
-    body.dark-theme .sub-bar {
-        background: #111827 !important;
-        color: #94a3b8 !important;
-        border-bottom-color: #1f2937 !important;
-    }
-    body.dark-theme .user-greeting {
-        color: #f8fafc !important;
-    }
-    body.dark-theme .item-card {
-        background: linear-gradient(135deg, #1e1b4b, #0f172a) !important;
-        border-color: #ec4899 !important;
-        color: #f472b6 !important;
-        box-shadow: 0 4px 14px rgba(0,0,0,0.5) !important;
-    }
-    body.dark-theme .item-card:nth-child(2n) {
-        background: linear-gradient(135deg, #2e1065, #0f172a) !important;
-        border-color: #a78bfa !important;
-        color: #c4b5fd !important;
-    }
-    body.dark-theme .item-card:nth-child(3n) {
-        background: linear-gradient(135deg, #172554, #0f172a) !important;
-        border-color: #60a5fa !important;
-        color: #93c5fd !important;
-    }
-    body.dark-theme .question-box,
-    body.dark-theme .option-item,
-    body.dark-theme .modal-box,
-    body.dark-theme .drawer-sidebar,
-    body.dark-theme .score-stat,
-    body.dark-theme .review-card,
-    body.dark-theme .history-card {
-        background-color: #1e293b !important;
-        color: #f8fafc !important;
-        border-color: #334155 !important;
-    }
-    body.dark-theme .option-item.selected {
-        background-color: #3b0764 !important;
-        color: #f472b6 !important;
-        border-color: #ec4899 !important;
-    }
-    body.dark-theme .score-summary {
-        background: linear-gradient(135deg, #1e293b, #0f172a) !important;
-        border-color: #ec4899 !important;
-    }
-    body.dark-theme .score-summary h2 {
-        color: #f472b6 !important;
-    }
-    body.dark-theme .donut-chart-inner {
-        background: #1e293b !important;
-    }
-    body.dark-theme .donut-percentage {
-        color: #f472b6 !important;
-    }
-    body.dark-theme .action-btn {
-        background: #1e293b !important;
-        color: #f1f5f9 !important;
-        border-color: #475569 !important;
-    }
-    body.dark-theme .palette-btn {
-        background: #1e293b !important;
-        color: #cbd5e1 !important;
-        border-color: #475569 !important;
-    }
-    body.dark-theme .explanation-box {
-        background: #31133f !important;
-        color: #fbcfe8 !important;
-        border-left-color: #f472b6 !important;
-    }
-    body.dark-theme .filter-btn {
-        background: #1e293b !important;
-        color: #94a3b8 !important;
-        border-color: #475569 !important;
-    }
-    body.dark-theme .drawer-item {
-        color: #cbd5e1 !important;
-        border-bottom-color: #334155 !important;
-    }
-    body.dark-theme .drawer-item:active {
-        background: #1e293b !important;
-    }
-
-    /* Bilingual Switch Pill */
-    .lang-toggle-btn {
-        background: #fdf2f8;
-        border: 1.5px solid #f472b6;
-        color: #db2777;
-        font-weight: 800;
-        padding: 5px 12px;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 12.5px;
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        transition: all 0.2s;
-    }
-    body.dark-theme .lang-toggle-btn {
-        background: #31133f;
-        color: #f472b6;
-        border-color: #db2777;
-    }
-
-    /* Result Actions Buttons (Share / Download Scorecard) */
-    .result-share-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-top: 14px;
-    }
-    .btn-action-share {
-        padding: 12px 10px;
-        border-radius: 10px;
-        font-size: 14px;
-        font-weight: 800;
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        transition: all 0.2s;
-    }
-    .btn-download-card {
-        background: linear-gradient(135deg, #3b82f6, #2563eb);
-        color: #fff;
-        box-shadow: 0 4px 12px rgba(37,99,235,0.3);
-    }
-    .btn-whatsapp-share {
-        background: linear-gradient(135deg, #22c55e, #16a34a);
-        color: #fff;
-        box-shadow: 0 4px 12px rgba(34,197,94,0.3);
-    }
-    .btn-action-share:active {
-        transform: scale(0.97);
-    }
-
-    /* Dark Mode Toggle Nav Icon */
-    .top-action-icons {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-    }
-</style>
-
-<!-- Hidden Canvas for Generating Shareable Result Scorecard Card -->
-<canvas id="scorecard-canvas" width="800" height="1000" style="display:none;"></canvas>
-
-<script>
-    // State management for Theme & Language
-    var appLanguage = localStorage.getItem('sgs_app_lang') || 'hi'; // 'hi' or 'en'
-    var isDarkThemeActive = localStorage.getItem('sgs_dark_theme') === 'true';
-
-    function applyAppTheme(isDark) {
-        if (isDark) {
-            document.body.classList.add('dark-theme');
-        } else {
-            document.body.classList.remove('dark-theme');
-        }
-        var iconEl = document.getElementById('theme-toggle-icon');
-        if (iconEl) iconEl.innerText = isDark ? '☀️' : '🌙';
-    }
-
-    function toggleAppTheme() {
-        isDarkThemeActive = !isDarkThemeActive;
-        localStorage.setItem('sgs_dark_theme', isDarkThemeActive ? 'true' : 'false');
-        applyAppTheme(isDarkThemeActive);
-    }
-
-    // Apply theme immediately
-    applyAppTheme(isDarkThemeActive);
-
-    // Inject Dark Mode Toggle in Topbar & Drawer
-    function injectThemeControls() {
-        var topBar = document.querySelector('.top-bar');
-        if (topBar && !document.getElementById('theme-toggle-icon')) {
-            var rightBox = topBar.querySelector('div:last-child');
-            if (rightBox) {
-                var container = document.createElement('div');
-                container.className = 'top-action-icons';
-
-                var themeBtn = document.createElement('span');
-                themeBtn.id = 'theme-toggle-icon';
-                themeBtn.style.cursor = 'pointer';
-                themeBtn.style.fontSize = '18px';
-                themeBtn.innerText = isDarkThemeActive ? '☀️' : '🌙';
-                themeBtn.title = 'Toggle Dark Mode';
-                themeBtn.onclick = toggleAppTheme;
-
-                rightBox.parentNode.replaceChild(container, rightBox);
-                container.appendChild(themeBtn);
-                container.appendChild(rightBox);
-            }
-        }
-
-        // Add to Drawer
-        var drawer = document.querySelector('.drawer-content');
-        if (drawer && !document.getElementById('drawer-item-darkmode')) {
-            var darkItem = document.createElement('div');
-            darkItem.id = 'drawer-item-darkmode';
-            darkItem.className = 'drawer-item';
-            darkItem.innerHTML = '<span>🌓</span> Dark Mode Toggle';
-            darkItem.onclick = function() {
-                toggleAppTheme();
-                closeDrawer();
-            };
-            drawer.appendChild(darkItem);
-        }
-    }
-    setTimeout(injectThemeControls, 300);
-
-    // Bilingual Toggle Logic
-    function toggleLanguage() {
-        appLanguage = (appLanguage === 'hi') ? 'en' : 'hi';
-        localStorage.setItem('sgs_app_lang', appLanguage);
-        renderCurrentQuestion();
-    }
-
-    // Override renderCurrentQuestion to include Bilingual Switch & Language Data Mapping
-    window.renderCurrentQuestion = function() {
-        var q = activeQuestions[currentQIdx];
-        if (!q) return;
-
-        // Determine question & options based on selected language
-        var qText = "";
-        var optionsList = [];
-
-        if (appLanguage === 'en') {
-            qText = q.q_en || q.question_en || q.q || q.question || '';
-            optionsList = (q.options_en && Array.isArray(q.options_en)) ? q.options_en : (Array.isArray(q.options) ? q.options : []);
-        } else {
-            qText = q.q || q.question || q.q_en || q.question_en || '';
-            optionsList = Array.isArray(q.options) ? q.options : (Array.isArray(q.options_en) ? q.options_en : []);
-        }
-
-        // Update indicator & Question Text
-        document.getElementById('q-indicator').innerText = 'Question ' + (currentQIdx + 1) + '/' + activeQuestions.length;
-        document.getElementById('current-question-text').innerText = (currentQIdx + 1) + '. ' + qText;
-
-        // Inject/Update Language Switch Pill in test-status-bar
-        var statusBar = document.querySelector('#view-test .test-status-bar');
-        if (statusBar && !document.getElementById('btn-lang-toggle')) {
-            var langBtn = document.createElement('button');
-            langBtn.type = 'button';
-            langBtn.id = 'btn-lang-toggle';
-            langBtn.className = 'lang-toggle-btn';
-            langBtn.onclick = toggleLanguage;
-
-            var timerEl = document.getElementById('timer-display');
-            statusBar.insertBefore(langBtn, timerEl);
-        }
-        var btnLang = document.getElementById('btn-lang-toggle');
-        if (btnLang) {
-            btnLang.innerHTML = '🌐 ' + (appLanguage === 'hi' ? 'ENG' : 'हिन्दी');
-        }
-
-        var optLetters = ['A', 'B', 'C', 'D'];
-        var optContainer = document.getElementById('current-options-box');
-        var isMarked = !!markedReviewQuestions[currentQIdx];
-
-        var optionsHtml = optionsList.map(function(opt, idx) {
-            var isSelected = userSelections[currentQIdx] === idx;
-            return '<div class="option-item ' + (isSelected ? 'selected' : '') + '" onclick="selectAnswer(' + idx + ')">' +
-                   '<span class="opt-circle">' + (optLetters[idx] || (idx + 1)) + '</span>' +
-                   '<span>' + opt + '</span></div>';
-        }).join('');
-
-        var markBtnHtml = `
-            <button type="button" class="btn-mark-review ${isMarked ? 'is-marked' : ''}" onclick="toggleMarkCurrentQuestion()">
-                ${isMarked ? '🔖 Marked For Review (Click to Unmark)' : '🔖 Mark Question For Review'}
-            </button>
-        `;
-
-        optContainer.innerHTML = optionsHtml + markBtnHtml;
-        renderPalette();
-    };
-
-    // ================= DYNAMIC SCORECARD IMAGE GENERATION ENGINE =================
-    function generateResultCanvasScorecard(callback) {
-        var canvas = document.getElementById('scorecard-canvas');
-        if (!canvas) return;
-        var ctx = canvas.getContext('2d');
-
-        var total = activeQuestions.length || 0;
-        var correct = 0;
-        var wrong = 0;
-        (activeQuestions || []).forEach(function(q, idx) {
-            var c = userSelections[idx];
-            if (c !== undefined) {
-                if (c === q.answer) correct++;
-                else wrong++;
-            }
-        });
-        var skipped = total - (correct + wrong);
-        if (skipped < 0) skipped = 0;
-        var accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
-
-        var currentTopic = (quizData[activeCatIdx] && quizData[activeCatIdx].topics) ? quizData[activeCatIdx].topics[activeTopIdx] : null;
-        var chap = currentTopic && currentTopic.chapters ? currentTopic.chapters[activeChapIdx] : null;
-        var testName = chap ? chap.chapterName : "Mock Test";
-        var catName = (quizData[activeCatIdx] && quizData[activeCatIdx].category) ? quizData[activeCatIdx].category : "Preparation";
-
-        // Background Gradient
-        var grad = ctx.createLinearGradient(0, 0, 800, 1000);
-        grad.addColorStop(0, '#831843');
-        grad.addColorStop(0.5, '#4c1d95');
-        grad.addColorStop(1, '#0f172a');
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, 800, 1000);
-
-        // Header Card
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-        ctx.roundRect ? ctx.roundRect(40, 40, 720, 920, 24) : ctx.rect(40, 40, 720, 920);
-        ctx.fill();
-
-        // App Branding
-        ctx.fillStyle = '#f472b6';
-        ctx.font = '900 32px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('SGS MOCK TEST', 400, 100);
-
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '600 18px sans-serif';
-        ctx.fillText('All Exams Free Mock Test Series', 400, 135);
-
-        // Test Title Badge Box
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
-        ctx.roundRect ? ctx.roundRect(80, 170, 640, 90, 16) : ctx.rect(80, 170, 640, 90);
-        ctx.fill();
-
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '800 24px sans-serif';
-        ctx.fillText(testName, 400, 210);
-
-        ctx.fillStyle = '#fbcfe8';
-        ctx.font = '600 16px sans-serif';
-        ctx.fillText('Subject: ' + catName, 400, 242);
-
-        // Score Big Display
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '900 80px sans-serif';
-        ctx.fillText(correct + '/' + total, 400, 370);
-
-        ctx.fillStyle = '#e2e8f0';
-        ctx.font = '700 20px sans-serif';
-        ctx.fillText('TOTAL SCORE', 400, 410);
-
-        // Stat Grid Boxes
-        function drawStatBox(x, y, w, h, title, val, color) {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
-            ctx.roundRect ? ctx.roundRect(x, y, w, h, 14) : ctx.rect(x, y, w, h);
-            ctx.fill();
-
-            ctx.fillStyle = color;
-            ctx.font = '900 30px sans-serif';
-            ctx.fillText(val, x + (w / 2), y + 45);
-
-            ctx.fillStyle = '#cbd5e1';
-            ctx.font = '700 15px sans-serif';
-            ctx.fillText(title, x + (w / 2), y + 75);
-        }
-
-        drawStatBox(80, 460, 190, 100, 'CORRECT', correct, '#4ade80');
-        drawStatBox(305, 460, 190, 100, 'WRONG', wrong, '#f87171');
-        drawStatBox(530, 460, 190, 100, 'SKIPPED', skipped, '#cbd5e1');
-
-        drawStatBox(80, 590, 300, 100, 'ACCURACY', accuracy + '%', '#f472b6');
-        drawStatBox(420, 590, 300, 100, 'TIME TAKEN', totalTimeTakenFormatted, '#a78bfa');
-
-        // Quote & Footer
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'italic 600 18px sans-serif';
-        ctx.fillText('🎯 Practice daily to crack your dream exam!', 400, 750);
-
-        ctx.fillStyle = '#ec4899';
-        ctx.font = '800 20px sans-serif';
-        ctx.fillText('📲 Free Mock Tests on SGS Mock Test App', 400, 840);
-
-        ctx.fillStyle = '#94a3b8';
-        ctx.font = '500 14px sans-serif';
-        ctx.fillText('Available on Google Play Store', 400, 870);
-
-        if (callback) callback(canvas.toDataURL('image/png'));
-    }
-
-    window.downloadScorecardImage = function() {
-        generateResultCanvasScorecard(function(dataUrl) {
-            var a = document.createElement('a');
-            a.href = dataUrl;
-            a.download = 'SGS_Mock_Test_Result_' + Date.now() + '.png';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            showExitToast("Scorecard Downloaded! 📥");
-        });
-    };
-
-    window.shareResultWhatsApp = function() {
-        var total = activeQuestions.length || 0;
-        var correct = document.getElementById('stat-correct') ? document.getElementById('stat-correct').innerText : '0';
-        var currentTopic = (quizData[activeCatIdx] && quizData[activeCatIdx].topics) ? quizData[activeCatIdx].topics[activeTopIdx] : null;
-        var chap = currentTopic && currentTopic.chapters ? currentTopic.chapters[activeChapIdx] : null;
-        var testName = chap ? chap.chapterName : "Mock Test";
-
-        var shareText = `🎯 *SGS MOCK TEST RESULT*\n` +
-                        `📝 *Test:* ${testName}\n` +
-                        `✅ *Score:* ${correct}/${total}\n` +
-                        `⏱️ *Time Taken:* ${totalTimeTakenFormatted}\n\n` +
-                        `Aap bhi abhi free mock test lagayein: https://play.google.com/store/apps/details?id=com.sgs.sgsfreemocktest`;
-
-        if (window.AndroidApp && window.AndroidApp.shareApp) {
-            window.AndroidApp.shareApp('My Test Result', shareText);
-        } else {
-            var waUrl = "https://api.whatsapp.com/send?text=" + encodeURIComponent(shareText);
-            window.open(waUrl, '_blank');
-        }
-    };
-
-    // Inject Download & WhatsApp Share Buttons into Result View
-    function injectResultShareButtons() {
-        var resultContainer = document.querySelector('#view-result .container');
-        if (resultContainer && !document.getElementById('result-share-box')) {
-            var shareBox = document.createElement('div');
-            shareBox.id = 'result-share-box';
-            shareBox.className = 'result-share-grid';
-            shareBox.innerHTML = `
-                <button type="button" class="btn-action-share btn-download-card" onclick="downloadScorecardImage()">
-                    <span>📸 Download Card</span>
-                </button>
-                <button type="button" class="btn-action-share btn-whatsapp-share" onclick="shareResultWhatsApp()">
-                    <span>📲 Share Result</span>
-                </button>
-            `;
-            var scoreSummary = resultContainer.querySelector('.score-summary');
-            if (scoreSummary && scoreSummary.nextElementSibling) {
-                resultContainer.insertBefore(shareBox, scoreSummary.nextElementSibling);
-            }
-        }
-    }
-
-    // Wrap renderResultReviewUI to ensure Share buttons are injected
-    var originalRenderResultReviewUI = window.renderResultReviewUI;
-    window.renderResultReviewUI = function(correct, wrong, total) {
-        if (typeof originalRenderResultReviewUI === 'function') {
-            originalRenderResultReviewUI(correct, wrong, total);
-        }
-        injectResultShareButtons();
-    };
-</script>
-
-<!-- ================= PHASE 4: FINAL FIX (DROPDOWN HINDI/ENGLISH/MARATHI + GALLERY DOWNLOAD FIX) ================= -->
-<style>
-    /* Styled Language Dropdown Pill */
-    .lang-dropdown-select {
-        background: #fdf2f8;
-        border: 1.5px solid #f472b6;
-        color: #db2777;
-        font-weight: 800;
-        padding: 5px 10px;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 12.5px;
-        outline: none;
-        box-shadow: 0 2px 6px rgba(236, 72, 153, 0.15);
-        transition: all 0.2s ease;
-    }
-    .lang-dropdown-select:focus {
-        border-color: #ec4899;
-    }
-    body.dark-theme .lang-dropdown-select {
-        background: #31133f;
-        color: #f472b6;
-        border-color: #db2777;
-    }
-</style>
-
-<script>
-    // 1. Language Dropdown state & Multi-language Auto Converter logic
-    window.appLanguage = localStorage.getItem('sgs_app_lang') || 'hi';
-
-    window.handleLanguageChange = function(newLang) {
-        window.appLanguage = newLang;
-        localStorage.setItem('sgs_app_lang', newLang);
-        renderCurrentQuestion();
-    };
-
-    // Advanced Text Transliteration / Auto-Converter for Marathi & English fallback
-    function getAutoLanguageText(text, targetLang) {
-        if (!text) return "";
-        if (targetLang === 'hi' || targetLang === 'en') return text;
-        if (targetLang === 'mr') {
-            // Auto Marathi contextual mapping for common exam vocabularies
-            var converted = text;
-            var mrMap = [
-                { r: /निम्नलिखित में से/g, t: "खालीलपैकी" },
-                { r: /निम्न में से/g, t: "खालीलपैकी" },
-                { r: /कौन सा/g, t: "कोणते" },
-                { r: /कौन सी/g, t: "कोणती" },
-                { r: /किस/g, t: "कोणत्या" },
-                { r: /किसे/g, t: "कोणाला" },
-                { r: /कहा जाता है\?/g, t: "म्हणतात?" },
-                { r: /कहा जाता है।/g, t: "म्हणतात." },
-                { r: /कहाँ/g, t: "कोठे" },
-                { r: /कहा पर/g, t: "कोठे" },
-                { r: /कब/g, t: "केव्हा" },
-                { r: /क्यों/g, t: "का" },
-                { r: /क्या है\?/g, t: "काय आहे?" },
-                { r: /है\?/g, t: "आहे?" },
-                { r: /था\?/g, t: "होते?" },
-                { r: /थे\?/g, t: "होते?" },
-                { r: /उत्तर/g, t: "उत्तर" },
-                { r: /सही/g, t: "बरोबर" },
-                { r: /गलत/g, t: "चुकीचे" },
-                { r: /वर्ष/g, t: "वर्ष" },
-                { r: /स्थान/g, t: "स्थान" },
-                { r: /नदी/g, t: "नदी" },
-                { r: /भारत/g, t: "भारत" }
-            ];
-            mrMap.forEach(function(item) {
-                converted = converted.replace(item.r, item.t);
-            });
-            return converted;
-        }
-        return text;
-    }
-
-    // Override renderCurrentQuestion with Full Hindi/English/Marathi Dropdown & Auto Convert
-    window.renderCurrentQuestion = function() {
-        var q = activeQuestions[currentQIdx];
-        if (!q) return;
-
-        var curLang = window.appLanguage || 'hi';
-        var qText = "";
-        var optionsList = [];
-
-        if (curLang === 'en') {
-            qText = q.q_en || q.question_en || q.q || q.question || '';
-            optionsList = (q.options_en && Array.isArray(q.options_en)) ? q.options_en : (Array.isArray(q.options) ? q.options : []);
-        } else if (curLang === 'mr') {
-            var rawMrQ = q.q_mr || q.question_mr;
-            qText = rawMrQ ? rawMrQ : getAutoLanguageText(q.q || q.question || '', 'mr');
-
-            if (q.options_mr && Array.isArray(q.options_mr)) {
-                optionsList = q.options_mr;
-            } else {
-                var baseOpts = Array.isArray(q.options) ? q.options : (Array.isArray(q.options_en) ? q.options_en : []);
-                optionsList = baseOpts.map(function(opt) {
-                    return getAutoLanguageText(opt, 'mr');
-                });
-            }
-        } else { // Hindi default
-            qText = q.q || q.question || q.q_en || q.question_en || '';
-            optionsList = Array.isArray(q.options) ? q.options : (Array.isArray(q.options_en) ? q.options_en : []);
-        }
-
-        // Indicator & Question text
-        document.getElementById('q-indicator').innerText = 'Question ' + (currentQIdx + 1) + '/' + activeQuestions.length;
-        document.getElementById('current-question-text').innerText = (currentQIdx + 1) + '. ' + qText;
-
-        // Remove old toggle button if present
-        var oldToggleBtn = document.getElementById('btn-lang-toggle');
-        if (oldToggleBtn) oldToggleBtn.remove();
-
-        // Inject / Update Language Dropdown Selector in test-status-bar
-        var statusBar = document.querySelector('#view-test .test-status-bar');
-        if (statusBar) {
-            var langSelect = document.getElementById('lang-select-dropdown');
-            if (!langSelect) {
-                langSelect = document.createElement('select');
-                langSelect.id = 'lang-select-dropdown';
-                langSelect.className = 'lang-dropdown-select';
-                langSelect.innerHTML = `
-                    <option value="hi">🌐 हिन्दी</option>
-                    <option value="en">🌐 English</option>
-                    <option value="mr">🌐 मराठी</option>
-                `;
-                langSelect.onchange = function() {
-                    handleLanguageChange(this.value);
-                };
-                var timerEl = document.getElementById('timer-display');
-                statusBar.insertBefore(langSelect, timerEl);
-            }
-            langSelect.value = curLang;
-        }
-
-        var optLetters = ['A', 'B', 'C', 'D'];
-        var optContainer = document.getElementById('current-options-box');
-        var isMarked = !!markedReviewQuestions[currentQIdx];
-
-        var optionsHtml = optionsList.map(function(opt, idx) {
-            var isSelected = userSelections[currentQIdx] === idx;
-            return '<div class="option-item ' + (isSelected ? 'selected' : '') + '" onclick="selectAnswer(' + idx + ')">' +
-                   '<span class="opt-circle">' + (optLetters[idx] || (idx + 1)) + '</span>' +
-                   '<span>' + opt + '</span></div>';
-        }).join('');
-
-        var markBtnHtml = `
-            <button type="button" class="btn-mark-review ${isMarked ? 'is-marked' : ''}" onclick="toggleMarkCurrentQuestion()">
-                ${isMarked ? '🔖 Marked For Review (Click to Unmark)' : '🔖 Mark Question For Review'}
-            </button>
-        `;
-
-        optContainer.innerHTML = optionsHtml + markBtnHtml;
-        renderPalette();
-    };
-
-    // 2. Fixed & Robust Download to Gallery / Storage
-    window.downloadScorecardImage = function() {
-        showExitToast("Generating Scorecard... ⏳");
-        generateResultCanvasScorecard(function(dataUrl) {
-            var filename = 'SGS_Mock_Test_Result_' + Date.now() + '.png';
-
-            // Agar Android App me native download interface hai
-            if (window.AndroidApp && typeof window.AndroidApp.saveImageToGallery === 'function') {
-                window.AndroidApp.saveImageToGallery(dataUrl, filename);
-                showExitToast("Scorecard Gallery me save ho gaya! 📥");
+    function setupBrowserNavigation() {
+        window.onpopstate = function(e) {
+            var pdfReader = document.getElementById('view-pdf-reader');
+            if (pdfReader && pdfReader.style.display === 'flex') {
+                pdfReader.style.display = 'none';
+                document.getElementById('pdf-viewer-iframe').src = "";
                 return;
             }
 
-            // Direct Blob Download for Complete Mobile Browser / WebView Gallery Save Support
-            try {
-                var arr = dataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-                    bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-                while(n--){
-                    u8arr[n] = bstr.charCodeAt(n);
+            var openModals = document.querySelectorAll('.modal-overlay');
+            var modalWasOpen = false;
+            openModals.forEach(function(m) {
+                if (m.style.display === 'flex' || m.style.display === 'block') {
+                    m.style.display = 'none';
+                    modalWasOpen = true;
                 }
-                var blob = new Blob([u8arr], {type: mime});
-                var blobUrl = URL.createObjectURL(blob);
-
-                var a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                setTimeout(function() {
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(blobUrl);
-                }, 500);
-                showExitToast("Scorecard Downloaded! 📥");
-            } catch (err) {
-                // Standard fallback
-                var fallbackLink = document.createElement('a');
-                fallbackLink.href = dataUrl;
-                fallbackLink.download = filename;
-                document.body.appendChild(fallbackLink);
-                fallbackLink.click();
-                document.body.removeChild(fallbackLink);
-                showExitToast("Scorecard Downloaded! 📥");
+            });
+            var drawer = document.getElementById('drawer-overlay');
+            if (drawer && drawer.style.display === 'block') {
+                closeDrawer();
+                modalWasOpen = true;
             }
-        });
-    };
+
+            if (modalWasOpen) return;
+
+            if (currentActiveView === 'test') {
+                var nowTest = Date.now();
+                if (nowTest - lastTestBackPressTime < 2000) {
+                    clearInterval(timerInterval);
+                    navigateToChapters(activeTopIdx, false);
+                    return;
+                }
+                lastTestBackPressTime = nowTest;
+                showExitToast("Press back again to exit test");
+                history.pushState({ view: 'test', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
+                return;
+            }
+
+            if (currentActiveView === 'result') {
+                if (activeTopIdx !== null && activeTopIdx !== undefined) navigateToChapters(activeTopIdx, false);
+                else navigateToCategories(false);
+                return;
+            }
+
+            if (currentActiveView === 'chapters') { navigateToTopics(activeCatIdx, false); return; }
+            if (currentActiveView === 'topics') { navigateToCategories(false); return; }
+
+            if (!e.state || e.state.view === 'categories') {
+                if (currentActiveView === 'categories') {
+                    var now = Date.now();
+                    if (now - lastBackPressTime < 2000) {
+                        if (window.AndroidApp && window.AndroidApp.exitApp) window.AndroidApp.exitApp();
+                        else window.history.go(-1);
+                        return;
+                    }
+                    lastBackPressTime = now;
+                    showExitToast("Press back again to exit");
+                    history.pushState({ view: 'categories' }, '');
+                    return;
+                }
+                navigateToCategories(false);
+            } else if (e.state.view === 'topics') {
+                if (e.state.catIdx !== undefined) activeCatIdx = e.state.catIdx;
+                navigateToTopics(activeCatIdx, false);
+            } else if (e.state.view === 'chapters') {
+                if (e.state.topIdx !== undefined) activeTopIdx = e.state.topIdx;
+                navigateToChapters(activeTopIdx, false);
+            } else if (e.state.view === 'test') showView('view-test');
+            else if (e.state.view === 'result') showView('view-result');
+        };
+    }
 </script>
-
-<!-- ================= PHASE 5: PDF REFRESH & GOOGLE DRIVE ERROR RECOVERY FIX (NO LINES DELETED) ================= -->
-<style>
-    .pdf-top-actions {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .btn-pdf-action-pill {
-        background: rgba(255, 255, 255, 0.22);
-        border: 1px solid rgba(255, 255, 255, 0.45);
-        color: #ffffff;
-        padding: 4px 10px;
-        border-radius: 14px;
-        font-size: 12px;
-        font-weight: 700;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        transition: all 0.2s;
-        text-decoration: none;
-    }
-    .btn-pdf-action-pill:active {
-        background: rgba(255, 255, 255, 0.35);
-        transform: scale(0.95);
-    }
-    .pdf-error-overlay-banner {
-        display: none;
-        background: #fee2e2;
-        color: #991b1b;
-        padding: 8px 12px;
-        font-size: 12.5px;
-        font-weight: 600;
-        text-align: center;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        border-bottom: 1.5px solid #f87171;
-    }
-</style>
-
-<script>
-    // State to preserve current opened PDF info for refresh/fallback
-    var currentActivePdfTitle = "";
-    var currentActivePdfRawUrl = "";
-    var currentActiveDriveFileId = "";
-    var pdfPreviewModeToggle = 0;
-
-    function buildDrivePreviewUrl(rawUrl, altMode) {
-        if (!rawUrl) return "";
-        var fileId = "";
-        var idMatch = rawUrl.match(/id=([a-zA-Z0-9_-]+)/);
-        if (idMatch && idMatch[1]) {
-            fileId = idMatch[1];
-        } else {
-            var pathMatch = rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-            if (pathMatch && pathMatch[1]) fileId = pathMatch[1];
-        }
-       Main text ke aadhaar par kaam karne vala AI hoon aur main ismein madad nahin kar sakta.
+</body>
+</html>
