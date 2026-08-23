@@ -2658,5 +2658,388 @@
     };
 </script>
 
+<!-- ================= PHASE 5: PDF REFRESH & GOOGLE DRIVE ERROR RECOVERY FIX (NO LINES DELETED) ================= -->
+<style>
+    .pdf-top-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .btn-pdf-action-pill {
+        background: rgba(255, 255, 255, 0.22);
+        border: 1px solid rgba(255, 255, 255, 0.45);
+        color: #ffffff;
+        padding: 4px 10px;
+        border-radius: 14px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        transition: all 0.2s;
+        text-decoration: none;
+    }
+    .btn-pdf-action-pill:active {
+        background: rgba(255, 255, 255, 0.35);
+        transform: scale(0.95);
+    }
+    .pdf-error-overlay-banner {
+        display: none;
+        background: #fee2e2;
+        color: #991b1b;
+        padding: 8px 12px;
+        font-size: 12.5px;
+        font-weight: 600;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 1.5px solid #f87171;
+    }
+</style>
+
+<script>
+    // State to preserve current opened PDF info for refresh/fallback
+    var currentActivePdfTitle = "";
+    var currentActivePdfRawUrl = "";
+    var currentActiveDriveFileId = "";
+    var pdfPreviewModeToggle = 0;
+
+    function buildDrivePreviewUrl(rawUrl, altMode) {
+        if (!rawUrl) return "";
+        var fileId = "";
+        var idMatch = rawUrl.match(/id=([a-zA-Z0-9_-]+)/);
+        if (idMatch && idMatch[1]) {
+            fileId = idMatch[1];
+        } else {
+            var pathMatch = rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+            if (pathMatch && pathMatch[1]) fileId = pathMatch[1];
+        }
+        currentActiveDriveFileId = fileId;
+
+        if (fileId) {
+            // Alternates URL if Google Drive preview throws a temporary session error
+            if (altMode === 1) {
+                return "https://drive.google.com/file/d/" + fileId + "/view?embedded=true&timestamp=" + Date.now();
+            } else if (altMode === 2) {
+                return "https://docs.google.com/viewer?url=https://drive.google.com/uc?id=" + fileId + "&embedded=true";
+            }
+            return "https://drive.google.com/file/d/" + fileId + "/preview?timestamp=" + Date.now();
+        }
+        return rawUrl;
+    }
+
+    // Refresh Current PDF function
+    window.refreshCurrentPdf = function() {
+        showExitToast("Refreshing PDF... 🔄");
+        var iframe = document.getElementById('pdf-viewer-iframe');
+        if (!iframe) return;
+
+        pdfPreviewModeToggle = (pdfPreviewModeToggle + 1) % 3;
+        var freshUrl = buildDrivePreviewUrl(currentActivePdfRawUrl, pdfPreviewModeToggle);
+        
+        iframe.src = "";
+        setTimeout(function() {
+            iframe.src = freshUrl;
+        }, 150);
+    };
+
+    // Open in external browser/Google Drive app
+    window.openPdfInExternalBrowser = function() {
+        var targetUrl = currentActivePdfRawUrl;
+        if (currentActiveDriveFileId) {
+            targetUrl = "https://drive.google.com/file/d/" + currentActiveDriveFileId + "/view?usp=sharing";
+        }
+        if (window.AndroidApp && typeof window.AndroidApp.openBrowser === 'function') {
+            window.AndroidApp.openBrowser(targetUrl);
+        } else {
+            window.open(targetUrl, '_blank');
+        }
+    };
+
+    // Override openPdfReader to configure TopBar with Refresh & External buttons
+    window.openPdfReader = function(title, pdfUrl) {
+        currentActivePdfTitle = title || 'Document';
+        currentActivePdfRawUrl = pdfUrl || '';
+        pdfPreviewModeToggle = 0;
+
+        document.getElementById('pdf-reader-title').innerText = currentActivePdfTitle;
+
+        var topbar = document.querySelector('.pdf-reader-topbar');
+        if (topbar) {
+            var rightBox = topbar.querySelector('div.pdf-top-actions');
+            if (!rightBox) {
+                var oldDocViewText = topbar.querySelector('span:last-child');
+                if (oldDocViewText && oldDocViewText.innerText === 'Document View') {
+                    oldDocViewText.style.display = 'none';
+                }
+
+                rightBox = document.createElement('div');
+                rightBox.className = 'pdf-top-actions';
+                rightBox.innerHTML = `
+                    <button type="button" class="btn-pdf-action-pill" onclick="refreshCurrentPdf()" title="Reload / Refresh PDF">
+                        <span>🔄</span> Refresh
+                    </button>
+                    <button type="button" class="btn-pdf-action-pill" onclick="openPdfInExternalBrowser()" title="Open In Browser / Drive">
+                        <span>↗</span> Open
+                    </button>
+                `;
+                topbar.appendChild(rightBox);
+            }
+        }
+
+        var finalPdfUrl = buildDrivePreviewUrl(pdfUrl, 0);
+        var iframe = document.getElementById('pdf-viewer-iframe');
+        if (iframe) {
+            iframe.src = finalPdfUrl;
+        }
+
+        document.getElementById('view-pdf-reader').style.display = 'flex';
+        history.pushState({ view: 'pdfreader' }, '');
+    };
+</script>
+
+<!-- ================= PHASE 6: ENGLISH AUTO-CONVERSION & TRANSLATION ENGINE FIX (NO LINES DELETED) ================= -->
+<script>
+    // Smart Hindi-to-English Auto Translation & Transliteration Helper
+    function translateHindiToEnglish(hindiText) {
+        if (!hindiText || typeof hindiText !== 'string') return "";
+
+        var text = hindiText.trim();
+
+        // 1. Common Exam Phrases Dictionary
+        var phrases = [
+            { h: /निम्नलिखित में से कौन सा/gi, e: "Which of the following is" },
+            { h: /निम्नलिखित में से कौन सी/gi, e: "Which of the following is" },
+            { h: /निम्नलिखित में से कौन से/gi, e: "Which of the following are" },
+            { h: /निम्नलिखित में से कौन/gi, e: "Who among the following" },
+            { h: /निम्नलिखित में से/gi, e: "Which of the following" },
+            { h: /निम्न में से कौन सा/gi, e: "Which of the following is" },
+            { h: /निम्न में से कौन सी/gi, e: "Which of the following is" },
+            { h: /निम्न में से कौन/gi, e: "Which of the following" },
+            { h: /निम्न में से/gi, e: "Among the following" },
+            { h: /कहा जाता है\?/gi, e: "is called?" },
+            { h: /कहा जाता है।/gi, e: "is called." },
+            { h: /किसने किया था\?/gi, e: "was done by whom?" },
+            { h: /किसने की थी\?/gi, e: "was done by whom?" },
+            { h: /किसने किया\?/gi, e: "who did?" },
+            { h: /किसके द्वारा/gi, e: "by whom" },
+            { h: /किस राज्य में/gi, e: "in which state" },
+            { h: /किस देश में/gi, e: "in which country" },
+            { h: /किस स्थान पर/gi, e: "at which place" },
+            { h: /किस वर्ष में/gi, e: "in which year" },
+            { h: /किस वर्ष/gi, e: "in which year" },
+            { h: /कब हुई थी\?/gi, e: "when did it happen?" },
+            { h: /कब हुआ था\?/gi, e: "when did it happen?" },
+            { h: /कहाँ स्थित है\?/gi, e: "where is it located?" },
+            { h: /कहाँ पर स्थित है\?/gi, e: "where is it located?" },
+            { h: /कहाँ है\?/gi, e: "where is?" },
+            { h: /क्या कहलाता है\?/gi, e: "what is it called?" },
+            { h: /क्या कहलाती है\?/gi, e: "what is it called?" },
+            { h: /क्या है\?/gi, e: "what is?" },
+            { h: /क्या होता है\?/gi, e: "what happens?" },
+            { h: /किससे संबंधित है\?/gi, e: "is related to what?" },
+            { h: /किसके लिए/gi, e: "for what" },
+            { h: /इनमें से कोई नहीं/gi, e: "None of these" },
+            { h: /उपरोक्त सभी/gi, e: "All of the above" },
+            { h: /दोनों/gi, e: "Both" },
+            { h: /के रूप में/gi, e: "as" },
+            { h: /के अनुसार/gi, e: "according to" }
+        ];
+
+        phrases.forEach(function(item) {
+            text = text.replace(item.h, item.e);
+        });
+
+        // 2. Common Vocabulary & GK Words Dictionary
+        var words = [
+            { h: /भारत/g, e: "India" },
+            { h: /राजधानी/g, e: "Capital" },
+            { h: /राष्ट्रपति/g, e: "President" },
+            { h: /प्रधानमंत्री/g, e: "Prime Minister" },
+            { h: /मुख्यमंत्री/g, e: "Chief Minister" },
+            { h: /राज्यपाल/g, e: "Governor" },
+            { h: /संविधान/g, e: "Constitution" },
+            { h: /अनुच्छेद/g, e: "Article" },
+            { h: /संसद/g, e: "Parliament" },
+            { h: /लोकसभा/g, e: "Lok Sabha" },
+            { h: /राज्यसभा/g, e: "Rajya Sabha" },
+            { h: /सर्वोच्च न्यायालय/g, e: "Supreme Court" },
+            { h: /उच्च न्यायालय/g, e: "High Court" },
+            { h: /नदी/g, e: "River" },
+            { h: /पर्वत/g, e: "Mountain" },
+            { h: /झील/g, e: "Lake" },
+            { h: /महासागर/g, e: "Ocean" },
+            { h: /समुद्र/g, e: "Sea" },
+            { h: /द्वीप/g, e: "Island" },
+            { h: /राज्य/g, e: "State" },
+            { h: /जिला/g, e: "District" },
+            { h: /शहर/g, e: "City" },
+            { h: /राष्ट्रीय उद्यान/g, e: "National Park" },
+            { h: /अभयारण्य/g, e: "Sanctuary" },
+            { h: /मंदिर/g, e: "Temple" },
+            { h: /किला/g, e: "Fort" },
+            { h: /मुद्रा/g, e: "Currency" },
+            { h: /भाषा/g, e: "Language" },
+            { h: /दिवस/g, e: "Day" },
+            { h: /वर्ष/g, e: "Year" },
+            { h: /प्रथम/g, e: "First" },
+            { h: /अंतिम/g, e: "Last" },
+            { h: /सबसे बड़ा/g, e: "Largest" },
+            { h: /सबसे छोटा/g, e: "Smallest" },
+            { h: /सबसे लंबा/g, e: "Longest" },
+            { h: /सबसे ऊँचा/g, e: "Highest" },
+            { h: /संस्थापक/g, e: "Founder" },
+            { h: /खोज/g, e: "Discovery" },
+            { h: /आविष्कार/g, e: "Invention" },
+            { h: /कंप्यूटर/g, e: "Computer" },
+            { h: /मेमोरी/g, e: "Memory" },
+            { h: /सॉफ्टवेयर/g, e: "Software" },
+            { h: /हार्डवेयर/g, e: "Hardware" },
+            { h: /विज्ञान/g, e: "Science" },
+            { h: /इतिहास/g, e: "History" },
+            { h: /भूगोल/g, e: "Geography" },
+            { h: /अर्थशास्त्र/g, e: "Economics" },
+            { h: /उत्तर/g, e: "Answer" },
+            { h: /सही/g, e: "Correct" },
+            { h: /गलत/g, e: "Incorrect" }
+        ];
+
+        words.forEach(function(item) {
+            text = text.replace(item.h, item.e);
+        });
+
+        // 3. Smart Devanagari to Latin Phonetic Transliteration for Remaining Hindi characters
+        var charMap = {
+            'अ':'a','आ':'aa','इ':'i','ई':'ee','उ':'u','ऊ':'oo','ऋ':'ri',
+            'ए':'e','ऐ':'ai','ओ':'o','औ':'au','अं':'an','अः':'ah',
+            'क':'k','ख':'kh','ग':'g','घ':'gh','ङ':'ng',
+            'च':'ch','छ':'chh','ज':'j','झ':'jh','ञ':'ny',
+            'ट':'t','ठ':'th','ड':'d','ढ':'dh','ण':'n',
+            'त':'t','थ':'th','द':'d','ध':'dh','न':'n',
+            'प':'p','फ':'ph','ब':'b','भ':'bh','म':'m',
+            'य':'y','र':'r','ल':'l','व':'v','श':'sh','ष':'sh','स':'s','ह':'h',
+            'क्ष':'ksh','त्र':'tr','ज्ञ':'gya',
+            'ा':'a','ि':'i','ी':'ee','ु':'u','ू':'oo','ृ':'ri',
+            'े':'e','ै':'ai','ो':'o','ौ':'au','ं':'n','ः':'h','्':'',
+            '़':'','ऽ':''
+        };
+
+        var hasDevanagari = /[\u0900-\u097F]/.test(text);
+        if (hasDevanagari) {
+            var out = "";
+            for (var i = 0; i < text.length; i++) {
+                var c = text[i];
+                var nxt = text[i + 1] || '';
+                if (charMap[c] !== undefined) {
+                    var latin = charMap[c];
+                    // Append short 'a' after standalone consonant if no matra follows
+                    var isConsonant = /[\u0915-\u0939]/.test(c);
+                    var hasMatra = /[\u093E-\u094D\u0902\u0903]/.test(nxt);
+                    if (isConsonant && !hasMatra && nxt !== ' ' && nxt !== '') {
+                        latin += 'a';
+                    }
+                    out += latin;
+                } else {
+                    out += c;
+                }
+            }
+            text = out;
+        }
+
+        return text.trim();
+    }
+
+    // Override renderCurrentQuestion to guarantee seamless English conversion
+    var prevRenderCurrentQuestion = window.renderCurrentQuestion;
+    window.renderCurrentQuestion = function() {
+        var q = activeQuestions[currentQIdx];
+        if (!q) return;
+
+        var curLang = window.appLanguage || 'hi';
+        var qText = "";
+        var optionsList = [];
+
+        if (curLang === 'en') {
+            if (q.q_en || q.question_en) {
+                qText = q.q_en || q.question_en;
+            } else {
+                qText = translateHindiToEnglish(q.q || q.question || '');
+            }
+
+            if (q.options_en && Array.isArray(q.options_en) && q.options_en.length > 0) {
+                optionsList = q.options_en;
+            } else {
+                var baseOpts = Array.isArray(q.options) ? q.options : [];
+                optionsList = baseOpts.map(function(opt) {
+                    return translateHindiToEnglish(opt);
+                });
+            }
+        } else if (curLang === 'mr') {
+            var rawMrQ = q.q_mr || q.question_mr;
+            qText = rawMrQ ? rawMrQ : getAutoLanguageText(q.q || q.question || '', 'mr');
+
+            if (q.options_mr && Array.isArray(q.options_mr)) {
+                optionsList = q.options_mr;
+            } else {
+                var baseOpts = Array.isArray(q.options) ? q.options : (Array.isArray(q.options_en) ? q.options_en : []);
+                optionsList = baseOpts.map(function(opt) {
+                    return getAutoLanguageText(opt, 'mr');
+                });
+            }
+        } else { // Hindi default
+            qText = q.q || q.question || q.q_en || q.question_en || '';
+            optionsList = Array.isArray(q.options) ? q.options : (Array.isArray(q.options_en) ? q.options_en : []);
+        }
+
+        // Update Question Counter & Text
+        document.getElementById('q-indicator').innerText = 'Question ' + (currentQIdx + 1) + '/' + activeQuestions.length;
+        document.getElementById('current-question-text').innerText = (currentQIdx + 1) + '. ' + qText;
+
+        // Ensure Language Selector Dropdown is in Top Test Bar
+        var statusBar = document.querySelector('#view-test .test-status-bar');
+        if (statusBar) {
+            var langSelect = document.getElementById('lang-select-dropdown');
+            if (!langSelect) {
+                langSelect = document.createElement('select');
+                langSelect.id = 'lang-select-dropdown';
+                langSelect.className = 'lang-dropdown-select';
+                langSelect.innerHTML = `
+                    <option value="hi">🌐 हिन्दी</option>
+                    <option value="en">🌐 English</option>
+                    <option value="mr">🌐 मराठी</option>
+                `;
+                langSelect.onchange = function() {
+                    handleLanguageChange(this.value);
+                };
+                var timerEl = document.getElementById('timer-display');
+                statusBar.insertBefore(langSelect, timerEl);
+            }
+            langSelect.value = curLang;
+        }
+
+        var optLetters = ['A', 'B', 'C', 'D'];
+        var optContainer = document.getElementById('current-options-box');
+        var isMarked = !!markedReviewQuestions[currentQIdx];
+
+        var optionsHtml = optionsList.map(function(opt, idx) {
+            var isSelected = userSelections[currentQIdx] === idx;
+            return '<div class="option-item ' + (isSelected ? 'selected' : '') + '" onclick="selectAnswer(' + idx + ')">' +
+                   '<span class="opt-circle">' + (optLetters[idx] || (idx + 1)) + '</span>' +
+                   '<span>' + opt + '</span></div>';
+        }).join('');
+
+        var markBtnHtml = `
+            <button type="button" class="btn-mark-review ${isMarked ? 'is-marked' : ''}" onclick="toggleMarkCurrentQuestion()">
+                ${isMarked ? '🔖 Marked For Review (Click to Unmark)' : '🔖 Mark Question For Review'}
+            </button>
+        `;
+
+        optContainer.innerHTML = optionsHtml + markBtnHtml;
+        renderPalette();
+    };
+</script>
+
 </body>
 </html>
