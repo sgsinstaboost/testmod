@@ -384,7 +384,7 @@
         </a>
         <a class="drawer-item" href="https://www.termsfeed.com/live/d15e3366-cb7a-4b6f-9726-5b1603e62231" target="_blank" onclick="closeDrawer()">
             <span>⚠️</span> Disclaimer ↗
-        </div>
+        </a>
         <div class="drawer-item" onclick="shareApp()">
             <span>📲</span> Share App
         </div>
@@ -514,7 +514,7 @@
                     <div class="score-stat">
                         <div class="stat-val" id="stat-correct" style="color:#16a34a;">0</div>
                         <div class="stat-lbl">Correct</div>
-                        </div>
+                    </div>
                     <div class="score-stat">
                         <div class="stat-val" id="stat-wrong" style="color:#dc2626;">0</div>
                         <div class="stat-lbl">Wrong</div>
@@ -1167,7 +1167,7 @@
     function launchTestSession(pushHistory) {
       if (pushHistory === undefined) pushHistory = true;
       closeStartModal();
-    var chap = quizData[activeCatIdx].topics[activeTopIdx].chapters[chapIdx];
+      var chap = quizData[activeCatIdx].topics[activeTopIdx].chapters[chapIdx];
       activeQuestions = (chap && chap.questions) ? chap.questions : [];
       currentQIdx = 0;
       userSelections = {};
@@ -1251,7 +1251,7 @@
       if (currentQIdx > 0) {
         currentQIdx--;
         renderCurrentQuestion();
-      }
+    }
     }
 
     function saveAndNext() {
@@ -1399,7 +1399,7 @@
           if (m.style.display === 'flex' || m.style.display === 'block') {
             m.style.display = 'none';
             modalWasOpen = true;
-        }
+          }
         });
         var drawer = document.getElementById('drawer-overlay');
         if (drawer && drawer.style.display === 'block') {
@@ -1823,10 +1823,10 @@
         var isAnswered = userSelections[idx] !== undefined;
         var isCur = currentQIdx === idx;
         var isMarked = !!markedReviewQuestions[idx];
-        return '<button type="button" class="palette-btn ' + 
-               (isAnswered ? 'answered ' : '') + 
-               (isMarked ? 'marked-review ' : '') + 
-               (isCur ? 'current ' : '') + 
+        return '<button type="button" class="palette-btn ' +
+               (isAnswered ? 'answered ' : '') +
+               (isMarked ? 'marked-review ' : '') +
+               (isCur ? 'current ' : '') +
                '" onclick="jumpToQuestion(' + idx + ')">' + (idx + 1) + '</button>';
       }).join('');
     };
@@ -1999,7 +1999,7 @@
         border-radius: 14px !important;
         box-shadow: 0 4px 14px rgba(236, 72, 153, 0.12) !important;
     }
-    
+
     /* Dark Theme Styles */
     body.dark-theme {
         background-color: #0b0f19 !important;
@@ -2184,7 +2184,7 @@
             if (rightBox) {
                 var container = document.createElement('div');
                 container.className = 'top-action-icons';
-                
+
                 var themeBtn = document.createElement('span');
                 themeBtn.id = 'theme-toggle-icon';
                 themeBtn.style.cursor = 'pointer';
@@ -2251,7 +2251,7 @@
             langBtn.id = 'btn-lang-toggle';
             langBtn.className = 'lang-toggle-btn';
             langBtn.onclick = toggleLanguage;
-            
+
             var timerEl = document.getElementById('timer-display');
             statusBar.insertBefore(langBtn, timerEl);
         }
@@ -2454,554 +2454,208 @@
     };
 </script>
 
-<!-- ================= PHASE 4: FULL RWA (ROJGAR WITH ANKIT) STYLE UI OVERHAUL (ZERO LOGIC LOSS) ================= -->
-<style id="rwa-complete-theme">
-    /* RWA Brand Theme Core */
-    :root {
-        --rwa-primary: #0f172a;
-        --rwa-header-bg: #0f172a;
-        --rwa-accent-yellow: #f59e0b;
-        --rwa-accent-blue: #2563eb;
-        --rwa-green: #16a34a;
-        --rwa-red: #dc2626;
-        --rwa-card-bg: #ffffff;
-        --rwa-body-bg: #f1f5f9;
-        --rwa-text-main: #0f172a;
-        --rwa-text-muted: #64748b;
-        --rwa-border: #e2e8f0;
-    }
-
-    body {
-        background-color: var(--rwa-body-bg) !important;
-        color: var(--rwa-text-main) !important;
-        font-family: 'Segoe UI', Roboto, -apple-system, sans-serif !important;
-    }
-
-    /* RWA Top Navigation App Bar */
-    .top-bar {
-        background: #0f172a !important;
-        border-bottom: 2.5px solid var(--rwa-accent-yellow) !important;
-        padding: 14px 18px !important;
-        box-shadow: 0 4px 15px rgba(15,23,42,0.2) !important;
-    }
-    .top-bar .title {
-        font-size: 18px !important;
-        font-weight: 900 !important;
-        letter-spacing: 0.8px !important;
-        color: #ffffff !important;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-    .sub-bar {
-        background: #1e293b !important;
-        color: #e2e8f0 !important;
-        font-weight: 700 !important;
-        padding: 8px 18px !important;
-        border-bottom: none !important;
-        font-size: 12.5px !important;
-    }
-    .sub-bar span:last-child {
-        background: var(--rwa-accent-yellow) !important;
-        color: #000000 !important;
-        padding: 2px 8px !important;
-        border-radius: 4px !important;
-        font-weight: 900 !important;
-        font-size: 11px !important;
-    }
-
-    /* RWA Drawer Styling */
-    .drawer-header {
-        background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%) !important;
-        border-bottom: 3px solid var(--rwa-accent-yellow) !important;
-    }
-    .drawer-item {
-        padding: 15px 20px !important;
-        font-size: 15px !important;
-        font-weight: 700 !important;
-        color: #1e293b !important;
-        border-bottom: 1px solid #f1f5f9 !important;
-    }
-    .drawer-item:hover, .drawer-item:active {
-        background: #f8fafc !important;
-        color: var(--rwa-accent-blue) !important;
-    }
-
-    /* RWA Greeting & Title Section */
-    .user-greeting {
-        padding: 18px 16px 10px 16px !important;
-        font-size: 17px !important;
-        font-weight: 800 !important;
-        color: #0f172a !important;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    /* RWA Test Series Card Structure */
-    .rwa-series-card {
-        background: #ffffff;
-        border-radius: 14px;
-        border: 1px solid #e2e8f0;
-        padding: 16px;
-        margin-bottom: 14px;
-        box-shadow: 0 4px 12px rgba(15,23,42,0.06);
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        position: relative;
-        overflow: hidden;
+<!-- ================= PHASE 4: FINAL FIX (DROPDOWN HINDI/ENGLISH/MARATHI + GALLERY DOWNLOAD FIX) ================= -->
+<style>
+    /* Styled Language Dropdown Pill */
+    .lang-dropdown-select {
+        background: #fdf2f8;
+        border: 1.5px solid #f472b6;
+        color: #db2777;
+        font-weight: 800;
+        padding: 5px 10px;
+        border-radius: 20px;
         cursor: pointer;
-        transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-    .rwa-series-card:active {
-        transform: scale(0.985);
-    }
-    .rwa-series-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 5px;
-        height: 100%;
-        background: var(--rwa-accent-blue);
-    }
-    .rwa-card-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 10px;
-    }
-    .rwa-card-title-box {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    .rwa-subject-icon {
-        width: 38px;
-        height: 38px;
-        border-radius: 10px;
-        background: #eff6ff;
-        color: #2563eb;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 18px;
-        font-weight: 900;
-        border: 1px solid #dbeafe;
-    }
-    .rwa-card-title {
-        font-size: 15.5px;
-        font-weight: 800;
-        color: #0f172a;
-        line-height: 1.35;
-    }
-    .rwa-card-meta {
         font-size: 12.5px;
-        color: #64748b;
-        font-weight: 600;
-        margin-top: 2px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(236, 72, 153, 0.15);
+        transition: all 0.2s ease;
     }
-    .rwa-tag-pill {
-        background: #dcfce7;
-        color: #15803d;
-        font-size: 11px;
-        font-weight: 800;
-        padding: 3px 8px;
-        border-radius: 6px;
-        white-space: nowrap;
-        border: 1px solid #bbf7d0;
+    .lang-dropdown-select:focus {
+        border-color: #ec4899;
     }
-    .rwa-tag-attempted {
-        background: #fef3c7;
-        color: #b45309;
-        border-color: #fde68a;
-    }
-    .rwa-card-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-top: 10px;
-        border-top: 1px solid #f1f5f9;
-    }
-    .rwa-btn-start {
-        background: linear-gradient(135deg, #0f172a, #1e293b);
-        color: #ffffff;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 8px;
-        font-size: 13px;
-        font-weight: 800;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        box-shadow: 0 2px 6px rgba(15,23,42,0.25);
-    }
-    .rwa-btn-start.reattempt {
-        background: linear-gradient(135deg, #2563eb, #1d4ed8);
-    }
-
-    /* RWA CBT Real Exam Test Running Interface */
-    #view-test .test-status-bar {
-        background: #ffffff;
-        border: 1px solid #e2e8f0;
-        padding: 10px 14px;
-        border-radius: 12px;
-        margin: 10px 0 14px 0;
-        box-shadow: 0 2px 8px rgba(15,23,42,0.04);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    #q-indicator {
-        font-size: 14.5px !important;
-        font-weight: 800 !important;
-        color: #0f172a !important;
-    }
-    .timer-badge {
-        background: #0f172a !important;
-        color: var(--rwa-accent-yellow) !important;
-        border: 1.5px solid var(--rwa-accent-yellow) !important;
-        font-size: 14px !important;
-        font-weight: 900 !important;
-        padding: 6px 14px !important;
-        border-radius: 8px !important;
-        letter-spacing: 0.5px;
-    }
-    .btn-submit-test {
-        background: #16a34a !important;
-        color: #ffffff !important;
-        border: none !important;
-        padding: 8px 16px !important;
-        border-radius: 8px !important;
-        font-size: 13.5px !important;
-        font-weight: 800 !important;
-        box-shadow: 0 2px 6px rgba(22,163,74,0.3) !important;
-    }
-
-    .question-box {
-        background: #ffffff !important;
-        border: 1.5px solid #cbd5e1 !important;
-        border-radius: 12px !important;
-        padding: 18px !important;
-        font-size: 16px !important;
-        font-weight: 700 !important;
-        line-height: 1.55 !important;
-        color: #0f172a !important;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.03) !important;
-    }
-
-    .option-item {
-        background: #ffffff !important;
-        border: 1.5px solid #e2e8f0 !important;
-        border-radius: 10px !important;
-        padding: 14px 16px !important;
-        margin-bottom: 10px !important;
-        font-size: 15px !important;
-        font-weight: 600 !important;
-        color: #1e293b !important;
-        transition: all 0.15s ease !important;
-    }
-    .option-item.selected {
-        border-color: #2563eb !important;
-        background: #eff6ff !important;
-        color: #1e3a8a !important;
-        font-weight: 800 !important;
-        box-shadow: 0 0 0 1px #2563eb !important;
-    }
-    .opt-circle {
-        background: #f8fafc !important;
-        border: 1.5px solid #94a3b8 !important;
-        color: #475569 !important;
-        font-weight: 900 !important;
-    }
-    .option-item.selected .opt-circle {
-        background: #2563eb !important;
-        border-color: #2563eb !important;
-        color: #ffffff !important;
-    }
-
-    /* RWA Action Button Bar */
-    .nav-actions {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr 1.4fr !important;
-        gap: 10px !important;
-        margin-top: 18px !important;
-    }
-    .action-btn {
-        padding: 12px 8px !important;
-        border-radius: 10px !important;
-        font-size: 14px !important;
-        font-weight: 800 !important;
-        background: #ffffff !important;
-        border: 1.5px solid #cbd5e1 !important;
-        color: #334155 !important;
-    }
-    .action-btn.primary {
-        background: #0f172a !important;
-        color: var(--rwa-accent-yellow) !important;
-        border: 1.5px solid #0f172a !important;
-        box-shadow: 0 4px 10px rgba(15,23,42,0.2) !important;
-    }
-
-    /* RWA Style 5-Color Question Status Palette */
-    .palette-btn {
-        width: 38px !important;
-        height: 38px !important;
-        border-radius: 8px !important;
-        font-size: 13px !important;
-        font-weight: 800 !important;
-        border: 1.5px solid #cbd5e1 !important;
-        background: #f8fafc !important;
-        color: #475569 !important;
-    }
-    .palette-btn.answered {
-        background: #16a34a !important;
-        color: #ffffff !important;
-        border-color: #16a34a !important;
-    }
-    .palette-btn.marked-review {
-        background: #9333ea !important;
-        color: #ffffff !important;
-        border-color: #9333ea !important;
-    }
-    .palette-btn.current {
-        border: 2.5px solid var(--rwa-accent-yellow) !important;
-        box-shadow: 0 0 8px rgba(245,158,11,0.5) !important;
-    }
-
-    /* RWA Result Summary Dashboard */
-    .score-summary {
-        background: #ffffff !important;
-        border: 1px solid #e2e8f0 !important;
-        border-top: 4px solid var(--rwa-accent-yellow) !important;
-        border-radius: 14px !important;
-        box-shadow: 0 6px 18px rgba(15,23,42,0.06) !important;
-        padding: 20px 16px !important;
-    }
-    .score-summary h2 {
-        color: #0f172a !important;
-        font-size: 20px !important;
-        font-weight: 900 !important;
-        text-transform: uppercase !important;
-        letter-spacing: 0.5px !important;
-    }
-    .donut-percentage {
-        color: #0f172a !important;
-        font-size: 22px !important;
-    }
-    .score-stat {
-        background: #f8fafc !important;
-        border: 1px solid #e2e8f0 !important;
-        border-radius: 10px !important;
-        padding: 12px 6px !important;
-    }
-
-    /* Policy Consent Page */
-    .auth-view {
-        background: #f8fafc !important;
-    }
-    .auth-card {
-        border-top: 4px solid #0f172a !important;
-        border-color: #e2e8f0 !important;
-        box-shadow: 0 10px 30px rgba(15,23,42,0.08) !important;
-    }
-    .auth-title {
-        color: #0f172a !important;
-    }
-    .btn-gradient {
-        background: #0f172a !important;
-        color: var(--rwa-accent-yellow) !important;
-        box-shadow: 0 4px 12px rgba(15,23,42,0.3) !important;
-    }
-
-    /* Dark Mode Support for RWA UI */
-    body.dark-theme {
-        background-color: #0b0f19 !important;
-        color: #f1f5f9 !important;
-    }
-    body.dark-theme .rwa-series-card,
-    body.dark-theme #view-test .test-status-bar,
-    body.dark-theme .question-box,
-    body.dark-theme .option-item,
-    body.dark-theme .score-summary,
-    body.dark-theme .score-stat,
-    body.dark-theme .auth-card {
-        background-color: #1e293b !important;
-        color: #f8fafc !important;
-        border-color: #334155 !important;
-    }
-    body.dark-theme .rwa-card-title,
-    body.dark-theme .user-greeting,
-    body.dark-theme .score-summary h2 {
-        color: #f8fafc !important;
-    }
-    body.dark-theme .option-item.selected {
-        background-color: #172554 !important;
-        border-color: #3b82f6 !important;
-        color: #93c5fd !important;
-    }
-    body.dark-theme .rwa-subject-icon {
-        background: #0f172a !important;
-        border-color: #334155 !important;
-        color: #60a5fa !important;
+    body.dark-theme .lang-dropdown-select {
+        background: #31133f;
+        color: #f472b6;
+        border-color: #db2777;
     }
 </style>
 
 <script>
-    // ================= RWA UI CARD ADAPTER (OVERRIDE RENDER VIEWS) =================
-    
-    // 1. RWA Subject List Render Adapter
-    function rwaRenderCategoriesView() {
-        var container = document.getElementById('category-container');
-        if (!container) return;
+    // 1. Language Dropdown state & Multi-language Auto Converter logic
+    window.appLanguage = localStorage.getItem('sgs_app_lang') || 'hi';
 
-        var icons = ['📚', '⚡', '🧠', '💻', '📜', '🎯', '📖', '🧪'];
-        container.innerHTML = (quizData || []).map(function(cat, idx) {
-            var icon = icons[idx % icons.length];
-            var topicCount = (cat.topics && Array.isArray(cat.topics)) ? cat.topics.length : 0;
-            return `
-                <div class="rwa-series-card" onclick="navigateToTopics(${idx})">
-                    <div class="rwa-card-header">
-                        <div class="rwa-card-title-box">
-                            <div class="rwa-subject-icon">${icon}</div>
-                            <div>
-                                <div class="rwa-card-title">${cat.category || 'Subject'}</div>
-                                <div class="rwa-card-meta">${topicCount} Chapters / Units</div>
-                            </div>
-                        </div>
-                        <span class="rwa-tag-pill">FREE ACCESS</span>
-                    </div>
-                    <div class="rwa-card-footer">
-                        <span style="font-size:12px; font-weight:700; color:#64748b;">RWA Free Test Series</span>
-                        <button type="button" class="rwa-btn-start">View Topics ➔</button>
-                    </div>
-                </div>
-            `;
-        }).join('');
+    window.handleLanguageChange = function(newLang) {
+        window.appLanguage = newLang;
+        localStorage.setItem('sgs_app_lang', newLang);
+        renderCurrentQuestion();
+    };
+
+    // Advanced Text Transliteration / Auto-Converter for Marathi & English fallback
+    function getAutoLanguageText(text, targetLang) {
+        if (!text) return "";
+        if (targetLang === 'hi' || targetLang === 'en') return text;
+        if (targetLang === 'mr') {
+            // Auto Marathi contextual mapping for common exam vocabularies
+            var converted = text;
+            var mrMap = [
+                { r: /निम्नलिखित में से/g, t: "खालीलपैकी" },
+                { r: /निम्न में से/g, t: "खालीलपैकी" },
+                { r: /कौन सा/g, t: "कोणते" },
+                { r: /कौन सी/g, t: "कोणती" },
+                { r: /किस/g, t: "कोणत्या" },
+                { r: /किसे/g, t: "कोणाला" },
+                { r: /कहा जाता है\?/g, t: "म्हणतात?" },
+                { r: /कहा जाता है।/g, t: "म्हणतात." },
+                { r: /कहाँ/g, t: "कोठे" },
+                { r: /कहा पर/g, t: "कोठे" },
+                { r: /कब/g, t: "केव्हा" },
+                { r: /क्यों/g, t: "का" },
+                { r: /क्या है\?/g, t: "काय आहे?" },
+                { r: /है\?/g, t: "आहे?" },
+                { r: /था\?/g, t: "होते?" },
+                { r: /थे\?/g, t: "होते?" },
+                { r: /उत्तर/g, t: "उत्तर" },
+                { r: /सही/g, t: "बरोबर" },
+                { r: /गलत/g, t: "चुकीचे" },
+                { r: /वर्ष/g, t: "वर्ष" },
+                { r: /स्थान/g, t: "स्थान" },
+                { r: /नदी/g, t: "नदी" },
+                { r: /भारत/g, t: "भारत" }
+            ];
+            mrMap.forEach(function(item) {
+                converted = converted.replace(item.r, item.t);
+            });
+            return converted;
+        }
+        return text;
     }
 
-    // 2. RWA Topic List Render Adapter
-    function rwaRenderTopicsView(catIdx) {
-        var data = quizData[catIdx];
-        var container = document.getElementById('topic-container');
-        if (!data || !container) return;
+    // Override renderCurrentQuestion with Full Hindi/English/Marathi Dropdown & Auto Convert
+    window.renderCurrentQuestion = function() {
+        var q = activeQuestions[currentQIdx];
+        if (!q) return;
 
-        if (!data.topics || !Array.isArray(data.topics) || data.topics.length === 0) {
-            container.innerHTML = '<p style="text-align:center; color:#64748b; font-size:14px; padding:20px;">Is subject me abhi koi topics uplabdh nahi hain.</p>';
-            return;
+        var curLang = window.appLanguage || 'hi';
+        var qText = "";
+        var optionsList = [];
+
+        if (curLang === 'en') {
+            qText = q.q_en || q.question_en || q.q || q.question || '';
+            optionsList = (q.options_en && Array.isArray(q.options_en)) ? q.options_en : (Array.isArray(q.options) ? q.options : []);
+        } else if (curLang === 'mr') {
+            var rawMrQ = q.q_mr || q.question_mr;
+            qText = rawMrQ ? rawMrQ : getAutoLanguageText(q.q || q.question || '', 'mr');
+
+            if (q.options_mr && Array.isArray(q.options_mr)) {
+                optionsList = q.options_mr;
+            } else {
+                var baseOpts = Array.isArray(q.options) ? q.options : (Array.isArray(q.options_en) ? q.options_en : []);
+                optionsList = baseOpts.map(function(opt) {
+                    return getAutoLanguageText(opt, 'mr');
+                });
+            }
+        } else { // Hindi default
+            qText = q.q || q.question || q.q_en || q.question_en || '';
+            optionsList = Array.isArray(q.options) ? q.options : (Array.isArray(q.options_en) ? q.options_en : []);
         }
 
-        container.innerHTML = data.topics.map(function(tp, idx) {
-            var testCount = (tp.chapters && Array.isArray(tp.chapters)) ? tp.chapters.length : 0;
-            return `
-                <div class="rwa-series-card" onclick="navigateToChapters(${idx})">
-                    <div class="rwa-card-header">
-                        <div class="rwa-card-title-box">
-                            <div class="rwa-subject-icon">📑</div>
-                            <div>
-                                <div class="rwa-card-title">${tp.topicName || 'Topic'}</div>
-                                <div class="rwa-card-meta">${testCount} Mock Tests Included</div>
-                            </div>
-                        </div>
-                        <span class="rwa-tag-pill">PRACTICE</span>
-                    </div>
-                    <div class="rwa-card-footer">
-                        <span style="font-size:12px; font-weight:700; color:#64748b;">Topic Wise Practice</span>
-                        <button type="button" class="rwa-btn-start">Open Tests ➔</button>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    }
+        // Indicator & Question text
+        document.getElementById('q-indicator').innerText = 'Question ' + (currentQIdx + 1) + '/' + activeQuestions.length;
+        document.getElementById('current-question-text').innerText = (currentQIdx + 1) + '. ' + qText;
 
-    // 3. RWA Chapters / Test Series Render Adapter
-    function rwaRenderChaptersList() {
-        var data = quizData[activeCatIdx];
-        if (!data || !data.topics || !data.topics[activeTopIdx]) return;
-        var currentTopic = data.topics[activeTopIdx];
+        // Remove old toggle button if present
+        var oldToggleBtn = document.getElementById('btn-lang-toggle');
+        if (oldToggleBtn) oldToggleBtn.remove();
 
-        document.getElementById('chapter-header-title').innerText = '📚 ' + (currentTopic.topicName || '');
-        var container = document.getElementById('chapter-container');
-        if (!container) return;
-
-        if (!currentTopic.chapters || !Array.isArray(currentTopic.chapters) || currentTopic.chapters.length === 0) {
-            container.innerHTML = '<p style="text-align:center; color:#64748b; font-size:14px; padding:20px;">Is topic me abhi koi tests uplabdh nahi hain.</p>';
-            return;
-        }
-
-        container.innerHTML = currentTopic.chapters.map(function(chap, idx) {
-            if (chap.isPdf) {
-                return `
-                    <div class="rwa-series-card" onclick="openPdfReader('${chap.chapterName}', '${chap.pdfUrl}')">
-                        <div class="rwa-card-header">
-                            <div class="rwa-card-title-box">
-                                <div class="rwa-subject-icon" style="background:#fef2f2; color:#ef4444; border-color:#fee2e2;">📄</div>
-                                <div>
-                                    <div class="rwa-card-title">${chap.chapterName}</div>
-                                    <div class="rwa-card-meta">Official Study Material & Notes</div>
-                                </div>
-                            </div>
-                            <span class="rwa-tag-pill" style="background:#fee2e2; color:#b91c1c; border-color:#fecaca;">PDF FILE</span>
-                        </div>
-                        <div class="rwa-card-footer">
-                            <span style="font-size:12px; font-weight:700; color:#64748b;">Read Offline</span>
-                            <button type="button" class="rwa-btn-start" style="background:#dc2626;">View PDF ↗</button>
-                        </div>
-                    </div>
+        // Inject / Update Language Dropdown Selector in test-status-bar
+        var statusBar = document.querySelector('#view-test .test-status-bar');
+        if (statusBar) {
+            var langSelect = document.getElementById('lang-select-dropdown');
+            if (!langSelect) {
+                langSelect = document.createElement('select');
+                langSelect.id = 'lang-select-dropdown';
+                langSelect.className = 'lang-dropdown-select';
+                langSelect.innerHTML = `
+                    <option value="hi">🌐 हिन्दी</option>
+                    <option value="en">🌐 English</option>
+                    <option value="mr">🌐 मराठी</option>
                 `;
+                langSelect.onchange = function() {
+                    handleLanguageChange(this.value);
+                };
+                var timerEl = document.getElementById('timer-display');
+                statusBar.insertBefore(langSelect, timerEl);
+            }
+            langSelect.value = curLang;
+        }
+
+        var optLetters = ['A', 'B', 'C', 'D'];
+        var optContainer = document.getElementById('current-options-box');
+        var isMarked = !!markedReviewQuestions[currentQIdx];
+
+        var optionsHtml = optionsList.map(function(opt, idx) {
+            var isSelected = userSelections[currentQIdx] === idx;
+            return '<div class="option-item ' + (isSelected ? 'selected' : '') + '" onclick="selectAnswer(' + idx + ')">' +
+                   '<span class="opt-circle">' + (optLetters[idx] || (idx + 1)) + '</span>' +
+                   '<span>' + opt + '</span></div>';
+        }).join('');
+
+        var markBtnHtml = `
+            <button type="button" class="btn-mark-review ${isMarked ? 'is-marked' : ''}" onclick="toggleMarkCurrentQuestion()">
+                ${isMarked ? '🔖 Marked For Review (Click to Unmark)' : '🔖 Mark Question For Review'}
+            </button>
+        `;
+
+        optContainer.innerHTML = optionsHtml + markBtnHtml;
+        renderPalette();
+    };
+
+    // 2. Fixed & Robust Download to Gallery / Storage
+    window.downloadScorecardImage = function() {
+        showExitToast("Generating Scorecard... ⏳");
+        generateResultCanvasScorecard(function(dataUrl) {
+            var filename = 'SGS_Mock_Test_Result_' + Date.now() + '.png';
+
+            // Agar Android App me native download interface hai
+            if (window.AndroidApp && typeof window.AndroidApp.saveImageToGallery === 'function') {
+                window.AndroidApp.saveImageToGallery(dataUrl, filename);
+                showExitToast("Scorecard Gallery me save ho gaya! 📥");
+                return;
             }
 
-            var isAttempted = checkChapterAttempted(data.category, (currentTopic.topicName || '') + " - " + (chap.chapterName || ''));
-            var qCount = (chap.questions && Array.isArray(chap.questions)) ? chap.questions.length : 0;
-            var tMins = chap.timeInMinutes || 15;
+            // Direct Blob Download for Complete Mobile Browser / WebView Gallery Save Support
+            try {
+                var arr = dataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+                    bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+                while(n--){
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+                var blob = new Blob([u8arr], {type: mime});
+                var blobUrl = URL.createObjectURL(blob);
 
-            return `
-                <div class="rwa-series-card" onclick="handleChapterClick(${idx})">
-                    <div class="rwa-card-header">
-                        <div class="rwa-card-title-box">
-                            <div class="rwa-subject-icon">📝</div>
-                            <div>
-                                <div class="rwa-card-title">${chap.chapterName || 'Test'}</div>
-                                <div class="rwa-card-meta">${qCount} Questions • ${tMins} Mins • 100 Marks</div>
-                            </div>
-                        </div>
-                        <span class="rwa-tag-pill ${isAttempted ? 'rwa-tag-attempted' : ''}">
-                            ${isAttempted ? 'ATTEMPTED ✅' : 'FREE TEST'}
-                        </span>
-                    </div>
-                    <div class="rwa-card-footer">
-                        <span style="font-size:12px; font-weight:700; color:#64748b;">Full CBT Pattern</span>
-                        <button type="button" class="rwa-btn-start ${isAttempted ? 'reattempt' : ''}">
-                            ${isAttempted ? '🔄 Re-attempt' : '⚡ Start Test'}
-                        </button>
-                    </div>
-                </div>
-            `;
-        }).join('');
-    }
-
-    // Hook RWA Render Adapters smoothly into Quiz System
-    var originalNavigateToCategories = window.navigateToCategories;
-    window.navigateToCategories = function(pushHistory) {
-        if (typeof originalNavigateToCategories === 'function') originalNavigateToCategories(pushHistory);
-        rwaRenderCategoriesView();
+                var a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(function() {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(blobUrl);
+                }, 500);
+                showExitToast("Scorecard Downloaded! 📥");
+            } catch (err) {
+                // Standard fallback
+                var fallbackLink = document.createElement('a');
+                fallbackLink.href = dataUrl;
+                fallbackLink.download = filename;
+                document.body.appendChild(fallbackLink);
+                fallbackLink.click();
+                document.body.removeChild(fallbackLink);
+                showExitToast("Scorecard Downloaded! 📥");
+            }
+        });
     };
-
-    var originalNavigateToTopics = window.navigateToTopics;
-    window.navigateToTopics = function(catIdx, pushHistory) {
-        if (typeof originalNavigateToTopics === 'function') originalNavigateToTopics(catIdx, pushHistory);
-        rwaRenderTopicsView(catIdx);
-    };
-
-    window.renderChaptersList = rwaRenderChaptersList;
-
-    // Trigger Initial UI Refresh
-    setTimeout(function() {
-        if (currentActiveView === 'categories') rwaRenderCategoriesView();
-        else if (currentActiveView === 'topics' && activeCatIdx !== null) rwaRenderTopicsView(activeCatIdx);
-        else if (currentActiveView === 'chapters') rwaRenderChaptersList();
-    }, 400);
 </script>
 
 </body>
