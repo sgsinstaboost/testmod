@@ -1,1034 +1,773 @@
-const STATIC_CATEGORIES = [
-  { name: 'All Services', color: 'blue' },
-  { name: 'STD College', color: 'purple' },
-  { name: 'Internship', color: 'indigo' },
-  { name: 'Certificates (Jati/Aaya/Niwas)', color: 'emerald' },
-  { name: 'College Admission', color: 'purple' },
-  { name: 'Scholarship', color: 'amber' },
-  { name: 'Government Forms', color: 'rose' },
-  { name: 'Admit Card', color: 'rose' }
- 
- 
-];
-
-
-
-const STATIC_IMP_NOTICE = "🚨 IMP NOTICE: VKSU College Admission & RTPS Certificate Form Filling Active! Apply Now for Fast Processing.";
-
-
-const STATIC_NOTICES = [
-  { id: 1, text: "Bihar RTPS Income / Caste Certificate online forms are active." },
-  { id: 2, text: "College Admission Forms & Post Matric Scholarship portal open." }
-];
-
-const ALL_POSTS = [
-{
-  id: "internship-application-01",
-  title: "Internship Application Online Form",
-  category: "Internship",
-  description: "Internship ke liye apni personal, academic aur payment details bharein.",
-  tags: [
-      "Internship Application Online Form",
-      "Online Internship Form Bihar",
-      "Arrah Internship Apply",
-      "VKSU Internship Form",
-      "SGS Online Service Internship",
-      "sgs store internship form"
-    ],
-  
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D230%26cu%3DINR&size=200&format=png",
-  
-  fields: [
-    { id: "field_full_name", name: "full_name", label: "Full Name", type: "text", required: true },
-    {
-      id: "field_gender",
-      name: "gender",
-      label: "Gender",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_male", label: "Male", value: "male" },
-        { id: "opt_female", label: "Female", value: "female" }
-      ]
-    },
-    { id: "field_father_name", name: "father_name", label: "Father's Name", type: "text", required: true },
-    { id: "field_mother_name", name: "mother_name", label: "Mother's Name", type: "text", required: true },
-    { id: "field_contact_number", name: "contact_number", label: "Contact Number", type: "tel", required: true },
-    { id: "field_email_address", name: "email_address", label: "Email Address", type: "email", required: true },
-    {
-      id: "field_university_name",
-      name: "university_name",
-      label: "University Name",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_vksu", label: "Veer Kunwar Singh University", value: "veer_kunwar_singh_university" }
-      ]
-    },
-    { id: "field_college_name", name: "college_name", label: "College Name", type: "text", required: true },
-    {
-      id: "field_degree",
-      name: "degree",
-      label: "Degree",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_ug", label: "UG", value: "ug" }
-      ]
-    },
-    {
-      id: "field_stream",
-      name: "stream",
-      label: "Stream",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_ba", label: "B.A", value: "ba" },
-        { id: "opt_bcom", label: "B.COM", value: "bcom" },
-        { id: "opt_bsc", label: "B.SC", value: "bsc" }
-      ]
-    },
-    {
-      id: "field_semester",
-      name: "semester",
-      label: "Semester",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_5th", label: "5th", value: "5th" }
-      ]
-    },
-    {
-      id: "field_academic_session",
-      name: "academic_session",
-      label: "Academic Session",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_2023_2027", label: "2023-2027", value: "2023_2027" },
-        { id: "opt_2024_2028", label: "2024-2028", value: "2024_2028" },
-        { id: "opt_2025_2029", label: "2025-2029", value: "2025_2029" },
-        { id: "opt_2026_2030", label: "2026-2030", value: "2026_2030" }
-      ]
-    },
-    { id: "field_major_subject", name: "major_subject", label: "Major Subject / Honors", type: "text", required: true },
-    { id: "field_university_reg_no", name: "university_reg_no", label: "University Registration Number", type: "text", required: true },
-    { id: "field_university_roll_no", name: "university_roll_no", label: "University Roll Number", type: "text", required: true },
-    {
-      id: "field_select_course",
-      name: "select_course",
-      label: "Select Course",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_teacher_training", label: "Teacher Training", value: "teacher_training" },
-        { id: "opt_cyber_security", label: "Cyber Security", value: "cyber_security" },
-        { id: "opt_digital_literacy", label: "Digital Literacy", value: "digital_literacy" },
-        { id: "opt_financial_literacy", label: "Financial Literacy", value: "financial_literacy" },
-        { id: "opt_healthcare", label: "Healthcare", value: "healthcare" },
-        { id: "opt_tourism", label: "Tourism", value: "tourism" },
-        { id: "opt_agriculture", label: "Agriculture", value: "agriculture" },
-        { id: "opt_graphics", label: "Graphics and Content Creation", value: "graphics_content_creation" },
-        { id: "opt_entrepreneurship", label: "Entrepreneurship", value: "entrepreneurship" },
-        { id: "opt_skill_dev", label: "Skill and Personality Development", value: "skill_personality_development" },
-        { id: "opt_disaster_mgmt", label: "Disaster Management", value: "disaster_management" }
-      ]
-    },
-    { id: "field_guardian_name", name: "guardian_name", label: "Guardian Name (Emergency Contact)", type: "text", required: true },
-    { id: "field_emergency_contact_no", name: "emergency_contact_no", label: "Emergency Contact Number", type: "tel", required: true },
-    {
-      id: "field_relationship",
-      name: "relationship",
-      label: "Relationship with Emergency Contact",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_mother", label: "Mother", value: "mother" },
-        { id: "opt_father", label: "Father", value: "father" },
-        { id: "opt_brother", label: "Brother", value: "brother" },
-        { id: "opt_sister", label: "Sister", value: "sister" },
-        { id: "opt_other", label: "Other", value: "other" }
-      ]
-    }
-  ]
-},
-
-
-
-
-
-
-  
-{
-  id: "rtps-caste-02",
-  title: "Bihar RTPS Caste Certificate (जाति प्रमाण पत्र)",
-  category: "Certificates (Jati/Aaya/Niwas)",
-  description: "Caste Certificate apply karne ke liye niche details bharein, documents upload karein aur QR par pay karein.",
-  tags: [
-  "Bihar RTPS Caste Certificate",
-  "Jati Praman Patra Online Apply",
-  "Bihar Jati Praman Patra",
-  "RTPS Bihar Online Service",
-  "RTPS Caste Certificate Form",
-  "SGS Online Service RTPS",
-  "sgs store jati praman patra",
-  "Arrah RTPS Jati Form"
-],
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D28%26cu%3DINR&size=200&format=png",
-  fields: [
-    { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
-    { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
-    { id: "field_mother_name", name: "mother_name", label: "माता का नाम / Mother's Name", type: "text", required: true, placeholder: "Mother name likhein" },
-    { id: "field_husband_name", name: "husband_name", label: "पति का नाम / Husband's Name (Optional)", type: "text", required: false, placeholder: "Pati ka naam (yadi laagu ho)" },
-    { id: "field_mobile_no", name: "mobile_no", label: "मोबाइल नंबर / Mobile Number", type: "tel", required: true, placeholder: "Mobile number" },
-    { id: "field_district", name: "district", label: "जिला / District", type: "text", required: true, placeholder: "District name likhein" },
-    { id: "field_sub_division", name: "sub_division", label: "अनुमंडल / Sub Division", type: "text", required: true, placeholder: "Sub division likhein" },
-    { id: "field_block", name: "block", label: "प्रखंड / Block", type: "text", required: true, placeholder: "Block name likhein" },
-    { id: "field_gram_panchayat", name: "gram_panchayat", label: "ग्राम पंचायत / Gram Panchayat", type: "text", required: true, placeholder: "Panchayat name likhein" },
-    { id: "field_ward_no", name: "ward_no", label: "वार्ड संख्या / Ward No.", type: "text", required: true, placeholder: "Ward number likhein" },
-    { id: "field_village", name: "village", label: "ग्राम/मोहल्ला / Village/Town", type: "text", required: true, placeholder: "Village name likhein" },
-    { id: "field_police_station", name: "police_station", label: "थाना / Police Station", type: "text", required: true, placeholder: "Police station likhein" },
-    {
-      id: "field_applicant_photo",
-      name: "applicant_photo",
-      label: "आवेदक का फोटो / Photograph of Applicant",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true
-    },
-    {
-      id: "field_payment_screenshot",
-      name: "adhar_card",
-      label: "आधार कार्ड के दोनों साइड का फोटो अपलोड करें / Upload photos of both sides of the Aadhaar card.",
-      type: "file",
-      accept: "image/*",
-      required: true
-    },
-    {
-      id: "field_profession",
-      name: "profession",
-      label: "पेशा / Profession",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_student", label: "छात्र / Student", value: "student" },
-        { id: "opt_farmer", label: "किसान / Farmer", value: "farmer" },
-        { id: "opt_housewife", label: "गृहिणी / Housewife", value: "housewife" },
-        { id: "opt_other_prof", label: "अन्य / Other", value: "other" }
-      ]
-    },
-    { id: "field_category", name: "category", label: "वर्ग / Category", type: "text", required: true, placeholder: "e.g. OBC / EBC / SC / ST" },
-    { id: "field_caste", name: "caste", label: "जाति / Caste", type: "text", required: true, placeholder: "Apni jati likhein" },
-    {
-      id: "field_caste_proof_doc",
-      name: "caste_proof_doc",
-      label: "जाति प्रमाणपत्र के साक्ष्य हेतु दस्तावेज",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_purana_jati_cert", label: "आपका पुराना बना हुआ जाती प्रमाणपत्र", value: "purana_jati_certificate" },
-        { id: "opt_khatiyan", label: "राजस्व अभिलेख - खतियान", value: "rajashwa_khatiyan" },
-        { id: "opt_bhumi_doc", label: "राजस्व अभिलेख - भूमि संबंधी दस्तावेज", value: "rajashwa_bhumi_dastavez" },
-        { id: "opt_anya_rajashwa", label: "अन्य राजस्व अभिलेख", value: "anya_rajashwa_abhilekh" }
-      ]
-    },
-    {
-      id: "field_identity_proof",
-      name: "identity_proof",
-      label: "दस्तावेज़ अपलोड करें / Upload Selected Document Proof",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true
-    }
-  ]
-},
-
-
-
-
-
-
-
-
-
-  
-{
-  id: "rtps-income-03",
-  title: "Bihar RTPS Income Certificate (आय प्रमाण पत्र)",
-  category: "Certificates (Jati/Aaya/Niwas)",
-  description: "Income Certificate online form bharein aur required documents upload karein.",
-  tags: [
-  "Bihar RTPS Income Certificate",
-  "Aaya Praman Patra Online Apply",
-  "Bihar Income Certificate Online",
-  "RTPS Bihar Income Form",
-  "Aaya Praman Patra Bihar",
-  "SGS Online Service Income Certificate",
-  "sgs store aaya praman patra",
-  "Arrah RTPS Income Form"
-],
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D28%26cu%3DINR&size=200&format=png",
-  fields: [
-    { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
-    { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
-    { id: "field_mother_name", name: "mother_name", label: "माता का नाम / Mother's Name", type: "text", required: true, placeholder: "Mother name likhein" },
-    { id: "field_husband_name", name: "husband_name", label: "पति का नाम / Husband's Name (Optional)", type: "text", required: false, placeholder: "Pati ka naam (yadi laagu ho)" },
-    { id: "field_mobile_no", name: "mobile_no", label: "मोबाइल नंबर / Mobile Number", type: "tel", required: true, placeholder: "Mobile number" },
-    { id: "field_district", name: "district", label: "जिला / District", type: "text", required: true, placeholder: "District name likhein" },
-    { id: "field_sub_division", name: "sub_division", label: "अनुमंडल / Sub Division", type: "text", required: true, placeholder: "Sub division likhein" },
-    { id: "field_block", name: "block", label: "प्रखंड / Block", type: "text", required: true, placeholder: "Block name likhein" },
-    { id: "field_gram_panchayat", name: "gram_panchayat", label: "ग्राम पंचायत / Gram Panchayat", type: "text", required: true, placeholder: "Panchayat name likhein" },
-    { id: "field_ward_no", name: "ward_no", label: "वार्ड संख्या / Ward No.", type: "text", required: true, placeholder: "Ward number likhein" },
-    { id: "field_village", name: "village", label: "ग्राम/मोहल्ला / Village/Town", type: "text", required: true, placeholder: "Village name likhein" },
-    { id: "field_police_station", name: "police_station", label: "थाना / Police Station", type: "text", required: true, placeholder: "Police station likhein" },
-    {
-      id: "field_applicant_photo",
-      name: "applicant_photo",
-      label: "आवेदक का फोटो / Photograph of Applicant",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true
-    },
-    {
-      id: "field_payment_screenshot",
-      name: "adhar_card",
-      label: "आधार कार्ड के दोनों साइड का फोटो अपलोड करें / Upload photos of both sides of the Aadhaar card.",
-      type: "file",
-      accept: "image/*",
-      required: true
-    },
-    {
-      id: "field_annual_income_range",
-      name: "annual_income_range",
-      label: "वार्षिक आय / Annual Family Income Amount",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_inc_60k", label: "₹60,000", value: "60000" },
-        { id: "opt_inc_70k", label: "₹70,000", value: "70000" },
-        { id: "opt_inc_80k", label: "₹80,000", value: "80000" },
-        { id: "opt_inc_90k", label: "₹90,000", value: "90000" },
-        { id: "opt_inc_1lakh", label: "₹1,00,000", value: "100000" },
-        { id: "opt_inc_1_2lakh", label: "₹1,20,000", value: "120000" },
-        { id: "opt_inc_1_5lakh", label: "₹1,50,000", value: "150000" }
-      ]
-    },
-    {
-      id: "field_income_proof_doc",
-      name: "income_proof_doc",
-      label: "आय प्रमाणपत्र के साक्ष्य हेतु दस्तावेज",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_purana_income_cert", label: "आपका पुराना बना हुआ आय प्रमाणपत्र/income certificate", value: "purana_income_certificate" },
-        { id: "opt_anyanya_abhilekh", label: "अन्यान्य अभिलेख", value: "anyanya_abhilekh" }
-      ]
-    },
-    {
-      id: "field_identity_proof",
-      name: "identity_proof",
-      label: "दस्तावेज़ अपलोड करें / Upload Selected Document Proof",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true
-    }
-  ]
-},
-
-
-
-
-
-
-
-  
-{
-  id: "rtps-residence-04",
-  title: "Bihar RTPS Residence Certificate (निवास प्रमाण पत्र)",
-  category: "Certificates (Jati/Aaya/Niwas)",
-  description: "Niwas Praman Patra ke liye form fill karein.",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D28%26cu%3DINR&size=200&format=png",
-  fields: [
-    { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
-    { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
-    { id: "field_mother_name", name: "mother_name", label: "माता का नाम / Mother's Name", type: "text", required: true, placeholder: "Mother name likhein" },
-    { id: "field_husband_name", name: "husband_name", label: "पति का नाम / Husband's Name (Optional)", type: "text", required: false, placeholder: "Pati ka naam (yadi laagu ho)" },
-    { id: "field_mobile_no", name: "mobile_no", label: "मोबाइल नंबर / Mobile Number", type: "tel", required: true, placeholder: "Mobile number" },
-    { id: "field_district", name: "district", label: "जिला / District", type: "text", required: true, placeholder: "District name likhein" },
-    { id: "field_sub_division", name: "sub_division", label: "अनुमंडल / Sub Division", type: "text", required: true, placeholder: "Sub division likhein" },
-    { id: "field_block", name: "block", label: "प्रखंड / Block", type: "text", required: true, placeholder: "Block name likhein" },
-    { id: "field_gram_panchayat", name: "gram_panchayat", label: "ग्राम पंचायत / Gram Panchayat", type: "text", required: true, placeholder: "Panchayat name likhein" },
-    { id: "field_ward_no", name: "ward_no", label: "वार्ड संख्या / Ward No.", type: "text", required: true, placeholder: "Ward number likhein" },
-    { id: "field_village", name: "village", label: "ग्राम/मोहल्ला / Village/Town", type: "text", required: true, placeholder: "Village name likhein" },
-    { id: "field_police_station", name: "police_station", label: "थाना / Police Station", type: "text", required: true, placeholder: "Police station likhein" },
-    {
-      id: "field_applicant_photo",
-      name: "applicant_photo",
-      label: "आवेदक का फोटो / Photograph of Applicant",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true
-    },
-    {
-      id: "field_payment_screenshot",
-      name: "adhar_card",
-      label: "आधार कार्ड के दोनों साइड का फोटो अपलोड करें / Upload photos of both sides of the Aadhaar card.",
-      type: "file",
-      accept: "image/*",
-      required: true
-    },
-    {
-      id: "field_residence_type",
-      name: "residence_type",
-      label: "निवास का प्रकार / Type of Residence",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_sthayi", label: "स्थायी", value: "sthayi" },
-        { id: "opt_asthayi", label: "अस्थायी", value: "asthayi" }
-      ]
-    },
-    {
-      id: "field_residence_proof_doc",
-      name: "residence_proof_doc",
-      label: "आवास प्रमाणपत्र के साक्ष्य हेतु दस्तावेज",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_purana_niwas_cert", label: "आपका पुराना बना हुआ निवास प्रमाण पत्र", value: "purana_niwas_certificate" },
-        { id: "opt_khatiyan_doc", label: "राजस्व अभिलेख - खतियान", value: "rajashwa_khatiyan" },
-        { id: "opt_bhumi_doc", label: "राजस्व अभिलेख - भूमि संबंधी दस्तावेज", value: "rajashwa_bhumi_dastavez" },
-        { id: "opt_ration_card_doc", label: "राशन कार्ड", value: "ration_card" },
-        { id: "opt_anya_rajashwa_doc", label: "अन्य राजस्व अभिलेख", value: "anya_rajashwa_abhilekh" }
-      ]
-    },
-    {
-      id: "field_identity_proof",
-      name: "identity_proof",
-      label: "दस्तावेज़ अपलोड करें / Upload Selected Document Proof",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true
-    }
-  ]
-},
-
-
-
-
-
-
-  
-{
-  id: "vksu-exam-form-all-sem-05",
-  title: "VKSU Exam Form All Semester",
-  category: "STD College", 
-  description: "Veer Kunwar Singh University exam form fill up service all semesters (Sem 1 to Sem 8).",
-  tags: [
-  "VKSU Exam Form All Semester",
-  "VKSU Exam Form Online",
-  "VKSU Semester Exam Form Fill",
-  "Veer Kunwar Singh University Exam Form",
-  "VKSU BA BSc BCom Exam Form",
-  "SGS Online Service VKSU Exam Form",
-  "sgs store vksu exam form",
-  "Arrah VKSU Exam Form Apply"
-],
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3Ds.kumar.2372%2540superyes%26pn%3DMerchant%26am%3D630%26cu%3DINR&size=200&format=png",
-  fields: [
-    { id: "field_student_name", name: "student_name", label: "Student Name", type: "text", required: true, placeholder: "Apna name likhein" },
-    {
-      id: "field_course",
-      name: "course",
-      label: "Course / Stream",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_ba", label: "B.A", value: "ba" },
-        { id: "opt_bcom", label: "B.Com", value: "bcom" },
-        { id: "opt_bsc", label: "B.Sc", value: "bsc" }
-      ]
-    },
-    {
-      id: "field_semester",
-      name: "semester",
-      label: "Select Semester",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_sem1", label: "Semester 1", value: "sem_1" },
-        { id: "opt_sem2", label: "Semester 2", value: "sem_2" },
-        { id: "opt_sem3", label: "Semester 3", value: "sem_3" },
-        { id: "opt_sem4", label: "Semester 4", value: "sem_4" },
-        { id: "opt_sem5", label: "Semester 5", value: "sem_5" },
-        { id: "opt_sem6", label: "Semester 6", value: "sem_6" },
-        { id: "opt_sem7", label: "Semester 7", value: "sem_7" },
-        { id: "opt_sem8", label: "Semester 8", value: "sem_8" }
-      ]
-    },
-    { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number", type: "tel", required: true, placeholder: "10-digit mobile number likhein" },
-    { id: "field_vksu_reg_no", name: "vksu_reg_no", label: "VKSU Registration Number", type: "text", required: true, placeholder: "Registration number likhein" },
-    { id: "field_vksu_password", name: "vksu_password", label: "VKSU Password (Optional)", type: "text", required: false, placeholder: "Agar password pata ho to likhein" },
-    {
-      id: "field_password_forgot",
-      name: "password_forgot",
-      label: "Password yaad nahi hai? (Optional)",
-      type: "radio",
-      required: false,
-      options: [
-        { id: "opt_pass_yes", label: "Yes", value: "yes" },
-        { id: "opt_pass_no", label: "No", value: "no" }
-      ]
-    },
-    {
-      id: "field_student_photo",
-      name: "student_photo",
-      label: "Student Photo (Image/PDF)",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true
-    }
-  ]
-},
-
-
-
-
-
-
-
-
-  
-{
-  id: "rtps-combo-06",
-  title: "Bihar RTPS Combo Service (जाति, आय एवं निवास प्रमाण पत्र एक साथ बनवाएं)",
-  category: "Certificates (Jati/Aaya/Niwas)",
-  description: "जाति, आय एवं निवास प्रमाण पत्र एक साथ आवेदन करने के लिए नीचे अपनी पूरी डिटेल्स भरें, सभी आवश्यक दस्तावेज़ अपलोड करें और QR कोड स्कैन करके ₹90 का भुगतान करें।",
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D80%26cu%3DINR&size=200&format=png",
-  fields: [
-    { id: "field_full_name", name: "full_name", label: "आवेदक का नाम / Name of Applicant", type: "text", required: true, placeholder: "Apna name likhein" },
-    { id: "field_father_name", name: "father_name", label: "पिता का नाम / Father's Name", type: "text", required: true, placeholder: "Father name likhein" },
-    { id: "field_mother_name", name: "mother_name", label: "माता का नाम / Mother's Name", type: "text", required: true, placeholder: "Mother name likhein" },
-    { id: "field_husband_name", name: "husband_name", label: "पति का नाम / Husband's Name (Optional)", type: "text", required: false, placeholder: "Pati ka naam (yadi laagu ho)" },
-    { id: "field_mobile_no", name: "mobile_no", label: "मोबाइल नंबर / Mobile Number", type: "tel", required: true, placeholder: "Mobile number" },
-    { id: "field_district", name: "district", label: "जिला / District", type: "text", required: true, placeholder: "District name likhein" },
-    { id: "field_sub_division", name: "sub_division", label: "अनुमंडल / Sub Division", type: "text", required: true, placeholder: "Sub division likhein" },
-    { id: "field_block", name: "block", label: "प्रखंड / Block", type: "text", required: true, placeholder: "Block name likhein" },
-    { id: "field_gram_panchayat", name: "gram_panchayat", label: "ग्राम पंचायत / Gram Panchayat", type: "text", required: true, placeholder: "Panchayat name likhein" },
-    { id: "field_ward_no", name: "ward_no", label: "वार्ड संख्या / Ward No.", type: "text", required: true, placeholder: "Ward number likhein" },
-    { id: "field_village", name: "village", label: "ग्राम/मोहल्ला / Village/Town", type: "text", required: true, placeholder: "Village name likhein" },
-    { id: "field_police_station", name: "police_station", label: "थाना / Police Station", type: "text", required: true, placeholder: "Police station likhein" },
-    {
-      id: "field_applicant_photo",
-      name: "applicant_photo",
-      label: "आवेदक का फोटो / Photograph of Applicant",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true
-    },
-    {
-      id: "field_payment_screenshot",
-      name: "adhar_card",
-      label: "आधार कार्ड के दोनों साइड का फोटो अपलोड करें / Upload photos of both sides of the Aadhaar card.",
-      type: "file",
-      accept: "image/*",
-      required: true
-    },
-    {
-      id: "field_profession",
-      name: "profession",
-      label: "पेशा / Profession",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_student", label: "छात्र / Student", value: "student" },
-        { id: "opt_farmer", label: "किसान / Farmer", value: "farmer" },
-        { id: "opt_housewife", label: "गृहिणी / Housewife", value: "housewife" },
-        { id: "opt_other_prof", label: "अन्य / Other", value: "other" }
-      ]
-    },
-    { id: "field_category", name: "category", label: "वर्ग / Category", type: "text", required: true, placeholder: "e.g. OBC / EBC / SC / ST" },
-    { id: "field_caste", name: "caste", label: "जाति / Caste", type: "text", required: true, placeholder: "Apni jati likhein" },
-    {
-      id: "field_annual_income_range",
-      name: "annual_income_range",
-      label: "वार्षिक आय / Annual Family Income Amount",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_inc_60k", label: "₹60,000", value: "60000" },
-        { id: "opt_inc_70k", label: "₹70,000", value: "70000" },
-        { id: "opt_inc_80k", label: "₹80,000", value: "80000" },
-        { id: "opt_inc_90k", label: "₹90,000", value: "90000" },
-        { id: "opt_inc_1lakh", label: "₹1,00,000", value: "100000" },
-        { id: "opt_inc_1_2lakh", label: "₹1,20,000", value: "120000" },
-        { id: "opt_inc_1_5lakh", label: "₹1,50,000", value: "150000" }
-      ]
-    },
-    {
-      id: "field_residence_type",
-      name: "residence_type",
-      label: "निवास का प्रकार / Type of Residence",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_sthayi", label: "स्थायी", value: "sthayi" },
-        { id: "opt_asthayi", label: "अस्थायी", value: "asthayi" }
-      ]
-    },
-    {
-      id: "field_combo_proof_doc",
-      name: "combo_proof_doc",
-      label: "प्रमाणपत्रों के साक्ष्य हेतु दस्तावेज",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_purana_certificates", label: "पुराना बना हुआ जाति / आय / निवास प्रमाण पत्र", value: "purana_all_certificates" },
-        { id: "opt_khatiyan_doc", label: "राजस्व अभिलेख - खतियान", value: "rajashwa_khatiyan" },
-        { id: "opt_bhumi_doc", label: "राजस्व अभिलेख - भूमि संबंधी दस्तावेज", value: "rajashwa_bhumi_dastavez" },
-        { id: "opt_ration_card_doc", label: "राशन कार्ड", value: "ration_card" },
-        { id: "opt_anya_rajashwa_doc", label: "अन्य राजस्व अभिलेख", value: "anya_rajashwa_abhilekh" }
-      ]
-    },
-    {
-      id: "field_identity_proof",
-      name: "identity_proof",
-      label: "दस्तावेज़ अपलोड करें / Upload Selected Document Proof",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true
-    }
-  ]
-},
-
-
-
-
-
-
-  
-{
-  id: "vksu-admission-sem5-All-session-07",
-  title: "VKSU Online Admission Form (Semester 1st, 2nd, 3rd, 4th, 5th, 6th, 7th, 8th)",
-  category: "College Admission",
-  description: "Veer Kunwar Singh University, Session 2024-2028 Semester 5th Online Admission Form fill up service.",
-  tags: [
-    "VKSU Online Admission Form",
-    "VKSU Admission Form All Semester",
-    "VKSU BA BSc BCom Admission Online",
-    "Veer Kunwar Singh University Admission",
-    "VKSU Semester Admission Form Apply",
-    "SGS Online Service VKSU Admission",
-    "sgs store vksu admission form",
-    "Arrah VKSU Admission Form Online"
-  ],
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D30%26cu%3DINR&size=200&format=png",
-  fields: [
-    { id: "field_student_name", name: "student_name", label: "Student Name", type: "text", required: true, placeholder: "Apna name likhein" },
-    {
-      id: "field_select_class",
-      name: "select_class",
-      label: "Select Class",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_ba", label: "B.A", value: "ba" },
-        { id: "opt_bcom", label: "B.COM", value: "bcom" },
-        { id: "opt_bsc", label: "B.SC", value: "bsc" }
-      ]
-    },
-    {
-      id: "field_semester",
-      name: "semester",
-      label: "Semester",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_sem_v", label: "V", value: "5th" }
-      ]
-    },
-    {
-      id: "field_session",
-      name: "session",
-      label: "Session",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_session_2024_2028", label: "2024-2028", value: "2024_2028" }
-      ]
-    },
-    { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number", type: "tel", required: true, placeholder: "10-digit mobile number likhein" },
-    { id: "field_registration_no", name: "registration_no", label: "Registration No.", type: "text", required: true, placeholder: "University Registration Number likhein" },
-    { id: "field_roll_number", name: "roll_number", label: "University Roll Number", type: "text", required: true, placeholder: "University Roll Number likhein" },
-    { id: "field_dob", name: "dob", label: "Date of Birth (DD/MM/YYYY)", type: "text", required: true, placeholder: "DD/MM/YYYY" },
-    {
-      id: "field_student_photo",
-      name: "student_photo",
-      label: "Upload Student Photo",
-      type: "file",
-      accept: "image/*",
-      required: true
-    },
-    {
-      id: "field_student_sign",
-      name: "student_sign",
-      label: "Upload Student Signature",
-      type: "file",
-      accept: "image/*",
-      required: true
-    }
-  ]
-},
-
-
-
-
-
-
-  
-
-{
-  id: "Government-Forms-08",
-  title: "Bihar Character Certificate (चरित्र प्रमाण पत्र)",
-  category: "Government Forms",
-  description: "Character Certificate online apply karne ke liye niche details bharein, documents upload karein aur QR par pay karein.",
-  tags: [
-  "Bihar Character Certificate",
-  "Charitra Praman Patra Online Apply",
-  "Bihar Charitra Praman Patra",
-  "RTPS Bihar Character Certificate",
-  "Police Verification Certificate Bihar",
-  "SGS Online Service Character Certificate",
-  "sgs store charitra praman patra",
-  "Arrah Character Certificate Form"
-],
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D40%26cu%3DINR&size=200&format=png",
-  fields: [
-    { id: "field_full_name", name: "full_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
-    { id: "field_father_name", name: "father_name", label: "Father Name / पिता का नाम", type: "text", required: true, placeholder: "Father name likhein" },
-    { id: "field_mother_name", name: "mother_name", label: "Mother Name / माता का नाम", type: "text", required: true, placeholder: "Mother name likhein" },
-    { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number / मोबाइल नंबर", type: "tel", required: true, placeholder: "10-digit mobile number" },
-    { id: "field_sub_division", name: "sub_division", label: "Sub-division / अनुमंडल", type: "text", required: true, placeholder: "Sub division likhein" },
-    { id: "field_block", name: "block", label: "Block / प्रखंड", type: "text", required: true, placeholder: "Block name likhein" },
-    { id: "field_village", name: "village", label: "Village / ग्राम/मोहल्ला", type: "text", required: true, placeholder: "Village name likhein" },
-    { id: "field_post_office", name: "post_office", label: "Post Office / डाक घर", type: "text", required: true, placeholder: "Post office name likhein" },
-    { id: "field_ward_no", name: "ward_no", label: "Ward No. / वार्ड संख्या", type: "text", required: true, placeholder: "Ward number likhein" },
-    { id: "field_pin_code", name: "pin_code", label: "Pin Code / पिन कोड", type: "text", required: true, placeholder: "6-digit pin code" },
-    { id: "field_gram_panchayat", name: "gram_panchayat", label: "Gram Panchayat / ग्राम पंचायत", type: "text", required: true, placeholder: "Panchayat name likhein" },
-    { id: "field_police_station", name: "police_station", label: "Police Station / थाना", type: "text", required: true, placeholder: "Police station likhein" },
-    {
-      id: "field_applicant_photo",
-      name: "applicant_photo",
-      label: "Upload Photo / फोटो अपलोड करें",
-      type: "file",
-      accept: "image/*",
-      required: true
-    },
-    {
-      id: "field_applicant_sign",
-      name: "applicant_sign",
-      label: "Upload Sign / हस्ताक्षर अपलोड करें",
-      type: "file",
-      accept: "image/*",
-      required: true
-    },
-    {
-      id: "field_aadhar_card",
-      name: "aadhar_card",
-      label: "Upload Aadhaar Card Both Side / आधार कार्ड दोनों तरफ का अपलोड करें",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true
-    }
-  ]
-},
-
-
-
-
-
-  
-
-
+var hindiQuizData = [
   {
-  id: "internship-120hr-09",
-  title: "Intership 120 Hour Complete",
-  category: "Internship",
-  description: "Internship 120 Hour Complete hone par apne details bharein aur form submit karein.",
-    tags: [
-  "Intership 120 Hour Complete",
-  "120 Hours Internship Certificate",
-  "VKSU Internship 120 Hours",
-  "College Internship 120 Hours Form",
-  "Bihar Internship 120 Hours Apply",
-  "SGS Online Service Internship",
-  "sgs store 120 hours internship",
-  "Arrah Internship 120 Hours Form"
-],
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D100%26cu%3DINR&size=200&format=png",
-  fields: [
-    { id: "field_full_name", name: "full_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
-    { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number / मोबाइल नंबर", type: "tel", required: true, placeholder: "10-digit mobile number" },
-    { id: "field_internship_password", name: "internship_password", label: "Internship Password (Optional) / इंटर्नशिप पासवर्ड (वैकल्पिक)", type: "text", required: false, placeholder: "Password ho to likhein" },
-    {
-      id: "field_password_forgot",
-      name: "password_forgot",
-      label: "Password yaad nahi hai? / पासवर्ड याद नहीं है?",
-      type: "radio",
-      required: false,
-      options: [
-        { id: "opt_pass_yes", label: "Yes / हाँ", value: "yes" },
-        { id: "opt_pass_no", label: "No / नहीं", value: "no" }
-      ]
-    },
-    {
-      id: "field_applicant_photo",
-      name: "applicant_photo",
-      label: "Upload Photo / फोटो अपलोड करें",
-      type: "file",
-      accept: "image/*",
-      required: true }
-    
-    ]
-  },
-
-
-
-
-
-
-  
-
-
-{
-  id: "pan-card-apply-10",
-  title: "New PAN Card / Correction Online Form",
-  category: "Government Forms",
-  description: "New PAN Card apply karne ya correction ke liye niche apne details bharein.",
-  tags: [
-  "New PAN Card / Correction Online Form",
-  "New PAN Card Apply Online",
-  "PAN Card Correction Form Bihar",
-  "Online PAN Card Correction",
-  "NSDL NSDL PAN Card Apply",
-  "SGS Online Service PAN Card",
-  "sgs store pan card apply",
-  "Arrah PAN Card Correction Online"
-],
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D200%26cu%3DINR&size=200&format=png",
-  fields: [
-    { id: "field_full_name", name: "full_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
-    { id: "field_father_name", name: "father_name", label: "Father Name / पिता का नाम", type: "text", required: true, placeholder: "Father name likhein" },
-    { id: "field_mother_name", name: "mother_name", label: "Mother Name / माता का नाम", type: "text", required: true, placeholder: "Mother name likhein" },
-    { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number (जो आपके आधार कार्ड से लिंक हो) / मोबाइल नंबर", type: "tel", required: true, placeholder: "Aadhaar linked mobile number" },
-    {
-      id: "field_applicant_photo",
-      name: "applicant_photo",
-      label: "Upload Photo / फोटो अपलोड करें",
-      type: "file",
-      accept: "image/*",
-      required: true
-    },
-    {
-      id: "field_applicant_sign",
-      name: "applicant_sign",
-      label: "Upload Sign / हस्ताक्षर अपलोड करें",
-      type: "file",
-      accept: "image/*",
-      required: true
-    },
-    {
-      id: "field_aadhar_card",
-      name: "aadhar_card",
-      label: "Upload Aadhaar Card Both Side / आधार कार्ड दोनों तरफ का अपलोड करें",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true }
-    
-    ]
-  },
-
-
-
-
-
-
-  
-
-
-{
-  id: "pms-scholarship-2026-2027-11",
-  title: "PMS scholarship 2026-2027",
-  category: "Scholarship",
-  description: "Post Matric Scholarship 2026-2027 online application form fill up service.",
-  tags: [
-  "PMS scholarship 2026-2027",
-  "Post Matric Scholarship Bihar 2026",
-  "Bihar PMS Scholarship Apply Online",
-  "PMS Online Form 2026",
-  "Post Matric Scholarship Portal",
-  "SGS Online Service PMS Scholarship",
-  "sgs store pms scholarship",
-  "Arrah Post Matric Scholarship Form"
-],
-  qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D200%26cu%3DINR&size=200&format=png",
-  fields: [
-    { id: "field_student_name", name: "student_name", label: "Name / नाम", type: "text", required: true, placeholder: "Apna name likhein" },
-    { id: "field_father_name", name: "father_name", label: "Father Name / पिता का नाम", type: "text", required: true, placeholder: "Father name likhein" },
-    { id: "field_mother_name", name: "mother_name", label: "Mother Name / माता का नाम", type: "text", required: true, placeholder: "Mother name likhein" },
-    { id: "field_mobile_no", name: "mobile_no", label: "Mobile Number / मोबाइल नंबर", type: "tel", required: true, placeholder: "10-digit mobile number" },
-    { id: "field_email_id", name: "email_id", label: "Email ID / ईमेल आईडी", type: "email", required: true, placeholder: "example@gmail.com" },
-    { id: "field_district", name: "district", label: "District / जिला", type: "text", required: true, placeholder: "District name likhein" },
-    { id: "field_pin_code", name: "pin_code", label: "Pin Code / पिन कोड", type: "text", required: true, placeholder: "6-digit pin code" },
-    { id: "field_ward_no", name: "ward_no", label: "Ward No. / वार्ड संख्या", type: "text", required: true, placeholder: "Ward number likhein" },
-    { id: "field_block", name: "block", label: "Block / प्रखंड", type: "text", required: true, placeholder: "Block name likhein" },
-    { id: "field_admission_date", name: "admission_date", label: "Date Of Admission / आपका नामांकन कितने तारीख को हुआ था (Optional)", type: "text", required: false, placeholder: "DD/MM/YYYY" },
-    { id: "field_registration_no", name: "registration_no", label: "Registration No. (Only For Graduation) / रजिस्ट्रेशन नंबर (Optional)", type: "text", required: false, placeholder: "Registration number likhein" },
-    { id: "field_university_roll_no", name: "university_roll_no", label: "University Roll No. (Only For Graduation) / रोल नंबर (Optional)", type: "text", required: false, placeholder: "University roll number likhein" },
-    {
-      id: "field_academic_year",
-      name: "academic_year",
-      label: "Academic Year / शैक्षणिक वर्ष",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_acad_2026_2027", label: "2026-2027", value: "2026_2027" }
-      ]
-    },
-    {
-      id: "field_category",
-      name: "category",
-      label: "Category / कोटि",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_sc", label: "SC", value: "sc" },
-        { id: "opt_st", label: "ST", value: "st" }
-      ]
-    },
-    {
-      id: "field_gender",
-      name: "gender",
-      label: "Gender / लिंग",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_male", label: "Male / पुरुष", value: "male" },
-        { id: "opt_female", label: "Female / महिला", value: "female" }
-      ]
-    },
-    {
-      id: "field_religion",
-      name: "religion",
-      label: "Religion / धर्म",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_hindu", label: "Hindu / हिंदू", value: "hindu" }
-      ]
-    },
-    {
-      id: "field_course_group",
-      name: "course_group",
-      label: "Course Group / कोर्स ग्रुप",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_graduation", label: "Graduation", value: "graduation" },
-        { id: "opt_12th", label: "12th", value: "12th" }
-      ]
-    },
-    {
-      id: "field_course_name",
-      name: "course_name",
-      label: "Course Name / कोर्स का नाम",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_ba", label: "B.A", value: "ba" },
-        { id: "opt_bcom", label: "B.COM", value: "bcom" },
-        { id: "opt_bsc", label: "B.SC", value: "bsc" },
-        { id: "opt_arts", label: "ARTS", value: "arts" },
-        { id: "opt_commerce", label: "COMMERCE", value: "commerce" },
-        { id: "opt_science", label: "SCIENCE", value: "science" }
-      ]
-    },
-    {
-      id: "field_course_session",
-      name: "course_session",
-      label: "Course Session / कोर्स सत्र",
-      type: "radio",
-      required: true,
-      options: [
-        { id: "opt_sess_2023_2027", label: "2023-2027", value: "2023_2027" },
-        { id: "opt_sess_2024_2028", label: "2024-2028", value: "2024_2028" },
-        { id: "opt_sess_2025_2029", label: "2025-2029", value: "2025_2029" },
-        { id: "opt_sess_2026_2030", label: "2026-2030", value: "2026_2030" },
-        { id: "opt_sess_2025_2027", label: "2025-2027", value: "2025-2027" }
-      ]
-    },
-    {
-      id: "field_photo",
-      name: "photo",
-      label: "Photo Upload / फोटो अपलोड करें",
-      type: "file",
-      accept: "image/*",
-      required: true
-    },
-    {
-      id: "field_aadhar_card",
-      name: "aadhar_card",
-      label: "Aadhaar Card Upload Both Side / आधार कार्ड दोनों तरफ का अपलोड करें",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true
-    },
-    {
-      id: "field_income_cert",
-      name: "income_cert",
-      label: "Income Certificate Upload (New 2026) / नया आय प्रमाण पत्र अपलोड करें",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true
-    },
-    {
-      id: "field_caste_cert",
-      name: "caste_cert",
-      label: "Caste Certificate Upload / जाति प्रमाण पत्र अपलोड करें",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true
-    },
-    {
-      id: "field_fee_paid_slip",
-      name: "fee_paid_slip",
-      label: "Fee Paid Receipts / कितना पैसा जमा किये हैं उन सभी का स्लिप अपलोड करें (Admission + Exam Form)",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true
-    },
-    {
-      id: "field_10th_marksheet",
-      name: "10th_marksheet",
-      label: "10th Marksheet Upload / 10वीं का मार्कशीट अपलोड करें",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true
-    },
-    {
-      id: "field_bonafide_cert",
-      name: "bonafide_cert",
-      label: "Bonafide Certificate Upload / बोनाफाइड सर्टिफिकेट अपलोड करें",
-      type: "file",
-      accept: "image/*, application/pdf",
-      required: true }
-    
+    "category": "SACHINNNNN",
+    "topics": [
+      {
+        "topicName": "समास (Samas)",
+        "tests": [
+          {
+            "testName": "Test 1 (समास परिचय, अव्ययीभाव एवं तत्पुरुष समास)",
+            "timeInMinutes": 15,
+            "questions": [
+              {
+                "q": "'समास' शब्द का शाब्दिक अर्थ क्या होता है?",
+                "options": ["संक्षेप", "विस्तार", "विग्रह", "विच्छेद"],
+                "answer": 0,
+                "explanation": "'समास' का शाब्दिक अर्थ 'संक्षेप' या 'संक्षीप्तीकरण' होता है। दो या दो से अधिक शब्दों के मेल से बने संक्षिप्त शब्द को समास कहते हैं।"
+              },
+              {
+                "q": "जिस समास में पूर्वपद (पहला पद) प्रधान और अव्यय होता है, उसे क्या कहते हैं?",
+                "options": ["तत्पुरुष समास", "अव्ययीभाव समास", "द्वंद्व समास", "कर्मधारय समास"],
+                "answer": 1,
+                "explanation": "जिस समास में पहला पद प्रधान और अव्यय (अविकारी) हो तथा पूरा पद क्रियाविशेषण अव्यय बन जाए, उसे अव्ययीभाव समास कहते हैं।"
+              },
+              {
+                "q": "जिस समास में उत्तरपद प्रधान होता है तथा दोनों पदों के बीच की कारक-विभक्ति का लोप हो जाता है, वह कौन-सा समास है?",
+                "options": ["अव्ययीभाव समास", "कर्मधारय समास", "तत्पुरुष समास", "बहुव्रीहि समास"],
+                "answer": 2,
+                "explanation": "तत्पुरुष समास में उत्तरपद (दूसरा पद) प्रधान होता है और कारक चिह्नों (को, से, के लिए, का/की/के, में/पर) का लोप होता है।"
+              },
+              {
+                "q": "'रातोंरात' और 'दिनोंदिन' शब्दों में कौन-सा समास है?",
+                "options": ["द्वंद्व समास", "अव्ययीभाव समास", "तत्पुरुष समास", "कर्मधारय समास"],
+                "answer": 1,
+                "explanation": "जब किसी शब्द की पुनरुक्ति (दिनोंदिन, रातोंरात, हाथोंहाथ, धड़ाधड़) होती है, तो वहाँ अव्ययीभाव समास होता है।"
+              },
+              {
+                "q": "'आजन्म' और 'यथाशक्ति' शब्दों में कौन-सा समास है?",
+                "options": ["अव्ययीभाव समास", "तत्पुरुष समास", "द्विगु समास", "कर्मधारय समास"],
+                "answer": 0,
+                "explanation": "आ, यथा, प्रति, भर, हर, अनु आदि उपसर्गों से शुरू होने वाले शब्द प्रायः अव्ययीभाव समास के अंतर्गत आते हैं।"
+              },
+              {
+                "q": "'भरपेट' शब्द में कौन-सा समास प्रयुक्त है?",
+                "options": ["अव्ययीभाव समास", "तत्पुरुष समास", "कर्मधारय समास", "बहुव्रीहि समास"],
+                "answer": 0,
+                "explanation": "'भर' अव्यय पद है। 'भरपेट' का विग्रह 'पेट भरकर' होता है, जो कि अव्ययीभाव समास का उदाहरण है।"
+              },
+              {
+                "q": "'प्रतिदिन' और 'प्रत्येक' शब्दों में समास का नाम क्या है?",
+                "options": ["तत्पुरुष समास", "अव्ययीभाव समास", "कर्मधारय समास", "द्वंद्व समास"],
+                "answer": 1,
+                "explanation": "प्रति + दिन (प्रतिदिन), प्रति + एक (प्रत्येक)। यहाँ 'प्रति' उपसर्ग अव्यय का कार्य कर रहा है।"
+              },
+              {
+                "q": "'बेखटके' और 'निःसंदेह' में कौन-सा समास है?",
+                "options": ["अव्ययीभाव समास", "कर्मधारय समास", "तत्पुरुष समास", "द्विगु समास"],
+                "answer": 0,
+                "explanation": "'बे' (बिना) और 'निस्/निः' उपसर्ग से बने शब्द अव्ययीभाव समास के उदाहरण होते हैं।"
+              },
+              {
+                "q": "'गगनचुंबी' (गगन को चूमने वाला) में तत्पुरुष समास का कौन-सा भेद है?",
+                "options": ["कर्म तत्पुरुष", "करण तत्पुरुष", "संप्रदान तत्पुरुष", "अपादान तत्पुरुष"],
+                "answer": 0,
+                "explanation": "'गगन को चूमने वाला' में कर्म कारक की विभक्ति 'को' का लोप हुआ है, अतः यहाँ कर्म तत्पुरुष समास है।"
+              },
+              {
+                "q": "'तुलसीकृत' (तुलसी द्वारा रचित) और 'हस्तलिखित' में कौन-सा समास है?",
+                "options": ["कर्म तत्पुरुष", "करण तत्पुरुष", "संप्रदान तत्पुरुष", "अपादान तत्पुरुष"],
+                "answer": 1,
+                "explanation": "'तुलसी द्वारा कृत' तथा 'हाथ से लिखित' में करण कारक की विभक्ति 'द्वारा / से' का लोप हुआ है।"
+              },
+              {
+                "q": "'रसोईघर' और 'सत्याग्रह' में कौन-सा समास है?",
+                "options": ["करण तत्पुरुष", "संप्रदान तत्पुरुष", "अपादान तत्पुरुष", "संबंध तत्पुरुष"],
+                "answer": 1,
+                "explanation": "रसोई के लिए घर, सत्य के लिए आग्रह। यहाँ संप्रदान कारक की विभक्ति 'के लिए' का लोप है।"
+              },
+              {
+                "q": "'ऋणमुक्त' और 'देशनिकाला' शब्दों में समास का कौन-सा भेद है?",
+                "options": ["अपादान तत्पुरुष", "संप्रदान तत्पुरुष", "संबंध तत्पुरुष", "अधिकरण तत्पुरुष"],
+                "answer": 0,
+                "explanation": "ऋण से मुक्त, देश से निकाला। यहाँ अलग होने के भाव में अपादान विभक्ति 'से' का लोप है।"
+              },
+              {
+                "q": "'राजपुत्र' (राजा का पुत्र) और 'गंगाजल' में कौन-सा समास है?",
+                "options": ["अपादान तत्पुरुष", "संबंध तत्पुरुष", "अधिकरण तत्पुरुष", "करण तत्पुरुष"],
+                "answer": 1,
+                "explanation": "राजा का पुत्र, गंगा का जल। यहाँ संबंध कारक विभक्ति 'का/की/के' का लोप है।"
+              },
+              {
+                "q": "'पुरुषोत्तम' और 'आपबीती' में कौन-सा समास है?",
+                "options": ["संबंध तत्पुरुष", "अधिकरण तत्पुरुष", "कर्म तत्पुरुष", "करण तत्पुरुष"],
+                "answer": 1,
+                "explanation": "पुरुषों में उत्तम (पुरुषोत्तम), आप पर बीती (आपबीती)। यहाँ 'में/पर' विभक्ति का लोप होने के कारण अधिकरण तत्पुरुष समास है।"
+              },
+              {
+                "q": "'अनपढ़', 'अधर्म', 'अनाचार' में कौन-सा समास है?",
+                "options": ["नञ् तत्पुरुष समास", "कर्मधारय समास", "अव्ययीभाव समास", "बहुव्रीहि समास"],
+                "answer": 0,
+                "explanation": "जिस समास में पहला पद नकारात्मक या निषेधसूचक (अ, अन, न, ना) हो, उसे नञ् तत्पुरुष समास कहते हैं।"
+              },
+              {
+                "q": "'युधिष्ठिर' और 'मनसिज' में कौन-सा विशिष्ट तत्पुरुष समास है?",
+                "options": ["अलुक तत्पुरुष", "उपपद तत्पुरुष", "मध्यमपदलोपी तत्पुरुष", "नञ् तत्पुरुष"],
+                "answer": 0,
+                "explanation": "जिस तत्पुरुष समास में पूर्वपद की विभक्ति का लोप नहीं होता, उसे 'अलुक तत्पुरुष' कहते हैं।"
+              },
+              {
+                "q": "'जलद' (जल देने वाला) और 'पंकज' (कीचड़ में जन्म लेने वाला) में कौन-सा समास है?",
+                "options": ["उपपद तत्पुरुष", "अलुक तत्पुरुष", "अव्ययीभाव", "द्विगु"],
+                "answer": 0,
+                "explanation": "जिस समास का उत्तरपद स्वतंत्र शब्द न होकर कोई प्रत्यय या क्रिया रूप (द, ज, ज्ञ) होता है, उसे 'उपपद तत्पुरुष' कहते हैं।"
+              },
+              {
+                "q": "'दहीबड़ा' और 'गोबरगणेश' में कौन-सा समास माना जाता है?",
+                "options": ["मध्यमपदलोपी तत्पुरुष", "द्वंद्व समास", "द्विगु समास", "अव्ययीभाव समास"],
+                "answer": 0,
+                "explanation": "'दही में डूबा हुआ बड़ा', 'गोबर से बना गणेश'। जहाँ मध्य के पदों का लोप हो जाता है, उसे मध्यमपदलोपी तत्पुरुष कहते हैं।"
+              },
+              {
+                "q": "'देशभक्ति' शब्द का सही समास विग्रह और भेद क्या है?",
+                "options": ["देश के लिए भक्ति - संप्रदान तत्पुरुष", "देश की भक्ति - संबंध तत्पुरुष", "देश से भक्ति - करण तत्पुरुष", "देश में भक्ति - अधिकरण तत्पुरुष"],
+                "answer": 0,
+                "explanation": "'देशभक्ति' का सही विग्रह 'देश के लिए भक्ति' होता है, जो संप्रदान तत्पुरुष समास का उदाहरण है।"
+              },
+              {
+                "q": "'देहातीत' शब्द का विग्रह और समास क्या होगा?",
+                "options": ["देह से अतीत (परे) - अपादान तत्पुरुष", "देह का अतीत - संबंध तत्पुरुष", "देह में अतीत - अधिकरण तत्पुरुष", "देह के लिए अतीत - संप्रदान तत्पुरुष"],
+                "answer": 0,
+                "explanation": "'देहातीत' का अर्थ है 'देह से अतीत (परे होना)'। यहाँ अलग होने का भाव होने से अपादान तत्पुरुष समास है।"
+              }
+            ]
+          },
+          {
+            "testName": "Test 2 (कर्मधारय, द्विगु एवं द्वंद्व समास)",
+            "timeInMinutes": 15,
+            "questions": [
+              {
+                "q": "जिस समास में विशेषण-विशेष्य या उपमान-उपमेय का संबंध होता है, उसे क्या कहते हैं?",
+                "options": ["कर्मधारय समास", "द्विगु समास", "अव्ययीभाव समास", "तत्पुरुष समास"],
+                "answer": 0,
+                "explanation": "कर्मधारय समास का पहला पद विशेषण और दूसरा पद विशेष्य (या उपमान-उपमेय) होता है तथा उत्तरपद प्रधान होता है।"
+              },
+              {
+                "q": "जिस समास का पूर्वपद संख्यावाचक विशेषण होता है, वह कौन-सा समास कहलाता है?",
+                "options": ["कर्मधारय समास", "द्विगु समास", "बहुव्रीहि समास", "तत्पुरुष समास"],
+                "answer": 1,
+                "explanation": "द्विगु समास का पहला पद संख्यावाचक होता है तथा यह किसी समूह या समाहार का बोध कराता है।"
+              },
+              {
+                "q": "जिस समास के दोनों पद प्रधान होते हैं, उसे क्या कहते हैं?",
+                "options": ["द्वंद्व समास", "द्विगु समास", "तत्पुरुष समास", "अव्ययीभाव समास"],
+                "answer": 0,
+                "explanation": "द्वंद्व समास के दोनों पद समान रूप से प्रधान होते हैं और विग्रह करने पर 'और', 'या', 'अथवा' लगता है।"
+              },
+              {
+                "q": "'चरणकमल' में कौन-सा समास है?",
+                "options": ["कर्मधारय समास", "बहुव्रीहि समास", "द्विगु समास", "तत्पुरुष समास"],
+                "answer": 0,
+                "explanation": "'कमल के समान चरण' (उपमान-उपमेय संबंध)। यह कर्मधारय समास का उदाहरण है।"
+              },
+              {
+                "q": "'नीलकमल' और 'महापुरुष' में कौन-सा समास है?",
+                "options": ["अव्ययीभाव समास", "कर्मधारय समास", "द्विगु समास", "बहुव्रीहि समास"],
+                "answer": 1,
+                "explanation": "नीला है जो कमल (नीलकमल), महान है जो पुरुष (महापुरुष)। यहाँ विशेषण-विशेष्य संबंध है।"
+              },
+              {
+                "q": "'चंद्रमुख' शब्द का समास विग्रह और भेद क्या होगा?",
+                "options": ["चंद्र जैसा मुख - कर्मधारय समास", "चंद्र का मुख - संबंध तत्पुरुष", "चंद्र और मुख - द्वंद्व समास", "चंद्र है जिसका मुख - द्विगु समास"],
+                "answer": 0,
+                "explanation": "'चंद्र के समान मुख' - यहाँ उपमान और उपमेय का संबंध होने से कर्मधारय समास है।"
+              },
+              {
+                "q": "'मृगनयनी' (मृग के समान नयन वाली स्त्री) में कौन-सा समास माना जाएगा?",
+                "options": ["कर्मधारय समास", "तत्पुरुष समास", "द्वंद्व समास", "अव्ययीभाव समास"],
+                "answer": 0,
+                "explanation": "यहाँ 'मृग के समान नयन' में उपमान-उपमेय का संबंध है, अतः कर्मधारय समास है।"
+              },
+              {
+                "q": "'चौराहा' और 'त्रिफला' शब्दों में कौन-सा समास है?",
+                "options": ["द्विगु समास", "द्वंद्व समास", "कर्मधारय समास", "बहुव्रीहि समास"],
+                "answer": 0,
+                "explanation": "चार राहों का समाहार (चौराहा), तीन फलों का समाहार (त्रिफला)। पहला पद संख्यावाचक होने से द्विगु समास है।"
+              },
+              {
+                "q": "'सप्तर्षि' और 'नवरत्न' में समास बताइए:",
+                "options": ["तत्पुरुष समास", "द्विगु समास", "द्वंद्व समास", "कर्मधारय समास"],
+                "answer": 1,
+                "explanation": "सात ऋषियों का समूह (सप्तर्षि), नौ रत्नों का समूह (नवरत्न)। यह द्विगु समास के उदाहरण हैं।"
+              },
+              {
+                "q": "'अष्टाध्यायी' (आठ अध्यायों का समाहार) में कौन-सा समास है?",
+                "options": ["द्विगु समास", "कर्मधारय समास", "बहुव्रीहि समास", "अव्ययीभाव समास"],
+                "answer": 0,
+                "explanation": "पहला पद 'अष्ट' (आठ) संख्यावाचक है तथा यह समूह का बोध कराता है, इसलिए द्विगु समास है।"
+              },
+              {
+                "q": "'पंचवटी' शब्द में प्राथमिकता के आधार पर कौन-सा समास माना जाता है?",
+                "options": ["द्विगु समास", "द्वंद्व समास", "अव्ययीभाव समास", "तत्पुरुष समास"],
+                "answer": 0,
+                "explanation": "पाँच वटों (वृक्षों) का समाहार। द्विगु विकल्प में होने पर यह प्रथम प्राथमिकता पर द्विगु समास माना जाता है।"
+              },
+              {
+                "q": "'माता-पिता', 'दाल-रोटी', 'पाप-पुण्य' में कौन-सा समास है?",
+                "options": ["द्विगु समास", "द्वंद्व समास", "अव्ययीभाव समास", "बहुव्रीहि समास"],
+                "answer": 1,
+                "explanation": "माता और पिता, दाल और रोटी, पाप या पुण्य। दोनों पद प्रधान होने के कारण यहाँ द्वंद्व समास है।"
+              },
+              {
+                "q": "'धर्माधर्म' और 'शीतोष्ण' में कौन-सा समास है?",
+                "options": ["द्वंद्व समास", "अव्ययीभाव समास", "कर्मधारय समास", "तत्पुरुष समास"],
+                "answer": 0,
+                "explanation": "धर्म और अधर्म (धर्माधर्म), शीत या उष्ण (शीतोष्ण)। संधि-युक्त पदों में वैकल्पिक द्वंद्व समास है।"
+              },
+              {
+                "q": "'अन्न-जल' और 'रुपया-पैसा' शब्दों में कौन-सा समास भेद है?",
+                "options": ["समाहार द्वंद्व समास", "अव्ययीभाव समास", "कर्मधारय समास", "द्विगु समास"],
+                "answer": 0,
+                "explanation": "अन्न और जल आदि, रुपया और पैसा आदि। जहाँ पद समूह का बोध कराएँ, वहाँ समाहार द्वंद्व होता है।"
+              },
+              {
+                "q": "'नर-नारी' और 'भला-बुरा' शब्दों में समास का भेद बताइए:",
+                "options": ["द्वंद्व समास", "द्विगु समास", "कर्मधारय समास", "अव्ययीभाव समास"],
+                "answer": 0,
+                "explanation": "नर और नारी, भला या बुरा। दोनों पदों का समान महत्त्व होने से द्वंद्व समास है।"
+              },
+              {
+                "q": "'पर्णकुटी' शब्द का सही समास विग्रह और भेद क्या होगा?",
+                "options": ["पर्ण (पत्तों) से बनी कुटी - तत्पुरुष समास", "पर्ण और कुटी - द्वंद्व समास", "पर्ण की कुटी - बहुव्रीहि समास", "पर्ण है जो कुटी - द्विगु समास"],
+                "answer": 0,
+                "explanation": "'पर्ण (पत्तों) से निर्मित कुटी' - यहाँ मध्यमपदलोपी तत्पुरुष समास है।"
+              },
+              {
+                "q": "'अधमरा' (आधा है जो मरा) में कौन-सा समास है?",
+                "options": ["कर्मधारय समास", "तत्पुरुष समास", "द्विगु समास", "अव्ययीभाव समास"],
+                "answer": 0,
+                "explanation": "यहाँ 'अध' विशेषण है और 'मरा' विशेष्य, अतः कर्मधारय समास है।"
+              },
+              {
+                "q": "'त्रिवेणी' (तीन वेणियों/नदियों का संगम) में कौन-सा समास है?",
+                "options": ["द्विगु समास", "द्वंद्व समास", "तत्पुरुष समास", "अव्ययीभाव समास"],
+                "answer": 0,
+                "explanation": "पहला पद 'त्रि' संख्यावाचक होने से यह द्विगु समास का उदाहरण है।"
+              },
+              {
+                "q": "'छल-कपट' और 'तन-मन-धन' में कौन-सा समास है?",
+                "options": ["द्वंद्व समास", "द्विगु समास", "कर्मधारय समास", "तत्पुरुष समास"],
+                "answer": 0,
+                "explanation": "सभी पद समान रूप से प्रधान होने के कारण यहाँ द्वंद्व समास है।"
+              },
+              {
+                "q": "'कालीमिर्च' और 'नीलगगन' में कौन-सा समास है?",
+                "options": ["कर्मधारय समास", "द्विगु समास", "बहुव्रीहि समास", "तत्पुरुष समास"],
+                "answer": 0,
+                "explanation": "काली है जो मिर्च (कालीमिर्च), नीला है जो गगन (नीलगगन)। दोनों में विशेषण-विशेष्य संबंध है।"
+              }
+            ]
+          },
+          {
+            "testName": "Test 3 (बहुव्रीहि समास एवं मिश्रित अभ्यास सेट)",
+            "timeInMinutes": 15,
+            "questions": [
+              {
+                "q": "किस समास में दोनों पद अप्रधान होते हैं तथा कोई तीसरा (अन्य) अर्थ प्रधान होता है?",
+                "options": ["द्वंद्व समास", "बहुव्रीहि समास", "द्विगु समास", "कर्मधारय समास"],
+                "answer": 1,
+                "explanation": "बहुव्रीहि समास में दोनों पद मिलकर किसी तीसरे विशेष अर्थ का बोध कराते हैं।"
+              },
+              {
+                "q": "'दशानन' (दस हैं आनन जिसके अर्थात रावण) में कौन-सा समास है?",
+                "options": ["द्विगु समास", "बहुव्रीहि समास", "कर्मधारय समास", "तत्पुरुष समास"],
+                "answer": 1,
+                "explanation": "यह रावण के लिए रूढ़ अर्थ देता है, अतः यहाँ बहुव्रीहि समास होगा।"
+              },
+              {
+                "q": "'लंबोदर' और 'चक्रपाणि' शब्दों में समास का नाम है:",
+                "options": ["बहुव्रीहि समास", "तत्पुरुष समास", "द्वंद्व समास", "अव्ययीभाव समास"],
+                "answer": 0,
+                "explanation": "लम्बा है उदर जिनका (गणेश जी), चक्र है हाथ में जिसके (विष्णु जी)। अन्य पद की प्रधानता के कारण बहुव्रीहि समास है।"
+              },
+              {
+                "q": "'नीलकंठ' शब्द में मुख्य रूप से कौन-सा समास माना जाता है?",
+                "options": ["बहुव्रीहि समास", "कर्मधारय समास", "तत्पुरुष समास", "द्वंद्व समास"],
+                "answer": 0,
+                "explanation": "नीला है कंठ जिसका अर्थात् 'शिव जी'। पौराणिक पात्र के लिए रूढ़ होने से बहुव्रीहि समास प्राथमिकता है।"
+              },
+              {
+                "q": "'पीतांबर' (पीले हैं वस्त्र जिसके अर्थात श्री कृष्ण) में समास है:",
+                "options": ["बहुव्रीहि समास", "कर्मधारय समास", "द्विगु समास", "अव्ययीभाव समास"],
+                "answer": 0,
+                "explanation": "विकल्प में बहुव्रीहि और कर्मधारय दोनों होने पर 'पीतांबर' को बहुव्रीहि समास माना जाता है।"
+              },
+              {
+                "q": "'पञ्चानन' और 'चतुर्भुज' में कौन-सा समास है?",
+                "options": ["द्विगु समास", "बहुव्रीहि समास", "कर्मधारय समास", "तत्पुरुष समास"],
+                "answer": 1,
+                "explanation": "पाँच हैं मुख जिनके (शिव जी), चार हैं भुजाएँ जिनकी (विष्णु जी)। तीसरे अर्थ का बोध कराने से बहुव्रीहि समास है।"
+              },
+              {
+                "q": "'त्रिलोचन' (तीन हैं लोचन जिसके) में कौन-सा समास है?",
+                "options": ["द्विगु समास", "बहुव्रीहि समास", "कर्मधारय समास", "तत्पुरुष समास"],
+                "answer": 1,
+                "explanation": "तीन हैं नेत्र जिसके अर्थात् 'शिव जी'। अन्य पद प्रधान होने के कारण बहुव्रीहि समास है।"
+              },
+              {
+                "q": "'षडानन' (छह हैं आनन जिसके अर्थात कार्तिकेय) में समास है:",
+                "options": ["बहुव्रीहि समास", "द्विगु समास", "कर्मधारय समास", "तत्पुरुष समास"],
+                "answer": 0,
+                "explanation": "छह मुखों वाले अर्थात् 'कार्तिकेय'। विशेष संज्ञा के रूप में रूढ़ होने के कारण बहुव्रीहि समास है।"
+              },
+              {
+                "q": "'गिरिधर' (गिरि को धारण करने वाले अर्थात कृष्ण) में कौन-सा समास है?",
+                "options": ["बहुव्रीहि समास", "तत्पुरुष समास", "कर्मधारय समास", "अव्ययीभाव समास"],
+                "answer": 0,
+                "explanation": "गिरि को धारण करने वाले अर्थात् 'श्री कृष्ण'। अन्य पद की प्रधानता के कारण बहुव्रीहि समास है।"
+              },
+              {
+                "q": "'सपरिवार' (परिवार के साथ है जो) में कौन-सा बहुव्रीहि समास का भेद है?",
+                "options": ["तुल्ययोग बहुव्रीहि", "व्यधिकरण बहुव्रीहि", "समानाधिकरण बहुव्रीहि", "व्यतिहार बहुव्रीहि"],
+                "answer": 0,
+                "explanation": "जहाँ पहला पद 'स' या 'सह' (साथ) का बोध कराए, वहाँ तुल्ययोग बहुव्रीहि समास होता है।"
+              },
+              {
+                "q": "'अव्ययीभाव समास' की पहचान का सबसे मुख्य लक्षण क्या है?",
+                "options": ["पूर्वपद अव्यय/उपसर्ग होना", "दोनों पदों का प्रधान होना", "उत्तरपद का प्रधान होना", "दोनों पदों का अप्रधान होना"],
+                "answer": 0,
+                "explanation": "अव्ययीभाव समास का पहला पद अव्यय या उपसर्ग होता है और वही पद प्रधान होता है।"
+              },
+              {
+                "q": "यदि किसी शब्द में संख्यावाचक पद हो और वह किसी तीसरे अर्थ का बोध न कराए, तो वह कौन-सा समास होगा?",
+                "options": ["द्विगु समास", "बहुव्रीहि समास", "कर्मधारय समास", "अव्ययीभाव समास"],
+                "answer": 0,
+                "explanation": "यदि केवल संख्या और समूह का बोध हो तो द्विगु होगा। यदि तीसरा विशेष अर्थ निकले तो बहुव्रीहि होगा।"
+              },
+              {
+                "q": "'कर्मधारय' और 'बहुव्रीहि' समास में मुख्य अंतर क्या है?",
+                "options": ["कर्मधारय में उत्तरपद प्रधान होता है जबकि बहुव्रीहि में अन्य पद प्रधान होता है", "कर्मधारय में दोनों पद प्रधान होते हैं", "बहुव्रीहि में पूर्वपद अव्यय होता है", "दोनों में कोई अंतर नहीं है"],
+                "answer": 0,
+                "explanation": "कर्मधारय में विशेषण-विशेष्य संबंध के साथ उत्तरपद मुख्य होता है, जबकि बहुव्रीहि में अन्य पद प्रधान होता है।"
+              },
+              {
+                "q": "'समास विग्रह' किसे कहते हैं?",
+                "options": ["सामासिक पदों को अलग-अलग करके उनके संबंध को स्पष्ट करना", "वर्णों का मेल करना", "उपसर्ग जोड़ना", "प्रत्यय हटाना"],
+                "answer": 0,
+                "explanation": "समस्तपद के सभी पदों को अलग-अलग करने की प्रक्रिया को 'समास विग्रह' कहते हैं।"
+              },
+              {
+                "q": "'वीणापाणि' (वीणा है हाथ में जिसके अर्थात सरस्वती) में कौन-सा समास है?",
+                "options": ["बहुव्रीहि समास", "कर्मधारय समास", "द्विगु समास", "तत्पुरुष समास"],
+                "answer": 0,
+                "explanation": "माँ सरस्वती के लिए रूढ़ होने के कारण यहाँ बहुव्रीहि समास है।"
+              },
+              {
+                "q": "'निशाचर' (रात में विचरण करने वाला अर्थात राक्षस) में कौन-सा समास है?",
+                "options": ["बहुव्रीहि समास", "अव्ययीभाव समास", "कर्मधारय समास", "द्विगु समास"],
+                "answer": 0,
+                "explanation": "राक्षस के लिए रूढ़ अर्थ प्रकट करने से बहुव्रीहि समास है।"
+              },
+              {
+                "q": "'त्रिनेत्र' शब्द का सही समास क्या होगा?",
+                "options": ["बहुव्रीहि समास (भगवान शिव)", "द्विगु समास", "कर्मधारय समास", "तत्पुरुष समास"],
+                "answer": 0,
+                "explanation": "तीन नेत्र हैं जिनके अर्थात् भगवान शिव, अतः बहुव्रीहि समास है।"
+              },
+              {
+                "q": "'पतझड़' (झड़ते हैं पत्ते जिस मौसम में अर्थात ऋतु विशेष) में कौन-सा समास है?",
+                "options": ["बहुव्रीहि समास", "कर्मधारय समास", "तत्पुरुष समास", "द्विगु समास"],
+                "answer": 0,
+                "explanation": "एक विशिष्ट ऋतु का बोध कराने के कारण पतझड़ बहुव्रीहि समास है।"
+              },
+              {
+                "q": "'मुरलीधर' में कौन-सा समास है?",
+                "options": ["बहुव्रीहि समास", "कर्मधारय समास", "तत्पुरुष समास", "द्वंद्व समास"],
+                "answer": 0,
+                "explanation": "मुरली को धारण करने वाले अर्थात् श्री कृष्ण, अतः बहुव्रीहि समास है।"
+              },
+              {
+                "q": "'चतुर्मुख' (चार हैं मुख जिनके अर्थात ब्रह्मा जी) में कौन-सा समास है?",
+                "options": ["बहुव्रीहि समास", "द्विगु समास", "कर्मधारय समास", "तत्पुरुष समास"],
+                "answer": 0,
+                "explanation": "ब्रह्मा जी के लिए रूढ़ होने से बहुव्रीहि समास का सही उदाहरण है।"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "topicName": "उपसर्ग (Prefix)",
+        "tests": [
+          {
+            "testName": "Test 1 (उपसर्ग परिचय एवं संस्कृत/तत्सम उपसर्ग)",
+            "timeInMinutes": 15,
+            "questions": [
+              {
+                "q": "उपसर्ग का प्रयोग शब्द में कहाँ होता है?",
+                "options": ["शब्द के आदि (प्रारंभ) में", "शब्द के मध्य में", "शब्द के अंत में", "इनमें से कोई नहीं"],
+                "answer": 0,
+                "explanation": "उपसर्ग वे शब्दांश होते हैं जो किसी शब्द के प्रारंभ में जुड़कर उसके अर्थ में परिवर्तन लाते हैं।"
+              },
+              {
+                "q": "उपसर्ग मूलतः क्या होते हैं?",
+                "options": ["पूर्ण शब्द", "शब्दांश", "वाक्यांश", "पद"],
+                "answer": 1,
+                "explanation": "उपसर्ग स्वतंत्र शब्द न होकर 'शब्दांश' होते हैं, इनका स्वतंत्र प्रयोग नहीं होता।"
+              },
+              {
+                "q": "'अत्याचार' शब्द में कौन-सा उपसर्ग प्रयुक्त है?",
+                "options": ["अत्", "अति", "अत्या", "आ"],
+                "answer": 1,
+                "explanation": "अत्याचार = अति + आचार (यण संधि के नियम से 'अति' उपसर्ग प्रयुक्त हुआ है)।"
+              },
+              {
+                "q": "'अध्यादेश' शब्द में किस उपसर्ग का प्रयोग हुआ है?",
+                "options": ["अधि", "अध", "अत्", "अधिस्"],
+                "answer": 0,
+                "explanation": "अध्यादेश = अधि + आदेश (यण स्वर संधि का नियम लागू होता है)।"
+              },
+              {
+                "q": "'अन्वेषण' शब्द में कौन-सा उपसर्ग है?",
+                "options": ["अनु", "अन", "अन्व", "अन्"],
+                "answer": 0,
+                "explanation": "अन्वेषण = अनु + एषण। यहाँ 'अनु' संस्कृत का उपसर्ग है।"
+              },
+              {
+                "q": "'अभ्यर्थी' शब्द में कौन-सा उपसर्ग है?",
+                "options": ["अभ्य", "अभि", "अभ", "अ"],
+                "answer": 1,
+                "explanation": "अभ्यर्थी = अभि + अर्थी (यहाँ यण संधि से 'इ' का 'य्' बना है)।"
+              },
+              {
+                "q": "'उज्ज्वल' शब्द में कौन-सा उपसर्ग है?",
+                "options": ["उज", "उत्", "उद्", "उ"],
+                "answer": 1,
+                "explanation": "उज्ज्वल = उत् + ज्वल (व्यंजन संधि के नियम से 'त्' का 'ज्' हो जाता है)।"
+              },
+              {
+                "q": "'संतोष' शब्द में किस उपसर्ग का प्रयोग हुआ है?",
+                "options": ["स", "सम्", "सन", "सत्"],
+                "answer": 1,
+                "explanation": "संतोष = सम् + तोष (अनुस्वार वाले शब्दों में प्रायः 'सम्' उपसर्ग होता है)।"
+              },
+              {
+                "q": "'दुष्परिणाम' शब्द में मूल रूप से कौन-सा संस्कृत उपसर्ग है?",
+                "options": ["दुष्", "दुस्", "दुर्", "दुः"],
+                "answer": 1,
+                "explanation": "संस्कृत में मानक उपसर्ग 'दुस्' होता है (दुस् + परिणाम = दुष्परिणाम)।"
+              },
+              {
+                "q": "'निराकार' शब्द में कौन-सा उपसर्ग है?",
+                "options": ["निस्", "निर्", "नि", "निरा"],
+                "answer": 1,
+                "explanation": "निराकार = निर् + आकार (मानक संस्कृत उपसर्ग 'निर्' है)।"
+              },
+              {
+                "q": "'प्रत्युपकार' शब्द में कौन-सा उपसर्ग है?",
+                "options": ["प्र", "प्रति", "प्रत्यु", "पर"],
+                "answer": 1,
+                "explanation": "प्रत्युपकार = प्रति + उपकार।"
+              },
+              {
+                "q": "'अभिमान' में 'अभि' उपसर्ग का क्या अर्थ है?",
+                "options": ["सामने / पास / विशेष", "पीछे / समान", "बुरा / हीन", "बिना / अभाव"],
+                "answer": 0,
+                "explanation": "'अभि' उपसर्ग का अर्थ 'सामने', 'पास' या 'विशेष' होता है।"
+              },
+              {
+                "q": "'परामर्श' शब्द में कौन-सा उपसर्ग प्रयुक्त है?",
+                "options": ["परा", "पर", "प्रा", "प"],
+                "answer": 0,
+                "explanation": "परामर्श = परा + मर्श ('परा' का अर्थ विपरीत या पीछे होता है)।"
+              },
+              {
+                "q": "'परिणाम' शब्द में कौन-सा उपसर्ग है?",
+                "options": ["पर", "परि", "पर्या", "परी"],
+                "answer": 1,
+                "explanation": "परिणाम = परि + नाम (व्यंजन संधि नियम से 'न' का 'ण' हुआ है)।"
+              },
+              {
+                "q": "'सद्भावना' शब्द में कौन-सा उपसर्ग है?",
+                "options": ["सद्", "सत्", "स", "सह"],
+                "answer": 1,
+                "explanation": "सद्भावना = सत् + भावना (व्यंजन संधि से 'त्' का 'द्' बना है)।"
+              },
+              {
+                "q": "'सुगम' और 'सुपुत्र' में 'सु' उपसर्ग किस अर्थ में प्रयुक्त होता है?",
+                "options": ["बुरा", "श्रेष्ठ / अच्छा / सहज", "विपरीत", "भीतर"],
+                "answer": 1,
+                "explanation": "'सु' उपसर्ग का प्रयोग 'श्रेष्ठ', 'अच्छा' या 'आसान' के अर्थ में होता है।"
+              },
+              {
+                "q": "'दुर्लभ' शब्द में किस उपसर्ग का प्रयोग हुआ है?",
+                "options": ["दुर्", "दुस्", "दु", "दुर्ल"],
+                "answer": 0,
+                "explanation": "दुर्लभ = दुर् + लभ (दुर् का अर्थ कठिन/बुरा होता है)।"
+              },
+              {
+                "q": "'अपमान' शब्द में 'अप' उपसर्ग का क्या अर्थ है?",
+                "options": ["श्रेष्ठ", "बुरा / हीन / विपरीत", "समीप", "अधिक"],
+                "answer": 1,
+                "explanation": "'अप' उपसर्ग का प्रयोग हीनता, बुराई या विपरीत अर्थ दर्शाने के लिए होता है।"
+              },
+              {
+                "q": "'स्वागत' शब्द में कौन-सा उपसर्ग है?",
+                "options": ["स्वा", "सु", "स्व", "स्वाग"],
+                "answer": 1,
+                "explanation": "स्वागत = सु + आगत (यण संधि से 'सु' का 'स्व्' बना है)।"
+              },
+              {
+                "q": "'संस्कार' शब्द में किस उपसर्ग का प्रयोग हुआ है?",
+                "options": ["सम्", "सन", "संस", "स"],
+                "answer": 0,
+                "explanation": "संस्कार = सम् + कार (व्यंजन संधि नियम के तहत 'सम्' उपसर्ग है)।"
+              }
+            ]
+          },
+          {
+            "testName": "Test 2 (हिंदी तद्भव, उर्दू/फ़ारसी एवं अंग्रेजी उपसर्ग)",
+            "timeInMinutes": 15,
+            "questions": [
+              {
+                "q": "'अनपढ़' शब्द में कौन-सा हिंदी उपसर्ग है?",
+                "options": ["अ", "अन", "अनु", "अन्"],
+                "answer": 1,
+                "explanation": "अनपढ़ = अन + पढ़ ('अन' हिंदी का तद्भव उपसर्ग है जो अभाव दिखाता है)।"
+              },
+              {
+                "q": "'अधपका' शब्द में प्रयुक्त 'अध' उपसर्ग किस श्रेणी का है?",
+                "options": ["संस्कृत (तत्सम)", "हिंदी (तद्भव)", "उर्दू/फ़ारसी", "अंग्रेजी"],
+                "answer": 1,
+                "explanation": "'अध' हिंदी का तद्भव उपसर्ग है, जिसका अर्थ 'आधा' होता है।"
+              },
+              {
+                "q": "'चौराहा' शब्द में कौन-सा उपसर्ग है?",
+                "options": ["चौ", "चो", "चार", "राहा"],
+                "answer": 0,
+                "explanation": "चौराहा = चौ (चार) + राह। 'चौ' हिंदी का संख्यावाचक उपसर्ग है।"
+              },
+              {
+                "q": "'भरपेट' शब्द में कौन-सा उपसर्ग है?",
+                "options": ["भ", "भर", "भरा", "पेट"],
+                "answer": 1,
+                "explanation": "भरपेट = भर + पेट ('भर' हिंदी का उपसर्ग है जिसका अर्थ 'पूरा' होता है)।"
+              },
+              {
+                "q": "'बिनब्याहा' या 'बिनदेखा' में 'बिन' उपसर्ग का अर्थ क्या है?",
+                "options": ["सहित", "बिना / निषेध", "विशेष", "छोटा"],
+                "answer": 1,
+                "explanation": "'बिन' हिंदी का उपसर्ग है जिसका अर्थ 'बिना' या 'निषेध' होता है।"
+              },
+              {
+                "q": "'कुपुत्र' में 'कु' उपसर्ग किस अर्थ का बोध कराता है?",
+                "options": ["अच्छा", "बुरा / हीन", "छोटा", "बड़ा"],
+                "answer": 1,
+                "explanation": "'कु' उपसर्ग 'बुरा' या 'हीन' अर्थ के लिए प्रयुक्त होता है।"
+              },
+              {
+                "q": "'उनतीस' या 'उनहत्तर' में 'उन' उपसर्ग का अर्थ क्या होता है?",
+                "options": ["एक कम", "एक अधिक", "ऊपर", "नीचे"],
+                "answer": 0,
+                "explanation": "'उन' हिंदी का उपसर्ग है जिसका अर्थ 'एक कम' होता है (उदा: उनतीस = 29)।"
+              },
+              {
+                "q": "'नालायक' शब्द में कौन-सा उपसर्ग है और यह किस भाषा का है?",
+                "options": ["ना (उर्दू/फ़ारसी)", "ना (संस्कृत)", "ना (हिंदी)", "नाल (उर्दू)"],
+                "answer": 0,
+                "explanation": "'ना' उर्दू/फ़ारसी भाषा का उपसर्ग है जो 'अभाव/निषेध' दिखाता है।"
+              },
+              {
+                "q": "'बेईमान' या 'बेवजह' में 'बे' उपसर्ग का क्या अर्थ है?",
+                "options": ["बिना / रहित", "सहित", "अधिक", "बुरा"],
+                "answer": 0,
+                "explanation": "'बे' उर्दू का उपसर्ग है जिसका अर्थ 'बिना' (रहित) होता है।"
+              },
+              {
+                "q": "'खुशबू' शब्द में 'खुश' उपसर्ग किस भाषा का है?",
+                "options": ["हिंदी", "संस्कृत", "उर्दू/फ़ारसी", "अंग्रेजी"],
+                "answer": 2,
+                "explanation": "'खुश' उर्दू/फ़ारसी का उपसर्ग है जिसका अर्थ 'अच्छा' होता है।"
+              },
+              {
+                "q": "'गैरहाज़िर' शब्द में कौन-सा उपसर्ग है?",
+                "options": ["गैर", "गै", "गैरा", "हाज़िर"],
+                "answer": 0,
+                "explanation": "गैरहाज़िर = गैर + हाज़िर ('गैर' विदेशी/उर्दू उपसर्ग है)।"
+              },
+              {
+                "q": "'लावारिस' या 'लाजवाब' में 'ला' उपसर्ग का क्या अर्थ है?",
+                "options": ["बिना / नहीं", "सहित", "बड़ा", "विशेष"],
+                "answer": 0,
+                "explanation": "'ला' अरबी/फ़ारसी का उपसर्ग है जिसका अर्थ 'बिना' या 'नहीं' होता है।"
+              },
+              {
+                "q": "'हरदफ़ा' या 'हरएक' में 'हर' उपसर्ग का क्या अर्थ है?",
+                "options": ["प्रत्येक", "सभी", "अलग", "बिना"],
+                "answer": 0,
+                "explanation": "'हर' उर्दू/फ़ारसी का उपसर्ग है जिसका अर्थ 'प्रत्येक' होता है।"
+              },
+              {
+                "q": "'कमज़ोर' या 'कमअक्ल' में 'कम' किस भाषा का उपसर्ग है?",
+                "options": ["संस्कृत", "हिंदी", "उर्दू/फ़ारसी", "अंग्रेजी"],
+                "answer": 2,
+                "explanation": "'कम' उर्दू/फ़ारसी का उपसर्ग है जिसका अर्थ 'थोड़ा' या 'हीन' होता है।"
+              },
+              {
+                "q": "'सब-इंस्पेक्टर' (Sub-Inspector) में 'सब' उपसर्ग किस भाषा का है?",
+                "options": ["अंग्रेजी", "संस्कृत", "उर्दू", "हिंदी"],
+                "answer": 0,
+                "explanation": "'सब' (Sub) अंग्रेजी का उपसर्ग है जिसका अर्थ 'उप' या 'अधीन' होता है।"
+              },
+              {
+                "q": "'डिप्टी कलेक्टर' में 'डिप्टी' उपसर्ग का क्या अर्थ होता है?",
+                "options": ["मुख्य", "सहायक / उप", "प्रधान", "अध्यक्ष"],
+                "answer": 1,
+                "explanation": "'डिप्टी' (Deputy) अंग्रेजी उपसर्ग है जिसका अर्थ 'उप' या 'सहायक' होता है।"
+              },
+              {
+                "q": "'हाफ-टिकट' में 'हाफ' उपसर्ग का अर्थ क्या है?",
+                "options": ["पूरा", "आधा", "मुफ़्त", "छोटा"],
+                "answer": 1,
+                "explanation": "'हाफ' (Half) अंग्रेजी उपसर्ग है जिसका अर्थ 'आधा' होता है।"
+              },
+              {
+                "q": "'चीफ-मिनिस्टर' में 'चीफ' उपसर्ग का क्या अर्थ है?",
+                "options": ["प्रधान / मुख्य", "सहायक", "उप", "छोटा"],
+                "answer": 0,
+                "explanation": "'चीफ' (Chief) अंग्रेजी का उपसर्ग है जिसका अर्थ 'प्रधान' या 'मुख्य' होता है।"
+              },
+              {
+                "q": "'निगोड़ा' और 'निडर' में कौन-सा हिंदी उपसर्ग प्रयुक्त है?",
+                "options": ["नि", "निर", "निस", "नी"],
+                "answer": 0,
+                "explanation": "'नि' हिंदी का तद्भव उपसर्ग है जिसका अर्थ 'बिना/रहित' होता है।"
+              },
+              {
+                "q": "'बदचलन' और 'बदनाम' में 'बद' उपसर्ग किस भाषा का है?",
+                "options": ["उर्दू/फ़ारसी", "हिंदी", "संस्कृत", "अंग्रेजी"],
+                "answer": 0,
+                "explanation": "'बद' उर्दू/फ़ारसी का उपसर्ग है जिसका अर्थ 'बुरा' होता है।"
+              }
+            ]
+          },
+          {
+            "testName": "Test 3 (बहु-उपसर्ग, संधि-युक्त उपसर्ग एवं परीक्षा विशेष प्रश्न)",
+            "timeInMinutes": 15,
+            "questions": [
+              {
+                "q": "'पर्यावरण' शब्द में कितने उपसर्गों का प्रयोग हुआ है?",
+                "options": ["एक (परि)", "दो (परि + आ)", "तीन (प + रि + आ)", "एक भी नहीं"],
+                "answer": 1,
+                "explanation": "पर्यावरण = परि + आ + वरण। इसमें 'परि' और 'आ' दो उपसर्ग प्रयुक्त हुए हैं।"
+              },
+              {
+                "q": "'अप्रत्यक्ष' शब्द में कौन-कौन से उपसर्ग प्रयुक्त हैं?",
+                "options": ["अ और प्रति", "अ और प्र", "अति और अक्ष", "अप् और रति"],
+                "answer": 0,
+                "explanation": "अप्रत्यक्ष = अ + प्रति + अक्ष। इसमें दो उपसर्ग 'अ' और 'प्रति' हैं।"
+              },
+              {
+                "q": "'व्याकरण' शब्द का सही उपसर्ग विच्छेद क्या है?",
+                "options": ["वि + आ + करण", "व्या + करण", "वि + अति + करण", "व + आ + करण"],
+                "answer": 0,
+                "explanation": "व्याकरण शब्द में दो उपसर्ग हैं: 'वि' और 'आ' (वि + आ + करण)।"
+              },
+              {
+                "q": "'असुरक्षित' शब्द में कितने उपसर्ग हैं?",
+                "options": ["दो (अ + सु)", "एक (अ)", "एक (सु)", "तीन"],
+                "answer": 0,
+                "explanation": "असुरक्षित = अ + सु + रक्षित (उपसर्ग: 'अ' और 'सु')।"
+              },
+              {
+                "q": "'समाचार' शब्द में प्रयुक्त उपसर्ग कौन-से हैं?",
+                "options": ["सम् और आ", "समा और चार", "स और माचार", "सम् और अचार"],
+                "answer": 0,
+                "explanation": "समाचार = सम् + आ + चार (इसमें 'सम्' और 'आ' दो उपसर्ग हैं)।"
+              },
+              {
+                "q": "'पुनरुद्धार' शब्द में कौन-कौन से उपसर्ग हैं?",
+                "options": ["पुनर् और उत्", "पुन और उद्", "पुनः और आ", "पुनर और धार"],
+                "answer": 0,
+                "explanation": "पुनरुद्धार = पुनर् + उत् + हार (यहाँ 'पुनर्' और 'उत्' दो उपसर्ग हैं)।"
+              },
+              {
+                "q": "निम्नलिखित में से किस शब्द में 'अ' उपसर्ग 'नहीं' लगा है?",
+                "options": ["अधर्म", "अज्ञान", "अमोल", "अनुज"],
+                "answer": 3,
+                "explanation": "'अनुज' में 'अनु' (पीछे) उपसर्ग है। जबकि अधर्म, अज्ञान, अमोल में 'अ' उपसर्ग है।"
+              },
+              {
+                "q": "निम्नलिखित में से किस शब्द में उपसर्ग का प्रयोग 'नहीं' हुआ है?",
+                "options": ["निबंध", "निराश", "निष्ठा", "आदरणीय"],
+                "answer": 3,
+                "explanation": "'आदरणीय' शब्द में मूल शब्द 'आदर' है और 'अनीय' प्रत्यय लगा है, उपसर्ग नहीं।"
+              },
+              {
+                "q": "किस शब्द में 'सु' उपसर्ग का प्रयोग नहीं हुआ है?",
+                "options": ["सुगम", "सुपुत्र", "सुशील", "सुमन"],
+                "answer": 3,
+                "explanation": "'सुमन' रूढ़ मूल शब्द है (अर्थ: पुष्प), इसमें 'सु' पृथक उपसर्ग नहीं है।"
+              },
+              {
+                "q": "किस शब्द में 'कु' उपसर्ग नहीं है?",
+                "options": ["कुपुत्र", "कुमार्ग", "कुख्यात", "कुसुम"],
+                "answer": 3,
+                "explanation": "'कुसुम' एक अखंडित मूल शब्द है, इसमें 'कु' उपसर्ग नहीं है।"
+              },
+              {
+                "q": "'अंतरराष्ट्रीय' शब्द में कौन-सा संस्कृत अव्यय/उपसर्ग प्रयुक्त हुआ है?",
+                "options": ["अन्तर", "अन्तर्", "अन्त", "अन्"],
+                "answer": 1,
+                "explanation": "अंतरराष्ट्रीय = अन्तर् + राष्ट्रीय (संस्कृत अव्यय 'अन्तर्' उपसर्ग की तरह प्रयुक्त होता है)।"
+              },
+              {
+                "q": "'पुनरुत्थान' शब्द में मुख्य उपसर्ग कौन-सा है?",
+                "options": ["पुनर् / पुनः", "पुन", "पुना", "पुर"],
+                "answer": 0,
+                "explanation": "पुनरुत्थान = पुनर् + उत् + थान (पहला उपसर्ग 'पुनर्' है)।"
+              },
+              {
+                "q": "'प्रागैतिहासिक' शब्द में कौन-सा मूल उपसर्ग है?",
+                "options": ["प्राक्", "प्राग", "प्रा", "प्र"],
+                "answer": 0,
+                "explanation": "प्रागैतिहासिक = प्राक् + इतिहास + इक (व्यंजन संधि से 'क्' का 'ग्' हो जाता है)।"
+              },
+              {
+                "q": "'सच्चिदानंद' शब्द में कितने उपसर्गों का योग है?",
+                "options": ["दो (सत् + चित्)", "एक (सत्)", "तीन (स + चि + दा)", "एक भी नहीं"],
+                "answer": 0,
+                "explanation": "सच्चिदानंद = सत् + चित् + आनंद। इसमें 'सत्' और 'चित्' दो अव्यय/उपसर्ग हैं।"
+              },
+              {
+                "q": "'निरीह' शब्द में कौन-सा उपसर्ग है?",
+                "options": ["निर्", "निस्", "नि", "नी"],
+                "answer": 0,
+                "explanation": "निरीह = निर् + ईह ('निर्' उपसर्ग प्रयुक्त हुआ है)।"
+              },
+              {
+                "q": "'उन्नति' शब्द का सही उपसर्ग विच्छेद क्या होगा?",
+                "options": ["उत् + नति", "उन + नति", "उद् + नति", "उ + नति"],
+                "answer": 0,
+                "explanation": "उन्नति = उत् + नति (व्यंजन संधि नियम से 'त्' का 'न्' हुआ है)।"
+              },
+              {
+                "q": "'प्रत्यक्ष' शब्द में कौन-सा उपसर्ग लगा है?",
+                "options": ["प्रति", "प्र", "प्रत्य", "पर"],
+                "answer": 0,
+                "explanation": "प्रत्यक्ष = प्रति + अक्ष (यण संधि के नियम से)।"
+              },
+              {
+                "q": "'दुर्जन' शब्द में कौन-सा उपसर्ग है?",
+                "options": ["दुर्", "दुस्", "दु", "दूर"],
+                "answer": 0,
+                "explanation": "दुर्जन = दुर् + जन ('दुर्' का अर्थ बुरा होता है)।"
+              },
+              {
+                "q": "'दुश्चरित्र' शब्द में कौन-सा मूल संस्कृत उपसर्ग है?",
+                "options": ["दुस्", "दुश्", "दुर्", "दुः"],
+                "answer": 0,
+                "explanation": "मानक संस्कृत उपसर्ग 'दुस्' होता है जो संधि नियम से 'श्' में बदल जाता है।"
+              },
+              {
+                "q": "'अन्वेषक' शब्द में मूल प्रकृति-प्रत्यय और उपसर्ग क्या है?",
+                "options": ["अनु + इष् + अक", "अन् + वेषक", "अन्व + एषक", "अनु + वेषक"],
+                "answer": 0,
+                "explanation": "अन्वेषक = अनु (उपसर्ग) + इष् (धातु) + अक (प्रत्यय)।"
+              }
+            ]
+          }
+        ]
+      }
     ]
   }
-
-
-
-
-
-  
 ];
