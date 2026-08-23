@@ -114,7 +114,14 @@
         .modal-btns button { flex: 1; min-width: 80px; padding: 12px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; font-size: 14px; }
         .modal-scrollable-box { max-height: 80vh; overflow-y: auto; text-align: left; max-width: 480px; width: 100%; }
 
-        /* Gemini AI Custom Stylings */
+        /* Gemini AI Custom Stylings & Icon Helper */
+        .ai-icon-sm {
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
         .btn-ai-guru {
             background: linear-gradient(135deg, #a855f7, #6366f1);
             color: #ffffff; border: none; padding: 10px 14px; border-radius: 10px;
@@ -134,6 +141,50 @@
 
         .ai-source-badge {
             display: inline-block; background: #e0e7ff; color: #3730a3; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; margin: 4px 4px 0 0; text-decoration: none;
+        }
+
+        .flashcard-container {
+            perspective: 1000px;
+            margin: 20px 0;
+            width: 100%;
+            height: 200px;
+            cursor: pointer;
+        }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.2);
+            border-radius: 16px;
+        }
+        .flashcard-container.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #c084fc;
+        }
+        .flashcard-front {
+            background: linear-gradient(135deg, #ffffff, #f3e8ff);
+            color: #581c87;
+        }
+        .flashcard-back {
+            background: linear-gradient(135deg, #7e22ce, #3b82f6);
+            color: #ffffff;
+            transform: rotateY(180deg);
         }
 
         #exit-toast {
@@ -183,25 +234,34 @@
     </div>
     <div class="drawer-content">
         <div class="drawer-item" onclick="handleHomeClick()">
-            <span>🏠</span> HOME
+            <span class="ai-icon-sm">🏠</span> HOME
+        </div>
+        <div class="drawer-item" onclick="openAiCustomQuizModal()">
+            <span class="ai-icon-sm">🎲</span> AI Custom Quiz Generator
+        </div>
+        <div class="drawer-item" onclick="generateAiCurrentAffairsQuiz()">
+            <span class="ai-icon-sm">📰</span> Live AI Current Affairs Test
+        </div>
+        <div class="drawer-item" onclick="openAiFlashcardsModal()">
+            <span class="ai-icon-sm">🃏</span> AI Flashcards Deck
         </div>
         <div class="drawer-item" onclick="openGeminiDoubtModal()">
-            <span>🤖</span> Ask AI Doubt Solver
+            <span class="ai-icon-sm">🤖</span> Ask AI Doubt Solver
         </div>
         <div class="drawer-item" onclick="openTrackMyTestModal()">
-            <span>📊</span> Track My Tests
+            <span class="ai-icon-sm">📊</span> Track My Tests
         </div>
         <a class="drawer-item" href="https://www.termsfeed.com/live/50b7338c-6eba-408f-bd5a-21bb644f9e56" target="_blank" onclick="closeDrawer()">
-            <span>🛡️</span> Privacy Policy ↗
+            <span class="ai-icon-sm">🛡️</span> Privacy Policy ↗
         </a>
         <a class="drawer-item" href="https://www.termsfeed.com/live/af841b41-788e-480a-90ad-1838eea308cd" target="_blank" onclick="closeDrawer()">
-            <span>📜</span> Terms & Conditions ↗
+            <span class="ai-icon-sm">📜</span> Terms & Conditions ↗
         </a>
         <a class="drawer-item" href="https://www.termsfeed.com/live/d15e3366-cb7a-4b6f-9726-5b1603e62231" target="_blank" onclick="closeDrawer()">
-            <span>⚠️</span> Disclaimer ↗
+            <span class="ai-icon-sm">⚠️</span> Disclaimer ↗
         </a>
         <div class="drawer-item" onclick="shareApp()">
-            <span>📲</span> Share App
+            <span class="ai-icon-sm">📲</span> Share App
         </div>
     </div>
 </div>
@@ -246,8 +306,8 @@
             <span class="title">SGS MOCK TEST</span>
         </div>
         <div style="display:flex; align-items:center; gap:12px;">
-            <div style="cursor: pointer; font-size: 18px;" onclick="openGeminiDoubtModal()" title="Ask AI Guru">🤖</div>
-            <div style="cursor: pointer; font-size: 18px;" onclick="shareApp()">📲</div>
+            <div style="cursor: pointer; font-size: 18px;" onclick="openGeminiDoubtModal()" title="Ask AI Guru"><span class="ai-icon-sm">🤖</span></div>
+            <div style="cursor: pointer; font-size: 18px;" onclick="shareApp()"><span class="ai-icon-sm">📲</span></div>
         </div>
     </div>
     <div class="sub-bar">
@@ -266,7 +326,10 @@
     <div id="view-categories" class="view active">
         <div class="user-greeting">
             <span>✨ Choose Subject:</span>
-            <button type="button" onclick="generateAiRevisionNotes()" style="background: linear-gradient(135deg,#a855f7,#6366f1); color:#fff; border:none; padding:6px 12px; border-radius:20px; font-size:12px; font-weight:800; cursor:pointer;">⚡ AI Quick Notes</button>
+            <div style="display:flex; gap:6px;">
+                <button type="button" onclick="openAiCustomQuizModal()" style="background: linear-gradient(135deg,#ec4899,#8b5cf6); color:#fff; border:none; padding:6px 12px; border-radius:20px; font-size:12px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:4px;"><span class="ai-icon-sm">🎲</span> Create AI Quiz</button>
+                <button type="button" onclick="generateAiRevisionNotes()" style="background: linear-gradient(135deg,#a855f7,#6366f1); color:#fff; border:none; padding:6px 12px; border-radius:20px; font-size:12px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:4px;"><span class="ai-icon-sm">⚡</span> AI Quick Notes</button>
+            </div>
         </div>
         <div class="container" id="category-container"></div>
     </div>
@@ -275,7 +338,7 @@
     <div id="view-topics" class="view">
         <div class="user-greeting">
             <span id="topic-header-title"></span>
-            <button type="button" onclick="generateAiTopicNotes()" style="background: linear-gradient(135deg,#a855f7,#6366f1); color:#fff; border:none; padding:6px 12px; border-radius:20px; font-size:12px; font-weight:800; cursor:pointer;">✨ Topic AI Notes</button>
+            <button type="button" onclick="generateAiTopicNotes()" style="background: linear-gradient(135deg,#a855f7,#6366f1); color:#fff; border:none; padding:6px 12px; border-radius:20px; font-size:12px; font-weight:800; cursor:pointer; display:inline-flex; align-items:center; gap:4px;"><span class="ai-icon-sm">✨</span> Topic AI Notes</button>
         </div>
         <div class="container" id="topic-container"></div>
     </div>
@@ -299,7 +362,7 @@
             <div id="current-options-box"></div>
 
             <button type="button" class="btn-ai-guru" onclick="askAiGuruForCurrentQuestion()">
-                <span>🤖 AI Guru Explanation (व्याख्या समझें)</span>
+                <span><span class="ai-icon-sm">🤖</span> AI Guru Explanation (व्याख्या समझें)</span>
             </button>
 
             <div class="nav-actions">
@@ -356,6 +419,10 @@
                 <button type="button" class="filter-btn" id="btn-filter-wrong" onclick="filterReviewQuestions('wrong')">❌ Wrong</button>
             </div>
 
+            <button type="button" class="btn-ai-guru" style="margin-bottom: 14px;" onclick="analyzePerformanceWithAi()">
+                <span><span class="ai-icon-sm">📊</span> Deep AI Weakness Diagnostic & Study Plan</span>
+            </button>
+
             <h3 style="margin-bottom: 12px; font-size: 16px; font-weight: 700;">Answers Review & AI Insights:</h3>
             <div id="result-review-container"></div>
             <button type="button" class="item-card" style="background: linear-gradient(135deg, #ec4899, #8b5cf6); color:#fff; border:none; margin-top:16px; width: 100%; font-size: 16px; justify-content: center;" onclick="navigateToCategories()">Back to Home</button>
@@ -363,71 +430,146 @@
     </div>
 </div>
 
-
-<!-- Exit Test Modal -->
-<div id="modal-exit-test" class="modal-overlay">
-    <div class="modal-box">
-        <h3>Exit Test?</h3>
-        <p>Are you sure you want to exit this test?</p>
-        <div class="modal-btns">
-            <button type="button" style="background:#f1f5f9; color:#475569;" onclick="closeExitTestModal()">No</button>
-            <button type="button" style="background: #dc2626; color:#fff;" onclick="confirmExitTestAndGoHome()">Yes</button>
-        </div>
-    </div>
-</div>
-
-<!-- Gemini AI Guru Explanation Modal -->
-<div id="modal-ai-explanation" class="modal-overlay">
-    <div class="modal-box modal-scrollable-box">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <h3 style="margin:0; color:#6b21a8; display:flex; align-items:center; gap:6px;">🤖 Gemini AI Guru Explanation</h3>
-            <span style="font-size:20px; cursor:pointer;" onclick="closeAiExplanationModal()">✕</span>
-        </div>
-        <div id="ai-explanation-content" style="font-size:14px; line-height:1.6; color:#334155;">
-            Generating AI explanation...
-        </div>
-        <div id="ai-tts-container" style="margin-top:14px; display:none;">
-            <button type="button" id="btn-play-tts" onclick="playGeminiTTS()" style="background:#a855f7; color:#fff; border:none; padding:10px 14px; border-radius:8px; font-weight:700; cursor:pointer; width:100%; display:flex; align-items:center; justify-content:center; gap:8px;">
-                <span>🔊 Listen AI Audio Explanation</span>
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- Gemini Multimodal AI Doubt Solver Modal -->
-<div id="modal-gemini-doubt" class="modal-overlay">
-    <div class="modal-box modal-scrollable-box">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-            <h3 style="margin:0; color:#6b21a8;">🤖 AI Doubt Solver & Clarifier</h3>
-            <span style="font-size:20px; cursor:pointer;" onclick="closeGeminiDoubtModal()">✕</span>
-        </div>
-        <p style="font-size:13px; color:#64748b; margin-bottom:12px;">Ask any exam question or upload a photo of your book page!</p>
-
-        <textarea id="ai-doubt-input" placeholder="Type your doubt or question here..." style="width:100%; height:80px; padding:10px; border-radius:10px; border:1.5px solid #cbd5e1; font-size:14px; outline:none; font-family:inherit; resize:none;"></textarea>
-
-        <div style="margin:10px 0;">
-            <label style="font-size:12.5px; font-weight:700; color:#475569; display:block; margin-bottom:4px;">📷 Attach Question Photo (Optional):</label>
-            <input type="file" id="ai-doubt-image" accept="image/*" onchange="previewDoubtImage(event)" style="font-size:12px; width:100%;" />
-            <img id="ai-image-preview" style="max-width:100%; max-height:120px; margin-top:8px; border-radius:8px; display:none; border:1px solid #e2e8f0;" />
-        </div>
-
-        <button type="button" class="btn-gradient" id="btn-solve-doubt" onclick="solveDoubtWithGemini()">
-            <span>Solve with AI 🚀</span>
-        </button>
-
-        <div id="ai-doubt-response" class="ai-result-box" style="display:none;"></div>
-    </div>
-</div>
-
-<!-- AI Notes Revision Modal -->
+<!-- AI Quick Revision Notes Modal -->
 <div id="modal-ai-notes" class="modal-overlay">
     <div class="modal-box modal-scrollable-box">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
             <h3 style="margin:0; color:#6b21a8;">⚡ AI Quick Revision Notes</h3>
             <span style="font-size:20px; cursor:pointer;" onclick="closeAiNotesModal()">✕</span>
         </div>
-        <div id="ai-notes-content" style="font-size:14.5px; line-height:1.6; color:#1e293b;">
-            Generating revision notes...
+        <div id="ai-notes-content" style="font-size:14px; line-height:1.6; color:#1e293b;"></div>
+    </div>
+</div>
+
+<!-- AI Guru Explanation Modal -->
+<div id="modal-ai-explanation" class="modal-overlay">
+    <div class="modal-box modal-scrollable-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="margin:0; color:#6b21a8;">🤖 AI Guru Explanation</h3>
+            <span style="font-size:20px; cursor:pointer;" onclick="closeAiExplanationModal()">✕</span>
+        </div>
+        <div id="ai-explanation-content" style="font-size:14px; line-height:1.6; color:#1e293b;"></div>
+        <div id="ai-tts-container" style="margin-top:14px; display:none;">
+            <button type="button" id="btn-play-tts" class="btn-gradient" onclick="playGeminiTTS()">
+                <span>🔊 Listen AI Voice Explanation</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Ask AI Doubt Solver Modal -->
+<div id="modal-gemini-doubt" class="modal-overlay">
+    <div class="modal-box modal-scrollable-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="margin:0; color:#6b21a8;">🤖 Ask AI Doubt Solver</h3>
+            <span style="font-size:20px; cursor:pointer;" onclick="closeGeminiDoubtModal()">✕</span>
+        </div>
+        <p style="font-size:12.5px; color:#64748b; margin-bottom:10px;">Type your question or upload a photo of a textbook question!</p>
+        
+        <textarea id="ai-doubt-input" placeholder="Type your question or doubt here..." style="width:100%; height:80px; padding:10px; border-radius:10px; border:1.5px solid #cbd5e1; font-size:14px; outline:none; font-family:inherit; resize:none; margin-bottom:10px;"></textarea>
+
+        <div style="margin-bottom:12px;">
+            <label style="font-size:12px; font-weight:700; color:#475569; display:block; margin-bottom:4px;">Attach Photo / Image (Optional):</label>
+            <input type="file" id="ai-doubt-image" accept="image/*" onchange="previewDoubtImage(event)" style="font-size:12px; width:100%;" />
+            <img id="ai-image-preview" src="" alt="Preview" style="max-width:100%; max-height:150px; border-radius:8px; margin-top:8px; display:none; object-fit:contain;" />
+        </div>
+
+        <button type="button" class="btn-gradient" id="btn-solve-doubt" onclick="solveDoubtWithGemini()">
+            <span>Solve with AI 🚀</span>
+        </button>
+
+        <div id="ai-doubt-response" class="ai-result-box" style="display:none; text-align:left; margin-top:14px;"></div>
+    </div>
+</div>
+
+<!-- Exit Test Confirmation Modal -->
+<div id="modal-exit-test" class="modal-overlay">
+    <div class="modal-box">
+        <h3>Are you sure you want to exit this test?</h3>
+        <p>Aapka test in progress lose ho jayega.</p>
+        <div class="modal-btns">
+            <button type="button" style="background:#f1f5f9; color:#475569;" onclick="closeExitTestModal()">No</button>
+            <button type="button" style="background:#dc2626; color:#fff;" onclick="confirmExitTestAndGoHome()">Yes</button>
+        </div>
+    </div>
+</div>
+
+<!-- AI Custom Quiz Generator Modal -->
+<div id="modal-ai-quiz-gen" class="modal-overlay">
+    <div class="modal-box modal-scrollable-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="margin:0; color:#6b21a8;">🎲 AI Custom Quiz Creator</h3>
+            <span style="font-size:20px; cursor:pointer;" onclick="closeAiCustomQuizModal()">✕</span>
+        </div>
+        <p style="font-size:13px; color:#64748b; margin-bottom:12px;">Type any topic or paste text to generate a custom exam mock test!</p>
+
+        <label style="font-size:12.5px; font-weight:700; color:#475569; display:block; margin-bottom:4px;">Exam Topic or Notes:</label>
+        <textarea id="ai-quiz-topic-input" placeholder="e.g. Indian Constitution Fundamental Rights, Chandrayaan 3, Computer Networking..." style="width:100%; height:80px; padding:10px; border-radius:10px; border:1.5px solid #cbd5e1; font-size:14px; outline:none; font-family:inherit; resize:none;"></textarea>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin:10px 0;">
+            <div>
+                <label style="font-size:12px; font-weight:700; color:#475569; display:block; margin-bottom:4px;">Questions:</label>
+                <select id="ai-quiz-num-select" style="width:100%; padding:8px; border-radius:8px; border:1.5px solid #cbd5e1; font-weight:700;">
+                    <option value="5">5 Questions</option>
+                    <option value="10" selected>10 Questions</option>
+                </select>
+            </div>
+            <div>
+                <label style="font-size:12px; font-weight:700; color:#475569; display:block; margin-bottom:4px;">Difficulty:</label>
+                <select id="ai-quiz-diff-select" style="width:100%; padding:8px; border-radius:8px; border:1.5px solid #cbd5e1; font-weight:700;">
+                    <option value="Moderate">Moderate</option>
+                    <option value="Hard/Exam Level" selected>Hard / Exam Level</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="button" class="btn-gradient" id="btn-generate-custom-quiz" onclick="generateAiCustomQuiz()">
+            <span>Generate & Start Quiz 🚀</span>
+        </button>
+    </div>
+</div>
+
+<!-- AI Performance Diagnostic Modal -->
+<div id="modal-ai-performance" class="modal-overlay">
+    <div class="modal-box modal-scrollable-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="margin:0; color:#6b21a8;">📊 AI Diagnostic & Study Plan</h3>
+            <span style="font-size:20px; cursor:pointer;" onclick="closeAiPerformanceModal()">✕</span>
+        </div>
+        <div id="ai-performance-content" style="font-size:14px; line-height:1.6; color:#1e293b;">
+            Analyzing your performance...
+        </div>
+    </div>
+</div>
+
+<!-- AI Flashcards Modal -->
+<div id="modal-ai-flashcards" class="modal-overlay">
+    <div class="modal-box modal-scrollable-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <h3 style="margin:0; color:#6b21a8;">🃏 Active Recall Flashcards</h3>
+            <span style="font-size:20px; cursor:pointer;" onclick="closeAiFlashcardsModal()">✕</span>
+        </div>
+        <p style="font-size:12.5px; color:#64748b; margin-bottom:8px;">Tap the card to flip between Question and Answer!</p>
+        
+        <div id="flashcards-wrapper">
+            <div id="flashcard-box" class="flashcard-container" onclick="this.classList.toggle('flipped')">
+                <div class="flashcard-inner">
+                    <div class="flashcard-front">
+                        <span style="font-size:11px; font-weight:800; color:#a855f7; margin-bottom:6px;">QUESTION / CONCEPT</span>
+                        <div id="fc-front-text" style="font-weight:700; font-size:15px;">Loading Flashcards...</div>
+                    </div>
+                    <div class="flashcard-back">
+                        <span style="font-size:11px; font-weight:800; color:#e0e7ff; margin-bottom:6px;">ANSWER & KEY FACTS</span>
+                        <div id="fc-back-text" style="font-weight:600; font-size:14px;">...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px;">
+                <button type="button" onclick="prevFlashcard()" style="padding:8px 16px; border-radius:8px; border:1px solid #cbd5e1; background:#fff; font-weight:700; cursor:pointer;">← Prev</button>
+                <span id="fc-counter" style="font-size:13px; font-weight:700; color:#64748b;">1/10</span>
+                <button type="button" onclick="nextFlashcard()" style="padding:8px 16px; border-radius:8px; border:none; background:linear-gradient(135deg,#a855f7,#6366f1); color:#fff; font-weight:700; cursor:pointer;">Next →</button>
+            </div>
         </div>
     </div>
 </div>
@@ -502,6 +644,31 @@
     /* Gemini API Core Services Implementation */
     const GEMINI_TEXT_MODEL = "gemini-3-flash-preview";
     const GEMINI_TTS_MODEL = "gemini-2.5-flash-preview-tts";
+
+    // Structured Output API Calling Engine (Gemini 3 Flash with JSON Schema)
+    async function callGeminiStructuredJSONAPI(userPrompt, jsonSchema, systemInstruction = "") {
+        const apiKey = "";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_TEXT_MODEL}:generateContent?key=${apiKey}`;
+
+        const payload = {
+            contents: [{ parts: [{ text: userPrompt }] }],
+            generationConfig: {
+                responseMimeType: "application/json",
+                responseSchema: jsonSchema
+            }
+        };
+
+        if (systemInstruction) {
+            payload.systemInstruction = { parts: [{ text: systemInstruction }] };
+        }
+
+        const data = await fetchGeminiWithBackoff(apiUrl, payload);
+        const jsonText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (jsonText) {
+            return JSON.parse(jsonText);
+        }
+        throw new Error("Failed to receive structured response from Gemini.");
+    }
 
     // Exponential Backoff Fetch Engine
     async function fetchGeminiWithBackoff(apiUrl, payload, maxRetries = 3) {
@@ -676,6 +843,283 @@
     let currentAiExplanationText = "";
     let activeAudioObject = null;
 
+    // 1. AI Custom Quiz Generator Logic (Structured Output)
+    function openAiCustomQuizModal() {
+        closeDrawer();
+        const input = document.getElementById('ai-quiz-topic-input');
+        const modal = document.getElementById('modal-ai-quiz-gen');
+        if (input) input.value = "";
+        if (modal) modal.style.display = 'flex';
+    }
+
+    function closeAiCustomQuizModal() {
+        const modal = document.getElementById('modal-ai-quiz-gen');
+        if (modal) modal.style.display = 'none';
+    }
+
+    async function generateAiCustomQuiz() {
+        const topicInput = document.getElementById('ai-quiz-topic-input');
+        const topic = topicInput ? topicInput.value.trim() : "";
+        if (!topic) {
+            alert("Please enter a topic or paste notes!");
+            return;
+        }
+
+        const numQSelect = document.getElementById('ai-quiz-num-select');
+        const diffSelect = document.getElementById('ai-quiz-diff-select');
+        const numQ = numQSelect ? parseInt(numQSelect.value, 10) : 10;
+        const difficulty = diffSelect ? diffSelect.value : "Hard/Exam Level";
+        const btn = document.getElementById('btn-generate-custom-quiz');
+
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<span><div class="ai-loading-spinner"></div> Generating Custom Test with Gemini...</span>';
+        }
+
+        const jsonSchema = {
+            type: "OBJECT",
+            properties: {
+                testTitle: { type: "STRING" },
+                questions: {
+                    type: "ARRAY",
+                    items: {
+                        type: "OBJECT",
+                        properties: {
+                            question: { type: "STRING" },
+                            options: {
+                                type: "ARRAY",
+                                items: { type: "STRING" }
+                            },
+                            answer: { type: "INTEGER" },
+                            explanation: { type: "STRING" }
+                        },
+                        required: ["question", "options", "answer", "explanation"]
+                    }
+                }
+            },
+            required: ["testTitle", "questions"]
+        };
+
+        const sysPrompt = "Act as an expert exam paper setter for Indian competitive exams (SSC, UPSC, Banking, Railways). Create challenging, highly accurate multiple-choice questions.";
+        const userPrompt = `Topic: "${topic}"\nNumber of Questions: ${numQ}\nDifficulty: ${difficulty}\nLanguage: ${window.appLanguage || 'hi'}. Output 4 options for each question, zero-indexed answer integer (0,1,2,3), and a clear explanation.`;
+
+        try {
+            const quizResult = await callGeminiStructuredJSONAPI(userPrompt, jsonSchema, sysPrompt);
+
+            if (!quizResult.questions || quizResult.questions.length === 0) {
+                throw new Error("No questions generated.");
+            }
+
+            // Convert to internal quiz format
+            const formattedQuestions = quizResult.questions.map(q => ({
+                q: q.question,
+                options: q.options,
+                answer: q.answer,
+                explanation: q.explanation
+            }));
+
+            const customCategoryName = "🤖 AI Custom Generated Tests";
+            let aiCategory = quizData.find(c => c.category === customCategoryName);
+            if (!aiCategory) {
+                aiCategory = { category: customCategoryName, topics: [] };
+                quizData.unshift(aiCategory);
+            }
+
+            const newTopicObj = {
+                topicName: quizResult.testTitle || topic,
+                chapters: [{
+                    chapterName: `AI Test: ${topic.substring(0,25)}...`,
+                    timeInMinutes: Math.ceil(numQ * 1.5),
+                    questions: formattedQuestions
+                }]
+            };
+
+            aiCategory.topics.unshift(newTopicObj);
+
+            // Auto navigate to the generated test
+            activeCatIdx = 0;
+            activeTopIdx = 0;
+            activeChapIdx = 0;
+
+            closeAiCustomQuizModal();
+            launchTestSession();
+        } catch (err) {
+            alert("Error generating quiz with AI. Please try again.");
+        } finally {
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<span>Generate & Start Quiz 🚀</span>';
+            }
+        }
+    }
+
+    // 2. AI Performance Weakness Diagnostic Logic
+    async function analyzePerformanceWithAi() {
+        const modal = document.getElementById('modal-ai-performance');
+        const content = document.getElementById('ai-performance-content');
+        if (modal) modal.style.display = 'flex';
+        if (content) content.innerHTML = '<div style="text-align:center; padding:20px;"><div class="ai-loading-spinner"></div><p style="margin-top:10px; font-weight:700;">Gemini AI analyzing wrong answers & time metrics...</p></div>';
+
+        const totalQ = activeQuestions.length;
+        let wrongItems = [];
+        let skippedCount = 0;
+
+        activeQuestions.forEach((q, idx) => {
+            const userChoice = userSelections[idx];
+            if (userChoice === undefined) {
+                skippedCount++;
+            } else if (userChoice !== q.answer) {
+                wrongItems.push({
+                    qNum: idx + 1,
+                    question: q.q || q.question,
+                    yourAnswer: q.options ? q.options[userChoice] : '',
+                    correctAnswer: q.options ? q.options[q.answer] : ''
+                });
+            }
+        });
+
+        const correctCount = totalQ - wrongItems.length - skippedCount;
+        const accuracy = totalQ > 0 ? Math.round((correctCount / totalQ) * 100) : 0;
+
+        const sysPrompt = "Act as an AI Exam Coach & Mentor for Indian competitive exam students. Provide a supportive, highly actionable diagnostic report based on test results.";
+        const userPrompt = `Language: ${window.appLanguage || 'hi'}\nScore: ${correctCount}/${totalQ}\nAccuracy: ${accuracy}%\nSkipped: ${skippedCount}\nWrong Questions:\n${JSON.stringify(wrongItems)}\n\nProvide:\n1. 📊 Key Strengths & Conceptual Weaknesses\n2. 💡 Specific Topic Revision Advice\n3. 🗓️ 7-Day Action Plan to reach 95%+ Accuracy.`;
+
+        try {
+            const res = await callGeminiTextAPI(userPrompt, sysPrompt, true);
+            let html = `<div style="white-space:pre-line; font-size:14px; line-height:1.6;">${res.text}</div>`;
+            if (res.sources && res.sources.length > 0) {
+                html += '<div style="margin-top:12px; font-size:12px; font-weight:700; color:#475569;">Grounded Web Study Links:</div>';
+                res.sources.forEach(src => {
+                    html += `<a href="${src.uri}" target="_blank" class="ai-source-badge">🌐 ${src.title}</a>`;
+                });
+            }
+            if (content) content.innerHTML = html;
+        } catch (err) {
+            if (content) content.innerHTML = '<p style="color:#dc2626; font-weight:700;">Unable to generate AI analysis at the moment.</p>';
+        }
+    }
+
+    function closeAiPerformanceModal() {
+        const modal = document.getElementById('modal-ai-performance');
+        if (modal) modal.style.display = 'none';
+    }
+
+    // 3. Live Search Grounded Current Affairs Generator
+    async function generateAiCurrentAffairsQuiz() {
+        closeDrawer();
+        alert("Fetching real-time current affairs news with Gemini Search Grounding...");
+
+        const sysPrompt = "Act as an exam current affairs researcher. Use Google Search to fetch the latest high-yield competitive exam news and create a quiz.";
+        const userPrompt = `Find recent top national and international current affairs news from India (sports, awards, appointments, science, government schemes). Generate 5 multiple-choice questions with 4 options and answer explanation in ${window.appLanguage || 'hi'}.`;
+
+        try {
+            const res = await callGeminiTextAPI(userPrompt, sysPrompt, true);
+
+            const modal = document.getElementById('modal-ai-notes');
+            const content = document.getElementById('ai-notes-content');
+            if (modal) modal.style.display = 'flex';
+
+            let html = `<h3 style="color:#6b21a8; margin-bottom:10px;">📰 Today's Live AI Current Affairs Digest</h3>`;
+            html += `<div style="white-space:pre-line; font-size:14px; line-height:1.6;">${res.text}</div>`;
+
+            if (res.sources && res.sources.length > 0) {
+                html += '<div style="margin-top:12px; font-size:12px; font-weight:700; color:#475569;">Verified News Sources:</div>';
+                res.sources.forEach(src => {
+                    html += `<a href="${src.uri}" target="_blank" class="ai-source-badge">🌐 ${src.title}</a>`;
+                });
+            }
+            if (content) content.innerHTML = html;
+        } catch (err) {
+            alert("Unable to fetch live current affairs right now.");
+        }
+    }
+
+    // 4. Interactive AI Flashcards Logic
+    let currentFlashcards = [];
+    let currentFcIndex = 0;
+
+    function openAiFlashcardsModal() {
+        closeDrawer();
+        const modal = document.getElementById('modal-ai-flashcards');
+        if (modal) modal.style.display = 'flex';
+        generateAiFlashcards();
+    }
+
+    function closeAiFlashcardsModal() {
+        const modal = document.getElementById('modal-ai-flashcards');
+        if (modal) modal.style.display = 'none';
+    }
+
+    async function generateAiFlashcards() {
+        const frontText = document.getElementById('fc-front-text');
+        const backText = document.getElementById('fc-back-text');
+        const box = document.getElementById('flashcard-box');
+        if (box) box.classList.remove('flipped');
+        if (frontText) frontText.innerHTML = '<div class="ai-loading-spinner"></div> Generating Flashcards with AI...';
+        if (backText) backText.innerText = '...';
+
+        const subjectName = (quizData[activeCatIdx] && quizData[activeCatIdx].category) ? quizData[activeCatIdx].category : "General Knowledge";
+
+        const jsonSchema = {
+            type: "OBJECT",
+            properties: {
+                cards: {
+                    type: "ARRAY",
+                    items: {
+                        type: "OBJECT",
+                        properties: {
+                            front: { type: "STRING" },
+                            back: { type: "STRING" }
+                        },
+                        required: ["front", "back"]
+                    }
+                }
+            },
+            required: ["cards"]
+        };
+
+        const sysPrompt = "Act as an expert study aid creator specializing in active recall and spaced repetition flashcards.";
+        const userPrompt = `Subject: "${subjectName}"\nGenerate 8 active-recall flashcards covering high-yield key terms, formulas, dates, and core concepts. Language: ${window.appLanguage || 'hi'}.`;
+
+        try {
+            const res = await callGeminiStructuredJSONAPI(userPrompt, jsonSchema, sysPrompt);
+            currentFlashcards = res.cards || [];
+            currentFcIndex = 0;
+            renderFlashcard();
+        } catch (err) {
+            if (frontText) frontText.innerText = "Error loading flashcards. Please try again.";
+        }
+    }
+
+    function renderFlashcard() {
+        if (currentFlashcards.length === 0) return;
+        const box = document.getElementById('flashcard-box');
+        if (box) box.classList.remove('flipped');
+
+        const card = currentFlashcards[currentFcIndex];
+        const frontText = document.getElementById('fc-front-text');
+        const backText = document.getElementById('fc-back-text');
+        const counter = document.getElementById('fc-counter');
+
+        if (frontText) frontText.innerText = card.front;
+        if (backText) backText.innerText = card.back;
+        if (counter) counter.innerText = `${currentFcIndex + 1}/${currentFlashcards.length}`;
+    }
+
+    function nextFlashcard() {
+        if (currentFcIndex < currentFlashcards.length - 1) {
+            currentFcIndex++;
+            renderFlashcard();
+        }
+    }
+
+    function prevFlashcard() {
+        if (currentFcIndex > 0) {
+            currentFcIndex--;
+            renderFlashcard();
+        }
+    }
+
     // 1. AI Guru Explanation Modal Handler
     async function askAiGuruForCurrentQuestion() {
         const q = activeQuestions[currentQIdx];
@@ -690,9 +1134,9 @@
         const contentEl = document.getElementById('ai-explanation-content');
         const ttsBtn = document.getElementById('ai-tts-container');
 
-        modal.style.display = 'flex';
-        ttsBtn.style.display = 'none';
-        contentEl.innerHTML = '<div style="text-align:center; padding:20px;"><div class="ai-loading-spinner"></div><p style="margin-top:10px; font-weight:700;">AI Guru thinking & generating deep explanation...</p></div>';
+        if (modal) modal.style.display = 'flex';
+        if (ttsBtn) ttsBtn.style.display = 'none';
+        if (contentEl) contentEl.innerHTML = '<div style="text-align:center; padding:20px;"><div class="ai-loading-spinner"></div><p style="margin-top:10px; font-weight:700;">AI Guru thinking & generating deep explanation...</p></div>';
 
         const sysPrompt = "Act as an expert Indian competitive exam professor (SSC, UPSC, Railways, Banking). Provide a concise, highly informative, clear explanation of the given question. State the correct answer, explain the background context, key facts, and give a short trick or mnemonic to remember it easily.";
         const userQuery = `Language: ${lang}\nQuestion: ${qText}\nOptions: ${opts}\nCorrect Answer: ${correctOpt}\nContext/Notes: ${q.explanation || 'N/A'}`;
@@ -716,15 +1160,16 @@
                 });
             }
 
-            contentEl.innerHTML = html;
-            ttsBtn.style.display = 'block';
+            if (contentEl) contentEl.innerHTML = html;
+            if (ttsBtn) ttsBtn.style.display = 'block';
         } catch (err) {
-            contentEl.innerHTML = `<p style="color:#dc2626; font-weight:700;">Failed to generate AI explanation. Please check your internet connection and try again.</p>`;
+            if (contentEl) contentEl.innerHTML = `<p style="color:#dc2626; font-weight:700;">Failed to generate AI explanation. Please check your internet connection and try again.</p>`;
         }
     }
 
     function closeAiExplanationModal() {
-        document.getElementById('modal-ai-explanation').style.display = 'none';
+        const modal = document.getElementById('modal-ai-explanation');
+        if (modal) modal.style.display = 'none';
         if (activeAudioObject) {
             activeAudioObject.pause();
             activeAudioObject = null;
@@ -735,12 +1180,13 @@
     async function playGeminiTTS() {
         if (!currentAiExplanationText) return;
         const btn = document.getElementById('btn-play-tts');
-        const origText = btn.innerHTML;
-        btn.disabled = true;
-        btn.innerHTML = '<span>⏳ Generating AI Voice...</span>';
+        const origText = btn ? btn.innerHTML : "";
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳ Generating AI Voice...</span>';
+        }
 
         try {
-            // Truncate text to fit clean audio response
             const speechText = currentAiExplanationText.substring(0, 300);
             const audioUrl = await callGeminiTTSAPI(speechText, "Kore");
             if (activeAudioObject) activeAudioObject.pause();
@@ -748,14 +1194,18 @@
             activeAudioObject = new Audio(audioUrl);
             activeAudioObject.play();
 
-            btn.innerHTML = '<span>⏸️ Playing Voice Explanation...</span>';
+            if (btn) btn.innerHTML = '<span>⏸️ Playing Voice Explanation...</span>';
             activeAudioObject.onended = () => {
-                btn.innerHTML = origText;
-                btn.disabled = false;
+                if (btn) {
+                    btn.innerHTML = origText;
+                    btn.disabled = false;
+                }
             };
         } catch (err) {
-            btn.innerHTML = '<span>❌ Voice Error, Retry</span>';
-            setTimeout(() => { btn.innerHTML = origText; btn.disabled = false; }, 2000);
+            if (btn) {
+                btn.innerHTML = '<span>❌ Voice Error, Retry</span>';
+                setTimeout(() => { btn.innerHTML = origText; btn.disabled = false; }, 2000);
+            }
         }
     }
 
@@ -765,16 +1215,24 @@
 
     function openGeminiDoubtModal() {
         closeDrawer();
-        document.getElementById('ai-doubt-input').value = "";
-        document.getElementById('ai-doubt-image').value = "";
-        document.getElementById('ai-image-preview').style.display = 'none';
-        document.getElementById('ai-doubt-response').style.display = 'none';
+        const input = document.getElementById('ai-doubt-input');
+        const fileInput = document.getElementById('ai-doubt-image');
+        const preview = document.getElementById('ai-image-preview');
+        const responseBox = document.getElementById('ai-doubt-response');
+        const modal = document.getElementById('modal-gemini-doubt');
+
+        if (input) input.value = "";
+        if (fileInput) fileInput.value = "";
+        if (preview) preview.style.display = 'none';
+        if (responseBox) responseBox.style.display = 'none';
         uploadedDoubtBase64 = "";
-        document.getElementById('modal-gemini-doubt').style.display = 'flex';
+
+        if (modal) modal.style.display = 'flex';
     }
 
     function closeGeminiDoubtModal() {
-        document.getElementById('modal-gemini-doubt').style.display = 'none';
+        const modal = document.getElementById('modal-gemini-doubt');
+        if (modal) modal.style.display = 'none';
     }
 
     function previewDoubtImage(e) {
@@ -784,15 +1242,18 @@
         const reader = new FileReader();
         reader.onload = function(evt) {
             const img = document.getElementById('ai-image-preview');
-            img.src = evt.target.result;
-            img.style.display = 'block';
+            if (img) {
+                img.src = evt.target.result;
+                img.style.display = 'block';
+            }
             uploadedDoubtBase64 = evt.target.result.split(',')[1];
         };
         reader.readAsDataURL(file);
     }
 
     async function solveDoubtWithGemini() {
-        const query = document.getElementById('ai-doubt-input').value.trim();
+        const queryInput = document.getElementById('ai-doubt-input');
+        const query = queryInput ? queryInput.value.trim() : "";
         if (!query && !uploadedDoubtBase64) {
             alert("Please type a question or attach a photo!");
             return;
@@ -801,10 +1262,14 @@
         const btn = document.getElementById('btn-solve-doubt');
         const responseBox = document.getElementById('ai-doubt-response');
 
-        btn.disabled = true;
-        btn.innerHTML = '<span><div class="ai-loading-spinner"></div> Analyzing with Gemini AI...</span>';
-        responseBox.style.display = 'block';
-        responseBox.innerHTML = 'Gemini AI is analyzing your question & generating a detailed solution...';
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<span><div class="ai-loading-spinner"></div> Analyzing with Gemini AI...</span>';
+        }
+        if (responseBox) {
+            responseBox.style.display = 'block';
+            responseBox.innerHTML = 'Gemini AI is analyzing your question & generating a detailed solution...';
+        }
 
         try {
             let replyText = "";
@@ -817,12 +1282,14 @@
                 replyText = res.text;
             }
 
-            responseBox.innerHTML = `<b>🤖 Gemini AI Solution:</b>\n\n${replyText}`;
+            if (responseBox) responseBox.innerHTML = `<b>🤖 Gemini AI Solution:</b>\n\n${replyText}`;
         } catch (err) {
-            responseBox.innerHTML = `<span style="color:#dc2626;">Error: Could not process doubt. Please try again.</span>`;
+            if (responseBox) responseBox.innerHTML = `<span style="color:#dc2626;">Error: Could not process doubt. Please try again.</span>`;
         } finally {
-            btn.disabled = false;
-            btn.innerHTML = '<span>Solve with AI 🚀</span>';
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = '<span>Solve with AI 🚀</span>';
+            }
         }
     }
 
@@ -830,25 +1297,25 @@
     async function generateAiRevisionNotes() {
         const modal = document.getElementById('modal-ai-notes');
         const content = document.getElementById('ai-notes-content');
-        modal.style.display = 'flex';
-        content.innerHTML = '<div style="text-align:center; padding:20px;"><div class="ai-loading-spinner"></div><p style="margin-top:10px; font-weight:700;">Generating Subject Revision Notes...</p></div>';
+        if (modal) modal.style.display = 'flex';
+        if (content) content.innerHTML = '<div style="text-align:center; padding:20px;"><div class="ai-loading-spinner"></div><p style="margin-top:10px; font-weight:700;">Generating Subject Revision Notes...</p></div>';
 
         const subjectName = (quizData[activeCatIdx] && quizData[activeCatIdx].category) ? quizData[activeCatIdx].category : "General Knowledge & GS";
         const prompt = `Generate high-yield rapid revision notes for the competitive exam subject: "${subjectName}". Include key dates, formulas, important articles/laws, top 5 memory tricks, and 10 bullet points most frequently asked in exams. Language: ${window.appLanguage || 'hi'}.`;
 
         try {
             const res = await callGeminiTextAPI(prompt, "You are a master study notes creator for exam revision.", true);
-            content.innerHTML = `<div style="white-space:pre-line;">${res.text}</div>`;
+            if (content) content.innerHTML = `<div style="white-space:pre-line;">${res.text}</div>`;
         } catch (err) {
-            content.innerHTML = `<p style="color:#dc2626; font-weight:700;">Unable to generate AI notes right now.</p>`;
+            if (content) content.innerHTML = `<p style="color:#dc2626; font-weight:700;">Unable to generate AI notes right now.</p>`;
         }
     }
 
     async function generateAiTopicNotes() {
         const modal = document.getElementById('modal-ai-notes');
         const content = document.getElementById('ai-notes-content');
-        modal.style.display = 'flex';
-        content.innerHTML = '<div style="text-align:center; padding:20px;"><div class="ai-loading-spinner"></div><p style="margin-top:10px; font-weight:700;">Generating Topic Revision Notes...</p></div>';
+        if (modal) modal.style.display = 'flex';
+        if (content) content.innerHTML = '<div style="text-align:center; padding:20px;"><div class="ai-loading-spinner"></div><p style="margin-top:10px; font-weight:700;">Generating Topic Revision Notes...</p></div>';
 
         const currentTopic = (quizData[activeCatIdx] && quizData[activeCatIdx].topics) ? quizData[activeCatIdx].topics[activeTopIdx] : null;
         const topicName = currentTopic ? currentTopic.topicName : "Topic Study";
@@ -856,14 +1323,20 @@
 
         try {
             const res = await callGeminiTextAPI(prompt, "You are an expert exam revision coach.", true);
-            content.innerHTML = `<div style="white-space:pre-line;">${res.text}</div>`;
+            if (content) content.innerHTML = `<div style="white-space:pre-line;">${res.text}</div>`;
         } catch (err) {
-            content.innerHTML = `<p style="color:#dc2626; font-weight:700;">Unable to generate AI topic notes.</p>`;
+            if (content) content.innerHTML = `<p style="color:#dc2626; font-weight:700;">Unable to generate AI topic notes.</p>`;
         }
     }
 
     function closeAiNotesModal() {
-        document.getElementById('modal-ai-notes').style.display = 'none';
+        const modal = document.getElementById('modal-ai-notes');
+        if (modal) modal.style.display = 'none';
+    }
+
+    function closeExitTestModal() {
+        const modal = document.getElementById('modal-exit-test');
+        if (modal) modal.style.display = 'none';
     }
 </script>
 
@@ -1463,7 +1936,7 @@
                 '<div style="font-size:14px; margin-bottom:4px;"><b>Aapka Answer:</b> ' + yourAns + '</div>' +
                 '<div style="font-size:14px; color:#166534; margin-bottom:4px;"><b>Sahi Answer:</b> ' + correctAns + '</div>' +
                 (q.explanation ? '<div class="explanation-box"><b>Explanation:</b> ' + q.explanation + '</div>' : '') +
-                `<button type="button" class="btn-ai-guru" onclick="currentQIdx=${idx}; askAiGuruForCurrentQuestion();">🤖 Ask AI Guru Insights</button>` +
+                `<button type="button" class="btn-ai-guru" onclick="currentQIdx=${idx}; askAiGuruForCurrentQuestion();"><span><span class="ai-icon-sm">🤖</span> Ask AI Guru Insights</span></button>` +
                 '</div>';
         });
 
