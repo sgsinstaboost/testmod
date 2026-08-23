@@ -600,7 +600,7 @@
 <div id="modal-track" class="modal-overlay">
     <div class="modal-box modal-scrollable-box">
         <h3>📊 Track My Tests</h3>
-        <p style="margin-bottom:12px;">Aapke dwara diye gaye sabhi tests ki summary:</p>
+        <p style="margin-bottom:12px;">Aapke dwara दिए गए सभी tests की summary:</p>
         <div id="track-tests-container"></div>
         <div style="margin-top: 16px; text-align: center;">
             <button type="button" class="item-card" style="margin:0; padding:10px; width:100%; background:#0f172a; color:#fff;" onclick="closeTrackModal()">Close</button>
@@ -732,7 +732,7 @@
             setTimeout(() => {
                 splash.style.display = 'none';
             }, 500);
-    }
+        }
     }
 
     let isAppInitialized = false;
@@ -2758,7 +2758,7 @@
         }
     };
 
-    // Override openPdfReader to configure TopBar with Refresh & External buttons
+    // Override openPdfReader to configure TopBar with Refresh button
     window.openPdfReader = function(title, pdfUrl) {
         currentActivePdfTitle = title || 'Document';
         currentActivePdfRawUrl = pdfUrl || '';
@@ -2780,9 +2780,6 @@
                 rightBox.innerHTML = `
                     <button type="button" class="btn-pdf-action-pill" onclick="refreshCurrentPdf()" title="Reload / Refresh PDF">
                         <span>🔄</span> Refresh
-                    </button>
-                    <button type="button" class="btn-pdf-action-pill" onclick="openPdfInExternalBrowser()" title="Open In Browser / Drive">
-                        <span>↗</span> Open
                     </button>
                 `;
                 topbar.appendChild(rightBox);
@@ -2934,7 +2931,6 @@
                 var nxt = text[i + 1] || '';
                 if (charMap[c] !== undefined) {
                     var latin = charMap[c];
-                    // Append short 'a' after standalone consonant if no matra follows
                     var isConsonant = /[\u0915-\u0939]/.test(c);
                     var hasMatra = /[\u093E-\u094D\u0902\u0903]/.test(nxt);
                     if (isConsonant && !hasMatra && nxt !== ' ' && nxt !== '') {
