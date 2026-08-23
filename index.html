@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
     <title>SGS Mock Test: All Exams Preparation</title>
 
     <style>
@@ -131,12 +131,12 @@
         }
         .btn-pdf-view:active { transform: scale(0.96); }
 
-        /* Fullscreen Clean In-App PDF Viewer */
+        /* Fullscreen PDF Reader */
         #view-pdf-reader {
             position: fixed; inset: 0; background: #ffffff; z-index: 2000; display: none; flex-direction: column;
         }
         .pdf-reader-topbar {
-            background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #fff; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.15); z-index: 10;
+            background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #fff; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.15);
         }
         .pdf-frame-wrapper {
             flex: 1; width: 100%; height: 100%; position: relative; overflow: hidden; background: #f8fafc;
@@ -384,7 +384,7 @@
         </a>
         <a class="drawer-item" href="https://www.termsfeed.com/live/d15e3366-cb7a-4b6f-9726-5b1603e62231" target="_blank" onclick="closeDrawer()">
             <span>⚠️</span> Disclaimer ↗
-        </a>
+        </div>
         <div class="drawer-item" onclick="shareApp()">
             <span>📲</span> Share App
         </div>
@@ -514,7 +514,7 @@
                     <div class="score-stat">
                         <div class="stat-val" id="stat-correct" style="color:#16a34a;">0</div>
                         <div class="stat-lbl">Correct</div>
-                    </div>
+                        </div>
                     <div class="score-stat">
                         <div class="stat-val" id="stat-wrong" style="color:#dc2626;">0</div>
                         <div class="stat-lbl">Wrong</div>
@@ -600,7 +600,7 @@
 <div id="modal-track" class="modal-overlay">
     <div class="modal-box modal-scrollable-box">
         <h3>📊 Track My Tests</h3>
-        <p style="margin-bottom:12px;">Aapke dwara दिए gaye sabhi tests ki summary:</p>
+        <p style="margin-bottom:12px;">Aapke dwara diye gaye sabhi tests ki summary:</p>
         <div id="track-tests-container"></div>
         <div style="margin-top: 16px; text-align: center;">
             <button type="button" class="item-card" style="margin:0; padding:10px; width:100%; background:#0f172a; color:#fff;" onclick="closeTrackModal()">Close</button>
@@ -732,7 +732,7 @@
             setTimeout(() => {
                 splash.style.display = 'none';
             }, 500);
-        }
+    }
     }
 
     let isAppInitialized = false;
@@ -940,15 +940,24 @@
     // ================= PDF VIEWER FUNCTIONS =================
     function openPdfReader(title, pdfUrl) {
         document.getElementById('pdf-reader-title').innerText = title || 'Document';
-        // Clean Direct Embed Link without Google Drive branding
-        var cleanEmbedUrl = pdfUrl;
+        var finalPdfUrl = pdfUrl;
+
+        // Extract Google Drive ID & convert to clean preview
         if (pdfUrl.indexOf('drive.google.com') !== -1) {
-            var fileIdMatch = pdfUrl.match(/[-\w]{25,}/);
-            if (fileIdMatch) {
-                cleanEmbedUrl = "https://docs.google.com/viewer?url=https://drive.google.com/uc?id=" + fileIdMatch[0] + "&embedded=true";
+            var fileId = "";
+            var idMatch = pdfUrl.match(/id=([a-zA-Z0-9_-]+)/);
+            if (idMatch && idMatch[1]) {
+                fileId = idMatch[1];
+            } else {
+                var pathMatch = pdfUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                if (pathMatch && pathMatch[1]) fileId = pathMatch[1];
+            }
+            if (fileId) {
+                finalPdfUrl = "https://drive.google.com/file/d/" + fileId + "/preview";
             }
         }
-        document.getElementById('pdf-viewer-iframe').src = cleanEmbedUrl;
+
+        document.getElementById('pdf-viewer-iframe').src = finalPdfUrl;
         document.getElementById('view-pdf-reader').style.display = 'flex';
         history.pushState({ view: 'pdfreader' }, '');
     }
@@ -1055,7 +1064,7 @@
               <div class="item-card pdf-item-row" onclick="openPdfReader('${chap.chapterName}', '${chap.pdfUrl}')">
                 <span class="pdf-item-title">📄 ${chap.chapterName}</span>
                 <button type="button" class="btn-pdf-view">View ↗</button>
-              </div>
+            </div>
             `;
         }
 
@@ -1158,7 +1167,7 @@
     function launchTestSession(pushHistory) {
       if (pushHistory === undefined) pushHistory = true;
       closeStartModal();
-      var chap = quizData[activeCatIdx].topics[activeTopIdx].chapters[chapIdx];
+    var chap = quizData[activeCatIdx].topics[activeTopIdx].chapters[chapIdx];
       activeQuestions = (chap && chap.questions) ? chap.questions : [];
       currentQIdx = 0;
       userSelections = {};
@@ -1358,7 +1367,6 @@
 
       renderResultReviewUI(correct, wrong, total);
 
-      // Save test result directly in Local Storage
       const currentTopic = quizData[activeCatIdx].topics[activeTopIdx];
       const chap = currentTopic.chapters[activeChapIdx];
       const testId = 'test_' + Date.now();
@@ -1385,14 +1393,13 @@
             return;
         }
 
-        // 1. If any modal is open, close modal on back press (except updateModal)
         var openModals = document.querySelectorAll('.modal-overlay');
         var modalWasOpen = false;
         openModals.forEach(function(m) {
           if (m.style.display === 'flex' || m.style.display === 'block') {
             m.style.display = 'none';
             modalWasOpen = true;
-          }
+        }
         });
         var drawer = document.getElementById('drawer-overlay');
         if (drawer && drawer.style.display === 'block') {
@@ -1404,7 +1411,6 @@
             return;
         }
 
-        // 2. Test Running View Double-Back Protection
         if (currentActiveView === 'test') {
             var nowTest = Date.now();
             if (nowTest - lastTestBackPressTime < 2000) {
@@ -1418,7 +1424,6 @@
             return;
         }
 
-        // 3. Result View -> Go back to Tests View
         if (currentActiveView === 'result') {
             if (activeTopIdx !== null && activeTopIdx !== undefined) {
                 navigateToChapters(activeTopIdx, false);
@@ -1428,19 +1433,16 @@
             return;
         }
 
-        // 4. Tests View -> Go back to Topics View
         if (currentActiveView === 'chapters') {
             navigateToTopics(activeCatIdx, false);
             return;
         }
 
-        // 5. Topics View -> Go back to Categories View
         if (currentActiveView === 'topics') {
             navigateToCategories(false);
             return;
         }
 
-        // 6. Double back press exit logic on Home Screen (view-categories)
         if (!e.state || e.state.view === 'categories') {
           if (currentActiveView === 'categories') {
             var now = Date.now();
@@ -1456,7 +1458,7 @@
             showExitToast("Press back again to exit");
             history.pushState({ view: 'categories' }, '');
             return;
-          }
+        }
           navigateToCategories(false);
         } else if (e.state.view === 'topics') {
           if (e.state.catIdx !== undefined) activeCatIdx = e.state.catIdx;
@@ -1472,5 +1474,1535 @@
       };
     }
 </script>
+
+<!-- AUTO OVERRIDE FIX SCRIPT (Bina purani line delete kiye test start ko fix karta hai) -->
+<script>
+    window.launchTestSession = function(pushHistory) {
+      if (pushHistory === undefined) pushHistory = true;
+      closeStartModal();
+      var chap = quizData[activeCatIdx].topics[activeTopIdx].chapters[activeChapIdx];
+      activeQuestions = (chap && chap.questions) ? chap.questions : [];
+      currentQIdx = 0;
+      userSelections = {};
+      timeLeft = (chap.timeInMinutes || 15) * 60;
+
+      if (pushHistory) {
+        history.pushState({ view: 'test', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
+      }
+      showView('view-test');
+      renderCurrentQuestion();
+      startTimer();
+    };
+</script>
+
+<!-- ================= NEW ADVANCED FEATURES INJECTION (NO LINES DELETED) ================= -->
+<style>
+    .palette-btn.marked-review {
+        border-color: #8b5cf6 !important;
+        background: #f5f3ff !important;
+        color: #7c3aed !important;
+        box-shadow: 0 0 0 2px #c4b5fd inset;
+      }
+    .palette-btn.marked-review.answered {
+        background: #7c3aed !important;
+        color: #ffffff !important;
+        border-color: #6d28d9 !important;
+    }
+    .btn-mark-review {
+        background: #f5f3ff;
+        border: 1.5px solid #8b5cf6;
+        color: #7c3aed;
+        font-weight: 700;
+        border-radius: 8px;
+        padding: 10px;
+        cursor: pointer;
+        width: 100%;
+        margin-top: 10px;
+        font-size: 13.5px;
+        transition: all 0.2s;
+    }
+    .btn-mark-review.is-marked {
+        background: #7c3aed;
+        color: #ffffff;
+    }
+    .btn-clear-history {
+        background: #fee2e2;
+        color: #dc2626;
+        border: 1.5px solid #f87171;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 800;
+        cursor: pointer;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        width: 100%;
+    }
+    .time-stat-pill {
+        display: inline-block;
+        background: #f8fafc;
+        border: 1px solid #cbd5e1;
+        color: #475569;
+        font-size: 11.5px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 6px;
+        margin-top: 4px;
+    }
+</style>
+
+<!-- Marked For Review Modal -->
+<div id="modal-marked-review" class="modal-overlay">
+    <div class="modal-box modal-scrollable-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <h3 style="margin:0;">🔖 Marked For Review</h3>
+        </div>
+        <p style="margin-bottom:12px; font-size:13px;">Aapke dwara review ke liye mark kiye gaye sabhi questions:</p>
+        <button type="button" class="btn-clear-history" onclick="clearAllMarkedQuestions()">🗑️ Clean All Marked Reviews</button>
+        <div id="marked-review-container"></div>
+        <div style="margin-top: 16px; text-align: center;">
+            <button type="button" class="item-card" style="margin:0; padding:10px; width:100%; background:#0f172a; color:#fff;" onclick="closeMarkedReviewModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Variables for New Features
+    var markedReviewQuestions = {}; // { qIdx: true }
+    var questionTimeSpent = {}; // { qIdx: seconds }
+    var lastQuestionSwitchTime = 0;
+    var testSessionStartTime = 0;
+    var totalTimeTakenFormatted = "0m 0s";
+    var globalSavedMarkedStore = {};
+
+    function loadSavedMarkedStore() {
+        try {
+            var raw = localStorage.getItem('sgs_saved_marked_questions');
+            globalSavedMarkedStore = raw ? JSON.parse(raw) : {};
+        } catch(e) { globalSavedMarkedStore = {}; }
+    }
+    function saveMarkedStoreToLocal() {
+        try {
+            localStorage.setItem('sgs_saved_marked_questions', JSON.stringify(globalSavedMarkedStore));
+        } catch(e) {}
+    }
+    loadSavedMarkedStore();
+
+    function formatTimeDuration(totalSecs) {
+        if (!totalSecs || totalSecs < 0) totalSecs = 0;
+        var m = Math.floor(totalSecs / 60);
+        var s = totalSecs % 60;
+        if (m > 0) return m + "m " + s + "s";
+        return s + "s";
+    }
+
+    function recordCurrentQTime() {
+        if (lastQuestionSwitchTime > 0) {
+            var elapsed = Math.round((Date.now() - lastQuestionSwitchTime) / 1000);
+            if (!questionTimeSpent[currentQIdx]) questionTimeSpent[currentQIdx] = 0;
+            questionTimeSpent[currentQIdx] += elapsed;
+        }
+        lastQuestionSwitchTime = Date.now();
+    }
+
+    // Inject 'Mark For Review' in Drawer (Right before Privacy Policy)
+    function injectDrawerMarkedOption() {
+        var drawer = document.querySelector('.drawer-content');
+        if (!drawer || document.getElementById('drawer-item-marked')) return;
+
+        var markedItem = document.createElement('div');
+        markedItem.id = 'drawer-item-marked';
+        markedItem.className = 'drawer-item';
+        markedItem.innerHTML = '<span>🔖</span> Marked Review Questions';
+        markedItem.onclick = function() {
+            closeDrawer();
+            openMarkedReviewModal();
+        };
+
+        var trackItem = drawer.querySelector('.drawer-item');
+        if (trackItem && trackItem.nextElementSibling) {
+            drawer.insertBefore(markedItem, trackItem.nextElementSibling);
+        } else {
+            drawer.appendChild(markedItem);
+        }
+    }
+    setTimeout(injectDrawerMarkedOption, 500);
+
+    // Override Track My Test Modal to add Clean / Delete button
+    window.openTrackMyTestModal = function() {
+        closeDrawer();
+        const container = document.getElementById('track-tests-container');
+        const keys = Object.keys(userTestHistory || {});
+
+        if (keys.length === 0) {
+            container.innerHTML = '<p style="color:#64748b; font-size:13px; text-align:center; padding:20px 0;">Abhi tak koi test submit nahi kiya hai.</p>';
+        } else {
+            var clearBtn = '<button type="button" class="btn-clear-history" onclick="clearAllTestHistory()">🗑️ Clean All Test History</button>';
+            container.innerHTML = clearBtn + keys.reverse().map(k => {
+                const item = userTestHistory[k];
+                if (!item) return '';
+                const date = item.timestamp ? new Date(item.timestamp).toLocaleDateString() : 'Recent';
+                const timeTakenTxt = item.timeTaken ? ` | ⏱️ Time: ${item.timeTaken}` : '';
+                return `
+                    <div class="history-card">
+                        <div class="history-card-header">
+                            <span>${item.chapter || 'Test'}</span>
+                            <span style="color:#16a34a;">${item.score || 0}/${item.total || 0}</span>
+                        </div>
+                        <div style="font-size:12px; color:#64748b;">Subject: ${item.category || ''} | Date: ${date}${timeTakenTxt}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+        document.getElementById('modal-track').style.display = 'flex';
+    };
+
+    window.clearAllTestHistory = function() {
+        if (confirm("Kya aap sach me sabhi test records clean / delete karna chahte hain?")) {
+            userTestHistory = {};
+            localStorage.removeItem('sgs_user_test_history');
+            openTrackMyTestModal();
+            if (typeof renderChaptersList === 'function') renderChaptersList();
+        }
+    };
+
+    // Marked Questions Drawer Modal Handlers
+    window.openMarkedReviewModal = function() {
+        var container = document.getElementById('marked-review-container');
+        var keys = Object.keys(globalSavedMarkedStore || {});
+        if (keys.length === 0) {
+            container.innerHTML = '<p style="color:#64748b; font-size:13px; text-align:center; padding:20px 0;">Abhi tak koi bhi question mark nahi kiya gaya hai.</p>';
+        } else {
+            container.innerHTML = keys.reverse().map(k => {
+                var item = globalSavedMarkedStore[k];
+                if (!item) return '';
+                var opts = Array.isArray(item.options) ? item.options : [];
+                var optHtml = opts.map((op, i) => {
+                    var isCor = i === item.answer;
+                    return `<div style="font-size:13px; margin:3px 0; color:${isCor ? '#166534' : '#475569'}; font-weight:${isCor ? '700' : 'normal'};">• ${op} ${isCor ? '✅' : ''}</div>`;
+                }).join('');
+                return `
+                    <div class="review-card" style="margin-bottom:10px;">
+                        <span class="badge" style="background:#f5f3ff; color:#7c3aed;">${item.testName || 'Test'}</span>
+                        <div style="font-weight:700; font-size:14.5px; margin:6px 0;">${item.question || ''}</div>
+                        ${optHtml}
+                        ${item.explanation ? `<div class="explanation-box" style="margin-top:6px;">${item.explanation}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+        document.getElementById('modal-marked-review').style.display = 'flex';
+    };
+
+    window.closeMarkedReviewModal = function() {
+        document.getElementById('modal-marked-review').style.display = 'none';
+    };
+
+    window.clearAllMarkedQuestions = function() {
+        if (confirm("Kya aap sabhi Marked Questions ko clean / delete karna chahte hain?")) {
+            globalSavedMarkedStore = {};
+            saveMarkedStoreToLocal();
+            openMarkedReviewModal();
+        }
+    };
+
+    // Override launchTestSession with full timing and features
+    window.launchTestSession = function(pushHistory) {
+      if (pushHistory === undefined) pushHistory = true;
+      closeStartModal();
+      var chap = quizData[activeCatIdx].topics[activeTopIdx].chapters[activeChapIdx];
+      activeQuestions = (chap && chap.questions) ? chap.questions : [];
+      currentQIdx = 0;
+      userSelections = {};
+      markedReviewQuestions = {};
+      questionTimeSpent = {};
+      testSessionStartTime = Date.now();
+      lastQuestionSwitchTime = Date.now();
+      timeLeft = (chap.timeInMinutes || 15) * 60;
+
+      if (pushHistory) {
+        history.pushState({ view: 'test', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
+      }
+      showView('view-test');
+      renderCurrentQuestion();
+      startTimer();
+    };
+
+    // Override Navigation Functions to record per-question time
+    window.goToNext = function() {
+      recordCurrentQTime();
+      if (currentQIdx < activeQuestions.length - 1) {
+        currentQIdx++;
+        renderCurrentQuestion();
+      }
+    };
+
+    window.goToPrev = function() {
+      recordCurrentQTime();
+      if (currentQIdx > 0) {
+        currentQIdx--;
+        renderCurrentQuestion();
+      }
+    };
+
+    window.saveAndNext = function() {
+      recordCurrentQTime();
+      if (currentQIdx < activeQuestions.length - 1) {
+        currentQIdx++;
+        renderCurrentQuestion();
+    } else {
+        openSubmitModal();
+      }
+    };
+
+    window.jumpToQuestion = function(idx) {
+      recordCurrentQTime();
+      currentQIdx = idx;
+      renderCurrentQuestion();
+    };
+
+    window.toggleMarkCurrentQuestion = function() {
+        markedReviewQuestions[currentQIdx] = !markedReviewQuestions[currentQIdx];
+        var q = activeQuestions[currentQIdx];
+        if (q) {
+            var storeKey = (quizData[activeCatIdx].category || '') + '_' + currentQIdx + '_' + (q.q || q.question || '').substring(0, 20);
+            if (markedReviewQuestions[currentQIdx]) {
+                var curChap = quizData[activeCatIdx].topics[activeTopIdx].chapters[activeChapIdx];
+                globalSavedMarkedStore[storeKey] = {
+                    testName: (curChap ? curChap.chapterName : 'Test'),
+                    question: (q.q || q.question || ''),
+                    options: q.options || [],
+                    answer: q.answer,
+                    explanation: q.explanation || ''
+                };
+            } else {
+                delete globalSavedMarkedStore[storeKey];
+            }
+            saveMarkedStoreToLocal();
+        }
+        renderCurrentQuestion();
+    };
+
+    // Override renderCurrentQuestion to append Mark For Review Button
+    window.renderCurrentQuestion = function() {
+      var q = activeQuestions[currentQIdx];
+      if (!q) return;
+      document.getElementById('q-indicator').innerText = 'Question ' + (currentQIdx + 1) + '/' + activeQuestions.length;
+      document.getElementById('current-question-text').innerText = (currentQIdx + 1) + '. ' + (q.q || q.question || '');
+
+      var optLetters = ['A', 'B', 'C', 'D'];
+      var optContainer = document.getElementById('current-options-box');
+      var optionsList = Array.isArray(q.options) ? q.options : [];
+
+      var isMarked = !!markedReviewQuestions[currentQIdx];
+
+      var optionsHtml = optionsList.map(function(opt, idx) {
+        var isSelected = userSelections[currentQIdx] === idx;
+        return '<div class="option-item ' + (isSelected ? 'selected' : '') + '" onclick="selectAnswer(' + idx + ')">' +
+               '<span class="opt-circle">' + (optLetters[idx] || (idx + 1)) + '</span>' +
+               '<span>' + opt + '</span></div>';
+      }).join('');
+
+      var markBtnHtml = `
+        <button type="button" class="btn-mark-review ${isMarked ? 'is-marked' : ''}" onclick="toggleMarkCurrentQuestion()">
+            ${isMarked ? '🔖 Marked For Review (Click to Unmark)' : '🔖 Mark Question For Review'}
+        </button>
+      `;
+
+      optContainer.innerHTML = optionsHtml + markBtnHtml;
+      renderPalette();
+    };
+
+    // Override renderPalette with Marked for Review colors
+    window.renderPalette = function() {
+      var pContainer = document.getElementById('palette-container');
+      pContainer.innerHTML = (activeQuestions || []).map(function(_, idx) {
+        var isAnswered = userSelections[idx] !== undefined;
+        var isCur = currentQIdx === idx;
+        var isMarked = !!markedReviewQuestions[idx];
+        return '<button type="button" class="palette-btn ' + 
+               (isAnswered ? 'answered ' : '') + 
+               (isMarked ? 'marked-review ' : '') + 
+               (isCur ? 'current ' : '') + 
+               '" onclick="jumpToQuestion(' + idx + ')">' + (idx + 1) + '</button>';
+      }).join('');
+    };
+
+    // Override renderResultReviewUI to show Total Time + Question Wise Time
+    window.renderResultReviewUI = function(correct, wrong, total) {
+        var skipped = total - (correct + wrong);
+        if (skipped < 0) skipped = 0;
+
+        var accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+        var elAccuracy = document.getElementById('donut-accuracy-text');
+        if (elAccuracy) elAccuracy.innerText = accuracy + '%';
+
+        // Fix Score Grid to 4 Columns for Total Time Display
+        var grid = document.querySelector('#view-result .score-grid');
+        if (grid) {
+            grid.style.gridTemplateColumns = "1fr 1fr 1fr 1fr";
+            if (!document.getElementById('stat-time-box')) {
+                var timeStat = document.createElement('div');
+                timeStat.id = 'stat-time-box';
+                timeStat.className = 'score-stat';
+                timeStat.innerHTML = '<div class="stat-val" id="stat-total-time" style="color:#8b5cf6; font-size:17px;">0s</div><div class="stat-lbl">Time Taken</div>';
+                grid.appendChild(timeStat);
+            }
+            var elTime = document.getElementById('stat-total-time');
+            if (elTime) elTime.innerText = totalTimeTakenFormatted;
+        }
+
+        var cDeg = total > 0 ? (correct / total) * 360 : 0;
+        var wDeg = total > 0 ? (wrong / total) * 360 : 0;
+        var endCDeg = cDeg;
+        var endWDeg = cDeg + wDeg;
+
+        var chart = document.getElementById('result-donut-chart');
+        if (chart) {
+            chart.style.background = 'conic-gradient(#16a34a 0deg ' + endCDeg + 'deg, #dc2626 ' + endCDeg + 'deg ' + endWDeg + 'deg, #94a3b8 ' + endWDeg + 'deg 360deg)';
+        }
+
+        var reviewHtml = '';
+        (activeQuestions || []).forEach(function(q, idx) {
+            var choice = userSelections[idx];
+            var isAnswered = choice !== undefined;
+            var isCorrect = choice === q.answer;
+
+            var badgeClass = 'skipped';
+            var badgeText = 'Skipped';
+            var statusAttr = 'skipped';
+
+            if (isAnswered) {
+                if (isCorrect) {
+                    badgeClass = 'correct';
+                    badgeText = 'Correct';
+                    statusAttr = 'correct';
+                } else {
+                    badgeClass = 'wrong';
+                    badgeText = 'Wrong';
+                    statusAttr = 'wrong';
+                }
+            }
+
+            var opts = Array.isArray(q.options) ? q.options : [];
+            var yourAns = isAnswered && opts[choice] !== undefined ? opts[choice] : "Not Attempted";
+            var correctAns = (opts[q.answer] !== undefined) ? opts[q.answer] : "N/A";
+            var qSpent = formatTimeDuration(questionTimeSpent[idx] || 0);
+
+            reviewHtml += '<div class="review-card" data-status="' + statusAttr + '">' +
+              '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">' +
+                  '<span class="badge ' + badgeClass + '">' + badgeText + '</span>' +
+                  '<span class="time-stat-pill">⏱️ ' + qSpent + '</span>' +
+              '</div>' +
+              '<div style="font-weight:700; margin-bottom:6px; font-size:15px;">Q' + (idx + 1) + '. ' + (q.q || q.question || '') + '</div>' +
+              '<div style="font-size:14px; margin-bottom:4px;"><b>Aapka Answer:</b> ' + yourAns + '</div>' +
+              '<div style="font-size:14px; color:#166534; margin-bottom:4px;"><b>Sahi Answer:</b> ' + correctAns + '</div>' +
+              (q.explanation ? '<div class="explanation-box"><b>Explanation:</b> ' + q.explanation + '</div>' : '') +
+              '</div>';
+        });
+
+        document.getElementById('result-review-container').innerHTML = reviewHtml;
+        filterReviewQuestions('all');
+    };
+
+    // Override executeSubmit to save full duration
+    window.executeSubmit = function() {
+      recordCurrentQTime();
+      closeSubmitModal();
+      clearInterval(timerInterval);
+
+      var elapsedTotalSecs = testSessionStartTime > 0 ? Math.round((Date.now() - testSessionStartTime) / 1000) : 0;
+      totalTimeTakenFormatted = formatTimeDuration(elapsedTotalSecs);
+
+      var correct = 0;
+      var wrong = 0;
+      var total = activeQuestions.length;
+
+      (activeQuestions || []).forEach(function(q, idx) {
+        var choice = userSelections[idx];
+        var isAnswered = choice !== undefined;
+        var isCorrect = choice === q.answer;
+
+        if (isAnswered) {
+          if (isCorrect) correct++;
+          else wrong++;
+        }
+      });
+
+      document.getElementById('stat-score').innerText = correct + '/' + total;
+      document.getElementById('stat-correct').innerText = correct;
+      document.getElementById('stat-wrong').innerText = wrong;
+
+      renderResultReviewUI(correct, wrong, total);
+
+      const currentTopic = quizData[activeCatIdx].topics[activeTopIdx];
+      const chap = currentTopic.chapters[activeChapIdx];
+      const testId = 'test_' + Date.now();
+      userTestHistory[testId] = {
+          category: quizData[activeCatIdx].category,
+          chapter: (currentTopic.topicName || '') + " - " + (chap.chapterName || ''),
+          score: correct,
+          total: total,
+          userAnswers: userSelections,
+          timeTaken: totalTimeTakenFormatted,
+          perQuestionTime: questionTimeSpent,
+          timestamp: new Date().toISOString()
+      };
+      saveLocalTestHistory();
+
+      history.pushState({ view: 'result', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
+      showView('view-result');
+    };
+
+    // Override viewSavedTestResult to restore saved time stats
+    window.viewSavedTestResult = function(pushHistory) {
+        if (pushHistory === undefined) pushHistory = true;
+        closeReattemptModal();
+        const currentTopic = quizData[activeCatIdx].topics[activeTopIdx];
+        const chap = currentTopic.chapters[activeChapIdx];
+        const attempt = getLatestAttempt(quizData[activeCatIdx].category, (currentTopic.topicName || '') + " - " + (chap.chapterName || ''));
+        if (!attempt) return;
+
+        activeQuestions = (chap && chap.questions) ? chap.questions : [];
+        userSelections = attempt[1].userAnswers || {};
+        totalTimeTakenFormatted = attempt[1].timeTaken || "N/A";
+        questionTimeSpent = attempt[1].perQuestionTime || {};
+
+        let correct = attempt[1].score || 0;
+        let total = attempt[1].total || 0;
+        let wrong = total - correct;
+
+        document.getElementById('stat-score').innerText = correct + '/' + total;
+        document.getElementById('stat-correct').innerText = correct;
+        document.getElementById('stat-wrong').innerText = wrong;
+
+        renderResultReviewUI(correct, wrong, total);
+
+        if (pushHistory) {
+            history.pushState({ view: 'result', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
+        }
+        showView('view-result');
+    };
+</script>
+
+<!-- ================= PHASE 3: DARK MODE + BILINGUAL SWITCH + DOWNLOAD & SHARE RESULT CARD ================= -->
+<style>
+    /* Modern UI Refinements */
+    .top-bar {
+        background: linear-gradient(135deg, #ec4899, #8b5cf6, #3b82f6) !important;
+        backdrop-filter: blur(10px);
+    }
+    .item-card {
+        border-radius: 14px !important;
+        box-shadow: 0 4px 14px rgba(236, 72, 153, 0.12) !important;
+    }
+    
+    /* Dark Theme Styles */
+    body.dark-theme {
+        background-color: #0b0f19 !important;
+        color: #f1f5f9 !important;
+    }
+    body.dark-theme .sub-bar {
+        background: #111827 !important;
+        color: #94a3b8 !important;
+        border-bottom-color: #1f2937 !important;
+    }
+    body.dark-theme .user-greeting {
+        color: #f8fafc !important;
+    }
+    body.dark-theme .item-card {
+        background: linear-gradient(135deg, #1e1b4b, #0f172a) !important;
+        border-color: #ec4899 !important;
+        color: #f472b6 !important;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.5) !important;
+    }
+    body.dark-theme .item-card:nth-child(2n) {
+        background: linear-gradient(135deg, #2e1065, #0f172a) !important;
+        border-color: #a78bfa !important;
+        color: #c4b5fd !important;
+    }
+    body.dark-theme .item-card:nth-child(3n) {
+        background: linear-gradient(135deg, #172554, #0f172a) !important;
+        border-color: #60a5fa !important;
+        color: #93c5fd !important;
+    }
+    body.dark-theme .question-box,
+    body.dark-theme .option-item,
+    body.dark-theme .modal-box,
+    body.dark-theme .drawer-sidebar,
+    body.dark-theme .score-stat,
+    body.dark-theme .review-card,
+    body.dark-theme .history-card {
+        background-color: #1e293b !important;
+        color: #f8fafc !important;
+        border-color: #334155 !important;
+    }
+    body.dark-theme .option-item.selected {
+        background-color: #3b0764 !important;
+        color: #f472b6 !important;
+        border-color: #ec4899 !important;
+    }
+    body.dark-theme .score-summary {
+        background: linear-gradient(135deg, #1e293b, #0f172a) !important;
+        border-color: #ec4899 !important;
+    }
+    body.dark-theme .score-summary h2 {
+        color: #f472b6 !important;
+    }
+    body.dark-theme .donut-chart-inner {
+        background: #1e293b !important;
+    }
+    body.dark-theme .donut-percentage {
+        color: #f472b6 !important;
+    }
+    body.dark-theme .action-btn {
+        background: #1e293b !important;
+        color: #f1f5f9 !important;
+        border-color: #475569 !important;
+    }
+    body.dark-theme .palette-btn {
+        background: #1e293b !important;
+        color: #cbd5e1 !important;
+        border-color: #475569 !important;
+    }
+    body.dark-theme .explanation-box {
+        background: #31133f !important;
+        color: #fbcfe8 !important;
+        border-left-color: #f472b6 !important;
+    }
+    body.dark-theme .filter-btn {
+        background: #1e293b !important;
+        color: #94a3b8 !important;
+        border-color: #475569 !important;
+    }
+    body.dark-theme .drawer-item {
+        color: #cbd5e1 !important;
+        border-bottom-color: #334155 !important;
+    }
+    body.dark-theme .drawer-item:active {
+        background: #1e293b !important;
+    }
+
+    /* Bilingual Switch Pill */
+    .lang-toggle-btn {
+        background: #fdf2f8;
+        border: 1.5px solid #f472b6;
+        color: #db2777;
+        font-weight: 800;
+        padding: 5px 12px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 12.5px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        transition: all 0.2s;
+    }
+    body.dark-theme .lang-toggle-btn {
+        background: #31133f;
+        color: #f472b6;
+        border-color: #db2777;
+    }
+
+    /* Result Actions Buttons (Share / Download Scorecard) */
+    .result-share-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 14px;
+    }
+    .btn-action-share {
+        padding: 12px 10px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 800;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: all 0.2s;
+    }
+    .btn-download-card {
+        background: linear-gradient(135deg, #3b82f6, #2563eb);
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+    }
+    .btn-whatsapp-share {
+        background: linear-gradient(135deg, #22c55e, #16a34a);
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(34,197,94,0.3);
+    }
+    .btn-action-share:active {
+        transform: scale(0.97);
+    }
+
+    /* Dark Mode Toggle Nav Icon */
+    .top-action-icons {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+</style>
+
+<!-- Hidden Canvas for Generating Shareable Result Scorecard Card -->
+<canvas id="scorecard-canvas" width="800" height="1000" style="display:none;"></canvas>
+
+<script>
+    // State management for Theme & Language
+    var appLanguage = localStorage.getItem('sgs_app_lang') || 'hi'; // 'hi' or 'en'
+    var isDarkThemeActive = localStorage.getItem('sgs_dark_theme') === 'true';
+
+    function applyAppTheme(isDark) {
+        if (isDark) {
+            document.body.classList.add('dark-theme');
+        } else {
+            document.body.classList.remove('dark-theme');
+        }
+        var iconEl = document.getElementById('theme-toggle-icon');
+        if (iconEl) iconEl.innerText = isDark ? '☀️' : '🌙';
+    }
+
+    function toggleAppTheme() {
+        isDarkThemeActive = !isDarkThemeActive;
+        localStorage.setItem('sgs_dark_theme', isDarkThemeActive ? 'true' : 'false');
+        applyAppTheme(isDarkThemeActive);
+    }
+
+    // Apply theme immediately
+    applyAppTheme(isDarkThemeActive);
+
+    // Inject Dark Mode Toggle in Topbar & Drawer
+    function injectThemeControls() {
+        var topBar = document.querySelector('.top-bar');
+        if (topBar && !document.getElementById('theme-toggle-icon')) {
+            var rightBox = topBar.querySelector('div:last-child');
+            if (rightBox) {
+                var container = document.createElement('div');
+                container.className = 'top-action-icons';
+                
+                var themeBtn = document.createElement('span');
+                themeBtn.id = 'theme-toggle-icon';
+                themeBtn.style.cursor = 'pointer';
+                themeBtn.style.fontSize = '18px';
+                themeBtn.innerText = isDarkThemeActive ? '☀️' : '🌙';
+                themeBtn.title = 'Toggle Dark Mode';
+                themeBtn.onclick = toggleAppTheme;
+
+                rightBox.parentNode.replaceChild(container, rightBox);
+                container.appendChild(themeBtn);
+                container.appendChild(rightBox);
+            }
+        }
+
+        // Add to Drawer
+        var drawer = document.querySelector('.drawer-content');
+        if (drawer && !document.getElementById('drawer-item-darkmode')) {
+            var darkItem = document.createElement('div');
+            darkItem.id = 'drawer-item-darkmode';
+            darkItem.className = 'drawer-item';
+            darkItem.innerHTML = '<span>🌓</span> Dark Mode Toggle';
+            darkItem.onclick = function() {
+                toggleAppTheme();
+                closeDrawer();
+            };
+            drawer.appendChild(darkItem);
+        }
+    }
+    setTimeout(injectThemeControls, 300);
+
+    // Bilingual Toggle Logic
+    function toggleLanguage() {
+        appLanguage = (appLanguage === 'hi') ? 'en' : 'hi';
+        localStorage.setItem('sgs_app_lang', appLanguage);
+        renderCurrentQuestion();
+    }
+
+    // Override renderCurrentQuestion to include Bilingual Switch & Language Data Mapping
+    window.renderCurrentQuestion = function() {
+        var q = activeQuestions[currentQIdx];
+        if (!q) return;
+
+        // Determine question & options based on selected language
+        var qText = "";
+        var optionsList = [];
+
+        if (appLanguage === 'en') {
+            qText = q.q_en || q.question_en || q.q || q.question || '';
+            optionsList = (q.options_en && Array.isArray(q.options_en)) ? q.options_en : (Array.isArray(q.options) ? q.options : []);
+        } else {
+            qText = q.q || q.question || q.q_en || q.question_en || '';
+            optionsList = Array.isArray(q.options) ? q.options : (Array.isArray(q.options_en) ? q.options_en : []);
+        }
+
+        // Update indicator & Question Text
+        document.getElementById('q-indicator').innerText = 'Question ' + (currentQIdx + 1) + '/' + activeQuestions.length;
+        document.getElementById('current-question-text').innerText = (currentQIdx + 1) + '. ' + qText;
+
+        // Inject/Update Language Switch Pill in test-status-bar
+        var statusBar = document.querySelector('#view-test .test-status-bar');
+        if (statusBar && !document.getElementById('btn-lang-toggle')) {
+            var langBtn = document.createElement('button');
+            langBtn.type = 'button';
+            langBtn.id = 'btn-lang-toggle';
+            langBtn.className = 'lang-toggle-btn';
+            langBtn.onclick = toggleLanguage;
+            
+            var timerEl = document.getElementById('timer-display');
+            statusBar.insertBefore(langBtn, timerEl);
+        }
+        var btnLang = document.getElementById('btn-lang-toggle');
+        if (btnLang) {
+            btnLang.innerHTML = '🌐 ' + (appLanguage === 'hi' ? 'ENG' : 'हिन्दी');
+        }
+
+        var optLetters = ['A', 'B', 'C', 'D'];
+        var optContainer = document.getElementById('current-options-box');
+        var isMarked = !!markedReviewQuestions[currentQIdx];
+
+        var optionsHtml = optionsList.map(function(opt, idx) {
+            var isSelected = userSelections[currentQIdx] === idx;
+            return '<div class="option-item ' + (isSelected ? 'selected' : '') + '" onclick="selectAnswer(' + idx + ')">' +
+                   '<span class="opt-circle">' + (optLetters[idx] || (idx + 1)) + '</span>' +
+                   '<span>' + opt + '</span></div>';
+        }).join('');
+
+        var markBtnHtml = `
+            <button type="button" class="btn-mark-review ${isMarked ? 'is-marked' : ''}" onclick="toggleMarkCurrentQuestion()">
+                ${isMarked ? '🔖 Marked For Review (Click to Unmark)' : '🔖 Mark Question For Review'}
+            </button>
+        `;
+
+        optContainer.innerHTML = optionsHtml + markBtnHtml;
+        renderPalette();
+    };
+
+    // ================= DYNAMIC SCORECARD IMAGE GENERATION ENGINE =================
+    function generateResultCanvasScorecard(callback) {
+        var canvas = document.getElementById('scorecard-canvas');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+
+        var total = activeQuestions.length || 0;
+        var correct = 0;
+        var wrong = 0;
+        (activeQuestions || []).forEach(function(q, idx) {
+            var c = userSelections[idx];
+            if (c !== undefined) {
+                if (c === q.answer) correct++;
+                else wrong++;
+            }
+        });
+        var skipped = total - (correct + wrong);
+        if (skipped < 0) skipped = 0;
+        var accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+
+        var currentTopic = (quizData[activeCatIdx] && quizData[activeCatIdx].topics) ? quizData[activeCatIdx].topics[activeTopIdx] : null;
+        var chap = currentTopic && currentTopic.chapters ? currentTopic.chapters[activeChapIdx] : null;
+        var testName = chap ? chap.chapterName : "Mock Test";
+        var catName = (quizData[activeCatIdx] && quizData[activeCatIdx].category) ? quizData[activeCatIdx].category : "Preparation";
+
+        // Background Gradient
+        var grad = ctx.createLinearGradient(0, 0, 800, 1000);
+        grad.addColorStop(0, '#831843');
+        grad.addColorStop(0.5, '#4c1d95');
+        grad.addColorStop(1, '#0f172a');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 800, 1000);
+
+        // Header Card
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+        ctx.roundRect ? ctx.roundRect(40, 40, 720, 920, 24) : ctx.rect(40, 40, 720, 920);
+        ctx.fill();
+
+        // App Branding
+        ctx.fillStyle = '#f472b6';
+        ctx.font = '900 32px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('SGS MOCK TEST', 400, 100);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '600 18px sans-serif';
+        ctx.fillText('All Exams Free Mock Test Series', 400, 135);
+
+        // Test Title Badge Box
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
+        ctx.roundRect ? ctx.roundRect(80, 170, 640, 90, 16) : ctx.rect(80, 170, 640, 90);
+        ctx.fill();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '800 24px sans-serif';
+        ctx.fillText(testName, 400, 210);
+
+        ctx.fillStyle = '#fbcfe8';
+        ctx.font = '600 16px sans-serif';
+        ctx.fillText('Subject: ' + catName, 400, 242);
+
+        // Score Big Display
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '900 80px sans-serif';
+        ctx.fillText(correct + '/' + total, 400, 370);
+
+        ctx.fillStyle = '#e2e8f0';
+        ctx.font = '700 20px sans-serif';
+        ctx.fillText('TOTAL SCORE', 400, 410);
+
+        // Stat Grid Boxes
+        function drawStatBox(x, y, w, h, title, val, color) {
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
+            ctx.roundRect ? ctx.roundRect(x, y, w, h, 14) : ctx.rect(x, y, w, h);
+            ctx.fill();
+
+            ctx.fillStyle = color;
+            ctx.font = '900 30px sans-serif';
+            ctx.fillText(val, x + (w / 2), y + 45);
+
+            ctx.fillStyle = '#cbd5e1';
+            ctx.font = '700 15px sans-serif';
+            ctx.fillText(title, x + (w / 2), y + 75);
+        }
+
+        drawStatBox(80, 460, 190, 100, 'CORRECT', correct, '#4ade80');
+        drawStatBox(305, 460, 190, 100, 'WRONG', wrong, '#f87171');
+        drawStatBox(530, 460, 190, 100, 'SKIPPED', skipped, '#cbd5e1');
+
+        drawStatBox(80, 590, 300, 100, 'ACCURACY', accuracy + '%', '#f472b6');
+        drawStatBox(420, 590, 300, 100, 'TIME TAKEN', totalTimeTakenFormatted, '#a78bfa');
+
+        // Quote & Footer
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'italic 600 18px sans-serif';
+        ctx.fillText('🎯 Practice daily to crack your dream exam!', 400, 750);
+
+        ctx.fillStyle = '#ec4899';
+        ctx.font = '800 20px sans-serif';
+        ctx.fillText('📲 Free Mock Tests on SGS Mock Test App', 400, 840);
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '500 14px sans-serif';
+        ctx.fillText('Available on Google Play Store', 400, 870);
+
+        if (callback) callback(canvas.toDataURL('image/png'));
+    }
+
+    window.downloadScorecardImage = function() {
+        generateResultCanvasScorecard(function(dataUrl) {
+            var a = document.createElement('a');
+            a.href = dataUrl;
+            a.download = 'SGS_Mock_Test_Result_' + Date.now() + '.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showExitToast("Scorecard Downloaded! 📥");
+        });
+    };
+
+    window.shareResultWhatsApp = function() {
+        var total = activeQuestions.length || 0;
+        var correct = document.getElementById('stat-correct') ? document.getElementById('stat-correct').innerText : '0';
+        var currentTopic = (quizData[activeCatIdx] && quizData[activeCatIdx].topics) ? quizData[activeCatIdx].topics[activeTopIdx] : null;
+        var chap = currentTopic && currentTopic.chapters ? currentTopic.chapters[activeChapIdx] : null;
+        var testName = chap ? chap.chapterName : "Mock Test";
+
+        var shareText = `🎯 *SGS MOCK TEST RESULT*\n` +
+                        `📝 *Test:* ${testName}\n` +
+                        `✅ *Score:* ${correct}/${total}\n` +
+                        `⏱️ *Time Taken:* ${totalTimeTakenFormatted}\n\n` +
+                        `Aap bhi abhi free mock test lagayein: https://play.google.com/store/apps/details?id=com.sgs.sgsfreemocktest`;
+
+        if (window.AndroidApp && window.AndroidApp.shareApp) {
+            window.AndroidApp.shareApp('My Test Result', shareText);
+        } else {
+            var waUrl = "https://api.whatsapp.com/send?text=" + encodeURIComponent(shareText);
+            window.open(waUrl, '_blank');
+        }
+    };
+
+    // Inject Download & WhatsApp Share Buttons into Result View
+    function injectResultShareButtons() {
+        var resultContainer = document.querySelector('#view-result .container');
+        if (resultContainer && !document.getElementById('result-share-box')) {
+            var shareBox = document.createElement('div');
+            shareBox.id = 'result-share-box';
+            shareBox.className = 'result-share-grid';
+            shareBox.innerHTML = `
+                <button type="button" class="btn-action-share btn-download-card" onclick="downloadScorecardImage()">
+                    <span>📸 Download Card</span>
+                </button>
+                <button type="button" class="btn-action-share btn-whatsapp-share" onclick="shareResultWhatsApp()">
+                    <span>📲 Share Result</span>
+                </button>
+            `;
+            var scoreSummary = resultContainer.querySelector('.score-summary');
+            if (scoreSummary && scoreSummary.nextElementSibling) {
+                resultContainer.insertBefore(shareBox, scoreSummary.nextElementSibling);
+            }
+        }
+    }
+
+    // Wrap renderResultReviewUI to ensure Share buttons are injected
+    var originalRenderResultReviewUI = window.renderResultReviewUI;
+    window.renderResultReviewUI = function(correct, wrong, total) {
+        if (typeof originalRenderResultReviewUI === 'function') {
+            originalRenderResultReviewUI(correct, wrong, total);
+        }
+        injectResultShareButtons();
+    };
+</script>
+
+<!-- ================= PHASE 4: FULL RWA (ROJGAR WITH ANKIT) STYLE UI OVERHAUL (ZERO LOGIC LOSS) ================= -->
+<style id="rwa-complete-theme">
+    /* RWA Brand Theme Core */
+    :root {
+        --rwa-primary: #0f172a;
+        --rwa-header-bg: #0f172a;
+        --rwa-accent-yellow: #f59e0b;
+        --rwa-accent-blue: #2563eb;
+        --rwa-green: #16a34a;
+        --rwa-red: #dc2626;
+        --rwa-card-bg: #ffffff;
+        --rwa-body-bg: #f1f5f9;
+        --rwa-text-main: #0f172a;
+        --rwa-text-muted: #64748b;
+        --rwa-border: #e2e8f0;
+    }
+
+    body {
+        background-color: var(--rwa-body-bg) !important;
+        color: var(--rwa-text-main) !important;
+        font-family: 'Segoe UI', Roboto, -apple-system, sans-serif !important;
+    }
+
+    /* RWA Top Navigation App Bar */
+    .top-bar {
+        background: #0f172a !important;
+        border-bottom: 2.5px solid var(--rwa-accent-yellow) !important;
+        padding: 14px 18px !important;
+        box-shadow: 0 4px 15px rgba(15,23,42,0.2) !important;
+    }
+    .top-bar .title {
+        font-size: 18px !important;
+        font-weight: 900 !important;
+        letter-spacing: 0.8px !important;
+        color: #ffffff !important;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .sub-bar {
+        background: #1e293b !important;
+        color: #e2e8f0 !important;
+        font-weight: 700 !important;
+        padding: 8px 18px !important;
+        border-bottom: none !important;
+        font-size: 12.5px !important;
+    }
+    .sub-bar span:last-child {
+        background: var(--rwa-accent-yellow) !important;
+        color: #000000 !important;
+        padding: 2px 8px !important;
+        border-radius: 4px !important;
+        font-weight: 900 !important;
+        font-size: 11px !important;
+    }
+
+    /* RWA Drawer Styling */
+    .drawer-header {
+        background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%) !important;
+        border-bottom: 3px solid var(--rwa-accent-yellow) !important;
+    }
+    .drawer-item {
+        padding: 15px 20px !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        color: #1e293b !important;
+        border-bottom: 1px solid #f1f5f9 !important;
+    }
+    .drawer-item:hover, .drawer-item:active {
+        background: #f8fafc !important;
+        color: var(--rwa-accent-blue) !important;
+    }
+
+    /* RWA Greeting & Title Section */
+    .user-greeting {
+        padding: 18px 16px 10px 16px !important;
+        font-size: 17px !important;
+        font-weight: 800 !important;
+        color: #0f172a !important;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* RWA Test Series Card Structure */
+    .rwa-series-card {
+        background: #ffffff;
+        border-radius: 14px;
+        border: 1px solid #e2e8f0;
+        padding: 16px;
+        margin-bottom: 14px;
+        box-shadow: 0 4px 12px rgba(15,23,42,0.06);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .rwa-series-card:active {
+        transform: scale(0.985);
+    }
+    .rwa-series-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: var(--rwa-accent-blue);
+    }
+    .rwa-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .rwa-card-title-box {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .rwa-subject-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: #eff6ff;
+        color: #2563eb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        font-weight: 900;
+        border: 1px solid #dbeafe;
+    }
+    .rwa-card-title {
+        font-size: 15.5px;
+        font-weight: 800;
+        color: #0f172a;
+        line-height: 1.35;
+    }
+    .rwa-card-meta {
+        font-size: 12.5px;
+        color: #64748b;
+        font-weight: 600;
+        margin-top: 2px;
+    }
+    .rwa-tag-pill {
+        background: #dcfce7;
+        color: #15803d;
+        font-size: 11px;
+        font-weight: 800;
+        padding: 3px 8px;
+        border-radius: 6px;
+        white-space: nowrap;
+        border: 1px solid #bbf7d0;
+    }
+    .rwa-tag-attempted {
+        background: #fef3c7;
+        color: #b45309;
+        border-color: #fde68a;
+    }
+    .rwa-card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 10px;
+        border-top: 1px solid #f1f5f9;
+    }
+    .rwa-btn-start {
+        background: linear-gradient(135deg, #0f172a, #1e293b);
+        color: #ffffff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 800;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 2px 6px rgba(15,23,42,0.25);
+    }
+    .rwa-btn-start.reattempt {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    }
+
+    /* RWA CBT Real Exam Test Running Interface */
+    #view-test .test-status-bar {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        padding: 10px 14px;
+        border-radius: 12px;
+        margin: 10px 0 14px 0;
+        box-shadow: 0 2px 8px rgba(15,23,42,0.04);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    #q-indicator {
+        font-size: 14.5px !important;
+        font-weight: 800 !important;
+        color: #0f172a !important;
+    }
+    .timer-badge {
+        background: #0f172a !important;
+        color: var(--rwa-accent-yellow) !important;
+        border: 1.5px solid var(--rwa-accent-yellow) !important;
+        font-size: 14px !important;
+        font-weight: 900 !important;
+        padding: 6px 14px !important;
+        border-radius: 8px !important;
+        letter-spacing: 0.5px;
+    }
+    .btn-submit-test {
+        background: #16a34a !important;
+        color: #ffffff !important;
+        border: none !important;
+        padding: 8px 16px !important;
+        border-radius: 8px !important;
+        font-size: 13.5px !important;
+        font-weight: 800 !important;
+        box-shadow: 0 2px 6px rgba(22,163,74,0.3) !important;
+    }
+
+    .question-box {
+        background: #ffffff !important;
+        border: 1.5px solid #cbd5e1 !important;
+        border-radius: 12px !important;
+        padding: 18px !important;
+        font-size: 16px !important;
+        font-weight: 700 !important;
+        line-height: 1.55 !important;
+        color: #0f172a !important;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.03) !important;
+    }
+
+    .option-item {
+        background: #ffffff !important;
+        border: 1.5px solid #e2e8f0 !important;
+        border-radius: 10px !important;
+        padding: 14px 16px !important;
+        margin-bottom: 10px !important;
+        font-size: 15px !important;
+        font-weight: 600 !important;
+        color: #1e293b !important;
+        transition: all 0.15s ease !important;
+    }
+    .option-item.selected {
+        border-color: #2563eb !important;
+        background: #eff6ff !important;
+        color: #1e3a8a !important;
+        font-weight: 800 !important;
+        box-shadow: 0 0 0 1px #2563eb !important;
+    }
+    .opt-circle {
+        background: #f8fafc !important;
+        border: 1.5px solid #94a3b8 !important;
+        color: #475569 !important;
+        font-weight: 900 !important;
+    }
+    .option-item.selected .opt-circle {
+        background: #2563eb !important;
+        border-color: #2563eb !important;
+        color: #ffffff !important;
+    }
+
+    /* RWA Action Button Bar */
+    .nav-actions {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr 1.4fr !important;
+        gap: 10px !important;
+        margin-top: 18px !important;
+    }
+    .action-btn {
+        padding: 12px 8px !important;
+        border-radius: 10px !important;
+        font-size: 14px !important;
+        font-weight: 800 !important;
+        background: #ffffff !important;
+        border: 1.5px solid #cbd5e1 !important;
+        color: #334155 !important;
+    }
+    .action-btn.primary {
+        background: #0f172a !important;
+        color: var(--rwa-accent-yellow) !important;
+        border: 1.5px solid #0f172a !important;
+        box-shadow: 0 4px 10px rgba(15,23,42,0.2) !important;
+    }
+
+    /* RWA Style 5-Color Question Status Palette */
+    .palette-btn {
+        width: 38px !important;
+        height: 38px !important;
+        border-radius: 8px !important;
+        font-size: 13px !important;
+        font-weight: 800 !important;
+        border: 1.5px solid #cbd5e1 !important;
+        background: #f8fafc !important;
+        color: #475569 !important;
+    }
+    .palette-btn.answered {
+        background: #16a34a !important;
+        color: #ffffff !important;
+        border-color: #16a34a !important;
+    }
+    .palette-btn.marked-review {
+        background: #9333ea !important;
+        color: #ffffff !important;
+        border-color: #9333ea !important;
+    }
+    .palette-btn.current {
+        border: 2.5px solid var(--rwa-accent-yellow) !important;
+        box-shadow: 0 0 8px rgba(245,158,11,0.5) !important;
+    }
+
+    /* RWA Result Summary Dashboard */
+    .score-summary {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-top: 4px solid var(--rwa-accent-yellow) !important;
+        border-radius: 14px !important;
+        box-shadow: 0 6px 18px rgba(15,23,42,0.06) !important;
+        padding: 20px 16px !important;
+    }
+    .score-summary h2 {
+        color: #0f172a !important;
+        font-size: 20px !important;
+        font-weight: 900 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+    }
+    .donut-percentage {
+        color: #0f172a !important;
+        font-size: 22px !important;
+    }
+    .score-stat {
+        background: #f8fafc !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 10px !important;
+        padding: 12px 6px !important;
+    }
+
+    /* Policy Consent Page */
+    .auth-view {
+        background: #f8fafc !important;
+    }
+    .auth-card {
+        border-top: 4px solid #0f172a !important;
+        border-color: #e2e8f0 !important;
+        box-shadow: 0 10px 30px rgba(15,23,42,0.08) !important;
+    }
+    .auth-title {
+        color: #0f172a !important;
+    }
+    .btn-gradient {
+        background: #0f172a !important;
+        color: var(--rwa-accent-yellow) !important;
+        box-shadow: 0 4px 12px rgba(15,23,42,0.3) !important;
+    }
+
+    /* Dark Mode Support for RWA UI */
+    body.dark-theme {
+        background-color: #0b0f19 !important;
+        color: #f1f5f9 !important;
+    }
+    body.dark-theme .rwa-series-card,
+    body.dark-theme #view-test .test-status-bar,
+    body.dark-theme .question-box,
+    body.dark-theme .option-item,
+    body.dark-theme .score-summary,
+    body.dark-theme .score-stat,
+    body.dark-theme .auth-card {
+        background-color: #1e293b !important;
+        color: #f8fafc !important;
+        border-color: #334155 !important;
+    }
+    body.dark-theme .rwa-card-title,
+    body.dark-theme .user-greeting,
+    body.dark-theme .score-summary h2 {
+        color: #f8fafc !important;
+    }
+    body.dark-theme .option-item.selected {
+        background-color: #172554 !important;
+        border-color: #3b82f6 !important;
+        color: #93c5fd !important;
+    }
+    body.dark-theme .rwa-subject-icon {
+        background: #0f172a !important;
+        border-color: #334155 !important;
+        color: #60a5fa !important;
+    }
+</style>
+
+<script>
+    // ================= RWA UI CARD ADAPTER (OVERRIDE RENDER VIEWS) =================
+    
+    // 1. RWA Subject List Render Adapter
+    function rwaRenderCategoriesView() {
+        var container = document.getElementById('category-container');
+        if (!container) return;
+
+        var icons = ['📚', '⚡', '🧠', '💻', '📜', '🎯', '📖', '🧪'];
+        container.innerHTML = (quizData || []).map(function(cat, idx) {
+            var icon = icons[idx % icons.length];
+            var topicCount = (cat.topics && Array.isArray(cat.topics)) ? cat.topics.length : 0;
+            return `
+                <div class="rwa-series-card" onclick="navigateToTopics(${idx})">
+                    <div class="rwa-card-header">
+                        <div class="rwa-card-title-box">
+                            <div class="rwa-subject-icon">${icon}</div>
+                            <div>
+                                <div class="rwa-card-title">${cat.category || 'Subject'}</div>
+                                <div class="rwa-card-meta">${topicCount} Chapters / Units</div>
+                            </div>
+                        </div>
+                        <span class="rwa-tag-pill">FREE ACCESS</span>
+                    </div>
+                    <div class="rwa-card-footer">
+                        <span style="font-size:12px; font-weight:700; color:#64748b;">RWA Free Test Series</span>
+                        <button type="button" class="rwa-btn-start">View Topics ➔</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // 2. RWA Topic List Render Adapter
+    function rwaRenderTopicsView(catIdx) {
+        var data = quizData[catIdx];
+        var container = document.getElementById('topic-container');
+        if (!data || !container) return;
+
+        if (!data.topics || !Array.isArray(data.topics) || data.topics.length === 0) {
+            container.innerHTML = '<p style="text-align:center; color:#64748b; font-size:14px; padding:20px;">Is subject me abhi koi topics uplabdh nahi hain.</p>';
+            return;
+        }
+
+        container.innerHTML = data.topics.map(function(tp, idx) {
+            var testCount = (tp.chapters && Array.isArray(tp.chapters)) ? tp.chapters.length : 0;
+            return `
+                <div class="rwa-series-card" onclick="navigateToChapters(${idx})">
+                    <div class="rwa-card-header">
+                        <div class="rwa-card-title-box">
+                            <div class="rwa-subject-icon">📑</div>
+                            <div>
+                                <div class="rwa-card-title">${tp.topicName || 'Topic'}</div>
+                                <div class="rwa-card-meta">${testCount} Mock Tests Included</div>
+                            </div>
+                        </div>
+                        <span class="rwa-tag-pill">PRACTICE</span>
+                    </div>
+                    <div class="rwa-card-footer">
+                        <span style="font-size:12px; font-weight:700; color:#64748b;">Topic Wise Practice</span>
+                        <button type="button" class="rwa-btn-start">Open Tests ➔</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // 3. RWA Chapters / Test Series Render Adapter
+    function rwaRenderChaptersList() {
+        var data = quizData[activeCatIdx];
+        if (!data || !data.topics || !data.topics[activeTopIdx]) return;
+        var currentTopic = data.topics[activeTopIdx];
+
+        document.getElementById('chapter-header-title').innerText = '📚 ' + (currentTopic.topicName || '');
+        var container = document.getElementById('chapter-container');
+        if (!container) return;
+
+        if (!currentTopic.chapters || !Array.isArray(currentTopic.chapters) || currentTopic.chapters.length === 0) {
+            container.innerHTML = '<p style="text-align:center; color:#64748b; font-size:14px; padding:20px;">Is topic me abhi koi tests uplabdh nahi hain.</p>';
+            return;
+        }
+
+        container.innerHTML = currentTopic.chapters.map(function(chap, idx) {
+            if (chap.isPdf) {
+                return `
+                    <div class="rwa-series-card" onclick="openPdfReader('${chap.chapterName}', '${chap.pdfUrl}')">
+                        <div class="rwa-card-header">
+                            <div class="rwa-card-title-box">
+                                <div class="rwa-subject-icon" style="background:#fef2f2; color:#ef4444; border-color:#fee2e2;">📄</div>
+                                <div>
+                                    <div class="rwa-card-title">${chap.chapterName}</div>
+                                    <div class="rwa-card-meta">Official Study Material & Notes</div>
+                                </div>
+                            </div>
+                            <span class="rwa-tag-pill" style="background:#fee2e2; color:#b91c1c; border-color:#fecaca;">PDF FILE</span>
+                        </div>
+                        <div class="rwa-card-footer">
+                            <span style="font-size:12px; font-weight:700; color:#64748b;">Read Offline</span>
+                            <button type="button" class="rwa-btn-start" style="background:#dc2626;">View PDF ↗</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            var isAttempted = checkChapterAttempted(data.category, (currentTopic.topicName || '') + " - " + (chap.chapterName || ''));
+            var qCount = (chap.questions && Array.isArray(chap.questions)) ? chap.questions.length : 0;
+            var tMins = chap.timeInMinutes || 15;
+
+            return `
+                <div class="rwa-series-card" onclick="handleChapterClick(${idx})">
+                    <div class="rwa-card-header">
+                        <div class="rwa-card-title-box">
+                            <div class="rwa-subject-icon">📝</div>
+                            <div>
+                                <div class="rwa-card-title">${chap.chapterName || 'Test'}</div>
+                                <div class="rwa-card-meta">${qCount} Questions • ${tMins} Mins • 100 Marks</div>
+                            </div>
+                        </div>
+                        <span class="rwa-tag-pill ${isAttempted ? 'rwa-tag-attempted' : ''}">
+                            ${isAttempted ? 'ATTEMPTED ✅' : 'FREE TEST'}
+                        </span>
+                    </div>
+                    <div class="rwa-card-footer">
+                        <span style="font-size:12px; font-weight:700; color:#64748b;">Full CBT Pattern</span>
+                        <button type="button" class="rwa-btn-start ${isAttempted ? 'reattempt' : ''}">
+                            ${isAttempted ? '🔄 Re-attempt' : '⚡ Start Test'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // Hook RWA Render Adapters smoothly into Quiz System
+    var originalNavigateToCategories = window.navigateToCategories;
+    window.navigateToCategories = function(pushHistory) {
+        if (typeof originalNavigateToCategories === 'function') originalNavigateToCategories(pushHistory);
+        rwaRenderCategoriesView();
+    };
+
+    var originalNavigateToTopics = window.navigateToTopics;
+    window.navigateToTopics = function(catIdx, pushHistory) {
+        if (typeof originalNavigateToTopics === 'function') originalNavigateToTopics(catIdx, pushHistory);
+        rwaRenderTopicsView(catIdx);
+    };
+
+    window.renderChaptersList = rwaRenderChaptersList;
+
+    // Trigger Initial UI Refresh
+    setTimeout(function() {
+        if (currentActiveView === 'categories') rwaRenderCategoriesView();
+        else if (currentActiveView === 'topics' && activeCatIdx !== null) rwaRenderTopicsView(activeCatIdx);
+        else if (currentActiveView === 'chapters') rwaRenderChaptersList();
+    }, 400);
+</script>
+
 </body>
 </html>
