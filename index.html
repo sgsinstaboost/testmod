@@ -1,2078 +1,1365 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="hi">
 <head>
-<meta name="google-site-verification" content="n6gutNuaXm4jPFef6_Yxsfz5UcDynkGHi86Py-8IH-0" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title>SGS Mock Test: All Exams Preparation</title>
 
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>SGS ONLINE SERVICE - Form Filling Assistance & Help Desk</title>
-  
-  <link opacity="1.0" rel="icon" type="image/png" href="logo.png" />
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #f8fafc; color: #0f172a; user-select: none; }
 
-  <!-- Social Media Sharing Meta Tags -->
-  <meta property="og:title" content="SGS ONLINE SERVICE - Form Filling Assistance Desk" />
-  <meta property="og:description" content="Get expert assistance for college admission forms, RTPS certificates, scholarships, and online job applications." />
-  <meta property="og:image" content="https://sgsonlineservice.store/logo.png" />
-  <meta property="og:url" content="https://sgsonlineservice.store/" />
-  <meta property="og:type" content="website" />
+        /* Splash Screen */
+        #splash-screen {
+            position: fixed; inset: 0; background: linear-gradient(135deg, #ec4899, #8b5cf6, #3b82f6);
+            display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; color: #fff;
+            transition: opacity 0.5s ease;
+        }
+        .splash-logo-container { width: 90px; height: 90px; background: #fff; border-radius: 24px; display: flex; justify-content: center; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); margin-bottom: 16px; animation: bounce 1.5s infinite alternate; overflow: hidden; }
+        .splash-logo-img { width: 100%; height: 100%; object-fit: cover; border-radius: 24px; }
+        .splash-logo-fallback { font-size: 32px; font-weight: 900; color: #ec4899; }
+        @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
 
-<!-- Primary SEO Meta Tags -->
-<meta name="description" content="SGS Online Service - Online form filling assistance in Bihar, VKSU Admission, RTPS Caste Income Residence Certificate, Scholarships & Job Portal." />
-<meta name="keywords" content="SGS Online Service, online form filling, Arrah Cyber Cafe, sachin cyber cafe, sgs online store, sgs store, sgs online services, VKSU admission form, Bihar RTPS certificate online, Caste certificate Bihar, Income certificate Bihar, Bihar scholarship form, job form online assistance, Bihar online helpdesk" />
-<meta name="author" content="SGS Online Service" />
-<meta name="robots" content="index, follow" />
+        /* Policy Consent Container (Replaces Login View) */
+        .auth-view { min-height: 100vh; background: linear-gradient(180deg, #fdf2f8 0%, #f8fafc 100%); padding: 30px 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .auth-card { background: #ffffff; width: 100%; max-width: 380px; border-radius: 20px; padding: 28px 22px; box-shadow: 0 10px 30px rgba(236, 72, 153, 0.12); border: 1.5px solid #fbcfe8; }
+        .auth-title { font-size: 22px; font-weight: 800; text-align: center; color: #831843; margin-bottom: 8px; }
+        .auth-sub { font-size: 13.5px; text-align: center; color: #64748b; margin-bottom: 20px; line-height: 1.5; }
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        .policy-btn-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+        .policy-link-btn { display: flex; justify-content: space-between; align-items: center; background: #fdf2f8; border: 1.5px solid #f472b6; padding: 12px 14px; border-radius: 10px; color: #be185d; font-size: 13.5px; font-weight: 700; text-decoration: none; transition: 0.2s; }
+        .policy-link-btn:active { background: #fce7f3; transform: scale(0.98); }
 
-  <!-- FIREBASE COMPAT LIBRARIES FOR REALTIME DB & AUTH -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+        .auth-checkbox-container { display: flex; align-items: flex-start; gap: 10px; margin: 16px 0; font-size: 13px; color: #334155; line-height: 1.4; }
+        .auth-checkbox-container input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; accent-color: #ec4899; cursor: pointer; }
 
-  <style>
-    html, body { overscroll-behavior-y: contain; text-size-adjust: 100%; -webkit-text-size-adjust: 100%; }
-    .scrollbar-none::-webkit-scrollbar { display: none; }
-    .scrollbar-none { -ms-overflow-style: none; scrollbar-width: none; }
-    #splash-screen { transition: opacity 0.3s ease-out; }
-    .img-preview { max-width: 150px; max-height: 150px; border-radius: 8px; border: 2px dashed #ea580c; display: none; object-fit: cover; margin-top: 6px; }
-    .pdf-preview { display: none; margin-top: 6px; font-size: 11px; font-weight: bold; color: #1e3a8a; background: #eff6ff; padding: 6px 10px; border-radius: 6px; border: 1px solid #bfdbfe; width: fit-content; }
+        /* Buttons with Loading Effect */
+        .btn-gradient {
+            width: 100%; padding: 14px; border: none; border-radius: 10px;
+            background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #fff;
+            font-size: 16px; font-weight: 800; cursor: pointer;
+            display: flex; justify-content: center; align-items: center; gap: 8px;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.35); transition: all 0.2s; margin-top: 10px;
+        }
+        .btn-gradient:active { transform: scale(0.98); }
 
-    /* TIRANGA THEME ACCENTS & GRADIENTS */
-    .tiranga-stripe {
-      height: 4px;
-      background: linear-gradient(90deg, #FF9933 0%, #FF9933 33.3%, #FFFFFF 33.3%, #FFFFFF 66.6%, #138808 66.6%, #138808 100%);
-    }
+        /* Navigation Drawer */
+        .drawer-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.6); z-index: 1000; display: none; }
+        .drawer-sidebar { position: fixed; top: 0; left: -290px; width: 280px; height: 100%; background: #ffffff; z-index: 1001; transition: left 0.3s ease; display: flex; flex-direction: column; box-shadow: 4px 0 20px rgba(0,0,0,0.15); }
+        .drawer-header { background: linear-gradient(135deg, #ec4899, #8b5cf6); padding: 24px 18px; color: #fff; display: flex; flex-direction: column; justify-content: center; }
+        .drawer-logo-box { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+        .drawer-logo-img { width: 44px; height: 44px; border-radius: 12px; object-fit: cover; background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        .drawer-header h3 { font-size: 18px; font-weight: 800; letter-spacing: 0.3px; }
+        .drawer-header p { font-size: 12.5px; opacity: 0.92; margin-top: 2px; }
+        .drawer-content { flex: 1; overflow-y: auto; padding: 12px 0; }
+        .drawer-item { padding: 13px 18px; display: flex; align-items: center; gap: 12px; font-size: 14.5px; font-weight: 600; color: #334155; cursor: pointer; border-bottom: 1px solid #f1f5f9; text-decoration: none; }
+        .drawer-item:active { background: #fdf2f8; color: #db2777; }
 
-    .tiranga-gradient-bg {
-      background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 50%, #064e3b 100%);
-    }
+        /* Top App Bars */
+        .top-bar { background: linear-gradient(135deg, #ec4899, #8b5cf6, #3b82f6); color: #fff; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; box-shadow: 0 4px 12px rgba(236, 72, 153, 0.25); }
+        .top-bar-left { display: flex; align-items: center; gap: 10px; }
+        .top-logo-img { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; background: #fff; }
+        .top-bar .title { font-size: 17px; font-weight: 800; letter-spacing: 0.5px; }
+        .menu-btn { font-size: 22px; cursor: pointer; background: transparent; border: none; color: #fff; line-height: 1; }
+        .sub-bar { background: #ffffff; border-bottom: 1px solid #f1f5f9; padding: 10px 16px; font-size: 13px; font-weight: 600; color: #64748b; display: flex; justify-content: space-between; align-items: center; }
+        .user-greeting { padding: 16px 16px 8px 16px; font-size: 16px; color: #1e293b; font-weight: 700; }
 
-    .tiranga-card-header {
-      background: linear-gradient(90deg, #ea580c 0%, #0284c7 50%, #16a34a 100%);
-    }
+        .container { padding: 8px 16px 24px 16px; }
+        .view { display: none; }
+        .view.active { display: block; }
 
-    .tiranga-btn-primary {
-      background: linear-gradient(135deg, #f97316 0%, #ea580c 40%, #16a34a 100%);
-      color: #ffffff;
-      box-shadow: 0 4px 12px rgba(234, 88, 12, 0.25);
-    }
-    .tiranga-btn-primary:hover {
-      background: linear-gradient(135deg, #ea580c 0%, #c2410c 40%, #15803d 100%);
-    }
+        /* Colorful Gradient Cards */
+        .item-card {
+            background: linear-gradient(135deg, #ffffff, #fdf2f8);
+            border: 1.5px solid #f472b6;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            color: #831843;
+            box-shadow: 0 4px 10px rgba(244, 114, 182, 0.15);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        .item-card:active { transform: scale(0.98); background: #fce7f3; }
+        .item-card:nth-child(2n) {
+            background: linear-gradient(135deg, #ffffff, #f5f3ff);
+            border-color: #a78bfa;
+            color: #4c1d95;
+            box-shadow: 0 4px 10px rgba(167, 139, 250, 0.15);
+        }
+        .item-card:nth-child(3n) {
+            background: linear-gradient(135deg, #ffffff, #eff6ff);
+            border-color: #60a5fa;
+            color: #1e3a8a;
+            box-shadow: 0 4px 10px rgba(96, 165, 250, 0.15);
+        }
+        .badge-attempted { position: absolute; top: 8px; right: 10px; font-size: 10px; background: #16a34a; color: #fff; padding: 2px 6px; border-radius: 6px; font-weight: 700; }
 
-    .text-saffron { color: #f97316; }
-    .text-tiranga-green { color: #16a34a; }
-    .text-chakra { color: #1e3a8a; }
+        /* Test Header & Timer */
+        .test-status-bar { display: flex; justify-content: space-between; align-items: center; margin: 12px 0; font-size: 14px; }
+        .timer-badge { background: #fdf2f8; color: #db2777; font-weight: 800; padding: 6px 14px; border-radius: 20px; border: 1.5px solid #f472b6; }
+        .btn-submit-test { background: #dc2626; color: #ffffff; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 14px; box-shadow: 0 2px 6px rgba(220, 38, 38, 0.35); }
+        .btn-submit-test:active { background: #b91c1c; }
 
-    /* HIGH-CONTRAST TIRANGA NEON NIGHT MODE OVERRIDES */
-    body.neon-blue-mode {
-      background-color: #050811 !important;
-      color: #ffffff !important;
-    }
-    
-    /* Main Background Containers in Neon Mode */
-    body.neon-blue-mode div[class*="bg-white"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
-    body.neon-blue-mode div[class*="bg-slate-50"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
-    body.neon-blue-mode div[class*="bg-indigo"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
-    body.neon-blue-mode div[class*="bg-amber"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
-    body.neon-blue-mode div[class*="bg-emerald"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *),
-    body.neon-blue-mode div[class*="bg-blue"]:not(.slip-card-clean):not(.slip-card-clean *):not(.drawer-panel):not(.drawer-panel *) {
-      background-color: #0b1329 !important;
-      color: #ffffff !important;
-      border-color: #f97316 !important;
-      box-shadow: 0 0 10px rgba(249, 115, 22, 0.2) !important;
-    }
+        /* Question Box */
+        .question-box { background: #ffffff; padding: 18px; border-radius: 12px; border: 1px solid #e2e8f0; font-size: 16px; font-weight: 600; line-height: 1.5; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
 
-    /* DRAWER OVERLAY & PANEL IN NEON MODE */
-    body.neon-blue-mode .drawer-panel {
-      background-color: #090f20 !important;
-      color: #ffffff !important;
-      border-right: 2px solid #f97316 !important;
-      box-shadow: 5px 0 25px rgba(249, 115, 22, 0.3) !important;
-    }
+        .option-item { background: #ffffff; border: 1.5px solid #e2e8f0; padding: 14px 16px; border-radius: 10px; margin-bottom: 10px; cursor: pointer; display: flex; align-items: center; font-size: 15px; }
+        .option-item.selected { border-color: #ec4899; background: #fdf2f8; font-weight: 700; color: #be185d; }
+        .opt-circle { width: 24px; height: 24px; border: 2px solid #94a3b8; border-radius: 50%; margin-right: 12px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; }
+        .option-item.selected .opt-circle { border-color: #ec4899; background: #ec4899; color: #fff; }
 
-    body.neon-blue-mode .drawer-panel div[class*="bg-"] {
-      background-color: #111a36 !important;
-      border-color: rgba(249, 115, 22, 0.5) !important;
-    }
+        /* Action Buttons */
+        .nav-actions { display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 8px; margin-top: 16px; }
+        .action-btn { padding: 12px 6px; border: 1.5px solid #cbd5e1; background: #fff; font-weight: 700; border-radius: 8px; cursor: pointer; font-size: 14px; }
+        .action-btn.primary { background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #fff; border: none; }
 
-    body.neon-blue-mode .drawer-panel div[class*="bg-"] *,
-    body.neon-blue-mode .drawer-panel nav button,
-    body.neon-blue-mode .drawer-panel nav button span,
-    body.neon-blue-mode .drawer-panel h3,
-    body.neon-blue-mode .drawer-panel h4,
-    body.neon-blue-mode .drawer-panel h5,
-    body.neon-blue-mode .drawer-panel p {
-      color: #ffffff !important;
-    }
+        /* Palette */
+        .palette-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 12px; max-height: 180px; overflow-y: auto; padding: 4px; }
+        .palette-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #cbd5e1; background: #fff; font-weight: bold; cursor: pointer; }
+        .palette-btn.answered { background: #22c55e; color: #fff; border-color: #22c55e; }
+        .palette-btn.current { border: 2px solid #ec4899; transform: scale(1.08); font-weight: 800; }
 
-    /* NOTICE BOARD FULL OVERRIDE IN NEON MODE */
-    body.neon-blue-mode .notice-board-box,
-    body.neon-blue-mode div[class*="from-orange-50"] {
-      background: linear-gradient(135deg, #1f0b02 0%, #062b14 100%) !important;
-      border: 2px solid #f97316 !important;
-      box-shadow: 0 0 16px rgba(249, 115, 22, 0.4) !important;
-    }
-    body.neon-blue-mode .notice-board-box h2,
-    body.neon-blue-mode .notice-board-box span:not(.no-neon) {
-      color: #ffedd5 !important;
-      font-weight: 900 !important;
-    }
-    body.neon-blue-mode .notice-board-box svg {
-      stroke: #f97316 !important;
-    }
-    body.neon-blue-mode .notice-board-box div[class*="bg-white"] {
-      background-color: #0b1329 !important;
-      border-color: rgba(234, 88, 12, 0.7) !important;
-      color: #ffffff !important;
-    }
-    body.neon-blue-mode .notice-board-box div[class*="bg-white"] span {
-      color: #ffffff !important;
-      font-weight: 700 !important;
-    }
+        /* Modals */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); justify-content: center; align-items: center; z-index: 9999; padding: 16px; }
+        .modal-box { background: #ffffff; padding: 24px 20px; border-radius: 16px; width: 100%; max-width: 320px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .modal-box h3 { margin-bottom: 8px; font-size: 18px; color: #0f172a; }
+        .modal-box p { color: #64748b; font-size: 14px; margin-bottom: 20px; }
+        .modal-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+        .modal-btns button { flex: 1; min-width: 80px; padding: 12px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; font-size: 14px; }
 
-    /* WARNING / AMBER / ROSE BOX OVERRIDES IN NEON MODE */
-    body.neon-blue-mode div[class*="bg-rose-50"],
-    body.neon-blue-mode .warning-rose-box {
-      background-color: #991b1b !important;
-      border: 2px solid #fca5a5 !important;
-      box-shadow: 0 0 12px rgba(239, 68, 68, 0.8) !important;
-    }
-    body.neon-blue-mode div[class*="bg-rose-50"] p,
-    body.neon-blue-mode div[class*="bg-rose-50"] span,
-    body.neon-blue-mode .warning-rose-box p,
-    body.neon-blue-mode .warning-rose-box span {
-      color: #ffffff !important;
-      font-weight: 900 !important;
-    }
+        .modal-scrollable-box { max-height: 75vh; overflow-y: auto; text-align: left; max-width: 420px; }
 
-    body.neon-blue-mode div[class*="bg-amber-50"],
-    body.neon-blue-mode .warning-amber-box {
-      background-color: #854d0e !important;
-      border: 2px solid #fde047 !important;
-      box-shadow: 0 0 10px rgba(245, 158, 11, 0.7) !important;
-    }
-    body.neon-blue-mode div[class*="bg-amber-50"] p,
-    body.neon-blue-mode div[class*="bg-amber-50"] span,
-    body.neon-blue-mode div[class*="bg-amber-50"] strong,
-    body.neon-blue-mode .warning-amber-box p,
-    body.neon-blue-mode .warning-amber-box span,
-    body.neon-blue-mode .warning-amber-box strong {
-      color: #ffffff !important;
-      font-weight: 900 !important;
-    }
+        /* In-App Force Update Modal Box */
+        #updateModal {
+            display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.88);
+            z-index: 999999; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;
+        }
+        .update-card-box {
+            background: #ffffff; padding: 26px 20px; border-radius: 20px; width: 100%;
+            max-width: 340px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.35); border: 2px solid #fbcfe8;
+        }
+        .update-progress-track {
+            width: 100%; background: #f1f5f9; height: 10px; border-radius: 6px; overflow: hidden; border: 1px solid #e2e8f0;
+        }
+        .update-progress-fill {
+            width: 0%; height: 100%; background: linear-gradient(135deg, #ec4899, #8b5cf6); transition: width 0.2s ease;
+        }
 
-    /* YOUTUBE GUIDE BUTTON OVERRIDE IN NEON MODE */
-    body.neon-blue-mode nav a.youtube-guide-btn,
-    body.neon-blue-mode nav a.youtube-guide-btn * {
-      background-color: #dc2626 !important;
-      color: #ffffff !important;
-      font-weight: 900 !important;
-      border-color: #f87171 !important;
-    }
+        /* Result */
+        .score-summary { background: linear-gradient(135deg, #ffffff, #fdf2f8); border: 1.5px solid #f472b6; border-radius: 16px; padding: 20px; text-align: center; margin: 16px 0; }
+        .score-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 14px; }
+        .score-stat { background: #ffffff; padding: 12px 8px; border-radius: 10px; border: 1px solid #fbcfe8; }
+        .stat-val { font-size: 20px; font-weight: 800; }
+        .stat-lbl { font-size: 12px; color: #64748b; margin-top: 2px; }
 
-    /* ALL TEXT INSIDE NEON MODE */
-    body.neon-blue-mode h1:not(.slip-card-clean *), 
-    body.neon-blue-mode h2:not(.slip-card-clean *), 
-    body.neon-blue-mode h3:not(.slip-card-clean *), 
-    body.neon-blue-mode h4:not(.slip-card-clean *), 
-    body.neon-blue-mode h5:not(.slip-card-clean *), 
-    body.neon-blue-mode h6:not(.slip-card-clean *), 
-    body.neon-blue-mode p:not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *), 
-    body.neon-blue-mode label:not(.slip-card-clean *), 
-    body.neon-blue-mode span:not(.no-neon):not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *):not(.youtube-guide-btn *), 
-    body.neon-blue-mode li:not(.slip-card-clean *), 
-    body.neon-blue-mode strong:not(.slip-card-clean *):not(.bg-rose-50 *):not(.bg-amber-50 *):not(.warning-rose-box *):not(.warning-amber-box *) {
-      color: #ffffff !important;
-    }
+        .review-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+        .badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+        .badge.correct { background: #dcfce7; color: #166534; }
+        .badge.wrong { background: #fee2e2; color: #991b1b; }
+        .badge.skipped { background: #f1f5f9; color: #475569; }
+        .explanation-box { background: #fdf2f8; border-left: 3px solid #ec4899; padding: 8px 10px; font-size: 13px; color: #831843; margin-top: 8px; border-radius: 0 4px 4px 0; }
 
-    /* SLIP RECEIPT CARD ISOLATION CSS RULES */
-    .slip-card-clean {
-      background-color: #ffffff !important;
-      color: #0f172a !important;
-      border: 2px solid #ea580c !important;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
-    }
-    .slip-card-clean * {
-      text-shadow: none !important;
-    }
-    .slip-text-dark {
-      color: #0f172a !important;
-    }
-    .slip-text-muted {
-      color: #475569 !important;
-    }
-    .slip-box-inner {
-      background-color: #fff7ed !important;
-      border: 1px solid #fed7aa !important;
-    }
+        .error-msg { color: #dc2626; font-size: 13px; font-weight: 600; margin-top: 8px; text-align: center; display: none; }
 
-    /* DRAWER NAVIGATION LINKS TEXT */
-    body.neon-blue-mode nav button span,
-    body.neon-blue-mode nav button,
-    body.neon-blue-mode nav a:not(.youtube-guide-btn) span,
-    body.neon-blue-mode nav a:not(.youtube-guide-btn) {
-      color: #ffffff !important;
-    }
+        .history-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+        .history-card-header { display: flex; justify-content: space-between; font-weight: 700; color: #0f172a; margin-bottom: 4px; font-size: 14px; }
 
-    /* BUTTONS & BADGES FOR NEON MODE */
-    body.neon-blue-mode button:not(.no-neon):not(.slip-card-clean *),
-    body.neon-blue-mode .neon-red-btn,
-    body.neon-blue-mode span[class*="bg-slate-100"]:not(.slip-card-clean *),
-    body.neon-blue-mode span[class*="bg-blue-600"]:not(.slip-card-clean *) {
-      background-color: #ea580c !important;
-      color: #ffffff !important;
-      font-weight: 900 !important;
-      border: 1px solid #fb923c !important;
-    }
+        /* Toast notification for double back to exit */
+        #exit-toast {
+            visibility: hidden;
+            min-width: 240px;
+            background-color: rgba(15, 23, 42, 0.9);
+            color: #fff;
+            text-align: center;
+            border-radius: 25px;
+            padding: 12px 20px;
+            position: fixed;
+            z-index: 10001;
+            left: 50%;
+            bottom: 40px;
+            transform: translateX(-50%);
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            opacity: 0;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        #exit-toast.show {
+            visibility: visible;
+            opacity: 1;
+        }
 
-    /* INPUT FIELDS IN NEON MODE */
-    body.neon-blue-mode input,
-    body.neon-blue-mode select,
-    body.neon-blue-mode textarea {
-      background-color: #111a36 !important;
-      color: #fdba74 !important;
-      border: 1px solid #f97316 !important;
-    }
-
-    /* PREFIX BADGE */
-    body.neon-blue-mode .prefix-badge {
-      background-color: #0b1329 !important;
-      color: #fdba74 !important;
-      border-color: #f97316 !important;
-    }
-
-    /* POST CATEGORY BADGES IN NEON MODE FIX */
-    body.neon-blue-mode .post-category-badge {
-      background-color: #0b1329 !important;
-      color: #ffedd5 !important;
-      border: 1px solid #f97316 !important;
-      box-shadow: 0 0 8px rgba(249, 115, 22, 0.35) !important;
-      font-weight: 800 !important;
-    }
-
-    /* HEADER BAR IN NEON MODE */
-    body.neon-blue-mode header {
-      background: linear-gradient(to right, #431407, #0f172a, #064e3b) !important;
-      border-bottom: 2px solid #f97316 !important;
-    }
-
-    /* SVG ICONS COLOR IN NEON MODE */
-    body.neon-blue-mode svg:not(.slip-card-clean *):not(.youtube-guide-btn *) {
-      stroke: #fdba74 !important;
-    }
-
-    @media print {
-      body * {
-        visibility: hidden;
-      }
-      #printable-receipt, #printable-receipt * {
-        visibility: visible;
-      }
-      #printable-receipt {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-      }
-      .no-print {
-        display: none !important;
-      }
-    }
-  </style>
-
-  <!-- External Static Posts Data Files -->
-  <script src="posts.js"></script>
-  <script src="html_posts.js"></script>
-
-  <!-- SEO SCHEMA FOR SEARCH ENGINE CRAWLER -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "GovernmentService",
-    "name": "SGS ONLINE SERVICE",
-    "url": "https://sgsonlineservice.store/",
-    "description": "SGS Online Service - Online form filling assistance in Bihar, VKSU Admission, RTPS Caste Income Residence Certificate, Scholarships & Job Portal.",
-    "provider": {
-      "@type": "LocalBusiness",
-      "name": "SGS Online Service Helpdesk",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Arrah",
-        "addressRegion": "Bihar",
-        "postalCode": "802165",
-        "addressCountry": "IN"
-      }
-    }
-  }
-  </script>
+        /* Result Graph & Filter Styling */
+        .chart-container-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 16px 0 10px 0;
+        }
+        .donut-chart-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: conic-gradient(#16a34a 0deg 180deg, #dc2626 180deg 270deg, #94a3b8 270deg 360deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        .donut-chart-inner {
+            width: 95px;
+            height: 95px;
+            background: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .donut-percentage {
+            font-size: 20px;
+            font-weight: 900;
+            color: #831843;
+        }
+        .donut-subtext {
+            font-size: 10px;
+            color: #64748b;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .chart-legend {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        .result-filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin: 14px 0 16px 0;
+        }
+        .filter-btn {
+            flex: 1;
+            padding: 10px 4px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            border: 1.5px solid #cbd5e1;
+            background: #ffffff;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .filter-btn.active-filter-all {
+            background: #0f172a;
+            color: #ffffff;
+            border-color: #0f172a;
+        }
+        .filter-btn.active-filter-right {
+            background: #16a34a;
+            color: #ffffff;
+            border-color: #16a34a;
+        }
+        .filter-btn.active-filter-wrong {
+            background: #dc2626;
+            color: #ffffff;
+            border-color: #dc2626;
+        }
+    </style>
 </head>
-<body class="bg-orange-50/30 text-slate-800 antialiased selection:bg-orange-200">
+<body>
 
-  <!-- TOP TIRANGA ACCENT RIBBON -->
-  <div class="tiranga-stripe w-full fixed top-0 z-[100]"></div>
-  
-  <!-- SPLASH LOADER SCREEN WITH LOGO & TIRANGA THEME -->
-  <div id="splash-screen" class="fixed inset-0 z-[100] bg-gradient-to-br from-orange-950 via-slate-950 to-emerald-950 flex flex-col items-center justify-center p-4 text-white">
-    <div class="flex flex-col items-center text-center max-w-sm">
-      <div class="relative mb-4">
-        <img src="logo.png" alt="SGS Logo" class="w-20 h-20 rounded-2xl shadow-xl object-cover animate-pulse border-2 border-orange-400" onerror="this.onerror=null; this.style.display='none';" />
-        <div class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-emerald-500 border-2 border-white animate-ping"></div>
-      </div>
-      <h1 class="text-xl sm:text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-white to-emerald-400 tracking-tight leading-tight">
-        SGS ONLINE SERVICE
-      </h1>
-      <p class="text-[11px] font-bold text-orange-200/90 uppercase tracking-widest mt-1">
-        Online Form Filling Assistance & Facilitation Portal
-      </p>
-      <div class="mt-8 flex flex-col items-center gap-2">
-        <div class="w-8 h-8 border-3 border-orange-400 border-t-emerald-500 rounded-full animate-spin"></div>
-        <p class="text-[11px] text-slate-300 font-semibold tracking-wide">Loading Assistance Portal...</p>
-      </div>
+<!-- Toast Notification -->
+<div id="exit-toast">Press back again to exit</div>
+
+<!-- 0. Animated Splash Screen -->
+<div id="splash-screen">
+    <div class="splash-logo-container">
+        <img src="logo.png" alt="SGS" class="splash-logo-img" onerror="if(this.src.indexOf('file:///android_asset/')===-1){this.src='file:///android_asset/logo.png';}else{this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='block';}" />
+        <span class="splash-logo-fallback" style="display:none;">SGS</span>
     </div>
-  </div>
+    <h2 style="font-size: 20px; font-weight: 800; letter-spacing: 0.5px; text-align: center;">SGS MOCK TEST</h2>
+    <p id="splash-status-text" style="font-size: 13px; opacity: 0.9; margin-top: 6px;">All Exams Preparation...</p>
+</div>
 
-  <div id="root" class="pt-1">
-    <!-- STATIC NOSCRIPT FOR GOOGLE CRAWLER -->
-    <noscript>
-      <h1>SGS Online Service - Form Filling Assistance</h1>
-      <p>Get expert assistance for college admission forms, RTPS certificates, scholarships, and online job applications.</p>
-      <ul>
-        <li><a href="https://sgsonlineservice.store/?service=internship-application-01">Internship Application Online Form</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=rtps-caste-02">Bihar RTPS Caste Certificate (जाति प्रमाण पत्र)</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=rtps-income-03">Bihar RTPS Income Certificate (आय प्रमाण पत्र)</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=rtps-residence-04">Bihar RTPS Residence Certificate (निवास प्रमाण पत्र)</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=vksu-exam-form-all-sem-05">VKSU Exam Form All Semester</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=rtps-combo-06">Bihar RTPS Combo Service</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=vksu-admission-sem5-All-session-07">VKSU Online Admission Form</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=Government-Forms-08">Bihar Character Certificate</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=internship-120hr-09">Intership 120 Hour Complete</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=pan-card-apply-10">New PAN Card / Correction Online Form</a></li>
-        <li><a href="https://sgsonlineservice.store/?service=pms-scholarship-2026-2027-11">PMS scholarship 2026-2027</a></li>
-      </ul>
-    </noscript>
-  </div>
+<!-- ================= NAVIGATION DRAWER ================= -->
+<div id="drawer-overlay" class="drawer-overlay" onclick="closeDrawer()"></div>
+<div id="drawer-sidebar" class="drawer-sidebar">
+    <div class="drawer-header">
+        <div class="drawer-logo-box">
+            <img src="logo.png" alt="SGS" class="drawer-logo-img" onerror="if(this.src.indexOf('file:///android_asset/')===-1){this.src='file:///android_asset/logo.png';}else{this.style.display='none';}" />
+            <div>
+                <h3>SGS Mock Test</h3>
+                <p>All Exams Free Preparation</p>
+            </div>
+        </div>
+    </div>
+    <div class="drawer-content">
+        <div class="drawer-item" onclick="openTrackMyTestModal()">
+            <span>📊</span> Track My Tests
+        </div>
+        <a class="drawer-item" href="https://www.termsfeed.com/live/50b7338c-6eba-408f-bd5a-21bb644f9e56" target="_blank" onclick="closeDrawer()">
+            <span>🛡️</span> Privacy Policy ↗
+        </a>
+        <a class="drawer-item" href="https://www.termsfeed.com/live/af841b41-788e-480a-90ad-1838eea308cd" target="_blank" onclick="closeDrawer()">
+            <span>📜</span> Terms & Conditions ↗
+        </a>
+        <a class="drawer-item" href="https://www.termsfeed.com/live/d15e3366-cb7a-4b6f-9726-5b1603e62231" target="_blank" onclick="closeDrawer()">
+            <span>⚠️</span> Disclaimer ↗
+        </a>
+        <div class="drawer-item" onclick="shareApp()">
+            <span>📲</span> Share App
+        </div>
+    </div>
+</div>
 
-  <script>
-    setTimeout(() => {
-      const splash = document.getElementById('splash-screen');
-      if (splash) {
-        splash.style.opacity = '0';
-        setTimeout(() => splash.remove(), 300);
-      }
-    }, 600);
-  </script>
+<!-- ================= POLICY CONSENT VIEW ================= -->
+<div id="view-policy-consent" class="view auth-view">
+    <div class="auth-card">
+        <h2 class="auth-title">Welcome to SGS Test 🎯</h2>
+        <p class="auth-sub">Kripya aage badhne se pehle hamari sabhi policies, terms aur disclaimer ko dhyan se padhein aur accept karein.</p>
 
-  <script type="text/babel">
-    const { useState, useEffect } = React;
+        <div class="policy-btn-group">
+            <a href="https://www.termsfeed.com/live/50b7338c-6eba-408f-bd5a-21bb644f9e56" target="_blank" class="policy-link-btn">
+                <span>🛡️ Read Privacy Policy</span>
+                <span>↗</span>
+            </a>
+            <a href="https://www.termsfeed.com/live/af841b41-788e-480a-90ad-1838eea308cd" target="_blank" class="policy-link-btn">
+                <span>📜 Read Terms & Conditions</span>
+                <span>↗</span>
+            </a>
+            <a href="https://www.termsfeed.com/live/d15e3366-cb7a-4b6f-9726-5b1603e62231" target="_blank" class="policy-link-btn">
+                <span>⚠️ Read Disclaimer</span>
+                <span>↗</span>
+            </a>
+        </div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDnYNpfLEsGOhTMT1dkDReH4fRA0pgOs94",
-      authDomain: "sgs-online-service.firebaseapp.com",
-      databaseURL: "https://sgs-online-service-default-rtdb.firebaseio.com",
-      projectId: "sgs-online-service",
-      storageBucket: "sgs-online-service.firebasestorage.app",
-      messagingSenderId: "12707331594",
-      appId: "1:12707331594:web:9f5645f5744b7fc7af29f3"
-    };
+        <div class="auth-checkbox-container">
+            <input type="checkbox" id="policy-agree-check" />
+            <label for="policy-agree-check">I have read and agree to the <b>Privacy Policy</b>, <b>Terms & Conditions</b>, and <b>Disclaimer</b>.</label>
+        </div>
 
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-    const realTimeDb = firebase.database();
-    const auth = firebase.auth();
+        <div id="policy-error" class="error-msg"></div>
 
-    // Telegram Bot Credentials
-    const TELEGRAM_BOT_TOKEN = "8358900801:AAE42RhsmJPv_h40nGEqC7wuXW5HQ_wp8pk";
-    const TELEGRAM_CHAT_ID = "5011508473";
+        <button type="button" class="btn-gradient" onclick="acceptPoliciesAndEnter()">
+            <span>I Agree & Continue 🚀</span>
+        </button>
+    </div>
+</div>
 
-    // Support Encrypted Credentials
-    const _0xwa = "OTExNzA4MDE2OQ==";
-    const _0xem = "contactsgsonlineservice@gmail.com";
+<!-- ================= APP MAIN SCREENS ================= -->
+<div id="main-app-wrapper" style="display: none;">
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <button class="menu-btn" onclick="openDrawer()">☰</button>
+            <img src="logo.png" alt="SGS" class="top-logo-img" onerror="if(this.src.indexOf('file:///android_asset/')===-1){this.src='file:///android_asset/logo.png';}else{this.style.display='none';}" />
+            <span id="nav-back-icon" style="font-size: 20px; cursor: pointer; display: none;" onclick="handleAppBack()">←</span>
+            <span class="title">SGS MOCK TEST</span>
+        </div>
+        <div style="cursor: pointer; font-size: 18px;" onclick="shareApp()">📲</div>
+    </div>
+    <div class="sub-bar">
+        <span>Free Mock Test: All Exams Preparation</span>
+        <span style="font-size:12px; font-weight:700; color:#ec4899;">FREE ACCESS</span>
+    </div>
 
-    // ADMIN SPECIAL UID
-    const ADMIN_UID = "a7XKd7o4aGNqgGiIO9GRe5Q1Rhn1";
+    <!-- 1. Categories View -->
+    <div id="view-categories" class="view active">
+        <div class="user-greeting">✨ Choose Subject:</div>
+        <div class="container" id="category-container"></div>
+    </div>
 
-    const Icons = {
-      Search: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>,
-      ArrowLeft: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>,
-      ChevronRight: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>,
-      Bell: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>,
-      Menu: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/></svg>,
-      X: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/></svg>,
-      ShieldCheck: () => <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>,
-      Share2: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>,
-      Headphones: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg>,
-      ListCheck: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 022 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>,
-      Moon: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>,
-      Download: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>,
-      CheckCircle: () => <svg className="w-12 h-12 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
-      Info: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>,
-      Receipt: () => <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>,
-      Youtube: () => <svg className="w-4 h-4 fill-current text-red-600 shrink-0" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>,
-      CreditCard: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>,
-      Truck: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>,
-      Building: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>,
-      User: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>,
-      Lock: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>,
-      Logout: () => <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-    };
+    <!-- 2. Topics View (Topics/Chapters Screen: jaise Sindhu Ghati Sabhyata) -->
+    <div id="view-topics" class="view">
+        <div class="user-greeting" id="topic-header-title"></div>
+        <div class="container" id="topic-container"></div>
+    </div>
 
-    // HIGH QUALITY HD IMAGE COMPRESSION
-    const compressImage = (file) => {
-      return new Promise((resolve) => {
-        if (!file || file.type === 'application/pdf' || !file.type.startsWith('image/')) {
-          resolve(file);
-          return;
-        }
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (event) => {
-          const img = new Image();
-          img.src = event.target.result;
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            canvas.width = img.width;
-            canvas.height = img.height;
+    <!-- 3. Chapters/Tests View (Test 1, Test 2, Test 3) -->
+    <div id="view-chapters" class="view">
+        <div class="user-greeting" id="chapter-header-title"></div>
+        <div class="container" id="chapter-container"></div>
+    </div>
 
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-            
-            canvas.toBlob((blob) => {
-              if (blob) {
-                const compressedFile = new File([blob], file.name, {
-                  type: 'image/jpeg',
-                  lastModified: Date.now()
+    <!-- 4. Test Running View -->
+    <div id="view-test" class="view">
+        <div class="container">
+            <div class="test-status-bar">
+                <span id="q-indicator" style="font-weight: 700;">Question 1/10</span>
+                <div id="timer-display" class="timer-badge">00:00</div>
+                <button type="button" class="btn-submit-test" onclick="openSubmitModal()">Submit</button>
+            </div>
+
+            <div class="question-box" id="current-question-text"></div>
+            <div id="current-options-box"></div>
+
+            <div class="nav-actions">
+                <button type="button" class="action-btn" onclick="goToPrev()">Previous</button>
+                <button type="button" class="action-btn" onclick="goToNext()">Next</button>
+                <button type="button" class="action-btn primary" onclick="saveAndNext()">Save & Next</button>
+            </div>
+
+            <div style="margin-top: 20px; background: #fff; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0;">
+                <div style="font-size: 13px; font-weight: bold; color: #475569; margin-bottom: 6px;">Questions Status:</div>
+                <div class="palette-grid" id="palette-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Result View -->
+    <div id="view-result" class="view">
+        <div class="container">
+            <div class="score-summary">
+                <h2 style="font-size: 22px; color: #831843;">Test Result</h2>
+
+                <!-- Performance Graph / Pie Chart -->
+                <div class="chart-container-box">
+                    <div class="donut-chart-circle" id="result-donut-chart">
+                        <div class="donut-chart-inner">
+                            <span class="donut-percentage" id="donut-accuracy-text">0%</span>
+                            <span class="donut-subtext">Accuracy</span>
+                        </div>
+                    </div>
+                    <div class="chart-legend">
+                        <div class="legend-item"><span class="legend-dot" style="background:#16a34a;"></span> Right</div>
+                        <div class="legend-item"><span class="legend-dot" style="background:#dc2626;"></span> Wrong</div>
+                        <div class="legend-item"><span class="legend-dot" style="background:#94a3b8;"></span> Skipped</div>
+                    </div>
+                </div>
+
+                <div class="score-grid">
+                    <div class="score-stat">
+                        <div class="stat-val" id="stat-score" style="color:#db2777;">0</div>
+                        <div class="stat-lbl">Score</div>
+                    </div>
+                    <div class="score-stat">
+                        <div class="stat-val" id="stat-correct" style="color:#16a34a;">0</div>
+                        <div class="stat-lbl">Correct</div>
+                    </div>
+                    <div class="score-stat">
+                        <div class="stat-val" id="stat-wrong" style="color:#dc2626;">0</div>
+                        <div class="stat-lbl">Wrong</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right / Wrong Filter Buttons -->
+            <div class="result-filter-tabs">
+                <button type="button" class="filter-btn active-filter-all" id="btn-filter-all" onclick="filterReviewQuestions('all')">📋 All</button>
+                <button type="button" class="filter-btn" id="btn-filter-right" onclick="filterReviewQuestions('correct')">✅ Right</button>
+                <button type="button" class="filter-btn" id="btn-filter-wrong" onclick="filterReviewQuestions('wrong')">❌ Wrong</button>
+            </div>
+
+            <h3 style="margin-bottom: 12px; font-size: 16px; font-weight: 700;">Answers Review:</h3>
+            <div id="result-review-container"></div>
+            <button type="button" class="item-card" style="background: linear-gradient(135deg, #ec4899, #8b5cf6); color:#fff; border:none; margin-top:16px; width: 100%; font-size: 16px;" onclick="navigateToCategories()">Back to Home</button>
+        </div>
+    </div>
+</div>
+
+<!-- ================= ALL POPUP MODALS ================= -->
+
+<!-- In-App Force Update Modal -->
+<div id="updateModal">
+    <div class="update-card-box">
+        <div style="font-size: 40px; margin-bottom: 10px;">🚀</div>
+        <h3 style="font-size: 20px; font-weight: 800; color: #831843; margin-bottom: 8px;">Update Available!</h3>
+        <p id="updateMessageText" style="color: #64748b; font-size: 13.5px; line-height: 1.5; margin-bottom: 20px;">Naya update aa gaya hai. Kripya app use karne ke liye update karein.</p>
+
+        <!-- Progress Bar (1% to 100%) -->
+        <div id="progressArea" style="display: none; margin-bottom: 18px;">
+            <div class="update-progress-track">
+                <div id="updateProgressBar" class="update-progress-fill"></div>
+            </div>
+            <div id="updateProgressText" style="font-size: 13px; font-weight: 800; color: #be185d; margin-top: 10px;">Downloading: 0%</div>
+        </div>
+
+        <button type="button" id="updateBtn" class="btn-gradient" style="margin-top: 0;" onclick="startUpdateDownload()">
+            <span>Update Now 📲</span>
+        </button>
+    </div>
+</div>
+
+<!-- Start Test Modal -->
+<div id="modal-start" class="modal-overlay">
+    <div class="modal-box">
+        <h3 id="modal-start-title">Start Test</h3>
+        <p id="modal-start-desc">Total Questions: 0 | Time: 0 mins</p>
+        <div class="modal-btns">
+            <button type="button" style="background:#f1f5f9; color:#475569;" onclick="closeStartModal()">Cancel</button>
+            <button type="button" style="background: linear-gradient(135deg, #ec4899, #8b5cf6); color:#fff;" onclick="launchTestSession()">Start Now</button>
+        </div>
+    </div>
+</div>
+
+<!-- Re-attempt or View Result Modal -->
+<div id="modal-reattempt" class="modal-overlay">
+    <div class="modal-box">
+        <h3 id="reattempt-chapter-title">Test Attempted</h3>
+        <p id="reattempt-info-desc">Aap yeh test pehle de chuke hain. Aap kya karna chahte hain?</p>
+        <div class="modal-btns" style="flex-direction: column;">
+            <button type="button" style="background: linear-gradient(135deg, #ec4899, #8b5cf6); color:#fff; width:100%;" onclick="launchTestSessionFromReattempt()">🔄 Re-attempt Test</button>
+            <button type="button" style="background: #2563eb; color:#fff; width:100%;" onclick="viewSavedTestResult()">👁️ View Result</button>
+            <button type="button" style="background: #f1f5f9; color:#475569; width:100%;" onclick="closeReattemptModal()">Back</button>
+        </div>
+    </div>
+</div>
+
+<!-- Submit Confirmation Modal -->
+<div id="modal-submit" class="modal-overlay">
+    <div class="modal-box">
+        <h3>Submit Your Test?</h3>
+        <p>Kya aap test submit karke result dekhna chahte hain?</p>
+        <div class="modal-btns">
+            <button type="button" style="background:#f1f5f9; color:#475569;" onclick="closeSubmitModal()">Cancel</button>
+            <button type="button" style="background: #dc2626; color:#fff;" onclick="executeSubmit()">Submit</button>
+        </div>
+    </div>
+</div>
+
+<!-- Track My Test Modal -->
+<div id="modal-track" class="modal-overlay">
+    <div class="modal-box modal-scrollable-box">
+        <h3>📊 Track My Tests</h3>
+        <p style="margin-bottom:12px;">Aapke dwara diye gaye sabhi tests ki summary:</p>
+        <div id="track-tests-container"></div>
+        <div style="margin-top: 16px; text-align: center;">
+            <button type="button" class="item-card" style="margin:0; padding:10px; width:100%; background:#0f172a; color:#fff;" onclick="closeTrackModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Subject Posts Scripts (Linked) -->
+<script src="posts.js"></script>
+<script src="computer_posts.js"></script>
+<script src="gk_posts.js"></script>
+<script src="gs_posts.js"></script>
+
+<script>
+    // 0. Auto-Merge all subject post arrays (Full 3-level support: Subject -> Topic -> Tests with Deduping)
+    var quizData = [];
+
+    function mergeQuizData() {
+        quizData = [];
+        try {
+            function processRawData(dataArr) {
+                if (!dataArr || !Array.isArray(dataArr)) return;
+
+                dataArr.forEach(function(item) {
+                    if (!item || !item.category) return;
+
+                    var topicsList = [];
+
+                    // Format A: Agar 3-level topics -> tests format hai
+                    if (item.topics && Array.isArray(item.topics)) {
+                        item.topics.forEach(function(tp) {
+                            var testsList = [];
+                            if (tp.tests && Array.isArray(tp.tests)) {
+                                tp.tests.forEach(function(tst) {
+                                    testsList.push({
+                                        chapterName: tst.testName || "Test",
+                                        timeInMinutes: tst.timeInMinutes || 15,
+                                        questions: tst.questions || []
+                                    });
+                                });
+                            }
+                            topicsList.push({
+                                topicName: tp.topicName || "Topic",
+                                chapters: testsList
+                            });
+                        });
+                    }
+                    // Format B: Agar purana direct chapters format hai
+                    else if (item.chapters && Array.isArray(item.chapters)) {
+                        topicsList.push({
+                            topicName: item.category,
+                            chapters: item.chapters
+                        });
+                    }
+
+                    var existing = quizData.find(function(c) { return c.category === item.category; });
+                    if (existing) {
+                        topicsList.forEach(function(newTop) {
+                            var alreadyTopic = existing.topics.find(function(t) { return t.topicName === newTop.topicName; });
+                            if (alreadyTopic) {
+                                alreadyTopic.chapters = newTop.chapters;
+                            } else {
+                                existing.topics.push(newTop);
+                            }
+                        });
+                    } else {
+                        quizData.push({
+                            category: item.category,
+                            topics: topicsList
+                        });
+                    }
                 });
-                resolve(compressedFile);
-              } else {
-                resolve(file);
-              }
-            }, 'image/jpeg', 0.92);
-          };
-        };
-      });
-    };
-
-    // Helper to parse UPI params from QR code URL
-    const getUpiDetails = (qrUrl) => {
-      let upiData = { pa: "s.kumar.2372@superyes", pn: "Merchant", am: "" };
-      try {
-        if (qrUrl) {
-          const parsedUrl = new URL(qrUrl);
-          const textParam = parsedUrl.searchParams.get("text");
-          if (textParam) {
-            const upiString = decodeURIComponent(textParam);
-            const upiUrl = new URL(upiString);
-            upiData.pa = upiUrl.searchParams.get("pa") || upiData.pa;
-            upiData.pn = upiUrl.searchParams.get("pn") || upiData.pn;
-            upiData.am = upiUrl.searchParams.get("am") || "";
-          }
-        }
-      } catch (e) {
-        console.error("UPI parse error", e);
-      }
-      return upiData;
-    };
-
-    function App() {
-      const [isLoggedIn, setIsLoggedIn] = useState(() => {
-        try {
-          return localStorage.getItem('sgs_user_logged_in') === 'true';
-        } catch (e) {
-          return false;
-        }
-      });
-
-      const [currentUser, setCurrentUser] = useState(() => {
-        try {
-          const saved = localStorage.getItem('sgs_user_profile');
-          return saved ? JSON.parse(saved) : null;
-        } catch (e) {
-          return null;
-        }
-      });
-
-      const [loginTab, setLoginTab] = useState('login'); // 'login' or 'register'
-      const [loginEmail, setLoginEmail] = useState('');
-      const [loginPassword, setLoginPassword] = useState('');
-      const [confirmPassword, setConfirmPassword] = useState('');
-      const [showPassword, setShowPassword] = useState(false);
-      const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-      const [agreedTerms, setAgreedTerms] = useState(true);
-      const [rememberMe, setRememberMe] = useState(true);
-      const [isAuthenticating, setIsAuthenticating] = useState(false);
-
-      // Admin State
-      const [adminSelectedUser, setAdminSelectedUser] = useState(null);
-      const [allUsersList, setAllUsersList] = useState([]);
-      const [allAdminApps, setAllAdminApps] = useState([]);
-
-      // Custom Confirmation Modal State
-      const [confirmDialog, setConfirmDialog] = useState(null);
-
-      // Merge normal posts and custom HTML posts seamlessly
-      const combinedAllPosts = [
-        ...(typeof ALL_POSTS !== 'undefined' ? ALL_POSTS : []),
-        ...(typeof HTML_POSTS !== 'undefined' ? HTML_POSTS : [])
-      ];
-
-      const [services, setServices] = useState(combinedAllPosts);
-      const [notices, setNotices] = useState(typeof STATIC_NOTICES !== 'undefined' ? STATIC_NOTICES : []);
-      const [categories, setCategories] = useState(typeof STATIC_CATEGORIES !== 'undefined' ? STATIC_CATEGORIES : []);
-      
-      const [selectedCat, setSelectedCat] = useState('All Services');
-      const [searchQuery, setSearchQuery] = useState('');
-      const [activeService, setActiveService] = useState(null); 
-      const [showDrawer, setShowDrawer] = useState(false);
-      const [activeModalPage, setActiveModalPage] = useState(null);
-      const [toastMsg, setToastMsg] = useState('');
-      const [isSubmitting, setIsSubmitting] = useState(false);
-      const [submittedReceipt, setSubmittedReceipt] = useState(null);
-
-      // Post Selection Confirmation Warning Modal State
-      const [pendingService, setPendingService] = useState(null);
-
-      // Neon Mode State
-      const [isNeonMode, setIsNeonMode] = useState(() => {
-        try {
-          return localStorage.getItem('sgs_theme') === 'neon';
-        } catch (e) {
-          return false;
-        }
-      });
-
-      useEffect(() => {
-        if (isNeonMode) {
-          document.body.classList.add('neon-blue-mode');
-          try { localStorage.setItem('sgs_theme', 'neon'); } catch (e) {}
-        } else {
-          document.body.classList.remove('neon-blue-mode');
-          try { localStorage.setItem('sgs_theme', 'light'); } catch (e) {}
-        }
-      }, [isNeonMode]);
-
-      // First Time Visit Legal Agreement State
-      const [hasAgreed, setHasAgreed] = useState(() => {
-        try {
-          return localStorage.getItem('sgs_terms_accepted') === 'true';
-        } catch (e) {
-          return false;
-        }
-      });
-
-      const handleAcceptTerms = () => {
-        try {
-          localStorage.setItem('sgs_terms_accepted', 'true');
-        } catch (e) {}
-        setHasAgreed(true);
-      };
-
-      // User Applications State
-      const [userApps, setUserApps] = useState([]);
-
-      const showNotification = (msg) => {
-        setToastMsg(msg);
-        setTimeout(() => setToastMsg(''), 3500);
-      };
-
-      useEffect(() => {
-        if (currentUser) {
-          // Fetch user applications from Firebase Realtime DB
-          const userAppsRef = realTimeDb.ref(`users/${currentUser.uid}/applications`);
-          userAppsRef.on('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-              const list = Object.keys(data).map(key => data[key]);
-              setUserApps(list.reverse());
-            } else {
-              setUserApps([]);
             }
-          });
 
-          // If admin, fetch all users and global applications
-          if (currentUser.uid === ADMIN_UID) {
-            const usersRef = realTimeDb.ref('users');
-            usersRef.on('value', (snapshot) => {
-              const data = snapshot.val();
-              if (data) {
-                const uList = Object.keys(data).map(k => data[k]);
-                setAllUsersList(uList);
-              }
-            });
+            if (typeof hindiQuizData !== 'undefined') {
+                processRawData(hindiQuizData);
+            } else if (typeof postsQuizData !== 'undefined') {
+                processRawData(postsQuizData);
+            } else if (typeof window.quizData !== 'undefined' && Array.isArray(window.quizData) && window.quizData.length > 0) {
+                processRawData(window.quizData);
+            }
 
-            const globalAppsRef = realTimeDb.ref('global_applications');
-            globalAppsRef.on('value', (snapshot) => {
-              const data = snapshot.val();
-              if (data) {
-                const appList = Object.keys(data).map(k => data[k]);
-                setAllAdminApps(appList);
-              }
-            });
-          }
+            if (typeof computerQuizData !== 'undefined') processRawData(computerQuizData);
+            if (typeof gkQuizData !== 'undefined') {
+                processRawData(gkQuizData);
+            } else if (typeof gkPosts !== 'undefined') {
+                processRawData(gkPosts);
+            }
+
+            if (typeof gsQuizData !== 'undefined') {
+                processRawData(gsQuizData);
+            } else if (typeof gsPosts !== 'undefined') {
+                processRawData(gsPosts);
+            }
+        } catch (e) {
+            console.error("Quiz merge error: ", e);
         }
-      }, [currentUser]);
+    }
 
-      // USER LOGIN / SIGNUP HANDLER WITH FIREBASE AUTH & REALTIME DB PERSISTENCE
-      const handleUserAuth = async (e) => {
-        e.preventDefault();
+    // Local Storage based User History
+    let userTestHistory = {};
 
-        if (!agreedTerms) {
-          showNotification("Kripya Terms & Conditions aur Privacy Policy ko accept karein!");
-          return;
+    function loadLocalTestHistory() {
+        try {
+            const saved = localStorage.getItem('sgs_user_test_history');
+            userTestHistory = saved ? JSON.parse(saved) : {};
+        } catch (e) {
+            userTestHistory = {};
         }
+    }
 
-        const cleanEmail = loginEmail.trim();
-        if (!cleanEmail || !cleanEmail.includes('@')) {
-          showNotification("Kripya sahi Email Address darj karein!");
-          return;
+    function saveLocalTestHistory() {
+        try {
+            localStorage.setItem('sgs_user_test_history', JSON.stringify(userTestHistory));
+        } catch (e) {}
+    }
+
+    function dismissSplashScreen() {
+        const splash = document.getElementById('splash-screen');
+        if (splash) {
+            splash.style.opacity = '0';
+            setTimeout(() => {
+                splash.style.display = 'none';
+            }, 500);
         }
+    }
 
-        if (!loginPassword || loginPassword.length < 6) {
-          showNotification("Password kam se kam 6 characters ka hona chahiye!");
-          return;
+    let isAppInitialized = false;
+    var currentActiveView = 'categories';
+    var lastBackPressTime = 0;
+    var lastTestBackPressTime = 0;
+
+    function showExitToast(msg) {
+        var toast = document.getElementById('exit-toast');
+        if (!toast) return;
+        if (msg) toast.innerText = msg;
+        toast.className = 'show';
+        setTimeout(function() {
+            toast.className = toast.className.replace('show', '');
+        }, 2000);
+    }
+
+    function handleAppBack() {
+        window.history.back();
+    }
+
+    // ================= IN-APP FORCE UPDATE JS LOGIC =================
+    var currentDownloadApkUrl = "";
+
+    function showUpdatePopup(apkUrl, message) {
+        currentDownloadApkUrl = apkUrl;
+        var modal = document.getElementById('updateModal');
+        var msgElem = document.getElementById('updateMessageText');
+        if (msgElem && message) {
+            msgElem.innerText = message;
         }
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    }
 
-        if (loginTab === 'register') {
-          if (loginPassword !== confirmPassword) {
-            showNotification("Dono Passwords aapas mein match nahi kar rahe hain!");
+    function startUpdateDownload() {
+        var btn = document.getElementById('updateBtn');
+        var progressArea = document.getElementById('progressArea');
+        if (btn) btn.style.display = 'none';
+        if (progressArea) progressArea.style.display = 'block';
+
+        if (window.AndroidApp && typeof window.AndroidApp.downloadAndInstallUpdate === 'function') {
+            window.AndroidApp.downloadAndInstallUpdate(currentDownloadApkUrl);
+        }
+    }
+
+    function updateDownloadProgress(progress) {
+        var bar = document.getElementById('updateProgressBar');
+        var txt = document.getElementById('updateProgressText');
+        if (bar) bar.style.width = progress + '%';
+        if (txt) txt.innerText = 'Downloading: ' + progress + '%';
+    }
+
+    function onDownloadFinished() {
+        var txt = document.getElementById('updateProgressText');
+        if (txt) txt.innerText = 'Installing update...';
+    }
+
+    function onDownloadError(errorMsg) {
+        var txt = document.getElementById('updateProgressText');
+        var btn = document.getElementById('updateBtn');
+        if (txt) txt.innerText = 'Download failed. Please try again.';
+        if (btn) {
+            btn.style.display = 'flex';
+            btn.innerHTML = '<span>Retry Download 🔄</span>';
+        }
+    }
+
+    function handleAppBackButton() {
+        var updateModal = document.getElementById('updateModal');
+        if (updateModal && updateModal.style.display === 'flex') {
+            return 'HANDLED';
+        }
+        return 'UNHANDLED';
+    }
+
+    function initApp() {
+        if (isAppInitialized) return;
+        isAppInitialized = true;
+
+        mergeQuizData();
+        loadLocalTestHistory();
+
+        const isPolicyAccepted = localStorage.getItem('sgs_policy_agreed') === 'true';
+
+        setTimeout(() => {
+            if (window.AndroidApp && typeof window.AndroidApp.hideNativeSplash === 'function') {
+                window.AndroidApp.hideNativeSplash();
+            }
+
+            dismissSplashScreen();
+
+            if (isPolicyAccepted) {
+                const consentView = document.getElementById('view-policy-consent');
+                if (consentView) consentView.style.display = 'none';
+                document.getElementById('main-app-wrapper').style.display = 'block';
+                navigateToCategories(false);
+            } else {
+                document.getElementById('main-app-wrapper').style.display = 'none';
+                const consentView = document.getElementById('view-policy-consent');
+                if (consentView) {
+                    consentView.classList.add('active');
+                    consentView.style.display = 'flex';
+                }
+            }
+            setupBrowserNavigation();
+        }, 2200);
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initApp);
+    } else {
+        initApp();
+    }
+    window.addEventListener('load', initApp);
+
+    function acceptPoliciesAndEnter() {
+        const agreed = document.getElementById('policy-agree-check').checked;
+        const errorEl = document.getElementById('policy-error');
+
+        if (!agreed) {
+            errorEl.innerText = "Please accept the policies to continue.";
+            errorEl.style.display = "block";
             return;
-          }
         }
 
-        setIsAuthenticating(true);
+        errorEl.style.display = "none";
+        localStorage.setItem('sgs_policy_agreed', 'true');
 
-        try {
-          let userCredential;
-          if (loginTab === 'login') {
-            userCredential = await auth.signInWithEmailAndPassword(cleanEmail, loginPassword);
+        document.getElementById('view-policy-consent').classList.remove('active');
+        document.getElementById('view-policy-consent').style.display = 'none';
+        document.getElementById('main-app-wrapper').style.display = 'block';
+        navigateToCategories(false);
+    }
+
+    // ================= DRAWER & UTILS =================
+    function openDrawer() {
+        document.getElementById('drawer-overlay').style.display = 'block';
+        document.getElementById('drawer-sidebar').style.left = '0px';
+    }
+
+    function closeDrawer() {
+        document.getElementById('drawer-overlay').style.display = 'none';
+        document.getElementById('drawer-sidebar').style.left = '-290px';
+    }
+
+    function shareApp() {
+        closeDrawer();
+        const shareTitle = 'SGS Mock Test: All Exams Preparation';
+        const shareText = 'Download SGS Mock Test App for free mock tests in GK, GS, Hindi & Computer exams preparation!\n\nGet it here: ';
+        const shareUrl = 'https://play.google.com/store/apps/details?id=com.sgs.sgsfreemocktest';
+
+        if (window.AndroidApp && window.AndroidApp.shareApp) {
+            window.AndroidApp.shareApp(shareTitle, shareText + shareUrl);
+            return;
+        }
+
+        if (navigator.share) {
+            navigator.share({
+                title: shareTitle,
+                text: shareText + shareUrl,
+                url: shareUrl
+            }).catch(function(e) {});
+        } else {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(shareText + shareUrl);
+                alert('App share link copied to clipboard!');
+            } else {
+                prompt('Copy share link:', shareText + shareUrl);
+            }
+        }
+    }
+
+    function openTrackMyTestModal() {
+        closeDrawer();
+        const container = document.getElementById('track-tests-container');
+        const keys = Object.keys(userTestHistory || {});
+
+        if (keys.length === 0) {
+            container.innerHTML = '<p style="color:#64748b; font-size:13px; text-align:center; padding:20px 0;">Abhi tak koi test submit nahi kiya hai.</p>';
+        } else {
+            container.innerHTML = keys.reverse().map(k => {
+                const item = userTestHistory[k];
+                if (!item) return '';
+                const date = item.timestamp ? new Date(item.timestamp).toLocaleDateString() : 'Recent';
+                return `
+                    <div class="history-card">
+                        <div class="history-card-header">
+                            <span>${item.chapter || 'Test'}</span>
+                            <span style="color:#16a34a;">${item.score || 0}/${item.total || 0}</span>
+                        </div>
+                        <div style="font-size:12px; color:#64748b;">Subject: ${item.category || ''} | Date: ${date}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+        document.getElementById('modal-track').style.display = 'flex';
+    }
+
+    function closeTrackModal() {
+        document.getElementById('modal-track').style.display = 'none';
+    }
+
+    // ================= QUIZ ENGINE =================
+    var activeCatIdx = null;
+    var activeTopIdx = null;
+    var activeChapIdx = null;
+    var activeQuestions = [];
+    var currentQIdx = 0;
+    var userSelections = {};
+    var timerInterval = null;
+    var timeLeft = 0;
+
+    function showView(viewId) {
+      currentActiveView = viewId.replace('view-', '');
+      var views = document.querySelectorAll('#main-app-wrapper .view');
+      for (var i = 0; i < views.length; i++) {
+        views[i].classList.remove('active');
+      }
+      document.getElementById(viewId).classList.add('active');
+      document.getElementById('nav-back-icon').style.display = (viewId === 'view-categories') ? 'none' : 'inline-block';
+      window.scrollTo(0,0);
+    }
+
+    // 1. Subject Screen
+    function navigateToCategories(pushHistory) {
+      if (pushHistory === undefined) pushHistory = true;
+      clearInterval(timerInterval);
+      mergeQuizData();
+      var container = document.getElementById('category-container');
+      container.innerHTML = (quizData || []).map(function(cat, idx) {
+        return '<div class="item-card" onclick="navigateToTopics(' + idx + ')">' + (cat.category || 'Subject') + '</div>';
+      }).join('');
+      if (pushHistory) {
+        history.pushState({ view: 'categories' }, '');
+      } else {
+        history.replaceState({ view: 'categories' }, '');
+      }
+      showView('view-categories');
+    }
+
+    // 2. Topics Screen (jaise: सिंधु घाटी सभ्यता)
+    function navigateToTopics(catIdx, pushHistory) {
+      if (pushHistory === undefined) pushHistory = true;
+      activeCatIdx = catIdx;
+      var data = quizData[activeCatIdx];
+      if (!data) return;
+
+      document.getElementById('topic-header-title').innerText = 'Subject: ' + (data.category || '');
+      var container = document.getElementById('topic-container');
+
+      if (!data.topics || !Array.isArray(data.topics) || data.topics.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:#64748b; font-size:14px; padding:20px;">Is subject me abhi koi topics uplabdh nahi hain.</p>';
+      } else {
+        container.innerHTML = data.topics.map(function(tp, idx) {
+          return `
+            <div class="item-card" onclick="navigateToChapters(${idx})">
+              ${tp.topicName || 'Topic'}
+            </div>
+          `;
+        }).join('');
+      }
+
+      if (pushHistory) {
+        history.pushState({ view: 'topics', catIdx: catIdx }, '');
+      }
+      showView('view-topics');
+    }
+
+    // 3. Tests Screen (Test 1, Test 2, Test 3)
+    function navigateToChapters(topIdx, pushHistory) {
+      if (pushHistory === undefined) pushHistory = true;
+      activeTopIdx = topIdx;
+      renderChaptersList();
+      if (pushHistory) {
+        history.pushState({ view: 'chapters', catIdx: activeCatIdx, topIdx: topIdx }, '');
+      }
+      showView('view-chapters');
+    }
+
+    function renderChaptersList() {
+      var data = quizData[activeCatIdx];
+      if (!data || !data.topics || !data.topics[activeTopIdx]) return;
+      var currentTopic = data.topics[activeTopIdx];
+
+      document.getElementById('chapter-header-title').innerText = currentTopic.topicName || '';
+      var container = document.getElementById('chapter-container');
+
+      if (!currentTopic.chapters || !Array.isArray(currentTopic.chapters) || currentTopic.chapters.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:#64748b; font-size:14px; padding:20px;">Is topic me abhi koi tests uplabdh nahi hain.</p>';
+        return;
+      }
+
+      container.innerHTML = currentTopic.chapters.map(function(chap, idx) {
+        const isAttempted = checkChapterAttempted(data.category, (currentTopic.topicName || '') + " - " + (chap.chapterName || ''));
+        return `
+          <div class="item-card" onclick="handleChapterClick(${idx})">
+            ${chap.chapterName || 'Test'}
+            ${isAttempted ? '<span class="badge-attempted">Attempted</span>' : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function checkChapterAttempted(catName, chapName) {
+        return Object.values(userTestHistory || {}).some(t => t && t.category === catName && t.chapter === chapName);
+    }
+
+    function getLatestAttempt(catName, chapName) {
+        const matches = Object.entries(userTestHistory || {}).filter(([k, t]) => t && t.category === catName && t.chapter === chapName);
+        return matches.length > 0 ? matches[matches.length - 1] : null;
+    }
+
+    function handleChapterClick(chapIdx) {
+        activeChapIdx = chapIdx;
+        const currentTopic = quizData[activeCatIdx].topics[activeTopIdx];
+        const chap = currentTopic.chapters[chapIdx];
+        const attempt = getLatestAttempt(quizData[activeCatIdx].category, (currentTopic.topicName || '') + " - " + (chap.chapterName || ''));
+
+        if (attempt) {
+            document.getElementById('reattempt-chapter-title').innerText = chap.chapterName || 'Test';
+            document.getElementById('reattempt-info-desc').innerText = `Pichhla Score: ${attempt[1].score}/${attempt[1].total}`;
+            document.getElementById('modal-reattempt').style.display = 'flex';
+        } else {
+            openStartModal(chapIdx);
+        }
+    }
+
+    function closeReattemptModal() {
+        document.getElementById('modal-reattempt').style.display = 'none';
+    }
+
+    function launchTestSessionFromReattempt() {
+        closeReattemptModal();
+        openStartModal(activeChapIdx);
+    }
+
+    function viewSavedTestResult(pushHistory) {
+        if (pushHistory === undefined) pushHistory = true;
+        closeReattemptModal();
+        const currentTopic = quizData[activeCatIdx].topics[activeTopIdx];
+        const chap = currentTopic.chapters[activeChapIdx];
+        const attempt = getLatestAttempt(quizData[activeCatIdx].category, (currentTopic.topicName || '') + " - " + (chap.chapterName || ''));
+        if (!attempt) return;
+
+        activeQuestions = (chap && chap.questions) ? chap.questions : [];
+        userSelections = attempt[1].userAnswers || {};
+
+        let correct = attempt[1].score || 0;
+        let total = attempt[1].total || 0;
+        let wrong = total - correct;
+
+        document.getElementById('stat-score').innerText = correct + '/' + total;
+        document.getElementById('stat-correct').innerText = correct;
+        document.getElementById('stat-wrong').innerText = wrong;
+
+        renderResultReviewUI(correct, wrong, total);
+
+        if (pushHistory) {
+            history.pushState({ view: 'result', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
+        }
+        showView('view-result');
+    }
+
+    function openStartModal(chapIdx) {
+      activeChapIdx = chapIdx;
+      var chap = quizData[activeCatIdx].topics[activeTopIdx].chapters[chapIdx];
+      document.getElementById('modal-start-title').innerText = chap.chapterName || 'Test';
+      document.getElementById('modal-start-desc').innerText = 'Questions: ' + (chap.questions ? chap.questions.length : 0) + ' | Time: ' + (chap.timeInMinutes || 15) + ' Mins';
+      document.getElementById('modal-start').style.display = 'flex';
+    }
+
+    function closeStartModal() {
+      document.getElementById('modal-start').style.display = 'none';
+    }
+
+    function openSubmitModal() {
+      document.getElementById('modal-submit').style.display = 'flex';
+    }
+
+    function closeSubmitModal() {
+      document.getElementById('modal-submit').style.display = 'none';
+    }
+
+    function launchTestSession(pushHistory) {
+      if (pushHistory === undefined) pushHistory = true;
+      closeStartModal();
+      var chap = quizData[activeCatIdx].topics[activeTopIdx].chapters[activeChapIdx];
+      activeQuestions = (chap && chap.questions) ? chap.questions : [];
+      currentQIdx = 0;
+      userSelections = {};
+      timeLeft = (chap.timeInMinutes || 15) * 60;
+
+      if (pushHistory) {
+        history.pushState({ view: 'test', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
+      }
+      showView('view-test');
+      renderCurrentQuestion();
+      startTimer();
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      updateTimerDisplay();
+      timerInterval = setInterval(function() {
+        timeLeft--;
+        updateTimerDisplay();
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          executeSubmit();
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      var min = Math.floor(timeLeft / 60);
+      var sec = timeLeft % 60;
+      document.getElementById('timer-display').innerText =
+        (min < 10 ? '0' : '') + min + ':' + (sec < 10 ? '0' : '') + sec;
+    }
+
+    function renderCurrentQuestion() {
+      var q = activeQuestions[currentQIdx];
+      if (!q) return;
+      document.getElementById('q-indicator').innerText = 'Question ' + (currentQIdx + 1) + '/' + activeQuestions.length;
+      document.getElementById('current-question-text').innerText = (currentQIdx + 1) + '. ' + (q.q || q.question || '');
+
+      var optLetters = ['A', 'B', 'C', 'D'];
+      var optContainer = document.getElementById('current-options-box');
+      var optionsList = Array.isArray(q.options) ? q.options : [];
+
+      optContainer.innerHTML = optionsList.map(function(opt, idx) {
+        var isSelected = userSelections[currentQIdx] === idx;
+        return '<div class="option-item ' + (isSelected ? 'selected' : '') + '" onclick="selectAnswer(' + idx + ')">' +
+               '<span class="opt-circle">' + (optLetters[idx] || (idx + 1)) + '</span>' +
+               '<span>' + opt + '</span></div>';
+      }).join('');
+
+      renderPalette();
+    }
+
+    function selectAnswer(idx) {
+      userSelections[currentQIdx] = idx;
+      renderCurrentQuestion();
+    }
+
+    function renderPalette() {
+      var pContainer = document.getElementById('palette-container');
+      pContainer.innerHTML = (activeQuestions || []).map(function(_, idx) {
+        var isAnswered = userSelections[idx] !== undefined;
+        var isCur = currentQIdx === idx;
+        return '<button type="button" class="palette-btn ' + (isAnswered ? 'answered' : '') + ' ' + (isCur ? 'current' : '') + '" onclick="jumpToQuestion(' + idx + ')">' + (idx + 1) + '</button>';
+      }).join('');
+    }
+
+    function jumpToQuestion(idx) {
+      currentQIdx = idx;
+      renderCurrentQuestion();
+    }
+
+    function goToNext() {
+      if (currentQIdx < activeQuestions.length - 1) {
+        currentQIdx++;
+        renderCurrentQuestion();
+      }
+    }
+
+    function goToPrev() {
+      if (currentQIdx > 0) {
+        currentQIdx--;
+        renderCurrentQuestion();
+      }
+    }
+
+    function saveAndNext() {
+      if (currentQIdx < activeQuestions.length - 1) {
+        currentQIdx++;
+        renderCurrentQuestion();
+      } else {
+        openSubmitModal();
+      }
+    }
+
+    // Filter Review Questions Helper
+    function filterReviewQuestions(filterType) {
+        var cards = document.querySelectorAll('#result-review-container .review-card');
+        cards.forEach(function(card) {
+            if (filterType === 'all') {
+                card.style.display = 'block';
+            } else if (card.getAttribute('data-status') === filterType) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        document.getElementById('btn-filter-all').className = 'filter-btn' + (filterType === 'all' ? ' active-filter-all' : '');
+        document.getElementById('btn-filter-right').className = 'filter-btn' + (filterType === 'correct' ? ' active-filter-right' : '');
+        document.getElementById('btn-filter-wrong').className = 'filter-btn' + (filterType === 'wrong' ? ' active-filter-wrong' : '');
+    }
+
+    // Render Review Cards & Graphical Donut Chart
+    function renderResultReviewUI(correct, wrong, total) {
+        var skipped = total - (correct + wrong);
+        if (skipped < 0) skipped = 0;
+
+        var accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+        var elAccuracy = document.getElementById('donut-accuracy-text');
+        if (elAccuracy) elAccuracy.innerText = accuracy + '%';
+
+        // Calculate Angles for Chart
+        var cDeg = total > 0 ? (correct / total) * 360 : 0;
+        var wDeg = total > 0 ? (wrong / total) * 360 : 0;
+        var endCDeg = cDeg;
+        var endWDeg = cDeg + wDeg;
+
+        var chart = document.getElementById('result-donut-chart');
+        if (chart) {
+            chart.style.background = 'conic-gradient(#16a34a 0deg ' + endCDeg + 'deg, #dc2626 ' + endCDeg + 'deg ' + endWDeg + 'deg, #94a3b8 ' + endWDeg + 'deg 360deg)';
+        }
+
+        var reviewHtml = '';
+        (activeQuestions || []).forEach(function(q, idx) {
+            var choice = userSelections[idx];
+            var isAnswered = choice !== undefined;
+            var isCorrect = choice === q.answer;
+
+            var badgeClass = 'skipped';
+            var badgeText = 'Skipped';
+            var statusAttr = 'skipped';
+
+            if (isAnswered) {
+                if (isCorrect) {
+                    badgeClass = 'correct';
+                    badgeText = 'Correct';
+                    statusAttr = 'correct';
+                } else {
+                    badgeClass = 'wrong';
+                    badgeText = 'Wrong';
+                    statusAttr = 'wrong';
+                }
+            }
+
+            var opts = Array.isArray(q.options) ? q.options : [];
+            var yourAns = isAnswered && opts[choice] !== undefined ? opts[choice] : "Not Attempted";
+            var correctAns = (opts[q.answer] !== undefined) ? opts[q.answer] : "N/A";
+
+            reviewHtml += '<div class="review-card" data-status="' + statusAttr + '">' +
+              '<span class="badge ' + badgeClass + '">' + badgeText + '</span>' +
+              '<div style="font-weight:700; margin-bottom:6px; font-size:15px;">Q' + (idx + 1) + '. ' + (q.q || q.question || '') + '</div>' +
+              '<div style="font-size:14px; margin-bottom:4px;"><b>Aapka Answer:</b> ' + yourAns + '</div>' +
+              '<div style="font-size:14px; color:#166534; margin-bottom:4px;"><b>Sahi Answer:</b> ' + correctAns + '</div>' +
+              (q.explanation ? '<div class="explanation-box"><b>Explanation:</b> ' + q.explanation + '</div>' : '') +
+              '</div>';
+        });
+
+        document.getElementById('result-review-container').innerHTML = reviewHtml;
+        filterReviewQuestions('all');
+    }
+
+    function executeSubmit() {
+      closeSubmitModal();
+      clearInterval(timerInterval);
+      var correct = 0;
+      var wrong = 0;
+      var total = activeQuestions.length;
+
+      (activeQuestions || []).forEach(function(q, idx) {
+        var choice = userSelections[idx];
+        var isAnswered = choice !== undefined;
+        var isCorrect = choice === q.answer;
+
+        if (isAnswered) {
+          if (isCorrect) {
+            correct++;
           } else {
-            userCredential = await auth.createUserWithEmailAndPassword(cleanEmail, loginPassword);
+            wrong++;
           }
-
-          const firebaseUser = userCredential.user;
-          let userUid = firebaseUser.uid;
-
-          if (cleanEmail.toLowerCase() === "admin@sgsonlineservice.store") {
-            userUid = ADMIN_UID;
-          }
-
-          const profile = {
-            uid: userUid,
-            email: firebaseUser.email || cleanEmail,
-            name: firebaseUser.displayName || (firebaseUser.email ? firebaseUser.email.split('@')[0] : cleanEmail.split('@')[0]),
-            mobile: firebaseUser.phoneNumber || ("+91 " + Math.floor(6000000000 + Math.random() * 3999999999)),
-            authMethod: "Email & Password",
-            loginTime: new Date().toLocaleString(),
-            rememberMe: rememberMe
-          };
-
-          await realTimeDb.ref(`users/${userUid}`).update({
-            uid: userUid,
-            email: profile.email,
-            name: profile.name,
-            lastLogin: profile.loginTime,
-            authMethod: "Email & Password"
-          });
-
-          if (rememberMe) {
-            try {
-              localStorage.setItem('sgs_user_logged_in', 'true');
-              localStorage.setItem('sgs_user_profile', JSON.stringify(profile));
-            } catch (err) {}
-          }
-
-          setCurrentUser(profile);
-          setIsLoggedIn(true);
-          setIsAuthenticating(false);
-          showNotification(loginTab === 'login' ? `Welcome back, ${profile.name}! Login successful.` : `Account created successfully! Welcome ${profile.name}.`);
-        } catch (error) {
-          console.error("Auth error:", error);
-          setIsAuthenticating(false);
-          let errMessage = "Authentication Error!";
-          if (error.code === 'auth/user-not-found') errMessage = "User nahi mila! Kripya pehle Sign Up karein.";
-          else if (error.code === 'auth/wrong-password') errMessage = "Galat password! Kripya dobara koshish karein.";
-          else if (error.code === 'auth/email-already-in-use') errMessage = "Yeh Email pehle se registered hai! Sign In karein.";
-          else if (error.code === 'auth/invalid-email') errMessage = "Invalid Email format!";
-          else if (error.message) errMessage = error.message;
-          showNotification(errMessage);
         }
+      });
+
+      document.getElementById('stat-score').innerText = correct + '/' + total;
+      document.getElementById('stat-correct').innerText = correct;
+      document.getElementById('stat-wrong').innerText = wrong;
+
+      renderResultReviewUI(correct, wrong, total);
+
+      // Save test result directly in Local Storage
+      const currentTopic = quizData[activeCatIdx].topics[activeTopIdx];
+      const chap = currentTopic.chapters[activeChapIdx];
+      const testId = 'test_' + Date.now();
+      userTestHistory[testId] = {
+          category: quizData[activeCatIdx].category,
+          chapter: (currentTopic.topicName || '') + " - " + (chap.chapterName || ''),
+          score: correct,
+          total: total,
+          userAnswers: userSelections,
+          timestamp: new Date().toISOString()
       };
+      saveLocalTestHistory();
 
-      // GOOGLE SIGN IN HANDLER WITH FIREBASE AUTH & REALTIME DB
-      const handleGoogleSignIn = async () => {
-        if (!agreedTerms) {
-          showNotification("Kripya Terms & Conditions accept karein!");
-          return;
-        }
+      history.pushState({ view: 'result', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
+      showView('view-result');
+    }
 
-        setIsAuthenticating(true);
-
-        try {
-          const provider = new firebase.auth.GoogleAuthProvider();
-          const result = await auth.signInWithPopup(provider);
-          const gUser = result.user;
-
-          const googleProfile = {
-            uid: gUser.uid,
-            email: gUser.email,
-            name: gUser.displayName || gUser.email.split('@')[0],
-            mobile: gUser.phoneNumber || "+91 9876543210",
-            authMethod: "Google SSO",
-            loginTime: new Date().toLocaleString(),
-            rememberMe: true
-          };
-
-          await realTimeDb.ref(`users/${googleProfile.uid}`).update({
-            uid: googleProfile.uid,
-            email: googleProfile.email,
-            name: googleProfile.name,
-            lastLogin: googleProfile.loginTime,
-            authMethod: "Google SSO"
-          });
-
-          try {
-            localStorage.setItem('sgs_user_logged_in', 'true');
-            localStorage.setItem('sgs_user_profile', JSON.stringify(googleProfile));
-          } catch (err) {}
-
-          setCurrentUser(googleProfile);
-          setIsLoggedIn(true);
-          setIsAuthenticating(false);
-          showNotification("Google Sign-In Successful! Welcome.");
-        } catch (err) {
-          console.error("Google Auth Error:", err);
-          setIsAuthenticating(false);
-          showNotification(err.message || "Google Auth Failed!");
-        }
-      };
-
-      // FORGOT PASSWORD HANDLER
-      const handleForgotPassword = () => {
-        if (!loginEmail || !loginEmail.includes('@')) {
-          showNotification("Kripya upar apna Email Address fill karein!");
-          return;
-        }
-        auth.sendPasswordResetEmail(loginEmail.trim())
-          .then(() => {
-            showNotification(`Password reset link sent to ${loginEmail}! Check inbox.`);
-          })
-          .catch((err) => {
-            showNotification(err.message || "Reset link bhejane me samasya aayi.");
-          });
-      };
-
-      // USER LOGOUT HANDLER
-      const handleUserLogout = () => {
-        setConfirmDialog({
-          title: "Logout Confirmation",
-          message: "Kya aap SGS Online Service portal se logout karna chahte hain?",
-          onConfirm: async () => {
-            try {
-              await auth.signOut();
-              localStorage.removeItem('sgs_user_logged_in');
-              localStorage.removeItem('sgs_user_profile');
-            } catch (e) {}
-            setIsLoggedIn(false);
-            setCurrentUser(null);
-            setShowDrawer(false);
-            setConfirmDialog(null);
-            showNotification("Aap safaltapoorvak logout ho gaye hain.");
+    function setupBrowserNavigation() {
+      window.onpopstate = function(e) {
+        // 1. If any modal is open, close modal on back press (except updateModal)
+        var openModals = document.querySelectorAll('.modal-overlay');
+        var modalWasOpen = false;
+        openModals.forEach(function(m) {
+          if (m.style.display === 'flex' || m.style.display === 'block') {
+            m.style.display = 'none';
+            modalWasOpen = true;
           }
         });
-      };
+        var drawer = document.getElementById('drawer-overlay');
+        if (drawer && drawer.style.display === 'block') {
+            closeDrawer();
+            modalWasOpen = true;
+        }
 
-      // STANDARD QUERY URL ROUTING
-      const parseURLParams = () => {
-        const params = new URLSearchParams(window.location.search);
-        const srvId = params.get('service');
-        const catName = params.get('category');
+        if (modalWasOpen) {
+            return;
+        }
 
-        if (srvId) {
-          const matchedSrv = services.find(s => String(s.id) === String(srvId));
-          if (matchedSrv) {
-            setActiveService(matchedSrv);
+        // 2. Test Running View Double-Back Protection
+        if (currentActiveView === 'test') {
+            var nowTest = Date.now();
+            if (nowTest - lastTestBackPressTime < 2000) {
+                clearInterval(timerInterval);
+                navigateToChapters(activeTopIdx, false);
+                return;
+            }
+            lastTestBackPressTime = nowTest;
+            showExitToast("Press back again to exit test");
+            history.pushState({ view: 'test', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
+            return;
+        }
+
+        // 3. Result View -> Go back to Tests View
+        if (currentActiveView === 'result') {
+            if (activeTopIdx !== null && activeTopIdx !== undefined) {
+                navigateToChapters(activeTopIdx, false);
+            } else {
+                navigateToCategories(false);
+            }
+            return;
+        }
+
+        // 4. Tests View -> Go back to Topics View
+        if (currentActiveView === 'chapters') {
+            navigateToTopics(activeCatIdx, false);
+            return;
+        }
+
+        // 5. Topics View -> Go back to Categories View
+        if (currentActiveView === 'topics') {
+            navigateToCategories(false);
+            return;
+        }
+
+        // 6. Double back press exit logic on Home Screen (view-categories)
+        if (!e.state || e.state.view === 'categories') {
+          if (currentActiveView === 'categories') {
+            var now = Date.now();
+            if (now - lastBackPressTime < 2000) {
+              if (window.AndroidApp && window.AndroidApp.exitApp) {
+                window.AndroidApp.exitApp();
+              } else {
+                window.history.go(-1);
+              }
+              return;
+            }
+            lastBackPressTime = now;
+            showExitToast("Press back again to exit");
+            history.pushState({ view: 'categories' }, '');
             return;
           }
-        } else {
-          setActiveService(null);
-        }
-
-        if (catName) {
-          setSelectedCat(decodeURIComponent(catName));
-        } else {
-          setSelectedCat('All Services');
-        }
-      };
-
-      useEffect(() => {
-        parseURLParams();
-        window.addEventListener('popstate', parseURLParams);
-        return () => window.removeEventListener('popstate', parseURLParams);
-      }, [services]);
-
-      const openServiceDetail = (srv) => {
-        setPendingService(srv);
-      };
-
-      const handleConfirmServiceSelection = () => {
-        if (pendingService) {
-          const newUrl = `${window.location.pathname}?service=${encodeURIComponent(pendingService.id)}`;
-          window.history.pushState({ service: pendingService.id }, '', newUrl);
-          setActiveService(pendingService);
-          setPendingService(null);
+          navigateToCategories(false);
+        } else if (e.state.view === 'topics') {
+          if (e.state.catIdx !== undefined) activeCatIdx = e.state.catIdx;
+          navigateToTopics(activeCatIdx, false);
+        } else if (e.state.view === 'chapters') {
+          if (e.state.topIdx !== undefined) activeTopIdx = e.state.topIdx;
+          navigateToChapters(activeTopIdx, false);
+        } else if (e.state.view === 'test') {
+          showView('view-test');
+        } else if (e.state.view === 'result') {
+          showView('view-result');
         }
       };
-
-      const handleCategorySelect = (catName) => {
-        if (catName !== selectedCat) {
-          setSelectedCat(catName);
-          setActiveService(null);
-          const newUrl = catName === 'All Services' 
-            ? window.location.pathname 
-            : `${window.location.pathname}?category=${encodeURIComponent(catName)}`;
-          window.history.pushState({ category: catName }, '', newUrl);
-        }
-      };
-
-      const handleNavigateHome = () => {
-        setSelectedCat('All Services');
-        setActiveService(null);
-        setSubmittedReceipt(null);
-        setShowDrawer(false);
-        window.history.pushState({}, '', window.location.pathname);
-      };
-
-      const handleFilePreview = (e, imgPreviewId, pdfPreviewId) => {
-        const file = e.target.files[0];
-        const imgPreview = document.getElementById(imgPreviewId);
-        const pdfPreview = document.getElementById(pdfPreviewId);
-
-        if (!file) return;
-
-        if (file.type === 'application/pdf') {
-          if (imgPreview) imgPreview.style.display = 'none';
-          if (pdfPreview) {
-            pdfPreview.innerText = `📄 PDF Selected: ${file.name}`;
-            pdfPreview.style.display = 'block';
-          }
-        } else if (file.type.startsWith('image/')) {
-          if (pdfPreview) pdfPreview.style.display = 'none';
-          const reader = new FileReader();
-          reader.onload = (event) => {
-            if (imgPreview) {
-              imgPreview.src = event.target.result;
-              imgPreview.style.display = 'block';
-            }
-          };
-          reader.readAsDataURL(file);
-        }
-      };
-
-      const handleFormSubmit = async (e) => {
-        e.preventDefault();
-        setIsSubmitting(true);
-
-        const form = e.target;
-        const formData = new FormData(form);
-        const submissionId = "SGS-" + Math.floor(100000 + Math.random() * 900000);
-
-        let textDetails = `📥 *New Online Assistance Request Received!*\n\n`;
-        textDetails += `🆔 *UID:* \`${submissionId}\`\n`;
-        textDetails += `📌 *Service:* ${activeService.title}\n`;
-        if (currentUser) {
-          textDetails += `👤 *Logged In User:* ${currentUser.name} (${currentUser.email})\n\n`;
-        } else {
-          textDetails += `\n`;
-        }
-        textDetails += `👤 *USER SUBMITTED DETAILS:*\n`;
-
-        const rawFileInputs = [];
-
-        if (activeService.fields) {
-          activeService.fields.forEach((f) => {
-            if (f.type === 'file') {
-              const fileObj = formData.get(f.name);
-              if (fileObj && fileObj instanceof File && fileObj.size > 0) {
-                rawFileInputs.push({ label: f.label, name: f.name, file: fileObj });
-              }
-            } else if (f.type === 'radio') {
-              const selectedValue = formData.get(f.name);
-              let selectedLabel = selectedValue;
-              if (f.options) {
-                const optObj = f.options.find(o => o.value === selectedValue);
-                if (optObj) selectedLabel = optObj.label;
-              }
-              textDetails += `• *${f.label}:* ${selectedLabel || 'Not Selected'}\n`;
-            } else {
-              let val = formData.get(f.name);
-              const isPhoneField = f.type === 'tel' || f.name?.toLowerCase().includes('mobile') || f.name?.toLowerCase().includes('phone') || f.label?.toLowerCase().includes('mobile') || f.label?.toLowerCase().includes('phone');
-              if (val && isPhoneField && !val.startsWith('+91')) {
-                val = `+91 ${val}`;
-              }
-              if (val) {
-                textDetails += `• *${f.label}:* ${val}\n`;
-              }
-            }
-          });
-        }
-
-        const mainPayProof = formData.get("main_payment_screenshot");
-        if (mainPayProof && mainPayProof instanceof File && mainPayProof.size > 0) {
-          rawFileInputs.push({ label: "Main Payment Screenshot", name: "main_payment_screenshot", file: mainPayProof });
-        }
-
-        const dateStr = new Date().toLocaleString();
-        textDetails += `\n💳 *Payment Screenshot:* Attached Below\n`;
-        textDetails += `📅 *Date:* ${dateStr}`;
-
-        try {
-          await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              chat_id: TELEGRAM_CHAT_ID,
-              text: textDetails,
-              parse_mode: "Markdown"
-            })
-          });
-
-          const processedFiles = await Promise.all(
-            rawFileInputs.map(async (item) => {
-              const fileObj = await compressImage(item.file);
-              return { label: item.label, name: item.name, file: fileObj };
-            })
-          );
-
-          for (const item of processedFiles) {
-            const fileData = new FormData();
-            fileData.append("chat_id", TELEGRAM_CHAT_ID);
-            
-            const isPdf = item.file.type === 'application/pdf';
-            const endpoint = isPdf ? 'sendDocument' : 'sendPhoto';
-            const paramName = isPdf ? 'document' : 'photo';
-
-            fileData.append(paramName, item.file);
-            fileData.append("caption", `📎 ${item.label}\nUID: ${submissionId}`);
-
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/${endpoint}`, {
-              method: "POST",
-              body: fileData
-            });
-          }
-
-          const upi = getUpiDetails(activeService.qrImageUrl);
-          const paidAmount = upi.am ? `₹${upi.am}` : "As Applicable / Paid";
-
-          const newAppItem = {
-            uid: submissionId,
-            userUid: currentUser ? currentUser.uid : "GUEST",
-            userEmail: currentUser ? currentUser.email : "Guest",
-            serviceTitle: activeService.title,
-            category: activeService.category,
-            amount: paidAmount,
-            dateTime: dateStr
-          };
-
-          if (currentUser) {
-            await realTimeDb.ref(`users/${currentUser.uid}/applications/${submissionId}`).set(newAppItem);
-          }
-          await realTimeDb.ref(`global_applications/${submissionId}`).set(newAppItem);
-
-          showNotification(`Application Submitted! UID: ${submissionId}`);
-          form.reset();
-          document.querySelectorAll('.img-preview').forEach(img => img.style.display = 'none');
-          document.querySelectorAll('.pdf-preview').forEach(pdf => pdf.style.display = 'none');
-          
-          setActiveService(null);
-          window.history.pushState({ page: 'receipt' }, '', window.location.pathname);
-          setSubmittedReceipt(newAppItem);
-
-        } catch (err) {
-          showNotification("Submission Failed. Please try again.");
-          console.error(err);
-        } finally {
-          setIsSubmitting(false);
-        }
-      };
-
-      const handleViewPastReceipt = (app) => {
-        const receiptData = {
-          uid: app.uid,
-          serviceTitle: app.serviceTitle,
-          category: app.category || "Service Request",
-          dateTime: app.dateTime || "Recent Submission",
-          amount: app.amount || "Paid / Verified"
-        };
-        setActiveModalPage(null);
-        window.history.pushState({ page: 'receipt' }, '', window.location.pathname);
-        setSubmittedReceipt(receiptData);
-      };
-
-      const handleShareWebsite = () => {
-        if (navigator.share) {
-          navigator.share({ title: 'SGS ONLINE SERVICE', url: window.location.href }).catch(() => {});
-        } else {
-          navigator.clipboard.writeText(window.location.href);
-          showNotification('Website link copied!');
-        }
-        setShowDrawer(false);
-      };
-
-      const generateTicketId = () => {
-        return "SGS-" + Math.floor(100000 + Math.random() * 900000);
-      };
-
-      const handleWhatsAppSupport = () => {
-        const phone = atob(_0xwa);
-        const ticketId = generateTicketId();
-        const message = encodeURIComponent(`Hello Support Team,\n\nI need help regarding SGS Online Service Portal.\nMy Support Ticket ID: ${ticketId}\n\nPlease assist me.`);
-        
-        showNotification(`Support Ticket ID Generated: ${ticketId}. Opening WhatsApp...`);
-        setTimeout(() => {
-          window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
-        }, 1200);
-      };
-
-      const handleSendReceiptWhatsApp = () => {
-        if (!submittedReceipt) return;
-        const phone = atob(_0xwa);
-        const msg = encodeURIComponent(`Hello Admin,\n\nI have submitted a new form on SGS Online Service.\n\n🆔 Application UID: ${submittedReceipt.uid}\n📌 Service: ${submittedReceipt.serviceTitle}\n📂 Category: ${submittedReceipt.category}\n💳 Amount Paid: ${submittedReceipt.amount}\n📅 Date: ${submittedReceipt.dateTime}\n\nPlease verify and process my form.`);
-        window.open(`https://wa.me/${phone}?text=${msg}`, "_blank");
-      };
-
-      const handleEmailSupport = () => {
-        const ticketId = generateTicketId();
-        const subject = encodeURIComponent(`Support Request - Ticket #${ticketId}`);
-        const body = encodeURIComponent(`Hello Support Team,\n\nI need help regarding:\n\nSupport Ticket ID: ${ticketId}\n\nThank you.`);
-        
-        showNotification(`Support Ticket ID Generated: ${ticketId}. Opening Email Client...`);
-        setTimeout(() => {
-          window.open(`mailto:${_0xem}?subject=${subject}&body=${body}`, "_blank");
-        }, 1200);
-      };
-
-      const getCategoryButtonStyle = (catObj, isSelected) => {
-        const color = (typeof catObj === 'object' ? catObj.color : 'blue') || 'blue';
-        
-        const palette = {
-          blue: { bg: '#ea580c', text: '#ffffff', unBg: '#fff7ed', unText: '#c2410c', border: '#ffedd5' },
-          emerald: { bg: '#16a34a', text: '#ffffff', unBg: '#f0fdf4', unText: '#15803d', border: '#bbf7d0' },
-          purple: { bg: '#1e3a8a', text: '#ffffff', unBg: '#eff6ff', unText: '#1d4ed8', border: '#bfdbfe' },
-          amber: { bg: '#d97706', text: '#ffffff', unBg: '#fffbeb', unText: '#b45309', border: '#fde68a' },
-          rose: { bg: '#e11d48', text: '#ffffff', unBg: '#fff1f2', unText: '#be123c', border: '#fecdd3' },
-          red: { bg: '#dc2626', text: '#ffffff', unBg: '#fef2f2', unText: '#b91c1c', border: '#fca5a5' },
-          teal: { bg: '#0d9488', text: '#ffffff', unBg: '#f0fdfa', unText: '#0f766e', border: '#99f6e4' }
-        };
-
-        const activePalette = palette[color] || palette.blue;
-
-        if (isSelected) {
-          return {
-            backgroundColor: activePalette.bg,
-            color: activePalette.text,
-            borderColor: activePalette.bg,
-            boxShadow: '0 4px 8px -1px rgba(234, 88, 12, 0.3)'
-          };
-        } else {
-          return {
-            backgroundColor: activePalette.unBg,
-            color: activePalette.unText,
-            borderColor: activePalette.border
-          };
-        }
-      };
-
-      const filteredServices = services.filter(s => {
-        const matchCat = selectedCat === 'All Services' || s.category === selectedCat;
-        const matchSearch = s.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                            s.description?.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchCat && matchSearch;
-      });
-
-      return (
-        <div className="min-h-screen bg-slate-50 font-sans text-slate-800 flex flex-col relative">
-          
-          {/* Toast Notification */}
-          {toastMsg && (
-            <div className="fixed top-4 right-4 z-[200] bg-gradient-to-r from-orange-600 to-emerald-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-2xl border border-orange-300 animate-bounce">
-              🇮🇳 {toastMsg}
-            </div>
-          )}
-
-          {/* CUSTOM CONFIRMATION DIALOG MODAL */}
-          {confirmDialog && (
-            <div className="fixed inset-0 z-[210] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-              <div className="bg-white rounded-2xl max-w-sm w-full p-5 shadow-2xl border-2 border-orange-500 text-center space-y-4 animate-fade-in">
-                <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center text-orange-600 mx-auto font-black text-xl">
-                  ❓
-                </div>
-                <h3 className="font-extrabold text-slate-900 text-base">{confirmDialog.title}</h3>
-                <p className="text-xs text-slate-600 leading-relaxed">{confirmDialog.message}</p>
-                <div className="flex gap-2 pt-2">
-                  <button 
-                    onClick={() => setConfirmDialog(null)} 
-                    className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-2.5 rounded-xl border border-slate-300 transition-colors"
-                  >
-                    Cancel
-                  </button>
-                  <button 
-                    onClick={confirmDialog.onConfirm} 
-                    className="flex-1 bg-gradient-to-r from-orange-600 to-emerald-600 text-white font-extrabold text-xs py-2.5 rounded-xl shadow transition-all"
-                  >
-                    Confirm
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* GLOBAL POLICY MODALS OVERLAY */}
-          {activeModalPage && (
-            <div className="fixed inset-0 bg-slate-100 z-[300] flex flex-col h-full w-full overflow-hidden">
-              <div className="bg-gradient-to-r from-orange-600 via-indigo-900 to-emerald-700 text-white px-4 py-3 shadow-md flex items-center justify-between shrink-0">
-                <h3 className="font-extrabold text-white text-base sm:text-lg flex items-center gap-2">
-                  <Icons.ShieldCheck />
-                  <span>
-                    {activeModalPage === 'track' && 'Track My Applications'}
-                    {activeModalPage === 'about' && 'About Us & Operational Details'}
-                    {activeModalPage === 'support' && 'Instant Customer Support & Grievance'}
-                    {activeModalPage === 'privacy' && 'Privacy Policy'}
-                    {activeModalPage === 'payment_policy' && 'Payment, Pricing & Strict No-Refund Policy'}
-                    {activeModalPage === 'delivery_policy' && 'Service Delivery & Fulfillment Policy'}
-                    {activeModalPage === 'terms' && 'Terms & Conditions'}
-                    {activeModalPage === 'disclaimer' && 'Disclaimer & Service Policy'}
-                  </span>
-                </h3>
-                <button onClick={() => setActiveModalPage(null)} className="bg-white/20 hover:bg-white/30 text-white px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1">
-                  <Icons.X /> Close
-                </button>
-              </div>
-
-              <div className="flex-1 overflow-y-auto p-4 sm:p-6 max-w-4xl w-full mx-auto text-xs text-slate-700 space-y-4">
-                
-                {activeModalPage === 'support' && (
-                  <div className="space-y-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <div className="bg-emerald-50 border-l-4 border-emerald-600 p-4 rounded-r-xl text-slate-900 font-bold flex items-center justify-between flex-wrap gap-2">
-                      <div className="flex items-center gap-2">
-                        <Icons.Headphones />
-                        <span>SGS Helpdesk & Customer Support Desk</span>
-                      </div>
-                      <span className="bg-emerald-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider animate-pulse">
-                        24/7 Digital Support
-                      </span>
-                    </div>
-
-                    <p className="text-slate-600 text-xs leading-relaxed">
-                      Need help regarding form submissions, fee verification, turnaround timelines, or application status? Connect directly with our helpdesk team:
-                    </p>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                      <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 shadow-sm space-y-2">
-                        <h4 className="font-extrabold text-slate-900 text-sm flex items-center gap-1.5">
-                          💬 Instant WhatsApp Support
-                        </h4>
-                        <p className="text-slate-500 text-[11px] leading-snug">
-                          Connect directly with our support team on WhatsApp for real-time form assistance, status checks, and quick queries.
-                        </p>
-                        <button 
-                          onClick={handleWhatsAppSupport} 
-                          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs py-3 rounded-lg transition-colors mt-2 shadow flex items-center justify-center gap-2"
-                        >
-                          <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
-                          Connect via WhatsApp
-                        </button>
-                      </div>
-
-                      <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 shadow-sm space-y-2">
-                        <h4 className="font-extrabold text-slate-900 text-sm flex items-center gap-1.5">
-                          ✉️ Official Email Support
-                        </h4>
-                        <p className="text-slate-500 text-[11px] leading-snug">
-                          Send us your detailed inquiry or ticket details directly via email. Official response delivered within 24 hours.
-                        </p>
-                        <button 
-                          onClick={handleEmailSupport} 
-                          className="w-full bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-xs py-3 rounded-lg transition-colors mt-2 shadow flex items-center justify-center gap-2"
-                        >
-                          Send Email Ticket
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="bg-slate-50 border border-slate-200 p-4 rounded-xl space-y-2 text-xs">
-                      <h4 className="font-extrabold text-slate-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
-                        <Icons.Building /> Registered Business & Grievance Redressal Office
-                      </h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px] text-slate-600 pt-1">
-                        <div>
-                          <p><strong>Business Name:</strong> SGS ONLINE SERVICE</p>
-                          <p><strong>Primary Address:</strong> District Arrah, Bhojpur, Bihar, India - 802301</p>
-                          <p><strong>Official Email:</strong> contactsgsonlineservice@gmail.com</p>
-                        </div>
-                        <div>
-                          <p><strong>Grievance Officer:</strong> Customer Support Desk Head</p>
-                          <p><strong>Support Operating Hours:</strong> 09:00 AM to 08:00 PM IST (Mon - Sat)</p>
-                          <p><strong>Resolution SLA:</strong> Within 24 to 48 working hours</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {activeModalPage === 'about' && (
-                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <div className="bg-orange-50 border-l-4 border-orange-600 p-4 rounded-r-xl text-slate-900 font-bold">
-                      🏢 ABOUT SGS ONLINE SERVICE & PHYSICAL OPERATIONS
-                    </div>
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">1. Who We Are</h4>
-                      <p>SGS ONLINE SERVICE is an independent private digital facilitation center and cyber cafe portal operated to assist students and residents in navigating online government, academic, and administrative application processes accurately.</p>
-                    </div>
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1.5">2. Location & Operating Area</h4>
-                      <p className="font-semibold text-slate-800">📍 Physical Address: SGS Online Service Desk, District Arrah, Bhojpur, Bihar, India - 802301.</p>
-                    </div>
-                  </div>
-                )}
-
-                {activeModalPage === 'delivery_policy' && (
-                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <div className="bg-indigo-50 border-l-4 border-indigo-600 p-4 rounded-r-xl text-slate-900 font-bold flex items-center justify-between">
-                      <span>🚚 SERVICE DELIVERY, FULFILLMENT & TURNAROUND TIMELINE (TAT)</span>
-                      <span className="text-[10px] bg-indigo-600 text-white px-2 py-0.5 rounded font-mono font-bold">24-48 Hours</span>
-                    </div>
-                    <div>
-                      <h4 className="font-extrabold text-slate-900 text-sm mb-1">Standard Turnaround Time (TAT)</h4>
-                      <p>Completed acknowledgement slip delivered within 24 to 48 working hours.</p>
-                    </div>
-                  </div>
-                )}
-
-                {activeModalPage === 'track' && (
-                  <div className="space-y-4">
-                    <div className="bg-amber-50 warning-amber-box border-l-4 border-amber-600 p-4 rounded-r-xl text-slate-900 font-medium flex items-center justify-between gap-2 flex-wrap">
-                      <div>
-                        <strong>📋 Application Tracking Center:</strong> Registered UIDs for your submitted online assistance requests.
-                      </div>
-                    </div>
-
-                    {userApps.length === 0 ? (
-                      <div className="bg-white p-8 rounded-2xl border border-slate-200 text-center">
-                        <p className="text-sm font-bold text-slate-500">You have not submitted any form assistance requests yet.</p>
-                      </div>
-                    ) : (
-                      <div className="space-y-3">
-                        {userApps.map((app, i) => (
-                          <div key={i} className="bg-white border border-slate-300 rounded-xl p-4 shadow-sm flex items-center justify-between gap-3 flex-wrap sm:flex-nowrap">
-                            <div>
-                              <span className="font-black text-orange-600 text-sm block">UID: {app.uid}</span>
-                              <p className="text-xs font-bold text-slate-800 mt-0.5">Form: {app.serviceTitle}</p>
-                              {app.dateTime && <p className="text-[10px] text-slate-400 mt-0.5">Submitted: {app.dateTime}</p>}
-                            </div>
-                            
-                            <div className="flex items-center gap-2">
-                              <button 
-                                onClick={() => handleViewPastReceipt(app)} 
-                                className="bg-orange-600 hover:bg-orange-700 text-white text-[11px] font-extrabold px-3.5 py-2 rounded-lg shadow-2xs flex items-center gap-1 transition-all no-neon"
-                              >
-                                <Icons.Receipt /> View Receipt
-                              </button>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {activeModalPage === 'payment_policy' && (
-                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <div className="bg-orange-50 border-l-4 border-orange-600 p-4 rounded-r-xl text-slate-900 font-bold flex items-center justify-between">
-                      <span>💳 PAYMENT, PRICING & STRICT NO-REFUND POLICY</span>
-                    </div>
-                    <p>All fees paid are strictly non-refundable once application processing is initiated.</p>
-                  </div>
-                )}
-
-                {activeModalPage === 'privacy' && (
-                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <div className="bg-orange-50 border-l-4 border-orange-600 p-4 rounded-r-xl text-slate-900 font-medium">
-                      <strong>📌 Privacy Policy:</strong> All user records are confidential and transmitted securely.
-                    </div>
-                  </div>
-                )}
-
-                {activeModalPage === 'terms' && (
-                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <h4 className="font-extrabold text-slate-900 text-sm">Terms & Conditions</h4>
-                    <p>SGS Online Service operates as an independent private assistance cyber cafe.</p>
-                  </div>
-                )}
-
-                {activeModalPage === 'disclaimer' && (
-                  <div className="space-y-4 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-slate-700 leading-relaxed">
-                    <h4 className="font-extrabold text-slate-900 text-sm">Disclaimer</h4>
-                    <p>We are not a government body. All applications are submitted to official portals on your behalf.</p>
-                  </div>
-                )}
-              </div>
-
-              <div className="p-3 bg-white border-t border-slate-200 flex justify-end shrink-0">
-                <button onClick={() => setActiveModalPage(null)} className="bg-slate-900 text-white font-bold px-6 py-2 rounded-xl text-xs shadow-md">
-                  Close Window
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* MANDATORY LOGIN / REGISTRATION PAGE MATCHING THE EXACT SCREENSHOT */}
-          {!isLoggedIn ? (
-            <div className="min-h-screen w-full bg-slate-100/80 flex flex-col justify-center items-center p-3 sm:p-6 z-[150] relative selection:bg-orange-200">
-              <div className="w-full max-w-[430px] bg-white rounded-[2.2rem] shadow-2xl border-2 border-orange-500/80 overflow-hidden my-auto animate-fade-in relative p-5 sm:p-7">
-                
-                {/* TOP TIRANGA ACCENT RIBBONS INSIDE CARD */}
-                <div className="flex justify-between items-center -mx-5 sm:-mx-7 -mt-5 sm:-mt-7 mb-6">
-                  <div className="h-1.5 w-1/3 bg-orange-500 rounded-br-full"></div>
-                  <div className="h-1.5 w-1/3 bg-emerald-600 rounded-bl-full"></div>
-                </div>
-
-                {/* LOGO BADGE WITH REAL USER LOGO IMAGE */}
-                <div className="flex flex-col items-center text-center">
-                  <div className="w-20 h-20 bg-amber-500/10 rounded-2xl p-2 mb-3 border-2 border-orange-400/60 shadow-sm flex items-center justify-center">
-                    <img 
-                      src="logo.png" 
-                      alt="SGS Logo" 
-                      className="w-full h-full object-cover rounded-xl" 
-                      onError={(e)=>{e.target.onerror=null; e.target.src='logo.png';}} 
-                    />
-                  </div>
-                  
-                  <h2 className="text-xl sm:text-2xl font-black tracking-tight">
-                    <span className="text-orange-600">SGS ONLINE </span>
-                    <span className="text-emerald-700">SERVICE</span>
-                  </h2>
-                  <p className="text-xs font-semibold text-slate-500 mt-1 mb-5">
-                    {loginTab === 'login' ? 'Sign in to access form filling & services' : 'Create an account to access form filling & services'}
-                  </p>
-                </div>
-
-                {/* GOOGLE SIGN IN BUTTON */}
-                <button
-                  type="button"
-                  onClick={handleGoogleSignIn}
-                  disabled={isAuthenticating}
-                  className="w-full bg-white hover:bg-slate-50 text-slate-700 font-bold text-xs sm:text-sm py-3 px-4 rounded-2xl border border-slate-200/90 shadow-2xs transition-all flex items-center justify-center gap-2.5 active:scale-98 disabled:opacity-60"
-                >
-                  <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
-                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-                  </svg>
-                  <span>Continue with Google</span>
-                </button>
-
-                {/* SEPARATOR */}
-                <div className="flex items-center my-5">
-                  <div className="flex-1 border-t border-slate-200"></div>
-                  <span className="px-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">OR WITH EMAIL</span>
-                  <div className="flex-1 border-t border-slate-200"></div>
-                </div>
-
-                {/* EMAIL FORM */}
-                <form onSubmit={handleUserAuth} className="space-y-3.5">
-                  
-                  {/* EMAIL INPUT */}
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-slate-700">Email Address:</label>
-                    <div className="relative flex items-center">
-                      <span className="absolute left-3.5 text-slate-400"><Icons.User /></span>
-                      <input 
-                        type="email" 
-                        required 
-                        value={loginEmail} 
-                        onChange={(e) => setLoginEmail(e.target.value)} 
-                        placeholder="Enter your Email ID" 
-                        className="w-full bg-slate-50/60 border border-slate-200 hover:border-slate-300 focus:border-orange-500 rounded-2xl pl-10 pr-3.5 py-3 text-xs sm:text-sm font-semibold text-slate-800 placeholder:text-slate-400 focus:outline-none transition-colors"
-                      />
-                    </div>
-                  </div>
-
-                  {/* PASSWORD INPUT */}
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-slate-700">Password:</label>
-                    <div className="relative flex items-center">
-                      <span className="absolute left-3.5 text-slate-400"><Icons.Lock /></span>
-                      <input 
-                        type={showPassword ? "text" : "password"} 
-                        required 
-                        value={loginPassword} 
-                        onChange={(e) => setLoginPassword(e.target.value)} 
-                        placeholder="Enter your password" 
-                        className="w-full bg-slate-50/60 border border-slate-200 hover:border-slate-300 focus:border-orange-500 rounded-2xl pl-10 pr-10 py-3 text-xs sm:text-sm font-semibold text-slate-800 placeholder:text-slate-400 focus:outline-none transition-colors"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3.5 text-slate-400 hover:text-slate-600 focus:outline-none"
-                      >
-                        {showPassword ? (
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                        ) : (
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.018 10.018 0 013.28-.813c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m-4.692-4.692a3 3 0 00-4.243-4.243M3 3l18 18"/></svg>
-                        )}
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* RE-ENTER PASSWORD FOR SIGNUP */}
-                  {loginTab === 'register' && (
-                    <div className="space-y-1">
-                      <label className="block text-xs font-bold text-slate-700">Re-enter Password:</label>
-                      <div className="relative flex items-center">
-                        <span className="absolute left-3.5 text-slate-400"><Icons.Lock /></span>
-                        <input 
-                          type={showConfirmPassword ? "text" : "password"} 
-                          required 
-                          value={confirmPassword} 
-                          onChange={(e) => setConfirmPassword(e.target.value)} 
-                          placeholder="Re-enter your password" 
-                          className="w-full bg-slate-50/60 border border-slate-200 hover:border-slate-300 focus:border-orange-500 rounded-2xl pl-10 pr-10 py-3 text-xs sm:text-sm font-semibold text-slate-800 placeholder:text-slate-400 focus:outline-none transition-colors"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                          className="absolute right-3.5 text-slate-400 hover:text-slate-600 focus:outline-none"
-                        >
-                          {showConfirmPassword ? (
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                          ) : (
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.018 10.018 0 013.28-.813c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m-4.692-4.692a3 3 0 00-4.243-4.243M3 3l18 18"/></svg>
-                          )}
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* REMEMBER LOGIN & FORGOT PASSWORD */}
-                  <div className="flex items-center justify-between pt-0.5">
-                    <label className="flex items-center gap-1.5 cursor-pointer">
-                      <input 
-                        type="checkbox"
-                        checked={rememberMe}
-                        onChange={(e) => setRememberMe(e.target.checked)}
-                        className="w-3.5 h-3.5 rounded text-orange-600 focus:ring-orange-500 cursor-pointer"
-                      />
-                      <span className="text-[11px] font-bold text-slate-600">Remember login</span>
-                    </label>
-
-                    {loginTab === 'login' && (
-                      <button
-                        type="button"
-                        onClick={handleForgotPassword}
-                        className="text-[11px] font-bold text-orange-600 hover:text-orange-700 hover:underline"
-                      >
-                        Forgot Password?
-                      </button>
-                    )}
-                  </div>
-
-                  {/* TERMS CHECKBOX WITH WORKING MODAL LINKS */}
-                  <div className="bg-amber-500/10 border border-amber-300/80 rounded-2xl p-3 flex items-start gap-2.5">
-                    <input 
-                      type="checkbox" 
-                      id="auth-terms-checkbox"
-                      checked={agreedTerms}
-                      onChange={(e) => setAgreedTerms(e.target.checked)}
-                      className="w-4 h-4 rounded text-orange-600 focus:ring-orange-500 mt-0.5 shrink-0 cursor-pointer" 
-                    />
-                    <label htmlFor="auth-terms-checkbox" className="text-[11px] font-semibold text-slate-700 leading-snug cursor-pointer">
-                      I agree to the{' '}
-                      <button type="button" onClick={() => setActiveModalPage('terms')} className="text-orange-600 font-bold hover:underline">Terms & Conditions</button>,{' '}
-                      <button type="button" onClick={() => setActiveModalPage('privacy')} className="text-orange-600 font-bold hover:underline">Privacy Policy</button>, and{' '}
-                      <button type="button" onClick={() => setActiveModalPage('payment_policy')} className="text-emerald-700 font-bold hover:underline">No-Refund Policy</button>.
-                    </label>
-                  </div>
-
-                  {/* SUBMIT BUTTON */}
-                  <button 
-                    type="submit" 
-                    disabled={isAuthenticating}
-                    className="w-full bg-gradient-to-r from-orange-400 via-amber-400 to-emerald-500 hover:from-orange-500 hover:to-emerald-600 text-white font-extrabold text-sm py-3.5 rounded-2xl shadow-md transition-all active:scale-98 disabled:opacity-80 flex items-center justify-center gap-2 mt-1"
-                  >
-                    {isAuthenticating ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        <span>Authenticating...</span>
-                      </>
-                    ) : (
-                      <span>{loginTab === 'login' ? 'Sign In Now' : 'Sign Up Now'}</span>
-                    )}
-                  </button>
-                </form>
-
-                {/* SIGN UP / SIGN IN TOGGLE */}
-                <div className="mt-5 text-center text-xs font-semibold text-slate-500">
-                  {loginTab === 'login' ? (
-                    <p>
-                      Don't have an account yet?{' '}
-                      <button 
-                        type="button" 
-                        onClick={() => { setLoginTab('register'); setConfirmPassword(''); }} 
-                        className="text-orange-600 font-extrabold hover:underline"
-                      >
-                        Sign Up Now
-                      </button>
-                    </p>
-                  ) : (
-                    <p>
-                      Already have an account?{' '}
-                      <button 
-                        type="button" 
-                        onClick={() => setLoginTab('login')} 
-                        className="text-emerald-700 font-extrabold hover:underline"
-                      >
-                        Sign In Now
-                      </button>
-                    </p>
-                  )}
-                </div>
-
-                {/* CARD FOOTER LINKS WITH WORKING MODAL HANDLERS */}
-                <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-center gap-3 text-[11px] font-semibold text-slate-400">
-                  <button type="button" onClick={() => setActiveModalPage('about')} className="hover:text-slate-600 underline">About Us</button>
-                  <span>•</span>
-                  <button type="button" onClick={() => setActiveModalPage('privacy')} className="hover:text-slate-600 underline">Privacy Policy</button>
-                  <span>•</span>
-                  <button type="button" onClick={() => setActiveModalPage('terms')} className="hover:text-slate-600 underline">Terms</button>
-                  <span>•</span>
-                  <button type="button" onClick={() => setActiveModalPage('disclaimer')} className="hover:text-slate-600 underline">Disclaimer</button>
-                </div>
-
-              </div>
-            </div>
-          ) : (
-            <>
-              {/* ADMIN PANEL FOR ADMIN UID: a7XKd7o4aGNqgGiIO9GRe5Q1Rhn1 */}
-              {currentUser && currentUser.uid === ADMIN_UID ? (
-                <div className="min-h-screen bg-slate-900 text-slate-100 p-4 sm:p-6 flex flex-col">
-                  <header className="bg-slate-800 border-b border-orange-500/50 p-4 rounded-2xl flex items-center justify-between shadow-xl mb-6">
-                    <div className="flex items-center gap-3">
-                      <span className="text-amber-400 text-2xl font-black">👑</span>
-                      <div>
-                        <h1 className="text-base sm:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-emerald-400">
-                          SGS ADMIN CONTROL PANEL
-                        </h1>
-                        <p className="text-[10px] font-bold text-slate-400">UID: <span className="text-orange-400">{currentUser.uid}</span></p>
-                      </div>
-                    </div>
-                    <button 
-                      onClick={handleUserLogout} 
-                      className="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-4 py-2 rounded-xl shadow transition-all flex items-center gap-1.5"
-                    >
-                      <Icons.Logout /> Logout
-                    </button>
-                  </header>
-
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 flex-1">
-                    <div className="bg-slate-800 border border-slate-700 rounded-2xl p-4 shadow-lg flex flex-col">
-                      <h2 className="font-extrabold text-sm text-orange-400 mb-3 uppercase tracking-wider flex items-center gap-2">
-                        <span>👥 Registered Users ({allUsersList.length})</span>
-                      </h2>
-
-                      <div className="flex-1 overflow-y-auto space-y-2 pr-1 max-h-[600px]">
-                        {allUsersList.map((usr) => (
-                          <div 
-                            key={usr.uid}
-                            onClick={() => setAdminSelectedUser(usr)}
-                            className={`p-3 rounded-xl border cursor-pointer transition-all ${
-                              adminSelectedUser?.uid === usr.uid 
-                                ? 'bg-orange-500/20 border-orange-500 text-white shadow-md' 
-                                : 'bg-slate-900/60 border-slate-700 text-slate-300 hover:border-slate-500'
-                            }`}
-                          >
-                            <p className="font-black text-xs text-emerald-400 break-all">{usr.email}</p>
-                            <p className="text-[10px] font-bold text-orange-300 mt-0.5">UID: {usr.uid}</p>
-                            {usr.lastLogin && <p className="text-[9px] text-slate-400 mt-1">Last Login: {usr.lastLogin}</p>}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="lg:col-span-2 bg-slate-800 border border-slate-700 rounded-2xl p-4 sm:p-6 shadow-lg flex flex-col">
-                      {adminSelectedUser ? (
-                        <div className="space-y-4">
-                          <div className="bg-slate-900 border border-orange-500/40 p-4 rounded-xl flex items-center justify-between flex-wrap gap-2">
-                            <div>
-                              <h3 className="font-extrabold text-sm text-amber-400">User: {adminSelectedUser.email}</h3>
-                              <p className="text-xs text-slate-400">UID: <span className="font-mono text-orange-300">{adminSelectedUser.uid}</span></p>
-                            </div>
-                            <span className="bg-emerald-500/20 border border-emerald-500 text-emerald-400 text-[10px] font-bold px-3 py-1 rounded-full">
-                              Active
-                            </span>
-                          </div>
-
-                          <h4 className="font-extrabold text-xs text-slate-300 uppercase tracking-wider">
-                            Submitted Applications / Forms
-                          </h4>
-
-                          {(() => {
-                            const userForms = allAdminApps.filter(app => app.userUid === adminSelectedUser.uid || app.userEmail === adminSelectedUser.email);
-                            
-                            return userForms.length === 0 ? (
-                              <div className="bg-slate-900/50 p-8 rounded-xl border border-slate-700 text-center text-slate-400 text-xs">
-                                No form applications submitted by this user yet.
-                              </div>
-                            ) : (
-                              <div className="space-y-3 max-h-[500px] overflow-y-auto pr-1">
-                                {userForms.map((f, idx) => (
-                                  <div key={idx} className="bg-slate-900 border border-slate-700 p-4 rounded-xl space-y-2">
-                                    <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                                      <span className="font-black text-orange-400 text-sm">UID: {f.uid}</span>
-                                      <span className="text-[10px] bg-slate-800 text-emerald-400 px-2 py-0.5 rounded font-bold">{f.amount}</span>
-                                    </div>
-                                    <p className="text-xs font-bold text-slate-200">Form: {f.serviceTitle}</p>
-                                    <p className="text-[10px] text-slate-400">Category: {f.category}</p>
-                                    <p className="text-[10px] text-slate-500">Submitted On: {f.dateTime}</p>
-                                  </div>
-                                ))}
-                              </div>
-                            );
-                          })()}
-                        </div>
-                      ) : (
-                        <div className="flex flex-col items-center justify-center flex-1 text-center py-12 text-slate-400">
-                          <span className="text-3xl mb-2">👆</span>
-                          <p className="text-xs font-bold">Select any user UID from the left panel to view their complete form submission records.</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <>
-                  {pendingService && (
-                    <div className="fixed inset-0 z-[130] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-                      <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border-2 border-orange-500 overflow-hidden animate-fade-in flex flex-col">
-                        <div className="bg-gradient-to-r from-orange-600 via-amber-600 to-emerald-700 text-white p-4">
-                          <div className="flex items-center gap-2">
-                            <span className="text-yellow-300 text-xl"><Icons.ShieldCheck /></span>
-                            <h3 className="font-extrabold text-sm sm:text-base tracking-wide">घोषणा एवं महत्वपूर्ण चेतावनी</h3>
-                          </div>
-                        </div>
-
-                        <div className="p-5 text-xs sm:text-sm text-slate-800 space-y-3.5 leading-relaxed">
-                          <div className="bg-orange-50 warning-amber-box border-l-4 border-orange-500 p-3 rounded-r-lg text-orange-950 font-bold">
-                            ⚠️ <strong>आवश्यक सूचना:</strong> आवेदन भरने से पहले नीचे दिए गए निर्देशों को ध्यान से पढ़ें।
-                          </div>
-
-                          <p className="font-semibold text-slate-700 leading-normal">
-                            कृपया अपनी सभी विवरण और दस्तावेज़ (Details & Documents) सही-सही और ध्यानपूर्वक भरें।
-                          </p>
-
-                          <div className="bg-rose-50 warning-rose-box border border-rose-200 rounded-xl p-3 text-rose-950 text-xs font-bold space-y-1">
-                            <p className="text-rose-950">• आपके द्वारा दी गई जानकारी गलत होने पर यदि फॉर्म आधिकारिक पोर्टल से रिजेक्ट (Reject) होता है, तो इसकी पूरी जिम्मेदारी आपकी होगी।</p>
-                            <p className="text-rose-950">• गलत विवरण के कारण फॉर्म रिजेक्ट होने पर आपका भुगतान (Payment) रिफंड (Refund) नहीं किया जाएगा。</p>
-                          </div>
-                        </div>
-
-                        <div className="p-4 bg-slate-50 border-t border-slate-200 flex justify-center">
-                          <button 
-                            onClick={handleConfirmServiceSelection} 
-                            className="w-full tiranga-btn-primary font-black text-xs sm:text-sm py-3 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-1.5"
-                          >
-                            <span>I Agree & Continue</span> →
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {!hasAgreed && (
-                    <div className="fixed inset-0 z-[120] bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-                      <div className="bg-white rounded-2xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden animate-fade-in flex flex-col">
-                        <div className="bg-gradient-to-r from-orange-600 via-blue-900 to-emerald-700 text-white p-4">
-                          <div className="flex items-center gap-2">
-                            <span className="text-amber-300 text-lg"><Icons.ShieldCheck /></span>
-                            <h3 className="font-extrabold text-sm sm:text-base tracking-wide">Terms, Privacy, Pricing & Disclaimer Notice</h3>
-                          </div>
-                        </div>
-
-                        <div className="p-5 text-xs text-slate-700 space-y-4 leading-relaxed max-h-[65vh] overflow-y-auto">
-                          <div className="bg-orange-50 warning-amber-box border-l-4 border-orange-500 p-3 rounded-r-lg text-orange-950 font-semibold">
-                            Please read our complete Privacy Policy, Terms & Conditions, Payment & No-Refund Policy, Service Delivery Timeline, and Disclaimer before proceeding.
-                          </div>
-                        </div>
-
-                        <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-col gap-2">
-                          <button 
-                            onClick={handleAcceptTerms} 
-                            className="w-full tiranga-btn-primary font-extrabold text-xs py-3 rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
-                          >
-                            <span>I Agree & Continue</span> →
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {showDrawer && (
-                    <div className="fixed inset-0 z-[80] flex">
-                      <div className="fixed inset-0 bg-black/50 transition-opacity" onClick={() => setShowDrawer(false)}></div>
-                      <div className="relative w-80 max-w-[85%] bg-white h-full shadow-2xl flex flex-col justify-between z-10 p-5 overflow-y-auto drawer-panel border-r-4 border-orange-500">
-                        <div>
-                          <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
-                            <div className="flex items-center gap-2">
-                              <img src="logo.png" alt="SGS" className="w-8 h-8 rounded-lg object-cover border-2 border-orange-500" onError={(e)=>{e.target.onerror=null; e.target.style.display='none';}} />
-                              <div>
-                                <h3 className="font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-emerald-700 text-sm sm:text-base">SGS ONLINE SERVICE</h3>
-                                <p className="text-[9px] font-bold text-orange-600 uppercase">Tiranga Edition</p>
-                              </div>
-                            </div>
-                            <button onClick={() => setShowDrawer(false)} className="text-slate-400 hover:text-slate-600"><Icons.X /></button>
-                          </div>
-
-                          {currentUser && (
-                            <div className="mb-4 bg-gradient-to-r from-orange-100 via-amber-50 to-emerald-100 border border-orange-300 p-3 rounded-xl flex items-center justify-between shadow-2xs">
-                              <div>
-                                <p className="text-[10px] uppercase font-extrabold text-orange-800 tracking-wider">Logged In User</p>
-                                <p className="text-xs font-black text-slate-900">{currentUser.name}</p>
-                                <p className="text-[10px] font-bold text-slate-600">{currentUser.email}</p>
-                              </div>
-                              <button 
-                                onClick={handleUserLogout} 
-                                title="Logout from portal" 
-                                className="bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-bold px-2.5 py-1.5 rounded-lg flex items-center gap-1 shadow-2xs no-neon"
-                              >
-                                <Icons.Logout /> Logout
-                              </button>
-                            </div>
-                          )}
-
-                          <nav className="space-y-2 text-xs font-bold text-slate-700">
-                            <button onClick={handleNavigateHome} className="w-full text-left p-2.5 rounded-lg hover:bg-orange-50 flex items-center justify-between text-orange-700 bg-orange-50/50 border border-orange-200">
-                              <span>🏠 Home Page / All Services</span>
-                              <Icons.ChevronRight />
-                            </button>
-
-                            <button onClick={() => { setActiveModalPage('about'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
-                              <span className="flex items-center gap-1.5 font-bold"><Icons.Info /> About Us</span>
-                              <Icons.ChevronRight />
-                            </button>
-
-                            <div className="p-2.5 rounded-lg bg-orange-50 border border-orange-200 flex items-center justify-between">
-                              <span className="flex items-center gap-1.5 font-extrabold text-orange-950">
-                                <Icons.Moon /> Neon Tiranga Mode
-                              </span>
-                              <button 
-                                onClick={() => setIsNeonMode(!isNeonMode)} 
-                                className={`px-3 py-1 rounded-md font-bold text-[11px] transition-all no-neon ${
-                                  isNeonMode ? 'bg-orange-500 text-white shadow-[0_0_10px_rgba(249,115,22,0.8)]' : 'bg-slate-800 text-white'
-                                }`}
-                              >
-                                {isNeonMode ? 'ON ⚡' : 'OFF'}
-                              </button>
-                            </div>
-
-                            <button 
-                              onClick={() => { setActiveModalPage('track'); setShowDrawer(false); }} 
-                              className="w-full text-left p-2.5 rounded-lg bg-amber-50 text-amber-900 flex items-center justify-between border border-amber-300 shadow-2xs"
-                            >
-                              <span className="flex items-center gap-1.5 font-extrabold text-amber-800">
-                                <Icons.ListCheck /> Track My Application ({userApps.length})
-                              </span>
-                              <Icons.ChevronRight />
-                            </button>
-
-                            <button onClick={handleShareWebsite} className="w-full text-left p-2.5 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-between border border-emerald-200">
-                              <span className="flex items-center gap-1.5 font-extrabold"><Icons.Share2 /> Share Website</span>
-                              <Icons.ChevronRight />
-                            </button>
-                            
-                            <button onClick={() => { setActiveModalPage('privacy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
-                              <span>🔒 Privacy Policy</span>
-                              <Icons.ChevronRight />
-                            </button>
-
-                            <button onClick={() => { setActiveModalPage('payment_policy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
-                              <span className="flex items-center gap-1.5">💳 Payment & Refund Policy</span>
-                              <Icons.ChevronRight />
-                            </button>
-
-                            <button onClick={() => { setActiveModalPage('delivery_policy'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
-                              <span className="flex items-center gap-1.5">🚚 Delivery & Fulfillment Policy</span>
-                              <Icons.ChevronRight />
-                            </button>
-
-                            <button onClick={() => { setActiveModalPage('terms'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
-                              <span>📜 Terms & Conditions</span>
-                              <Icons.ChevronRight />
-                            </button>
-                            <button onClick={() => { setActiveModalPage('disclaimer'); setShowDrawer(false); }} className="w-full text-left p-2.5 rounded-lg hover:bg-slate-100 flex items-center justify-between">
-                              <span>⚠️ Disclaimer Notice</span>
-                              <Icons.ChevronRight />
-                            </button>
-
-                            <a 
-                              href="https://www.youtube.com/@rojgarwithberojgar-2" 
-                              target="_blank" 
-                              rel="noopener noreferrer" 
-                              onClick={() => setShowDrawer(false)}
-                              className="youtube-guide-btn w-full text-left p-2.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 flex items-center justify-between transition-colors mt-2 font-extrabold"
-                            >
-                              <span className="flex items-center gap-2">
-                                <Icons.Youtube /> Website Full guide On Youtube
-                              </span>
-                              <Icons.ChevronRight />
-                            </a>
-                          </nav>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {submittedReceipt ? (
-                    <div className="min-h-screen bg-orange-50/40 p-4 sm:p-6 flex flex-col items-center justify-center">
-                      <div id="printable-receipt" className="slip-card-clean max-w-md w-full rounded-2xl border-2 border-orange-500 shadow-2xl overflow-hidden p-6 text-slate-900 space-y-5">
-                        
-                        <div className="bg-gradient-to-r from-orange-600 to-emerald-700 text-white p-3 rounded-xl text-center shadow-md mb-2">
-                          <h3 className="font-black text-xs uppercase tracking-wider">🇮🇳 Thanks for applying through SGS Online Service!</h3>
-                        </div>
-
-                        <div className="text-center space-y-2 border-b border-slate-200 pb-4">
-                          <div className="flex justify-center mb-1"><Icons.CheckCircle /></div>
-                          <h2 className="text-xl font-black slip-text-dark">Application Submitted!</h2>
-                          <p className="text-xs slip-text-muted font-bold">Your request has been successfully registered.</p>
-                        </div>
-
-                        <div className="slip-box-inner rounded-xl p-4 space-y-3 text-xs">
-                          <div className="flex items-center justify-between border-b border-orange-200 pb-2">
-                            <span className="slip-text-muted font-bold">Application UID:</span>
-                            <span className="font-black text-orange-700 text-sm tracking-wide">{submittedReceipt.uid}</span>
-                          </div>
-                          <div className="flex items-center justify-between border-b border-orange-200 pb-2">
-                            <span className="slip-text-muted font-bold">Service Name:</span>
-                            <span className="font-black slip-text-dark text-right max-w-[200px] leading-tight">{submittedReceipt.serviceTitle}</span>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className="slip-text-muted font-bold">Amount Paid:</span>
-                            <span className="font-black text-emerald-600 text-sm">{submittedReceipt.amount}</span>
-                          </div>
-                        </div>
-
-                        <div className="pt-2 flex flex-col gap-2.5 no-print">
-                          <button onClick={() => window.print()} className="w-full bg-orange-600 hover:bg-orange-700 text-white font-extrabold text-xs py-3 rounded-xl shadow-md">
-                            Download Receipt
-                          </button>
-                          <button onClick={handleNavigateHome} className="w-full bg-slate-900 text-white font-extrabold text-xs py-3 rounded-xl shadow-md">
-                            Done ✓
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (
-                    <>
-                      <header className="sticky top-1 z-40 bg-gradient-to-r from-orange-600 via-indigo-950 to-emerald-700 text-white shadow-md py-2.5 px-3">
-                        <div className="max-w-6xl mx-auto flex items-center justify-between gap-2">
-                          <button onClick={() => setShowDrawer(true)} className="p-1.5 text-white hover:bg-white/10 rounded-lg">
-                            <Icons.Menu />
-                          </button>
-                          
-                          <div onClick={handleNavigateHome} className="cursor-pointer text-center flex-1 flex items-center justify-center gap-2">
-                            <img src="logo.png" alt="SGS Logo" className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg object-cover border-2 border-orange-400 shadow-sm" onError={(e) => { e.target.style.display = 'none'; }} />
-                            <div>
-                              <h1 className="text-base sm:text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-300 via-white to-emerald-300 leading-tight">
-                                SGS ONLINE SERVICE
-                              </h1>
-                              <p className="text-[9px] sm:text-[11px] font-bold text-orange-200/90 uppercase">Online Form Filling Assistance Portal (Private Service)</p>
-                            </div>
-                          </div>
-                        </div>
-                      </header>
-
-                      <div className="bg-slate-900 text-slate-200 text-[11px] px-4 py-2 border-b border-orange-500/30 text-center font-medium">
-                        <span className="bg-gradient-to-r from-orange-500 to-emerald-600 text-white font-black px-2 py-0.5 rounded text-[10px] mr-1.5 shadow">🇮🇳 NOTICE</span>
-                        SGS Online Service is an independent private form filling assistance portal (Cyber Cafe). We are NOT an official government or college portal.
-                      </div>
-
-                      {activeService ? (
-                        <main className="flex-1 max-w-4xl w-full mx-auto px-4 py-6">
-                          <button onClick={handleNavigateHome} className="inline-flex items-center gap-2 bg-white text-slate-800 font-bold text-xs px-4 py-2 rounded-xl border border-orange-200 mb-4 shadow-2xs hover:bg-orange-50">
-                            <Icons.ArrowLeft /> Back to Services
-                          </button>
-
-                          <div className="bg-white rounded-xl shadow-md border-2 border-orange-400 overflow-hidden p-4 sm:p-6 relative">
-                            <div className="absolute top-0 left-0 right-0 h-1.5 tiranga-stripe"></div>
-                            <span className="bg-gradient-to-r from-orange-600 to-emerald-600 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded uppercase mt-2 inline-block">{activeService.category}</span>
-                            <h2 className="text-xl sm:text-2xl font-black text-slate-900 mt-2 mb-2">{activeService.title}</h2>
-                            <p className="text-xs text-slate-600 mb-4">{activeService.description}</p>
-
-                            {activeService.htmlContent ? (
-                              <div className="w-full rounded-xl overflow-hidden border border-slate-200 mt-3 bg-white">
-                                <iframe srcDoc={activeService.htmlContent} title={activeService.title} className="w-full min-h-[600px] border-0" sandbox="allow-scripts allow-forms allow-same-origin allow-popups" />
-                              </div>
-                            ) : (
-                              <form onSubmit={handleFormSubmit} className="space-y-4">
-                                {activeService.fields && activeService.fields.map((field, idx) => {
-                                  const isPhoneField = field.type === 'tel' || field.name?.toLowerCase().includes('mobile') || field.name?.toLowerCase().includes('phone') || field.label?.toLowerCase().includes('mobile') || field.label?.toLowerCase().includes('phone');
-
-                                  return (
-                                    <div key={idx} className="space-y-1">
-                                      <label className="block text-xs font-bold text-slate-800">{field.label}:</label>
-                                      {field.type === 'file' ? (
-                                        <div>
-                                          <input type="file" name={field.name} accept={field.accept || "image/*, application/pdf"} required={field.required} onChange={(e) => handleFilePreview(e, `prev_img_${field.name}_${idx}`, `prev_pdf_${field.name}_${idx}`)} className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs focus:border-orange-500" />
-                                          <img id={`prev_img_${field.name}_${idx}`} className="img-preview" alt="Selected Preview" />
-                                          <div id={`prev_pdf_${field.name}_${idx}`} className="pdf-preview"></div>
-                                        </div>
-                                      ) : field.type === 'radio' ? (
-                                        <div className="space-y-2 bg-slate-50 p-3 rounded-lg border border-slate-200">
-                                          {field.options && field.options.map((opt) => (
-                                            <label key={opt.id || opt.value} className="flex items-center gap-2 text-xs font-semibold text-slate-700 cursor-pointer">
-                                              <input type="radio" name={field.name} value={opt.value} required={field.required} className="w-4 h-4 text-orange-600 focus:ring-orange-500" />
-                                              <span>{opt.label}</span>
-                                            </label>
-                                          ))}
-                                        </div>
-                                      ) : isPhoneField ? (
-                                        <div className="flex items-center">
-                                          <span className="bg-orange-100 border border-r-0 border-orange-300 rounded-l-lg p-2.5 text-xs font-bold text-orange-900 prefix-badge shrink-0">+91</span>
-                                          <input type="tel" inputMode="numeric" pattern="[0-9]{10}" maxLength={10} name={field.name} required={field.required} placeholder="10 digit mobile number" onInput={(e) => { e.target.value = e.target.value.replace(/[^0-9]/g, '').slice(0, 10); }} className="w-full bg-slate-50 border border-slate-300 rounded-r-lg p-2.5 text-xs font-bold tracking-wide text-slate-900 focus:outline-none focus:border-orange-500" />
-                                        </div>
-                                      ) : (
-                                        <input type={field.type} name={field.name} required={field.required} placeholder={field.placeholder || "Details fill karein"} className="w-full bg-slate-50 border border-slate-300 rounded-lg p-2.5 text-xs font-medium focus:outline-none focus:border-orange-500" />
-                                      )}
-                                    </div>
-                                  );
-                                })}
-
-                                {activeService.qrImageUrl && (() => {
-                                  const upi = getUpiDetails(activeService.qrImageUrl);
-                                  const amParam = upi.am ? `&am=${upi.am}` : "";
-                                  const phonepeUrl = `phonepe://pay?pa=${upi.pa}&pn=${encodeURIComponent(upi.pn)}${amParam}&cu=INR`;
-                                  const gpayUrl = `tez://upi/pay?pa=${upi.pa}&pn=${encodeURIComponent(upi.pn)}${amParam}&cu=INR`;
-                                  const genericUpiUrl = `upi://pay?pa=${upi.pa}&pn=${encodeURIComponent(upi.pn)}${amParam}&cu=INR`;
-
-                                  return (
-                                    <div className="bg-orange-50/80 border border-orange-200 p-4 rounded-xl text-center my-4 space-y-3">
-                                      <p className="text-xs font-extrabold text-orange-950">Scan QR or Click Below to Pay {upi.am ? `₹${upi.am}` : ''}</p>
-                                      <img src={activeService.qrImageUrl} alt="Payment QR Code" className="max-w-[180px] mx-auto rounded-lg border-2 border-orange-500 shadow-sm" />
-                                      <div className="pt-2 flex flex-col sm:flex-row gap-2 justify-center items-center">
-                                        <a href={phonepeUrl} className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-[#5f259f] text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow">PhonePe</a>
-                                        <a href={gpayUrl} className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-white text-slate-800 border border-slate-300 font-bold text-xs py-2.5 px-3 rounded-lg shadow-sm">Google Pay</a>
-                                        <a href={genericUpiUrl} className="w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2 bg-emerald-600 text-white font-bold text-xs py-2.5 px-3 rounded-lg shadow">Pay via UPI</a>
-                                      </div>
-                                    </div>
-                                  );
-                                })()}
-
-                                <div className="space-y-1">
-                                  <label className="block text-xs font-extrabold text-rose-600">Upload Payment Screenshot (Mandatory):</label>
-                                  <input type="file" name="main_payment_screenshot" accept="image/*" required onChange={(e) => handleFilePreview(e, 'prev_img_main_payment', 'prev_pdf_main_payment')} className="w-full bg-slate-50 border border-rose-300 rounded-lg p-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-rose-600" />
-                                  <img id="prev_img_main_payment" className="img-preview" alt="Payment Screenshot Preview" />
-                                  <div id="prev_pdf_main_payment" className="pdf-preview"></div>
-                                </div>
-
-                                <button type="submit" disabled={isSubmitting} className="w-full tiranga-btn-primary font-extrabold text-sm py-3.5 rounded-xl shadow-lg transition-all active:scale-95 disabled:bg-slate-400 mt-2">
-                                  {isSubmitting ? "Uploading & Submitting..." : "Submit Application →"}
-                                </button>
-                              </form>
-                            )}
-                          </div>
-                        </main>
-                      ) : (
-                        <main className="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
-                          <div className="notice-board-box bg-gradient-to-r from-orange-50 via-white to-emerald-50 border-2 border-orange-300 rounded-2xl p-4 shadow-sm relative overflow-hidden">
-                            <div className="flex items-center justify-between border-b border-orange-200 pb-2.5 mb-3">
-                              <div className="flex items-center gap-2">
-                                <span className="text-orange-600 animate-bounce"><Icons.Bell /></span>
-                                <h2 className="font-black text-orange-950 text-sm uppercase tracking-wider">Notice Board</h2>
-                              </div>
-                              <span className="inline-flex items-center gap-1.5 bg-gradient-to-r from-orange-600 to-emerald-600 text-white font-extrabold text-[10px] px-2.5 py-0.5 rounded-full shadow-md tracking-wider">
-                                <span className="w-2 h-2 rounded-full bg-white animate-ping"></span>
-                                LIVE
-                              </span>
-                            </div>
-
-                            <div className="space-y-2.5">
-                              {notices.map((n) => (
-                                <div key={n.id} className="flex items-start gap-2.5 text-xs font-semibold text-slate-800 bg-white/90 p-2.5 rounded-xl border border-orange-200/80 shadow-2xs">
-                                  <span className="text-orange-600 font-extrabold text-sm leading-none">•</span>
-                                  <span className="leading-relaxed">{n.text}</span>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-
-                          <div className="space-y-3">
-                            <div className="relative">
-                              <div className="absolute left-3.5 top-3 text-slate-400"><Icons.Search /></div>
-                              <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search form, service..." className="w-full bg-white border border-slate-300 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm font-medium focus:outline-none focus:border-orange-500" />
-                            </div>
-
-                            <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
-                              {categories.map((catObj) => {
-                                const catName = typeof catObj === 'object' ? catObj.name : catObj;
-                                const isSelected = selectedCat === catName;
-                                return (
-                                  <button key={catName} onClick={() => handleCategorySelect(catName)} style={getCategoryButtonStyle(catObj, isSelected)} className="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all border shrink-0">
-                                    {catName}
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          </div>
-
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {filteredServices.map((srv) => (
-                              <div key={srv.id} onClick={() => openServiceDetail(srv)} className="bg-white rounded-xl border border-slate-200 p-4 shadow-2xs hover:shadow-md hover:border-orange-400 transition-all cursor-pointer flex flex-col justify-between relative overflow-hidden group">
-                                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 via-amber-300 to-emerald-500 opacity-80 group-hover:opacity-100 transition-opacity"></div>
-                                <div>
-                                  <span className="post-category-badge bg-orange-100 text-orange-900 text-[10px] font-bold px-2 py-0.5 rounded border border-orange-200">{srv.category}</span>
-                                  <h4 className="font-bold text-slate-900 text-sm mt-2">{srv.title}</h4>
-                                  <p className="text-xs text-slate-500 mt-1 line-clamp-2">{srv.description}</p>
-                                </div>
-                                <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-orange-600 mt-3 group-hover:text-emerald-700">
-                                  <span>Apply Now & Fill Details</span>
-                                  <Icons.ChevronRight />
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </main>
-                      )}
-
-                      <footer className="bg-slate-950 text-slate-400 text-xs py-6 mt-12 border-t-4 border-orange-500 text-center px-4 relative">
-                        <p className="font-extrabold text-white">SGS ONLINE SERVICE © 2026 • Private Online Assistance Desk</p>
-                        <p className="text-[11px] text-slate-500 mt-1">📍 Registered Office: District Arrah, Bhojpur, Bihar, India - 802301 | Support: contactsgsonlineservice@gmail.com</p>
-                        <div className="flex flex-wrap items-center justify-center gap-4 text-xs mt-3">
-                          <button onClick={() => { setActiveModalPage('about'); }} className="text-slate-400 hover:text-orange-400 underline">About Us</button>
-                          <button onClick={() => { setActiveModalPage('support'); }} className="text-slate-400 hover:text-emerald-400 underline">Customer Support & Grievance</button>
-                          <button onClick={() => { setActiveModalPage('delivery_policy'); }} className="text-slate-400 hover:text-orange-400 underline">Fulfillment Timeline</button>
-                          <button onClick={() => { setActiveModalPage('privacy'); }} className="text-slate-400 hover:text-orange-400 underline">Privacy Policy</button>
-                          <button onClick={() => { setActiveModalPage('payment_policy'); }} className="text-slate-400 hover:text-emerald-400 underline">Payment & Refund Policy</button>
-                          <button onClick={() => { setActiveModalPage('terms'); }} className="text-slate-400 hover:text-emerald-400 underline">Terms & Conditions</button>
-                          <button onClick={() => { setActiveModalPage('disclaimer'); }} className="text-slate-400 hover:text-orange-400 underline">Disclaimer</button>
-                        </div>
-                      </footer>
-                    </>
-                  )}
-                </>
-              )}
-
-            </>
-          )}
-
-        </div>
-      );
     }
-
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
-
-  </script>
+</script>
 </body>
 </html>
