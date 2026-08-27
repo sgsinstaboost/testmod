@@ -553,7 +553,10 @@
       while (questionQueue.length > 0) {
         const candidate = questionQueue.shift();
         const normKey = normalizeQuestionKey(candidate.question);
-        if (normKey && !askedQuestionsSet.has(normKey)) {
+        // Ensure candidate has valid question and 4 real options (not dummy placeholders)
+        if (candidate && candidate.options && candidate.options.length === 4 && 
+            !candidate.options[0].startsWith("विकल्प (") &&
+            normKey && !askedQuestionsSet.has(normKey)) {
           askedQuestionsSet.add(normKey);
           askedTopicsRegistry.push(candidate.question.substring(0, 30));
           return candidate;
@@ -574,15 +577,10 @@
         return chosen;
       }
 
-      const randTopic = subTopicsList[Math.floor(Math.random() * subTopicsList.length)];
-      return {
-        question: `प्रतियोगी परीक्षा अभ्यास: ${randTopic} से संबंधित महत्वपूर्ण प्रश्न क्रमांक #${totalQuestions + 1}`,
-        options: ["विकल्प (A)", "विकल्प (B)", "विकल्प (C)", "विकल्प (D)"],
-        correctIndex: Math.floor(Math.random() * 4),
-        subject: "मॉक टेस्ट स्पेशल",
-        exam: "SSC / Railway / All Exams",
-        explanation: "नियमित अभ्यास से परीक्षा में सफलता सुनिश्चित होती है।"
-      };
+      // If all questions are visited once, reset set and serve with random choice
+      askedQuestionsSet.clear();
+      const fallbackItem = fallbackHindiBank[Math.floor(Math.random() * fallbackHindiBank.length)];
+      return fallbackItem;
     }
 
     let availableVoices = [];
@@ -916,14 +914,21 @@
 
       currentQuestion = await getNextUniqueQuestion();
 
+      // Update Teacher's Live Teleprompter in Header
+      const hindiLetters = ['(A)', '(B)', '(C)', '(D)'];
+      const correctLetter = hindiLetters[currentQuestion.correctIndex] || '(A)';
+      const correctOptionFull = currentQuestion.options[currentQuestion.correctIndex] || '';
+      const teacherKeyElem = document.getElementById('teacherKeyDisplay');
+      if (teacherKeyElem) {
+        teacherKeyElem.innerHTML = `<span class="text-yellow-400 font-bold">${correctLetter}</span> <span class="text-emerald-300 font-semibold truncate max-w-[130px] sm:max-w-[200px] inline-block align-bottom">${correctOptionFull}</span>`;
+      }
+
       document.getElementById('badgeSubject').innerText = currentQuestion.subject || "GK & GS Special";
       document.getElementById('badgeExam').innerText = currentQuestion.exam || "SSC / Railway / All Exams";
       document.getElementById('questionText').innerText = currentQuestion.question;
 
       const optionsContainer = document.getElementById('optionsGrid');
       optionsContainer.innerHTML = '';
-
-      const hindiLetters = ['(A)', '(B)', '(C)', '(D)'];
 
       currentQuestion.options.forEach((optionText, index) => {
         const btn = document.createElement('button');
