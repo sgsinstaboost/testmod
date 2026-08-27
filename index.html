@@ -1,3166 +1,1126 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    <title>SGS Mock Test: All Exams Preparation</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SGS ONLINE PORTAL - Live Quiz Blackboard by Sachin Sir</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Tiro+Devanagari+Hindi:ital@0;1&family=Yantramanav:wght@500;700;900&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            hindi: ['"Yantramanav"', '"Tiro Devanagari Hindi"', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', '"Yantramanav"', 'sans-serif']
+          },
+          colors: {
+            chalkYellow: '#fde047',
+            chalkGreen: '#22c55e',
+            boardBlack: '#000000'
+          },
+          animation: {
+            'glow-green': 'greenGlow 0.8s ease-in-out infinite alternate',
+            'live-blink': 'pulse 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+          },
+          keyframes: {
+            greenGlow: {
+              '0%': { boxShadow: '0 0 10px rgba(34, 197, 94, 0.4)', transform: 'scale(1)' },
+              '100%': { boxShadow: '0 0 25px rgba(34, 197, 94, 0.9)', transform: 'scale(1.02)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
 
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #f8fafc; color: #0f172a; user-select: none; }
-
-        /* Splash Screen */
-        #splash-screen {
-            position: fixed; inset: 0; background: linear-gradient(135deg, #ec4899, #8b5cf6, #3b82f6);
-            display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 10000; color: #fff;
-            transition: opacity 0.5s ease;
-        }
-        .splash-logo-container { width: 90px; height: 90px; background: #fff; border-radius: 24px; display: flex; justify-content: center; align-items: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); margin-bottom: 16px; animation: bounce 1.5s infinite alternate; overflow: hidden; }
-        .splash-logo-img { width: 100%; height: 100%; object-fit: cover; border-radius: 24px; }
-        .splash-logo-fallback { font-size: 32px; font-weight: 900; color: #ec4899; }
-        @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
-
-        /* Policy Consent Container (Replaces Login View) */
-        .auth-view { min-height: 100vh; background: linear-gradient(180deg, #fdf2f8 0%, #f8fafc 100%); padding: 30px 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .auth-card { background: #ffffff; width: 100%; max-width: 380px; border-radius: 20px; padding: 28px 22px; box-shadow: 0 10px 30px rgba(236, 72, 153, 0.12); border: 1.5px solid #fbcfe8; }
-        .auth-title { font-size: 22px; font-weight: 800; text-align: center; color: #831843; margin-bottom: 8px; }
-        .auth-sub { font-size: 13.5px; text-align: center; color: #64748b; margin-bottom: 20px; line-height: 1.5; }
-
-        .policy-btn-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
-        .policy-link-btn { display: flex; justify-content: space-between; align-items: center; background: #fdf2f8; border: 1.5px solid #f472b6; padding: 12px 14px; border-radius: 10px; color: #be185d; font-size: 13.5px; font-weight: 700; text-decoration: none; transition: 0.2s; }
-        .policy-link-btn:active { background: #fce7f3; transform: scale(0.98); }
-
-        .auth-checkbox-container { display: flex; align-items: flex-start; gap: 10px; margin: 16px 0; font-size: 13px; color: #334155; line-height: 1.4; }
-        .auth-checkbox-container input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; accent-color: #ec4899; cursor: pointer; }
-
-        /* Buttons with Loading Effect */
-        .btn-gradient {
-            width: 100%; padding: 14px; border: none; border-radius: 10px;
-            background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #fff;
-            font-size: 16px; font-weight: 800; cursor: pointer;
-            display: flex; justify-content: center; align-items: center; gap: 8px;
-            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.35); transition: all 0.2s; margin-top: 10px;
-        }
-        .btn-gradient:active { transform: scale(0.98); }
-
-        /* Navigation Drawer */
-        .drawer-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.6); z-index: 1000; display: none; }
-        .drawer-sidebar { position: fixed; top: 0; left: -290px; width: 280px; height: 100%; background: #ffffff; z-index: 1001; transition: left 0.3s ease; display: flex; flex-direction: column; box-shadow: 4px 0 20px rgba(0,0,0,0.15); }
-        .drawer-header { background: linear-gradient(135deg, #ec4899, #8b5cf6); padding: 24px 18px; color: #fff; display: flex; flex-direction: column; justify-content: center; }
-        .drawer-logo-box { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
-        .drawer-logo-img { width: 44px; height: 44px; border-radius: 12px; object-fit: cover; background: #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-        .drawer-header h3 { font-size: 18px; font-weight: 800; letter-spacing: 0.3px; }
-        .drawer-header p { font-size: 12.5px; opacity: 0.92; margin-top: 2px; }
-        .drawer-content { flex: 1; overflow-y: auto; padding: 12px 0; }
-        .drawer-item { padding: 13px 18px; display: flex; align-items: center; gap: 12px; font-size: 14.5px; font-weight: 600; color: #334155; cursor: pointer; border-bottom: 1px solid #f1f5f9; text-decoration: none; }
-        .drawer-item:active { background: #fdf2f8; color: #db2777; }
-
-        /* Top App Bars */
-        .top-bar { background: linear-gradient(135deg, #ec4899, #8b5cf6, #3b82f6); color: #fff; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; box-shadow: 0 4px 12px rgba(236, 72, 153, 0.25); }
-        .top-bar-left { display: flex; align-items: center; gap: 10px; }
-        .top-logo-img { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; background: #fff; }
-        .top-bar .title { font-size: 17px; font-weight: 800; letter-spacing: 0.5px; }
-        .menu-btn { font-size: 22px; cursor: pointer; background: transparent; border: none; color: #fff; line-height: 1; }
-        .sub-bar { background: #ffffff; border-bottom: 1px solid #f1f5f9; padding: 10px 16px; font-size: 13px; font-weight: 600; color: #64748b; display: flex; justify-content: space-between; align-items: center; }
-
-        /* Below Header Dedicated Back Navigation Bar */
-        .nav-back-strip {
-            background: #ffffff;
-            border-bottom: 1px solid #e2e8f0;
-            padding: 8px 16px;
-            display: none;
-            align-items: center;
-        }
-        .btn-below-header-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #fdf2f8;
-            border: 1.5px solid #f472b6;
-            color: #be185d;
-            font-size: 13px;
-            font-weight: 800;
-            padding: 6px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(236, 72, 153, 0.15);
-            transition: all 0.2s ease;
-        }
-        .btn-below-header-back:active {
-            transform: scale(0.96);
-            background: #fce7f3;
-        }
-        body.dark-theme .nav-back-strip {
-            background: #111827 !important;
-            border-bottom-color: #1f2937 !important;
-        }
-        body.dark-theme .btn-below-header-back {
-            background: #31133f !important;
-            color: #f472b6 !important;
-            border-color: #db2777 !important;
-        }
-
-        .user-greeting { padding: 16px 16px 8px 16px; font-size: 16px; color: #1e293b; font-weight: 700; }
-
-        .container { padding: 8px 16px 24px 16px; }
-        .view { display: none; }
-        .view.active { display: block; }
-
-        /* Colorful Gradient Cards */
-        .item-card {
-            background: linear-gradient(135deg, #ffffff, #fdf2f8);
-            border: 1.5px solid #f472b6;
-            padding: 14px 16px;
-            border-radius: 12px;
-            margin-bottom: 14px;
-            font-size: 15.5px;
-            font-weight: 700;
-            cursor: pointer;
-            color: #831843;
-            box-shadow: 0 4px 10px rgba(244, 114, 182, 0.15);
-            transition: all 0.2s ease;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            text-align: left;
-            gap: 12px;
-        }
-        .item-card:active { transform: scale(0.98); background: #fce7f3; }
-        .item-card:nth-child(2n) {
-            background: linear-gradient(135deg, #ffffff, #f5f3ff);
-            border-color: #a78bfa;
-            color: #4c1d95;
-            box-shadow: 0 4px 10px rgba(167, 139, 250, 0.15);
-        }
-        .item-card:nth-child(3n) {
-            background: linear-gradient(135deg, #ffffff, #eff6ff);
-            border-color: #60a5fa;
-            color: #1e3a8a;
-            box-shadow: 0 4px 10px rgba(96, 165, 250, 0.15);
-        }
-
-        .item-card-title {
-            flex: 1;
-            line-height: 1.4;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            word-break: break-word;
-        }
-
-        .item-card-action-btn {
-            background: linear-gradient(135deg, #ec4899, #8b5cf6);
-            color: #ffffff !important;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 12.5px;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3);
-            white-space: nowrap;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            pointer-events: none;
-        }
-        .badge-attempted { font-size: 10px; background: #16a34a; color: #fff; padding: 2px 6px; border-radius: 6px; font-weight: 700; white-space: nowrap; }
-
-        /* PDF Card Row Layout with Right Align View Button */
-        .pdf-item-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            text-align: left;
-            padding: 14px 16px;
-            gap: 12px;
-        }
-        .pdf-item-title {
-            font-size: 14.5px;
-            font-weight: 700;
-            flex: 1;
-            line-height: 1.4;
-        }
-        .btn-pdf-view {
-            background: linear-gradient(135deg, #ec4899, #8b5cf6);
-            color: #ffffff;
-            border: none;
-            padding: 7px 14px;
-            border-radius: 8px;
-            font-size: 12.5px;
-            font-weight: 800;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(236, 72, 153, 0.3);
-            white-space: nowrap;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .btn-pdf-view:active { transform: scale(0.96); }
-
-        /* Fullscreen PDF Reader */
-        #view-pdf-reader {
-            position: fixed; inset: 0; background: #ffffff; z-index: 2000; display: none; flex-direction: column;
-        }
-        .pdf-reader-topbar {
-            background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #fff; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-        }
-        .pdf-frame-wrapper {
-            flex: 1; width: 100%; height: 100%; position: relative; overflow: hidden; background: #f8fafc;
-        }
-        .pdf-iframe-box {
-            position: absolute; top: -56px; left: 0; width: 100%; height: calc(100% + 56px); border: none; background: #ffffff;
-        }
-
-        /* Test Header & Timer */
-        .test-status-bar { display: flex; justify-content: space-between; align-items: center; margin: 12px 0; font-size: 14px; }
-        .timer-badge { background: #fdf2f8; color: #db2777; font-weight: 800; padding: 6px 14px; border-radius: 20px; border: 1.5px solid #f472b6; }
-        .btn-submit-test { background: #dc2626; color: #ffffff; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 14px; box-shadow: 0 2px 6px rgba(220, 38, 38, 0.35); }
-        .btn-submit-test:active { background: #b91c1c; }
-
-        /* Question Box */
-        .question-box { background: #ffffff; padding: 18px; border-radius: 12px; border: 1px solid #e2e8f0; font-size: 16px; font-weight: 600; line-height: 1.5; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-
-        .option-item { background: #ffffff; border: 1.5px solid #e2e8f0; padding: 14px 16px; border-radius: 10px; margin-bottom: 10px; cursor: pointer; display: flex; align-items: center; font-size: 15px; }
-        .option-item.selected { border-color: #ec4899; background: #fdf2f8; font-weight: 700; color: #be185d; }
-        .opt-circle { width: 24px; height: 24px; border: 2px solid #94a3b8; border-radius: 50%; margin-right: 12px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; }
-        .option-item.selected .opt-circle { border-color: #ec4899; background: #ec4899; color: #fff; }
-
-        /* Action Buttons */
-        .nav-actions { display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 8px; margin-top: 16px; }
-        .action-btn { padding: 12px 6px; border: 1.5px solid #cbd5e1; background: #fff; font-weight: 700; border-radius: 8px; cursor: pointer; font-size: 14px; }
-        .action-btn.primary { background: linear-gradient(135deg, #ec4899, #8b5cf6); color: #fff; border: none; }
-
-        /* Palette */
-        .palette-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 12px; max-height: 180px; overflow-y: auto; padding: 4px; }
-        .palette-btn { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #cbd5e1; background: #fff; font-weight: bold; cursor: pointer; }
-        .palette-btn.answered { background: #22c55e; color: #fff; border-color: #22c55e; }
-        .palette-btn.current { border: 2px solid #ec4899; transform: scale(1.08); font-weight: 800; }
-
-        /* Modals */
-        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.7); justify-content: center; align-items: center; z-index: 9999; padding: 16px; }
-        .modal-box { background: #ffffff; padding: 24px 20px; border-radius: 16px; width: 100%; max-width: 320px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        .modal-box h3 { margin-bottom: 8px; font-size: 18px; color: #0f172a; }
-        .modal-box p { color: #64748b; font-size: 14px; margin-bottom: 20px; }
-        .modal-btns { display: flex; gap: 10px; flex-wrap: wrap; }
-        .modal-btns button { flex: 1; min-width: 80px; padding: 12px; border-radius: 8px; font-weight: 700; border: none; cursor: pointer; font-size: 14px; }
-
-        .modal-scrollable-box { max-height: 75vh; overflow-y: auto; text-align: left; max-width: 420px; }
-
-        /* In-App Force Update Modal Box */
-        #updateModal {
-            display: none; position: fixed; inset: 0; background: rgba(15, 23, 42, 0.88);
-            z-index: 999999; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;
-        }
-        .update-card-box {
-            background: #ffffff; padding: 26px 20px; border-radius: 20px; width: 100%;
-            max-width: 340px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.35); border: 2px solid #fbcfe8;
-        }
-        .update-progress-track {
-            width: 100%; background: #f1f5f9; height: 10px; border-radius: 6px; overflow: hidden; border: 1px solid #e2e8f0;
-        }
-        .update-progress-fill {
-            width: 0%; height: 100%; background: linear-gradient(135deg, #ec4899, #8b5cf6); transition: width 0.2s ease;
-        }
-
-        /* Result */
-        .score-summary { background: linear-gradient(135deg, #ffffff, #fdf2f8); border: 1.5px solid #f472b6; border-radius: 16px; padding: 20px; text-align: center; margin: 16px 0; }
-        .score-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 14px; }
-        .score-stat { background: #ffffff; padding: 12px 8px; border-radius: 10px; border: 1px solid #fbcfe8; }
-        .stat-val { font-size: 20px; font-weight: 800; }
-        .stat-lbl { font-size: 12px; color: #64748b; margin-top: 2px; }
-
-        .review-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
-        .badge { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 700; margin-bottom: 8px; }
-        .badge.correct { background: #dcfce7; color: #166534; }
-        .badge.wrong { background: #fee2e2; color: #991b1b; }
-        .badge.skipped { background: #f1f5f9; color: #475569; }
-        .explanation-box { background: #fdf2f8; border-left: 3px solid #ec4899; padding: 8px 10px; font-size: 13px; color: #831843; margin-top: 8px; border-radius: 0 4px 4px 0; }
-
-        .error-msg { color: #dc2626; font-size: 13px; font-weight: 600; margin-top: 8px; text-align: center; display: none; }
-
-        .history-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; margin-bottom: 10px; }
-        .history-card-header { display: flex; justify-content: space-between; font-weight: 700; color: #0f172a; margin-bottom: 4px; font-size: 14px; }
-
-        /* Toast notification for double back to exit */
-        #exit-toast {
-            visibility: hidden;
-            min-width: 240px;
-            background-color: rgba(15, 23, 42, 0.9);
-            color: #fff;
-            text-align: center;
-            border-radius: 25px;
-            padding: 12px 20px;
-            position: fixed;
-            z-index: 10001;
-            left: 50%;
-            bottom: 40px;
-            transform: translateX(-50%);
-            font-size: 14px;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-            opacity: 0;
-            transition: opacity 0.3s, visibility 0.3s;
-        }
-        #exit-toast.show {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        /* Result Graph & Filter Styling */
-        .chart-container-box {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 16px 0 10px 0;
-        }
-        .donut-chart-circle {
-            width: 140px;
-            height: 140px;
-            border-radius: 50%;
-            background: conic-gradient(#16a34a 0deg 180deg, #dc2626 180deg 270deg, #94a3b8 270deg 360deg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        .donut-chart-inner {
-            width: 95px;
-            height: 95px;
-            background: #ffffff;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .donut-percentage {
-            font-size: 20px;
-            font-weight: 900;
-            color: #831843;
-        }
-        .donut-subtext {
-            font-size: 10px;
-            color: #64748b;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-        .chart-legend {
-            display: flex;
-            gap: 12px;
-            margin-top: 12px;
-            font-size: 12px;
-            font-weight: 700;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .legend-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-        .result-filter-tabs {
-            display: flex;
-            gap: 8px;
-            margin: 14px 0 16px 0;
-        }
-        .filter-btn {
-            flex: 1;
-            padding: 10px 4px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 700;
-            border: 1.5px solid #cbd5e1;
-            background: #ffffff;
-            color: #475569;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .filter-btn.active-filter-all {
-            background: #0f172a;
-            color: #ffffff;
-            border-color: #0f172a;
-        }
-        .filter-btn.active-filter-right {
-            background: #16a34a;
-            color: #ffffff;
-            border-color: #16a34a;
-        }
-        .filter-btn.active-filter-wrong {
-            background: #dc2626;
-            color: #ffffff;
-            border-color: #dc2626;
-        }
-    </style>
+  <style>
+    body {
+      background-color: #000000;
+      color: #ffffff;
+    }
+    .blackboard-frame {
+      background-color: #000000;
+      border: 2px solid #262626;
+      box-shadow: 0 0 50px -10px rgba(0,0,0,0.9), inset 0 0 80px rgba(255,255,255,0.02);
+    }
+    .option-card {
+      background-color: #0d0d0d;
+      border: 1.5px solid #2d2d2d;
+      color: #ffffff;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .option-card:hover:not(:disabled) {
+      border-color: #fde047;
+      background-color: #171717;
+      transform: translateY(-2px);
+    }
+    .correct-highlight {
+      background-color: #15803d !important;
+      border-color: #4ade80 !important;
+      color: #ffffff !important;
+      animation: greenGlow 0.7s ease-in-out infinite alternate;
+    }
+    .wrong-highlight {
+      background-color: #991b1b !important;
+      border-color: #f87171 !important;
+      color: #ffffff !important;
+    }
+    #timerCircle {
+      transition: stroke-dashoffset 0.08s linear, stroke 0.3s ease;
+    }
+    .eq-bar {
+      width: 3px;
+      background-color: #fde047;
+      border-radius: 2px;
+      animation: eqAnimation 0.8s ease-in-out infinite alternate;
+    }
+    .eq-bar:nth-child(1) { height: 12px; animation-delay: 0.1s; }
+    .eq-bar:nth-child(2) { height: 18px; animation-delay: 0.3s; }
+    .eq-bar:nth-child(3) { height: 9px; animation-delay: 0.2s; }
+    .eq-bar:nth-child(4) { height: 15px; animation-delay: 0.4s; }
+    @keyframes eqAnimation {
+      0% { height: 3px; }
+      100% { height: 18px; }
+    }
+  </style>
 </head>
-<body>
+<body class="bg-black text-white min-h-screen flex flex-col font-hindi selection:bg-yellow-400 selection:text-black">
 
-<!-- Toast Notification -->
-<div id="exit-toast">Press back again to exit</div>
-
-<!-- 0. Animated Splash Screen -->
-<div id="splash-screen">
-    <div class="splash-logo-container">
-        <img src="logo.png" alt="SGS" class="splash-logo-img" onerror="if(this.src.indexOf('file:///android_asset/')===-1){this.src='file:///android_asset/logo.png';}else{this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='block';}" />
-        <span class="splash-logo-fallback" style="display:none;">SGS</span>
-    </div>
-    <h2 style="font-size: 20px; font-weight: 800; letter-spacing: 0.5px; text-align: center;">SGS MOCK TEST</h2>
-    <p id="splash-status-text" style="font-size: 13px; opacity: 0.9; margin-top: 6px;">All Exams Preparation...</p>
-</div>
-
-<!-- ================= FULLSCREEN PDF READER VIEW ================= -->
-<div id="view-pdf-reader">
-    <div class="pdf-reader-topbar">
-        <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:22px; cursor:pointer;" onclick="closePdfReader()">←</span>
-            <span id="pdf-reader-title" style="font-size:15px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:250px;">Document PDF</span>
+  <header class="border-b border-neutral-800 bg-black/95 sticky top-0 z-50 px-3 sm:px-6 py-2.5 shadow-xl">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      
+      <!-- Left: Logo & Portal Title -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-yellow-400 text-black flex items-center justify-center font-black text-xl shadow-lg shadow-yellow-500/20">
+          🎓
         </div>
-        <span style="font-size:12px; opacity:0.85;">Document View</span>
-    </div>
-    <div class="pdf-frame-wrapper">
-        <iframe id="pdf-viewer-iframe" class="pdf-iframe-box" src="" allow="autoplay"></iframe>
-    </div>
-</div>
-
-<!-- ================= NAVIGATION DRAWER ================= -->
-<div id="drawer-overlay" class="drawer-overlay" onclick="closeDrawer()"></div>
-<div id="drawer-sidebar" class="drawer-sidebar">
-    <div class="drawer-header">
-        <div class="drawer-logo-box">
-            <img src="logo.png" alt="SGS" class="drawer-logo-img" onerror="if(this.src.indexOf('file:///android_asset/')===-1){this.src='file:///android_asset/logo.png';}else{this.style.display='none';}" />
-            <div>
-                <h3>SGS Mock Test</h3>
-                <p>All Exams Free Preparation</p>
-            </div>
-        </div>
-    </div>
-    <div class="drawer-content">
-        <!-- HOME Button in Drawer -->
-        <div class="drawer-item" onclick="handleHomeClick()">
-            <span>🏠</span> HOME
-        </div>
-        <div class="drawer-item" onclick="openTrackMyTestModal()">
-            <span>📊</span> Track My Tests
-        </div>
-        <a class="drawer-item" href="https://www.termsfeed.com/live/50b7338c-6eba-408f-bd5a-21bb644f9e56" target="_blank" onclick="closeDrawer()">
-            <span>🛡️</span> Privacy Policy ↗
-        </a>
-        <a class="drawer-item" href="https://www.termsfeed.com/live/af841b41-788e-480a-90ad-1838eea308cd" target="_blank" onclick="closeDrawer()">
-            <span>📜</span> Terms & Conditions ↗
-        </a>
-        <a class="drawer-item" href="https://www.termsfeed.com/live/d15e3366-cb7a-4b6f-9726-5b1603e62231" target="_blank" onclick="closeDrawer()">
-            <span>⚠️</span> Disclaimer ↗
-        </a>
-        <div class="drawer-item" onclick="shareApp()">
-            <span>📲</span> Share App
-        </div>
-    </div>
-</div>
-
-<!-- ================= POLICY CONSENT VIEW ================= -->
-<div id="view-policy-consent" class="view auth-view">
-    <div class="auth-card">
-        <h2 class="auth-title">Welcome to SGS Test 🎯</h2>
-        <p class="auth-sub">Kripya aage badhne se pehle hamari sabhi policies, terms aur disclaimer ko dhyan se padhein aur accept karein.</p>
-
-        <div class="policy-btn-group">
-            <a href="https://www.termsfeed.com/live/50b7338c-6eba-408f-bd5a-21bb644f9e56" target="_blank" class="policy-link-btn">
-                <span>🛡️ Read Privacy Policy</span>
-                <span>↗</span>
-            </a>
-            <a href="https://www.termsfeed.com/live/af841b41-788e-480a-90ad-1838eea308cd" target="_blank" class="policy-link-btn">
-                <span>📜 Read Terms & Conditions</span>
-                <span>↗</span>
-            </a>
-            <a href="https://www.termsfeed.com/live/d15e3366-cb7a-4b6f-9726-5b1603e62231" target="_blank" class="policy-link-btn">
-                <span>⚠️ Read Disclaimer</span>
-                <span>↗</span>
-            </a>
-        </div>
-
-        <div class="auth-checkbox-container">
-            <input type="checkbox" id="policy-agree-check" />
-            <label for="policy-agree-check">I have read and agree to the <b>Privacy Policy</b>, <b>Terms & Conditions</b>, and <b>Disclaimer</b>.</label>
-        </div>
-
-        <div id="policy-error" class="error-msg"></div>
-
-        <button type="button" class="btn-gradient" onclick="acceptPoliciesAndEnter()">
-            <span>I Agree & Continue 🚀</span>
-        </button>
-    </div>
-</div>
-
-<!-- ================= APP MAIN SCREENS ================= -->
-<div id="main-app-wrapper" style="display: none;">
-    <!-- Top Bar -->
-    <div class="top-bar">
-        <div class="top-bar-left">
-            <button class="menu-btn" onclick="openDrawer()">☰</button>
-            <img src="logo.png" alt="SGS" class="top-logo-img" onerror="if(this.src.indexOf('file:///android_asset/')===-1){this.src='file:///android_asset/logo.png';}else{this.style.display='none';}" />
-            <span class="title">SGS MOCK TEST</span>
-        </div>
-        <div style="cursor: pointer; font-size: 18px;" onclick="shareApp()">📲</div>
-    </div>
-    <div class="sub-bar">
-        <span>Free Mock Test: All Exams Preparation</span>
-        <span style="font-size:12px; font-weight:700; color:#ec4899;">FREE ACCESS</span>
-    </div>
-
-    <!-- Below Header Back Navigation Bar -->
-    <div id="below-header-nav-bar" class="nav-back-strip">
-        <button type="button" class="btn-below-header-back" onclick="handleAppBack()">
-            <span>←</span>
-            <span>Back</span>
-        </button>
-    </div>
-
-    <!-- 1. Categories View -->
-    <div id="view-categories" class="view active">
-        <div class="user-greeting">✨ Choose Subject:</div>
-        <div class="container" id="category-container"></div>
-    </div>
-
-    <!-- 2. Topics View (Topics/Chapters Screen: jaise Sindhu Ghati Sabhyata) -->
-    <div id="view-topics" class="view">
-        <div class="user-greeting" id="topic-header-title"></div>
-        <div class="container" id="topic-container"></div>
-    </div>
-
-    <!-- 3. Chapters/Tests View (Test 1, Test 2, Test 3) -->
-    <div id="view-chapters" class="view">
-        <div class="user-greeting" id="chapter-header-title"></div>
-        <div class="container" id="chapter-container"></div>
-    </div>
-
-    <!-- 4. Test Running View -->
-    <div id="view-test" class="view">
-        <div class="container">
-            <div class="test-status-bar">
-                <span id="q-indicator" style="font-weight: 700;">Question 1/10</span>
-                <div id="timer-display" class="timer-badge">00:00</div>
-                <button type="button" class="btn-submit-test" onclick="openSubmitModal()">Submit</button>
-            </div>
-
-            <div class="question-box" id="current-question-text"></div>
-            <div id="current-options-box"></div>
-
-            <div class="nav-actions">
-                <button type="button" class="action-btn" onclick="goToPrev()">Previous</button>
-                <button type="button" class="action-btn" onclick="goToNext()">Next</button>
-                <button type="button" class="action-btn primary" onclick="saveAndNext()">Save & Next</button>
-            </div>
-
-            <div style="margin-top: 20px; background: #fff; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0;">
-                <div style="font-size: 13px; font-weight: bold; color: #475569; margin-bottom: 6px;">Questions Status:</div>
-                <div class="palette-grid" id="palette-container"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 5. Result View -->
-    <div id="view-result" class="view">
-        <div class="container">
-            <div class="score-summary">
-                <h2 style="font-size: 22px; color: #831843;">Test Result</h2>
-
-                <!-- Performance Graph / Pie Chart -->
-                <div class="chart-container-box">
-                    <div class="donut-chart-circle" id="result-donut-chart">
-                        <div class="donut-chart-inner">
-                            <span class="donut-percentage" id="donut-accuracy-text">0%</span>
-                            <span class="donut-subtext">Accuracy</span>
-                        </div>
-                    </div>
-                    <div class="chart-legend">
-                        <div class="legend-item"><span class="legend-dot" style="background:#16a34a;"></span> Right</div>
-                        <div class="legend-item"><span class="legend-dot" style="background:#dc2626;"></span> Wrong</div>
-                        <div class="legend-item"><span class="legend-dot" style="background:#94a3b8;"></span> Skipped</div>
-                    </div>
-                </div>
-
-                <div class="score-grid">
-                    <div class="score-stat">
-                        <div class="stat-val" id="stat-score" style="color:#db2777;">0</div>
-                        <div class="stat-lbl">Score</div>
-                    </div>
-                    <div class="score-stat">
-                        <div class="stat-val" id="stat-correct" style="color:#16a34a;">0</div>
-                        <div class="stat-lbl">Correct</div>
-                    </div>
-                    <div class="score-stat">
-                        <div class="stat-val" id="stat-wrong" style="color:#dc2626;">0</div>
-                        <div class="stat-lbl">Wrong</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right / Wrong Filter Buttons -->
-            <div class="result-filter-tabs">
-                <button type="button" class="filter-btn active-filter-all" id="btn-filter-all" onclick="filterReviewQuestions('all')">📋 All</button>
-                <button type="button" class="filter-btn" id="btn-filter-right" onclick="filterReviewQuestions('correct')">✅ Right</button>
-                <button type="button" class="filter-btn" id="btn-filter-wrong" onclick="filterReviewQuestions('wrong')">❌ Wrong</button>
-            </div>
-
-            <h3 style="margin-bottom: 12px; font-size: 16px; font-weight: 700;">Answers Review:</h3>
-            <div id="result-review-container"></div>
-            <button type="button" class="item-card" style="background: linear-gradient(135deg, #ec4899, #8b5cf6); color:#fff; border:none; margin-top:16px; width: 100%; font-size: 16px; justify-content: center;" onclick="navigateToCategories()">Back to Home</button>
-        </div>
-    </div>
-</div>
-
-<!-- ================= ALL POPUP MODALS ================= -->
-
-<!-- Exit Test Confirmation Modal -->
-<div id="modal-exit-test" class="modal-overlay">
-    <div class="modal-box">
-        <h3>Exit Test?</h3>
-        <p>Are you sure you want to exit this test?</p>
-        <div class="modal-btns">
-            <button type="button" style="background:#f1f5f9; color:#475569;" onclick="closeExitTestModal()">No</button>
-            <button type="button" style="background: #dc2626; color:#fff;" onclick="confirmExitTestAndGoHome()">Yes</button>
-        </div>
-    </div>
-</div>
-
-<!-- In-App Force Update Modal -->
-<div id="updateModal">
-    <div class="update-card-box">
-        <div style="font-size: 40px; margin-bottom: 10px;">🚀</div>
-        <h3 style="font-size: 20px; font-weight: 800; color: #831843; margin-bottom: 8px;">Update Available!</h3>
-        <p id="updateMessageText" style="color: #64748b; font-size: 13.5px; line-height: 1.5; margin-bottom: 20px;">Naya update aa gaya hai. Kripya app use karne ke liye update karein.</p>
-
-        <!-- Progress Bar (1% to 100%) -->
-        <div id="progressArea" style="display: none; margin-bottom: 18px;">
-            <div class="update-progress-track">
-                <div id="updateProgressBar" class="update-progress-fill"></div>
-            </div>
-            <div id="updateProgressText" style="font-size: 13px; font-weight: 800; color: #be185d; margin-top: 10px;">Downloading: 0%</div>
-        </div>
-
-        <button type="button" id="updateBtn" class="btn-gradient" style="margin-top: 0;" onclick="startUpdateDownload()">
-            <span>Update Now 📲</span>
-        </button>
-    </div>
-</div>
-
-<!-- Start Test Modal -->
-<div id="modal-start" class="modal-overlay">
-    <div class="modal-box">
-        <h3 id="modal-start-title">Start Test</h3>
-        <p id="modal-start-desc">Total Questions: 0 | Time: 0 mins</p>
-        <div class="modal-btns">
-            <button type="button" style="background:#f1f5f9; color:#475569;" onclick="closeStartModal()">Cancel</button>
-            <button type="button" style="background: linear-gradient(135deg, #ec4899, #8b5cf6); color:#fff;" onclick="launchTestSession()">Start Now</button>
-        </div>
-    </div>
-</div>
-
-<!-- Re-attempt or View Result Modal -->
-<div id="modal-reattempt" class="modal-overlay">
-    <div class="modal-box">
-        <h3 id="reattempt-chapter-title">Test Attempted</h3>
-        <p id="reattempt-info-desc">Aap yeh test pehle de chuke hain. Aap kya karna chahte hain?</p>
-        <div class="modal-btns" style="flex-direction: column;">
-            <button type="button" style="background: linear-gradient(135deg, #ec4899, #8b5cf6); color:#fff; width:100%;" onclick="launchTestSessionFromReattempt()">🔄 Re-attempt Test</button>
-            <button type="button" style="background: #2563eb; color:#fff; width:100%;" onclick="viewSavedTestResult()">👁️ View Result</button>
-            <button type="button" style="background: #f1f5f9; color:#475569; width:100%;" onclick="closeReattemptModal()">Back</button>
-        </div>
-    </div>
-</div>
-
-<!-- Submit Confirmation Modal -->
-<div id="modal-submit" class="modal-overlay">
-    <div class="modal-box">
-        <h3>Submit Your Test?</h3>
-        <p>Kya aap test submit karke result dekhna chahte hain?</p>
-        <div class="modal-btns">
-            <button type="button" style="background:#f1f5f9; color:#475569;" onclick="closeSubmitModal()">Cancel</button>
-            <button type="button" style="background: #dc2626; color:#fff;" onclick="executeSubmit()">Submit</button>
-        </div>
-    </div>
-</div>
-
-<!-- Track My Test Modal -->
-<div id="modal-track" class="modal-overlay">
-    <div class="modal-box modal-scrollable-box">
-        <h3>📊 Track My Tests</h3>
-        <p style="margin-bottom:12px;">Aapke dwara दिए गए सभी tests की summary:</p>
-        <div id="track-tests-container"></div>
-        <div style="margin-top: 16px; text-align: center;">
-            <button type="button" class="item-card" style="margin:0; padding:10px; width:100%; background:#0f172a; color:#fff; justify-content: center;" onclick="closeTrackModal()">Close</button>
-        </div>
-    </div>
-</div>
-
-<!-- Subject Posts Scripts (Linked) -->
-<script src="posts.js"></script>
-<script src="computer_posts.js"></script>
-<script src="gk_posts.js"></script>
-<script src="gs_posts.js"></script>
-<script src="pdf_posts.js"></script>
-
-<script>
-    // 0. Auto-Merge all subject post arrays (Full 3-level support: Subject -> Topic -> Tests with Deduping)
-    var quizData = [];
-
-    function mergeQuizData() {
-        quizData = [];
-        try {
-            function processRawData(dataArr) {
-                if (!dataArr || !Array.isArray(dataArr)) return;
-
-                dataArr.forEach(function(item) {
-                    if (!item || !item.category) return;
-
-                    var topicsList = [];
-
-                    // Format A: Agar 3-level topics -> tests format hai
-                    if (item.topics && Array.isArray(item.topics)) {
-                        item.topics.forEach(function(tp) {
-                            var testsList = [];
-                            if (tp.tests && Array.isArray(tp.tests)) {
-                                tp.tests.forEach(function(tst) {
-                                    testsList.push({
-                                        chapterName: tst.testName || "Test",
-                                        timeInMinutes: tst.timeInMinutes || 15,
-                                        questions: tst.questions || [],
-                                        isPdf: tst.isPdf || false,
-                                        pdfUrl: tst.pdfUrl || ""
-                                    });
-                                });
-                            }
-                            topicsList.push({
-                                topicName: tp.topicName || "Topic",
-                                chapters: testsList
-                            });
-                        });
-                    }
-                    // Format B: Agar purana direct chapters format hai
-                    else if (item.chapters && Array.isArray(item.chapters)) {
-                        topicsList.push({
-                            topicName: item.category,
-                            chapters: item.chapters
-                        });
-                    }
-
-                    var existing = quizData.find(function(c) { return c.category === item.category; });
-                    if (existing) {
-                        topicsList.forEach(function(newTop) {
-                            var alreadyTopic = existing.topics.find(function(t) { return t.topicName === newTop.topicName; });
-                            if (alreadyTopic) {
-                                alreadyTopic.chapters = newTop.chapters;
-                            } else {
-                                existing.topics.push(newTop);
-                            }
-                        });
-                    } else {
-                        quizData.push({
-                            category: item.category,
-                            topics: topicsList
-                        });
-                    }
-                });
-            }
-
-            if (typeof hindiQuizData !== 'undefined') {
-                processRawData(hindiQuizData);
-            } else if (typeof postsQuizData !== 'undefined') {
-                processRawData(postsQuizData);
-            } else if (typeof window.quizData !== 'undefined' && Array.isArray(window.quizData) && window.quizData.length > 0) {
-                processRawData(window.quizData);
-            }
-
-            if (typeof computerQuizData !== 'undefined') processRawData(computerQuizData);
-            if (typeof gkQuizData !== 'undefined') {
-                processRawData(gkQuizData);
-            } else if (typeof gkPosts !== 'undefined') {
-                processRawData(gkPosts);
-            }
-
-            if (typeof gsQuizData !== 'undefined') {
-                processRawData(gsQuizData);
-            } else if (typeof gsPosts !== 'undefined') {
-                processRawData(gsPosts);
-            }
-
-            if (typeof pdfQuizData !== 'undefined') {
-                processRawData(pdfQuizData);
-            }
-        } catch (e) {
-            console.error("Quiz merge error: ", e);
-        }
-    }
-
-    // Local Storage based User History
-    let userTestHistory = {};
-
-    function loadLocalTestHistory() {
-        try {
-            const saved = localStorage.getItem('sgs_user_test_history');
-            userTestHistory = saved ? JSON.parse(saved) : {};
-        } catch (e) {
-            userTestHistory = {};
-        }
-    }
-
-    function saveLocalTestHistory() {
-        try {
-            localStorage.setItem('sgs_user_test_history', JSON.stringify(userTestHistory));
-        } catch (e) {}
-    }
-
-    function dismissSplashScreen() {
-        const splash = document.getElementById('splash-screen');
-        if (splash) {
-            splash.style.opacity = '0';
-            setTimeout(() => {
-                splash.style.display = 'none';
-            }, 500);
-        }
-    }
-
-    let isAppInitialized = false;
-    var currentActiveView = 'categories';
-    var lastBackPressTime = 0;
-    var lastTestBackPressTime = 0;
-
-    function showExitToast(msg) {
-        var toast = document.getElementById('exit-toast');
-        if (!toast) return;
-        if (msg) toast.innerText = msg;
-        toast.className = 'show';
-        setTimeout(function() {
-            toast.className = toast.className.replace('show', '');
-        }, 2000);
-    }
-
-    function handleAppBack() {
-        window.history.back();
-    }
-
-    // HOME Button Navigation Handler
-    function handleHomeClick() {
-        closeDrawer();
-        if (currentActiveView === 'test') {
-            document.getElementById('modal-exit-test').style.display = 'flex';
-        } else {
-            navigateToCategories();
-        }
-    }
-
-    function closeExitTestModal() {
-        document.getElementById('modal-exit-test').style.display = 'none';
-    }
-
-    function confirmExitTestAndGoHome() {
-        closeExitTestModal();
-        clearInterval(timerInterval);
-        navigateToCategories();
-    }
-
-    // ================= IN-APP FORCE UPDATE JS LOGIC =================
-    var currentDownloadApkUrl = "";
-
-    function showUpdatePopup(apkUrl, message) {
-        currentDownloadApkUrl = apkUrl;
-        var modal = document.getElementById('updateModal');
-        var msgElem = document.getElementById('updateMessageText');
-        if (msgElem && message) {
-            msgElem.innerText = message;
-        }
-        if (modal) {
-            modal.style.display = 'flex';
-        }
-    }
-
-    function startUpdateDownload() {
-        var btn = document.getElementById('updateBtn');
-        var progressArea = document.getElementById('progressArea');
-        if (btn) btn.style.display = 'none';
-        if (progressArea) progressArea.style.display = 'block';
-
-        if (window.AndroidApp && typeof window.AndroidApp.downloadAndInstallUpdate === 'function') {
-            window.AndroidApp.downloadAndInstallUpdate(currentDownloadApkUrl);
-        }
-    }
-
-    function updateDownloadProgress(progress) {
-        var bar = document.getElementById('updateProgressBar');
-        var txt = document.getElementById('updateProgressText');
-        if (bar) bar.style.width = progress + '%';
-        if (txt) txt.innerText = 'Downloading: ' + progress + '%';
-    }
-
-    function onDownloadFinished() {
-        var txt = document.getElementById('updateProgressText');
-        if (txt) txt.innerText = 'Installing update...';
-    }
-
-    function onDownloadError(errorMsg) {
-        var txt = document.getElementById('updateProgressText');
-        var btn = document.getElementById('updateBtn');
-        if (txt) txt.innerText = 'Download failed. Please try again.';
-        if (btn) {
-            btn.style.display = 'flex';
-            btn.innerHTML = '<span>Retry Download 🔄</span>';
-        }
-    }
-
-    function handleAppBackButton() {
-        var updateModal = document.getElementById('updateModal');
-        if (updateModal && updateModal.style.display === 'flex') {
-            return 'HANDLED';
-        }
-        return 'UNHANDLED';
-    }
-
-    function initApp() {
-        if (isAppInitialized) return;
-        isAppInitialized = true;
-
-        mergeQuizData();
-        loadLocalTestHistory();
-
-        const isPolicyAccepted = localStorage.getItem('sgs_policy_agreed') === 'true';
-
-        setTimeout(() => {
-            if (window.AndroidApp && typeof window.AndroidApp.hideNativeSplash === 'function') {
-                window.AndroidApp.hideNativeSplash();
-            }
-
-            dismissSplashScreen();
-
-            if (isPolicyAccepted) {
-                const consentView = document.getElementById('view-policy-consent');
-                if (consentView) consentView.style.display = 'none';
-                document.getElementById('main-app-wrapper').style.display = 'block';
-                navigateToCategories(false);
-            } else {
-                document.getElementById('main-app-wrapper').style.display = 'none';
-                const consentView = document.getElementById('view-policy-consent');
-                if (consentView) {
-                    consentView.classList.add('active');
-                    consentView.style.display = 'flex';
-                }
-            }
-            setupBrowserNavigation();
-        }, 2200);
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initApp);
-    } else {
-        initApp();
-    }
-    window.addEventListener('load', initApp);
-
-    function acceptPoliciesAndEnter() {
-        const agreed = document.getElementById('policy-agree-check').checked;
-        const errorEl = document.getElementById('policy-error');
-
-        if (!agreed) {
-            errorEl.innerText = "Please accept the policies to continue.";
-            errorEl.style.display = "block";
-            return;
-        }
-
-        errorEl.style.display = "none";
-        localStorage.setItem('sgs_policy_agreed', 'true');
-
-        document.getElementById('view-policy-consent').classList.remove('active');
-        document.getElementById('view-policy-consent').style.display = 'none';
-        document.getElementById('main-app-wrapper').style.display = 'block';
-        navigateToCategories(false);
-    }
-
-    // ================= DRAWER & UTILS =================
-    function openDrawer() {
-        document.getElementById('drawer-overlay').style.display = 'block';
-        document.getElementById('drawer-sidebar').style.left = '0px';
-    }
-
-    function closeDrawer() {
-        document.getElementById('drawer-overlay').style.display = 'none';
-        document.getElementById('drawer-sidebar').style.left = '-290px';
-    }
-
-    function shareApp() {
-        closeDrawer();
-        const shareTitle = 'SGS Mock Test: All Exams Preparation';
-        const shareText = 'Download SGS Mock Test App for free mock tests in GK, GS, Hindi & Computer exams preparation!\n\nGet it here: ';
-        const shareUrl = 'https://play.google.com/store/apps/details?id=com.sgs.sgsfreemocktest';
-
-        if (window.AndroidApp && window.AndroidApp.shareApp) {
-            window.AndroidApp.shareApp(shareTitle, shareText + shareUrl);
-            return;
-        }
-
-        if (navigator.share) {
-            navigator.share({
-                title: shareTitle,
-                text: shareText + shareUrl,
-                url: shareUrl
-            }).catch(function(e) {});
-        } else {
-            if (navigator.clipboard) {
-                navigator.clipboard.writeText(shareText + shareUrl);
-                alert('App share link copied to clipboard!');
-            } else {
-                prompt('Copy share link:', shareText + shareUrl);
-            }
-        }
-    }
-
-    function openTrackMyTestModal() {
-        closeDrawer();
-        const container = document.getElementById('track-tests-container');
-        const keys = Object.keys(userTestHistory || {});
-
-        if (keys.length === 0) {
-            container.innerHTML = '<p style="color:#64748b; font-size:13px; text-align:center; padding:20px 0;">Abhi tak koi test submit nahi kiya hai.</p>';
-        } else {
-            container.innerHTML = keys.reverse().map(k => {
-                const item = userTestHistory[k];
-                if (!item) return '';
-                const date = item.timestamp ? new Date(item.timestamp).toLocaleDateString() : 'Recent';
-                return `
-                    <div class="history-card">
-                        <div class="history-card-header">
-                            <span>${item.chapter || 'Test'}</span>
-                            <span style="color:#16a34a;">${item.score || 0}/${item.total || 0}</span>
-                        </div>
-                        <div style="font-size:12px; color:#64748b;">Subject: ${item.category || ''} | Date: ${date}</div>
-                    </div>
-                `;
-            }).join('');
-        }
-        document.getElementById('modal-track').style.display = 'flex';
-    }
-
-    function closeTrackModal() {
-        document.getElementById('modal-track').style.display = 'none';
-    }
-
-    // ================= PDF VIEWER FUNCTIONS =================
-    function openPdfReader(title, pdfUrl) {
-        document.getElementById('pdf-reader-title').innerText = title || 'Document';
-        var finalPdfUrl = pdfUrl;
-
-        // Extract Google Drive ID & convert to clean preview
-        if (pdfUrl.indexOf('drive.google.com') !== -1) {
-            var fileId = "";
-            var idMatch = pdfUrl.match(/id=([a-zA-Z0-9_-]+)/);
-            if (idMatch && idMatch[1]) {
-                fileId = idMatch[1];
-            } else {
-                var pathMatch = pdfUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-                if (pathMatch && pathMatch[1]) fileId = pathMatch[1];
-            }
-            if (fileId) {
-                finalPdfUrl = "https://drive.google.com/file/d/" + fileId + "/preview";
-            }
-        }
-
-        document.getElementById('pdf-viewer-iframe').src = finalPdfUrl;
-        document.getElementById('view-pdf-reader').style.display = 'flex';
-        history.pushState({ view: 'pdfreader' }, '');
-    }
-
-    function closePdfReader() {
-        document.getElementById('view-pdf-reader').style.display = 'none';
-        document.getElementById('pdf-viewer-iframe').src = "";
-        window.history.back();
-    }
-
-    // ================= QUIZ ENGINE =================
-    var activeCatIdx = null;
-    var activeTopIdx = null;
-    var activeChapIdx = null;
-    var activeQuestions = [];
-    var currentQIdx = 0;
-    var userSelections = {};
-    var timerInterval = null;
-    var timeLeft = 0;
-
-    function showView(viewId) {
-      currentActiveView = viewId.replace('view-', '');
-      var views = document.querySelectorAll('#main-app-wrapper .view');
-      for (var i = 0; i < views.length; i++) {
-        views[i].classList.remove('active');
-      }
-      document.getElementById(viewId).classList.add('active');
-
-      // Control dedicated below-header Back Strip visibility
-      var backStrip = document.getElementById('below-header-nav-bar');
-      if (backStrip) {
-          backStrip.style.display = (viewId === 'view-categories') ? 'none' : 'flex';
-      }
-      window.scrollTo(0,0);
-    }
-
-    // 1. Subject Screen
-    function navigateToCategories(pushHistory) {
-      if (pushHistory === undefined) pushHistory = true;
-      clearInterval(timerInterval);
-      mergeQuizData();
-      var container = document.getElementById('category-container');
-      container.innerHTML = (quizData || []).map(function(cat, idx) {
-        return `
-          <div class="item-card" onclick="navigateToTopics(${idx})">
-            <span class="item-card-title">${cat.category || 'Subject'}</span>
-            <button type="button" class="item-card-action-btn">View Topic ➔</button>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-black text-lg sm:text-2xl tracking-wider text-yellow-400 uppercase font-sans">
+              SGS ONLINE PORTAL
+            </h1>
+            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-red-600 text-white text-[11px] font-black tracking-widest uppercase">
+              <span class="w-1.5 h-1.5 rounded-full bg-white animate-live-blink"></span> LIVE
+            </span>
           </div>
-        `;
-      }).join('');
-      if (pushHistory) {
-        history.pushState({ view: 'categories' }, '');
-      } else {
-        history.replaceState({ view: 'categories' }, '');
-      }
-      showView('view-categories');
-    }
+          <p class="text-[11px] sm:text-xs text-neutral-400 font-medium">
+            🔴 Live Mock Test: GK • GS • हिन्दी व्याकरण • करेंट अफेयर्स (SSC/Railway/Police)
+          </p>
+        </div>
+      </div>
 
-    // 2. Topics Screen (jaise: सिंधु घाटी सभ्यता)
-    function navigateToTopics(catIdx, pushHistory) {
-      if (pushHistory === undefined) pushHistory = true;
-      activeCatIdx = catIdx;
-      var data = quizData[activeCatIdx];
-      if (!data) return;
+      <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
+        
+        <!-- By Sachin Sir Badge -->
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-neutral-900 border border-neutral-700 shadow">
+          <div class="w-7 h-7 rounded-full bg-yellow-400 text-black flex items-center justify-center font-black text-xs">
+            👨‍🏫
+          </div>
+          <div class="text-left leading-tight">
+            <div class="text-[9px] uppercase font-bold text-yellow-400 tracking-wider font-sans">Instructor</div>
+            <div class="text-xs sm:text-sm font-black text-white tracking-tight font-sans">By Sachin Sir</div>
+          </div>
+        </div>
 
-      document.getElementById('topic-header-title').innerText = 'Subject: ' + (data.category || '');
-      var container = document.getElementById('topic-container');
+        <!-- AI Voice Speech Toggle Button -->
+        <button id="voiceToggleBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-xs font-bold text-yellow-300 border border-neutral-700 transition" title="AI वॉइस बोलकर सुनाए">
+          <span id="voiceIcon">🎙️</span>
+          <span id="voiceStatusLabel">AI Voice: ON</span>
+        </button>
 
-      if (!data.topics || !Array.isArray(data.topics) || data.topics.length === 0) {
-        container.innerHTML = '<p style="text-align:center; color:#64748b; font-size:14px; padding:20px;">Is subject me abhi koi topics uplabdh nahi hain.</p>';
-      } else {
-        container.innerHTML = data.topics.map(function(tp, idx) {
-          return `
-            <div class="item-card" onclick="navigateToChapters(${idx})">
-              <span class="item-card-title">${tp.topicName || 'Topic'}</span>
-              <button type="button" class="item-card-action-btn">Open Test ➔</button>
+        <!-- Copyright Free BGM Toggle -->
+        <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-neutral-900 border border-neutral-700">
+          <button id="bgmToggleBtn" class="flex items-center gap-1.5 text-xs font-bold text-yellow-400 hover:text-yellow-300 transition" title="म्यूजिक चालू/बंद">
+            <div id="bgmVisualizer" class="flex items-end gap-0.5 h-4">
+              <div class="eq-bar"></div>
+              <div class="eq-bar"></div>
+              <div class="eq-bar"></div>
+              <div class="eq-bar"></div>
             </div>
-          `;
-        }).join('');
-      }
+            <span class="hidden md:inline">BGM</span>
+          </button>
+          <input id="bgmVolumeSlider" type="range" min="0" max="1" step="0.05" value="0.3" class="w-12 sm:w-16 h-1.5 bg-neutral-700 rounded appearance-none cursor-pointer accent-yellow-400" title="वॉल्यूम">
+        </div>
 
-      if (pushHistory) {
-        history.pushState({ view: 'topics', catIdx: catIdx }, '');
+        <!-- Always-On Screen Lock Status -->
+        <div id="wakeLockBadge" title="स्क्रीन बंद नहीं होगी" class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-neutral-900 border border-neutral-700 text-xs font-semibold text-emerald-400">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span class="hidden sm:inline">Screen ON</span>
+        </div>
+
+        <!-- Fullscreen Button -->
+        <button id="fullscreenBtn" class="p-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-neutral-300 border border-neutral-700 transition" title="फुल स्क्रीन">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-5 flex flex-col justify-center items-center">
+
+    <!-- Category Filter & Score Stats -->
+    <div class="w-full mb-3 flex flex-wrap items-center justify-between gap-3 bg-neutral-950 border border-neutral-800 p-3 rounded-2xl">
+      <div class="flex items-center gap-2 flex-wrap">
+        <span class="text-xs font-bold text-yellow-400">📚 विषय:</span>
+        <select id="subjectSelect" class="bg-neutral-900 text-yellow-300 font-bold text-xs sm:text-sm rounded-xl px-3 py-1.5 border border-neutral-700 focus:outline-none focus:border-yellow-400 cursor-pointer">
+          <option value="mixed">🔥 मिक्स लाइव टेस्ट (GK + GS + हिन्दी + करेंट अफेयर्स)</option>
+          <option value="gk">🏛️ सामान्य ज्ञान (GK - इतिहास, भूगोल, संविधान)</option>
+          <option value="science">🔬 सामान्य विज्ञान (GS - Physics, Chemistry, Biology)</option>
+          <option value="hindi">📖 हिन्दी व्याकरण (संधि, समास, वर्तनी, मुहावरे)</option>
+          <option value="ca">📰 करेंट अफेयर्स (Current Affairs)</option>
+          <option value="ssc_railway">🚆 SSC GD / Railway / Police Special</option>
+        </select>
+      </div>
+
+      <div class="flex items-center gap-3 sm:gap-5 text-xs sm:text-sm font-bold">
+        <div class="flex items-center gap-1.5 text-neutral-300">
+          <span class="text-neutral-500">अंक (Score):</span>
+          <span id="scoreDisplay" class="text-emerald-400 font-black text-base">0</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-yellow-400">
+          <span>🔥 स्ट्रीक:</span>
+          <span id="streakDisplay" class="font-black text-base">0</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-neutral-400">
+          <span>प्रश्न:</span>
+          <span id="totalQuestionsCount" class="text-white font-black text-base">#1</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-full blackboard-frame rounded-3xl p-5 sm:p-8 shadow-2xl relative overflow-hidden flex flex-col min-h-[470px] justify-between">
+      
+      <!-- Top Card Bar: Subject Badges & 10s Timer -->
+      <div class="flex items-center justify-between border-b border-neutral-800 pb-3 mb-2">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span id="badgeSubject" class="px-3 py-1 bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 text-xs sm:text-sm font-bold rounded-xl">
+            सामान्य ज्ञान (GK)
+          </span>
+          <span id="badgeExam" class="px-3 py-1 bg-neutral-900 border border-neutral-700 text-neutral-300 text-xs font-semibold rounded-xl">
+            SSC / Railway / All Exams
+          </span>
+          <span id="speakingIndicator" class="hidden items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-yellow-400/20 text-yellow-300 text-xs font-bold animate-pulse">
+            <span>🗣️ AI Voice Speaking...</span>
+          </span>
+        </div>
+
+        <!-- 10s Circular Timer -->
+        <div class="flex items-center gap-2">
+          <div class="text-right hidden sm:block">
+            <div class="text-[10px] uppercase font-bold text-neutral-500">समय शेष</div>
+            <div class="text-xs font-bold text-yellow-400">10 सेकंड</div>
+          </div>
+          <div class="relative w-14 h-14 flex items-center justify-center">
+            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+              <path class="text-neutral-800" stroke-width="3" stroke="currentColor" fill="none"
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path id="timerCircle" class="text-yellow-400" stroke-dasharray="100, 100" stroke-dashoffset="0" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none"
+                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            </svg>
+            <span id="timerNumber" class="absolute font-black text-xl text-yellow-400 font-sans">10</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUESTION TEXT: BRIGHT YELLOW IN DEVANGARI BOLD -->
+      <div class="my-auto py-3 sm:py-5">
+        <div class="text-xs font-black text-yellow-500/80 mb-1.5 tracking-wider uppercase">
+          प्र० <span id="qIndexLabel">1</span>.
+        </div>
+        <h2 id="questionText" class="text-xl sm:text-2xl md:text-3xl font-black text-chalkYellow tracking-wide leading-relaxed text-left">
+          प्रश्न लोड हो रहा है... कृपया 2 सेकंड प्रतीक्षा करें!
+        </h2>
+      </div>
+
+      <!-- 4 OPTIONS GRID: CRISP WHITE TEXT ON BLACKBOARD -->
+      <div id="optionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 my-3">
+        <!-- Buttons injected dynamically -->
+      </div>
+
+      <!-- Live Feedback & 2-Second Next Alert Bar -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-2.5 pt-3 border-t border-neutral-800 text-xs sm:text-sm">
+        <div id="explanationBox" class="flex items-start gap-2 text-neutral-300 font-medium w-full sm:w-auto">
+          <span class="inline-block w-2.5 h-2.5 rounded-full bg-yellow-400 animate-pulse mt-1 flex-shrink-0"></span>
+          <span id="explanationText" class="leading-snug">10 सेकंड का लाइव टाइमर चालू है! सही विकल्प चुनें...</span>
+        </div>
+
+        <div id="autoNextNotice" class="hidden text-yellow-400 font-bold items-center gap-2 bg-neutral-900 px-3 py-1.5 rounded-xl border border-yellow-500/40 flex-shrink-0">
+          <span>⚡ अगला प्रश्न 2 सेकंड में आ रहा है...</span>
+          <div class="w-4 h-4 border-2 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      </div>
+
+      <!-- Live Pause Overlay -->
+      <div id="pauseOverlay" class="absolute inset-0 bg-black/95 backdrop-blur-md hidden flex-col items-center justify-center p-6 text-center z-30">
+        <div class="w-16 h-16 rounded-2xl bg-yellow-400/20 text-yellow-400 flex items-center justify-center text-3xl mb-3 border border-yellow-400/30">
+          ⏸️
+        </div>
+        <h3 class="text-2xl font-black text-white mb-2">लाइव क्लास रुकी हुई है (Paused)</h3>
+        <p class="text-neutral-400 max-w-sm mb-5 text-sm">प्रैक्टिस दोबारा शुरू करने के लिए नीचे 'Resume' बटन दबाएं।</p>
+        <button id="resumeBtn" class="px-7 py-3 bg-yellow-400 hover:bg-yellow-300 text-black font-black rounded-xl shadow-xl transition transform active:scale-95">
+          ▶ फिर से शुरू करें (Resume)
+        </button>
+      </div>
+
+    </div>
+
+    <div class="w-full max-w-lg mt-4 flex items-center justify-center gap-2.5 sm:gap-3 flex-wrap">
+      <button id="speakAgainBtn" class="py-2.5 px-3 bg-neutral-900 hover:bg-neutral-800 text-yellow-300 text-xs sm:text-sm font-bold rounded-xl border border-neutral-700 transition flex items-center gap-1.5" title="प्रश्न दोबारा बोलें">
+        <span>🗣️ दोबारा बोलें</span>
+      </button>
+      <button id="pauseToggleBtn" class="py-2.5 px-3 bg-neutral-900 hover:bg-neutral-800 text-neutral-200 text-xs sm:text-sm font-bold rounded-xl border border-neutral-700 transition flex items-center gap-1.5">
+        <span>⏸️ रोकें</span>
+      </button>
+      <button id="skipBtn" class="py-2.5 px-3 bg-neutral-900 hover:bg-neutral-800 text-yellow-400 text-xs sm:text-sm font-bold rounded-xl border border-neutral-700 transition flex items-center gap-1.5">
+        <span>⏩ अगला प्रश्न (Skip)</span>
+      </button>
+      <button id="resetScoreBtn" class="py-2.5 px-3 bg-neutral-900 hover:bg-red-950/60 text-red-400 text-xs sm:text-sm font-bold rounded-xl border border-neutral-700 transition flex items-center gap-1">
+        <span>🔄 रीसेट</span>
+      </button>
+    </div>
+
+    <!-- YouTube Live Stream Tip -->
+    <div class="mt-4 text-center">
+      <p class="text-xs text-neutral-500">
+        💡 <strong>YouTube Live Ready:</strong> Full Black Screen • Yellow Questions • White Options • 10s Timer • 2s Green Answer Reveal
+      </p>
+    </div>
+
+  </main>
+
+  <script>
+    // -------------------------------------------------------------
+    // 1. STATE & CORE VARIABLES
+    // -------------------------------------------------------------
+    const apiKey = ""; // Provided automatically in runtime
+    
+    let currentQuestion = null;
+    let timerInterval = null;
+    let timeLeft = 10;
+    let isAnswered = false;
+    let isPaused = false;
+    let voiceEnabled = true;
+    let bgmEnabled = true;
+    let bgmVolume = 0.3;
+
+    let score = 0;
+    let streak = 0;
+    let totalQuestions = 0;
+
+    // Set to avoid repeating questions
+    const askedQuestionsSet = new Set();
+
+    // AI Prefetch queue for non-stop zero-delay questions
+    let questionQueue = [];
+    let isFetchingAI = false;
+
+    // Screen Wake Lock Sentinel
+    let wakeLock = null;
+
+    // -------------------------------------------------------------
+    // 2. EXTENSIVE PURE HINDI BACKUP QUESTION POOL
+    // GK, GS, Hindi Vyakaran, Current Affairs
+    // -------------------------------------------------------------
+    const fallbackHindiBank = [
+      {
+        question: "भारतीय संविधान की प्रारूप समिति (Drafting Committee) के अध्यक्ष कौन थे?",
+        options: ["डॉ. भीमराव अंबेडकर", "पंडित जवाहरलाल नेहरू", "डॉ. राजेंद्र प्रसाद", "सरदार वल्लभभाई पटेल"],
+        correctIndex: 0,
+        subject: "भारतीय संविधान (Polity)",
+        exam: "SSC / Railway / All Exams",
+        explanation: "डॉ. भीमराव अंबेडकर प्रारूप समिति के अध्यक्ष थे और उन्हें संविधान का जनक कहा जाता है।"
+      },
+      {
+        question: "मानव शरीर में रक्त का शुद्धिकरण (Purification of Blood) किस अंग में होता है?",
+        options: ["फेफड़े (Lungs)", "हृदय (Heart)", "वृक्क (Kidney)", "यकृत (Liver)"],
+        correctIndex: 2,
+        subject: "सामान्य विज्ञान (GS)",
+        exam: "SSC GD / Railway",
+        explanation: "वृक्क (Kidney) रक्त में से अपशिष्ट पदार्थों को छानकर मूत्र के रूप में अलग करता है।"
+      },
+      {
+        question: "हिन्दी व्याकरण में 'पवन' शब्द का सही संधि-विच्छेद क्या होगा?",
+        options: ["प + वन", "पो + अन", "पौ + अन", "पा + वन"],
+        correctIndex: 1,
+        subject: "हिन्दी व्याकरण",
+        exam: "Police / SSC GD / UPSSSC",
+        explanation: "पो + अन = पवन (अयादि स्वर संधि के नियम ओ + अ = अव के अनुसार)।"
+      },
+      {
+        question: "सूर्य के प्रकाश को पृथ्वी तक पहुँचने में लगभग कितना समय लगता है?",
+        options: ["5 मिनट 20 सेकंड", "8 मिनट 20 सेकंड", "10 मिनट 10 सेकंड", "6 मिनट 30 सेकंड"],
+        correctIndex: 1,
+        subject: "भौतिक विज्ञान / भूगोल",
+        exam: "Railway NTPC / SSC",
+        explanation: "सूर्य के प्रकाश को पृथ्वी तक पहुँचने में लगभग 8 मिनट 20 सेकंड (500 सेकंड) का समय लगता है।"
+      },
+      {
+        question: "भारत में 'राष्ट्रीय युवा दिवस' प्रत्येक वर्ष किस तिथि को मनाया जाता है?",
+        options: ["10 जनवरी", "12 जनवरी", "15 जनवरी", "23 जनवरी"],
+        correctIndex: 1,
+        subject: "स्टेटिक GK / दिवस",
+        exam: "All Govt Exams",
+        explanation: "स्वामी विवेकानंद जी की जयंती के उपलक्ष्य में 12 जनवरी को राष्ट्रीय युवा दिवस मनाया जाता है।"
+      },
+      {
+        question: "निम्नलिखित में से 'अमृत' शब्द का सही पर्यायवाची शब्द कौन सा है?",
+        options: ["सुधा", "पावक", "व्योम", "वारि"],
+        correctIndex: 0,
+        subject: "हिन्दी व्याकरण",
+        exam: "SSC GD / All State Exams",
+        explanation: "अमृत के पर्यायवाची शब्द सुधा, पीयूष, सोम और अमिय होते हैं।"
+      },
+      {
+        question: "ध्वनि की गति (Speed of Sound) सबसे अधिक किस माध्यम में होती है?",
+        options: ["हवा में (Air)", "पानी में (Water)", "ठोस इस्पात में (Solid Steel)", "निर्वात में (Vacuum)"],
+        correctIndex: 2,
+        subject: "सामान्य विज्ञान (GS)",
+        exam: "Railway Group D / SSC",
+        explanation: "ठोस माध्यम (जैसे इस्पात) में ध्वनि की चाल सर्वाधिक लगभग 5960 मीटर/सेकंड होती है।"
+      },
+      {
+        question: "भारत का सबसे ऊँचा बांध 'टिहरी बांध' किस नदी पर निर्मित है?",
+        options: ["भागीरथी नदी", "नर्मदा नदी", "महानदी", "कावेरी नदी"],
+        correctIndex: 0,
+        subject: "भारत का भूगोल (GK)",
+        exam: "SSC / Railway / State Police",
+        explanation: "टिहरी बांध उत्तराखंड में भागीरथी नदी पर स्थित भारत का सबसे ऊँचा बांध है।"
       }
-      showView('view-topics');
+    ];
+
+    // -------------------------------------------------------------
+    // 3. AI HUMAN-LIKE HINDI VOICE TTS SYNTHESIS
+    // -------------------------------------------------------------
+    let hindiVoice = null;
+
+    function populateVoices() {
+      if (!('speechSynthesis' in window)) return;
+      const voices = window.speechSynthesis.getVoices();
+      // Find best natural Hindi voice or Indian accent fallback
+      hindiVoice = voices.find(v => v.lang === 'hi-IN' || v.lang === 'hi_IN') ||
+                   voices.find(v => v.lang.includes('hi')) ||
+                   voices.find(v => v.lang === 'en-IN') ||
+                   voices[0];
     }
 
-    // 3. Tests Screen (Test 1, Test 2, Test 3)
-    function navigateToChapters(topIdx, pushHistory) {
-      if (pushHistory === undefined) pushHistory = true;
-      activeTopIdx = topIdx;
-      renderChaptersList();
-      if (pushHistory) {
-        history.pushState({ view: 'chapters', catIdx: activeCatIdx, topIdx: topIdx }, '');
-      }
-      showView('view-chapters');
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = populateVoices;
+      populateVoices();
     }
 
-    function renderChaptersList() {
-      var data = quizData[activeCatIdx];
-      if (!data || !data.topics || !data.topics[activeTopIdx]) return;
-      var currentTopic = data.topics[activeTopIdx];
+    function cancelSpeech() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      const indicator = document.getElementById('speakingIndicator');
+      if (indicator) {
+        indicator.classList.add('hidden');
+        indicator.classList.remove('inline-flex');
+      }
+    }
 
-      document.getElementById('chapter-header-title').innerText = currentTopic.topicName || '';
-      var container = document.getElementById('chapter-container');
-
-      if (!currentTopic.chapters || !Array.isArray(currentTopic.chapters) || currentTopic.chapters.length === 0) {
-        container.innerHTML = '<p style="text-align:center; color:#64748b; font-size:14px; padding:20px;">Is topic me abhi koi tests uplabdh nahi hain.</p>';
+    function speakText(text, onComplete) {
+      if (!voiceEnabled || !('speechSynthesis' in window)) {
+        if (onComplete) onComplete();
         return;
       }
 
-      container.innerHTML = currentTopic.chapters.map(function(chap, idx) {
-        if (chap.isPdf) {
-            return `
-              <div class="item-card pdf-item-row" onclick="openPdfReader('${chap.chapterName}', '${chap.pdfUrl}')">
-                <span class="pdf-item-title">📄 ${chap.chapterName}</span>
-                <button type="button" class="btn-pdf-view">View ↗</button>
-              </div>
-            `;
-        }
-
-        const isAttempted = checkChapterAttempted(data.category, (currentTopic.topicName || '') + " - " + (chap.chapterName || ''));
-        return `
-          <div class="item-card" onclick="handleChapterClick(${idx})">
-            <div class="item-card-title">
-              <span>${chap.chapterName || 'Test'}</span>
-              ${isAttempted ? '<span class="badge-attempted">Attempted</span>' : ''}
-            </div>
-            <button type="button" class="item-card-action-btn">Start Test ➔</button>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function checkChapterAttempted(catName, chapName) {
-        return Object.values(userTestHistory || {}).some(t => t && t.category === catName && t.chapter === chapName);
-    }
-
-    function getLatestAttempt(catName, chapName) {
-        const matches = Object.entries(userTestHistory || {}).filter(([k, t]) => t && t.category === catName && t.chapter === chapName);
-        return matches.length > 0 ? matches[matches.length - 1] : null;
-    }
-
-    function handleChapterClick(chapIdx) {
-        activeChapIdx = chapIdx;
-        const currentTopic = quizData[activeCatIdx].topics[activeTopIdx];
-        const chap = currentTopic.chapters[chapIdx];
-
-        if (chap.isPdf) {
-            openPdfReader(chap.chapterName, chap.pdfUrl);
-            return;
-        }
-
-        const attempt = getLatestAttempt(quizData[activeCatIdx].category, (currentTopic.topicName || '') + " - " + (chap.chapterName || ''));
-
-        if (attempt) {
-            document.getElementById('reattempt-chapter-title').innerText = chap.chapterName || 'Test';
-            document.getElementById('reattempt-info-desc').innerText = `Pichhla Score: ${attempt[1].score}/${attempt[1].total}`;
-            document.getElementById('modal-reattempt').style.display = 'flex';
-        } else {
-            openStartModal(chapIdx);
-        }
-    }
-
-    function closeReattemptModal() {
-        document.getElementById('modal-reattempt').style.display = 'none';
-    }
-
-    function launchTestSessionFromReattempt() {
-        closeReattemptModal();
-        openStartModal(activeChapIdx);
-    }
-
-    function viewSavedTestResult(pushHistory) {
-        if (pushHistory === undefined) pushHistory = true;
-        closeReattemptModal();
-        const currentTopic = quizData[activeCatIdx].topics[activeTopIdx];
-        const chap = currentTopic.chapters[activeChapIdx];
-        const attempt = getLatestAttempt(quizData[activeCatIdx].category, (currentTopic.topicName || '') + " - " + (chap.chapterName || ''));
-        if (!attempt) return;
-
-        activeQuestions = (chap && chap.questions) ? chap.questions : [];
-        userSelections = attempt[1].userAnswers || {};
-
-        let correct = attempt[1].score || 0;
-        let total = attempt[1].total || 0;
-        let wrong = total - correct;
-
-        document.getElementById('stat-score').innerText = correct + '/' + total;
-        document.getElementById('stat-correct').innerText = correct;
-        document.getElementById('stat-wrong').innerText = wrong;
-
-        renderResultReviewUI(correct, wrong, total);
-
-        if (pushHistory) {
-            history.pushState({ view: 'result', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
-        }
-        showView('view-result');
-    }
-
-    function openStartModal(chapIdx) {
-      activeChapIdx = chapIdx;
-      var chap = quizData[activeCatIdx].topics[activeTopIdx].chapters[chapIdx];
-      document.getElementById('modal-start-title').innerText = chap.chapterName || 'Test';
-      document.getElementById('modal-start-desc').innerText = 'Questions: ' + (chap.questions ? chap.questions.length : 0) + ' | Time: ' + (chap.timeInMinutes || 15) + ' Mins';
-      document.getElementById('modal-start').style.display = 'flex';
-    }
-
-    function closeStartModal() {
-      document.getElementById('modal-start').style.display = 'none';
-    }
-
-    function openSubmitModal() {
-      document.getElementById('modal-submit').style.display = 'flex';
-    }
-
-    function closeSubmitModal() {
-      document.getElementById('modal-submit').style.display = 'none';
-    }
-
-    function launchTestSession(pushHistory) {
-      if (pushHistory === undefined) pushHistory = true;
-      closeStartModal();
-      var chap = quizData[activeCatIdx].topics[activeTopIdx].chapters[chapIdx];
-      activeQuestions = (chap && chap.questions) ? chap.questions : [];
-      currentQIdx = 0;
-      userSelections = {};
-      timeLeft = (chap.timeInMinutes || 15) * 60;
-
-      if (pushHistory) {
-        history.pushState({ view: 'test', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
+      cancelSpeech();
+      const indicator = document.getElementById('speakingIndicator');
+      if (indicator) {
+        indicator.classList.remove('hidden');
+        indicator.classList.add('inline-flex');
       }
-      showView('view-test');
-      renderCurrentQuestion();
-      startTimer();
-    }
 
-    function startTimer() {
-      clearInterval(timerInterval);
-      updateTimerDisplay();
-      timerInterval = setInterval(function() {
-        timeLeft--;
-        updateTimerDisplay();
-        if (timeLeft <= 0) {
-          clearInterval(timerInterval);
-          executeSubmit();
-        }
-      }, 1000);
-    }
-
-    function updateTimerDisplay() {
-      var min = Math.floor(timeLeft / 60);
-      var sec = timeLeft % 60;
-      document.getElementById('timer-display').innerText =
-        (min < 10 ? '0' : '') + min + ':' + (sec < 10 ? '0' : '') + sec;
-    }
-
-    function renderCurrentQuestion() {
-      var q = activeQuestions[currentQIdx];
-      if (!q) return;
-      document.getElementById('q-indicator').innerText = 'Question ' + (currentQIdx + 1) + '/' + activeQuestions.length;
-      document.getElementById('current-question-text').innerText = (currentQIdx + 1) + '. ' + (q.q || q.question || '');
-
-      var optLetters = ['A', 'B', 'C', 'D'];
-      var optContainer = document.getElementById('current-options-box');
-      var optionsList = Array.isArray(q.options) ? q.options : [];
-
-      optContainer.innerHTML = optionsList.map(function(opt, idx) {
-        var isSelected = userSelections[currentQIdx] === idx;
-        return '<div class="option-item ' + (isSelected ? 'selected' : '') + '" onclick="selectAnswer(' + idx + ')">' +
-               '<span class="opt-circle">' + (optLetters[idx] || (idx + 1)) + '</span>' +
-               '<span>' + opt + '</span></div>';
-      }).join('');
-
-      renderPalette();
-    }
-
-    function selectAnswer(idx) {
-      userSelections[currentQIdx] = idx;
-      renderCurrentQuestion();
-    }
-
-    function renderPalette() {
-      var pContainer = document.getElementById('palette-container');
-      pContainer.innerHTML = (activeQuestions || []).map(function(_, idx) {
-        var isAnswered = userSelections[idx] !== undefined;
-        var isCur = currentQIdx === idx;
-        return '<button type="button" class="palette-btn ' + (isAnswered ? 'answered' : '') + ' ' + (isCur ? 'current' : '') + '" onclick="jumpToQuestion(' + idx + ')">' + (idx + 1) + '</button>';
-      }).join('');
-    }
-
-    function jumpToQuestion(idx) {
-      currentQIdx = idx;
-      renderCurrentQuestion();
-    }
-
-    function goToNext() {
-      if (currentQIdx < activeQuestions.length - 1) {
-        currentQIdx++;
-        renderCurrentQuestion();
+      const utterance = new SpeechSynthesisUtterance(text);
+      if (hindiVoice) {
+        utterance.voice = hindiVoice;
       }
-    }
+      utterance.lang = 'hi-IN';
+      utterance.rate = 1.0; // Clear human-like pacing
+      utterance.pitch = 1.05;
 
-    function goToPrev() {
-      if (currentQIdx > 0) {
-        currentQIdx--;
-        renderCurrentQuestion();
-      }
-    }
-
-    function saveAndNext() {
-      if (currentQIdx < activeQuestions.length - 1) {
-        currentQIdx++;
-        renderCurrentQuestion();
-      } else {
-        openSubmitModal();
-      }
-    }
-
-    // Filter Review Questions Helper
-    function filterReviewQuestions(filterType) {
-        var cards = document.querySelectorAll('#result-review-container .review-card');
-        cards.forEach(function(card) {
-            if (filterType === 'all') {
-                card.style.display = 'block';
-            } else if (card.getAttribute('data-status') === filterType) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-
-        document.getElementById('btn-filter-all').className = 'filter-btn' + (filterType === 'all' ? ' active-filter-all' : '');
-        document.getElementById('btn-filter-right').className = 'filter-btn' + (filterType === 'correct' ? ' active-filter-right' : '');
-        document.getElementById('btn-filter-wrong').className = 'filter-btn' + (filterType === 'wrong' ? ' active-filter-wrong' : '');
-    }
-
-    // Render Review Cards & Graphical Donut Chart
-    function renderResultReviewUI(correct, wrong, total) {
-        var skipped = total - (correct + wrong);
-        if (skipped < 0) skipped = 0;
-
-        var accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
-        var elAccuracy = document.getElementById('donut-accuracy-text');
-        if (elAccuracy) elAccuracy.innerText = accuracy + '%';
-
-        // Calculate Angles for Chart
-        var cDeg = total > 0 ? (correct / total) * 360 : 0;
-        var wDeg = total > 0 ? (wrong / total) * 360 : 0;
-        var endCDeg = cDeg;
-        var endWDeg = cDeg + wDeg;
-
-        var chart = document.getElementById('result-donut-chart');
-        if (chart) {
-            chart.style.background = 'conic-gradient(#16a34a 0deg ' + endCDeg + 'deg, #dc2626 ' + endCDeg + 'deg ' + endWDeg + 'deg, #94a3b8 ' + endWDeg + 'deg 360deg)';
+      utterance.onend = () => {
+        if (indicator) {
+          indicator.classList.add('hidden');
+          indicator.classList.remove('inline-flex');
         }
+        if (onComplete) onComplete();
+      };
 
-        var reviewHtml = '';
-        (activeQuestions || []).forEach(function(q, idx) {
-            var choice = userSelections[idx];
-            var isAnswered = choice !== undefined;
-            var isCorrect = choice === q.answer;
+      utterance.onerror = () => {
+        if (indicator) {
+          indicator.classList.add('hidden');
+          indicator.classList.remove('inline-flex');
+        }
+        if (onComplete) onComplete();
+      };
 
-            var badgeClass = 'skipped';
-            var badgeText = 'Skipped';
-            var statusAttr = 'skipped';
-
-            if (isAnswered) {
-                if (isCorrect) {
-                    badgeClass = 'correct';
-                    badgeText = 'Correct';
-                    statusAttr = 'correct';
-                } else {
-                    badgeClass = 'wrong';
-                    badgeText = 'Wrong';
-                    statusAttr = 'wrong';
-                }
-            }
-
-            var opts = Array.isArray(q.options) ? q.options : [];
-            var yourAns = isAnswered && opts[choice] !== undefined ? opts[choice] : "Not Attempted";
-            var correctAns = (opts[q.answer] !== undefined) ? opts[q.answer] : "N/A";
-
-            reviewHtml += '<div class="review-card" data-status="' + statusAttr + '">' +
-              '<span class="badge ' + badgeClass + '">' + badgeText + '</span>' +
-              '<div style="font-weight:700; margin-bottom:6px; font-size:15px;">Q' + (idx + 1) + '. ' + (q.q || q.question || '') + '</div>' +
-              '<div style="font-size:14px; margin-bottom:4px;"><b>Aapka Answer:</b> ' + yourAns + '</div>' +
-              '<div style="font-size:14px; color:#166534; margin-bottom:4px;"><b>Sahi Answer:</b> ' + correctAns + '</div>' +
-              (q.explanation ? '<div class="explanation-box"><b>Explanation:</b> ' + q.explanation + '</div>' : '') +
-              '</div>';
-        });
-
-        document.getElementById('result-review-container').innerHTML = reviewHtml;
-        filterReviewQuestions('all');
+      window.speechSynthesis.speak(utterance);
     }
 
-    function executeSubmit() {
-      closeSubmitModal();
-      clearInterval(timerInterval);
-      var correct = 0;
-      var wrong = 0;
-      var total = activeQuestions.length;
-
-      (activeQuestions || []).forEach(function(q, idx) {
-        var choice = userSelections[idx];
-        var isAnswered = choice !== undefined;
-        var isCorrect = choice === q.answer;
-
-        if (isAnswered) {
-          if (isCorrect) {
-            correct++;
-          } else {
-            wrong++;
-          }
-        }
+    function speakCurrentQuestionAndOptions() {
+      if (!currentQuestion || !voiceEnabled) return;
+      const lettersHindi = ["ए", "बी", "सी", "डी"];
+      let speechScript = `प्रश्न संख्या ${totalQuestions}. ${currentQuestion.question}. `;
+      currentQuestion.options.forEach((opt, idx) => {
+        speechScript += `ऑप्शन ${lettersHindi[idx]}: ${opt}. `;
       });
 
-      document.getElementById('stat-score').innerText = correct + '/' + total;
-      document.getElementById('stat-correct').innerText = correct;
-      document.getElementById('stat-wrong').innerText = wrong;
-
-      renderResultReviewUI(correct, wrong, total);
-
-      const currentTopic = quizData[activeCatIdx].topics[activeTopIdx];
-      const chap = currentTopic.chapters[activeChapIdx];
-      const testId = 'test_' + Date.now();
-      userTestHistory[testId] = {
-          category: quizData[activeCatIdx].category,
-          chapter: (currentTopic.topicName || '') + " - " + (chap.chapterName || ''),
-          score: correct,
-          total: total,
-          userAnswers: userSelections,
-          timestamp: new Date().toISOString()
-      };
-      saveLocalTestHistory();
-
-      history.pushState({ view: 'result', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
-      showView('view-result');
+      speakText(speechScript);
     }
 
-    function setupBrowserNavigation() {
-      window.onpopstate = function(e) {
-        var pdfReader = document.getElementById('view-pdf-reader');
-        if (pdfReader && pdfReader.style.display === 'flex') {
-            pdfReader.style.display = 'none';
-            document.getElementById('pdf-viewer-iframe').src = "";
-            return;
-        }
-
-        var openModals = document.querySelectorAll('.modal-overlay');
-        var modalWasOpen = false;
-        openModals.forEach(function(m) {
-          if (m.style.display === 'flex' || m.style.display === 'block') {
-            m.style.display = 'none';
-            modalWasOpen = true;
-          }
-        });
-        var drawer = document.getElementById('drawer-overlay');
-        if (drawer && drawer.style.display === 'block') {
-            closeDrawer();
-            modalWasOpen = true;
-        }
-
-        if (modalWasOpen) {
-            return;
-        }
-
-        if (currentActiveView === 'test') {
-            var nowTest = Date.now();
-            if (nowTest - lastTestBackPressTime < 2000) {
-                clearInterval(timerInterval);
-                navigateToChapters(activeTopIdx, false);
-                return;
-            }
-            lastTestBackPressTime = nowTest;
-            showExitToast("Press back again to exit test");
-            history.pushState({ view: 'test', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
-            return;
-        }
-
-        if (currentActiveView === 'result') {
-            if (activeTopIdx !== null && activeTopIdx !== undefined) {
-                navigateToChapters(activeTopIdx, false);
-            } else {
-                navigateToCategories(false);
-            }
-            return;
-        }
-
-        if (currentActiveView === 'chapters') {
-            navigateToTopics(activeCatIdx, false);
-            return;
-        }
-
-        if (currentActiveView === 'topics') {
-            navigateToCategories(false);
-            return;
-        }
-
-        if (!e.state || e.state.view === 'categories') {
-          if (currentActiveView === 'categories') {
-            var now = Date.now();
-            if (now - lastBackPressTime < 2000) {
-              if (window.AndroidApp && window.AndroidApp.exitApp) {
-                window.AndroidApp.exitApp();
-              } else {
-                window.history.go(-1);
-              }
-              return;
-            }
-            lastBackPressTime = now;
-            showExitToast("Press back again to exit");
-            history.pushState({ view: 'categories' }, '');
-            return;
-        }
-          navigateToCategories(false);
-        } else if (e.state.view === 'topics') {
-          if (e.state.catIdx !== undefined) activeCatIdx = e.state.catIdx;
-          navigateToTopics(activeCatIdx, false);
-        } else if (e.state.view === 'chapters') {
-          if (e.state.topIdx !== undefined) activeTopIdx = e.state.topIdx;
-          navigateToChapters(activeTopIdx, false);
-        } else if (e.state.view === 'test') {
-          showView('view-test');
-        } else if (e.state.view === 'result') {
-          showView('view-result');
-        }
-      };
+    function speakCorrectAnswerReveal(correctIdx, optionText) {
+      if (!voiceEnabled) return;
+      const lettersHindi = ["ए", "बी", "सी", "डी"];
+      const revealSpeech = `समय समाप्त! सही उत्तर है ऑप्शन ${lettersHindi[correctIdx]}: ${optionText}`;
+      speakText(revealSpeech);
     }
-</script>
 
-<!-- AUTO OVERRIDE FIX SCRIPT (Bina purani line delete kiye test start ko fix karta hai) -->
-<script>
-    window.launchTestSession = function(pushHistory) {
-      if (pushHistory === undefined) pushHistory = true;
-      closeStartModal();
-      var chap = quizData[activeCatIdx].topics[activeTopIdx].chapters[activeChapIdx];
-      activeQuestions = (chap && chap.questions) ? chap.questions : [];
-      currentQIdx = 0;
-      userSelections = {};
-      timeLeft = (chap.timeInMinutes || 15) * 60;
+    // -------------------------------------------------------------
+    // 4. COPYRIGHT-FREE BGM SYNTHESIZER (Web Audio API)
+    // -------------------------------------------------------------
+    let audioCtx = null;
+    let bgmInterval = null;
+    let bgmGainNode = null;
+    let currentChordIndex = 0;
 
-      if (pushHistory) {
-        history.pushState({ view: 'test', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) {
+          audioCtx = new AudioContext();
+        }
       }
-      showView('view-test');
-      renderCurrentQuestion();
-      startTimer();
-    };
-</script>
-
-<!-- ================= NEW ADVANCED FEATURES INJECTION (NO LINES DELETED) ================= -->
-<style>
-    .palette-btn.marked-review {
-        border-color: #8b5cf6 !important;
-        background: #f5f3ff !important;
-        color: #7c3aed !important;
-        box-shadow: 0 0 0 2px #c4b5fd inset;
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
       }
-    .palette-btn.marked-review.answered {
-        background: #7c3aed !important;
-        color: #ffffff !important;
-        border-color: #6d28d9 !important;
+      return audioCtx;
     }
-    .btn-mark-review {
-        background: #f5f3ff;
-        border: 1.5px solid #8b5cf6;
-        color: #7c3aed;
-        font-weight: 700;
-        border-radius: 8px;
-        padding: 10px;
-        cursor: pointer;
-        width: 100%;
-        margin-top: 10px;
-        font-size: 13.5px;
-        transition: all 0.2s;
-    }
-    .btn-mark-review.is-marked {
-        background: #7c3aed;
-        color: #ffffff;
-    }
-    .btn-clear-history {
-        background: #fee2e2;
-        color: #dc2626;
-        border: 1.5px solid #f87171;
-        padding: 8px 12px;
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 800;
-        cursor: pointer;
-        margin-bottom: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        width: 100%;
-    }
-    .time-stat-pill {
-        display: inline-block;
-        background: #f8fafc;
-        border: 1px solid #cbd5e1;
-        color: #475569;
-        font-size: 11.5px;
-        font-weight: 700;
-        padding: 3px 8px;
-        border-radius: 6px;
-        margin-top: 4px;
-    }
-</style>
 
-<!-- Marked For Review Modal -->
-<div id="modal-marked-review" class="modal-overlay">
-    <div class="modal-box modal-scrollable-box">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-            <h3 style="margin:0;">🔖 Marked For Review</h3>
-        </div>
-        <p style="margin-bottom:12px; font-size:13px;">Aapke dwara review ke liye mark kiye gaye sabhi questions:</p>
-        <button type="button" class="btn-clear-history" onclick="clearAllMarkedQuestions()">🗑️ Clean All Marked Reviews</button>
-        <div id="marked-review-container"></div>
-        <div style="margin-top: 16px; text-align: center;">
-            <button type="button" class="item-card" style="margin:0; padding:10px; width:100%; background:#0f172a; color:#fff; justify-content: center;" onclick="closeMarkedReviewModal()">Close</button>
-        </div>
-    </div>
-</div>
+    const chords = [
+      [261.63, 329.63, 392.00, 493.88], // Cmaj7
+      [220.00, 261.63, 329.63, 392.00], // Am7
+      [174.61, 220.00, 261.63, 329.63], // Fmaj7
+      [196.00, 246.94, 293.66, 349.23]  // G7
+    ];
+    const bass = [130.81, 110.00, 87.31, 98.00];
 
-<script>
-    // Variables for New Features
-    var markedReviewQuestions = {}; // { qIdx: true }
-    var questionTimeSpent = {}; // { qIdx: seconds }
-    var lastQuestionSwitchTime = 0;
-    var testSessionStartTime = 0;
-    var totalTimeTakenFormatted = "0m 0s";
-    var globalSavedMarkedStore = {};
+    function startBackgroundMusic() {
+      if (bgmInterval || !bgmEnabled) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
 
-    function loadSavedMarkedStore() {
+      if (!bgmGainNode) {
+        bgmGainNode = ctx.createGain();
+        bgmGainNode.gain.setValueAtTime(bgmVolume * 0.12, ctx.currentTime);
+        bgmGainNode.connect(ctx.destination);
+      }
+
+      let step = 0;
+      bgmInterval = setInterval(() => {
+        if (!bgmEnabled || isPaused) return;
         try {
-            var raw = localStorage.getItem('sgs_saved_marked_questions');
-            globalSavedMarkedStore = raw ? JSON.parse(raw) : {};
-        } catch(e) { globalSavedMarkedStore = {}; }
-    }
-    function saveMarkedStoreToLocal() {
-        try {
-            localStorage.setItem('sgs_saved_marked_questions', JSON.stringify(globalSavedMarkedStore));
-        } catch(e) {}
-    }
-    loadSavedMarkedStore();
-
-    function formatTimeDuration(totalSecs) {
-        if (!totalSecs || totalSecs < 0) totalSecs = 0;
-        var m = Math.floor(totalSecs / 60);
-        var s = totalSecs % 60;
-        if (m > 0) return m + "m " + s + "s";
-        return s + "s";
-    }
-
-    function recordCurrentQTime() {
-        if (lastQuestionSwitchTime > 0) {
-            var elapsed = Math.round((Date.now() - lastQuestionSwitchTime) / 1000);
-            if (!questionTimeSpent[currentQIdx]) questionTimeSpent[currentQIdx] = 0;
-            questionTimeSpent[currentQIdx] += elapsed;
-        }
-        lastQuestionSwitchTime = Date.now();
-    }
-
-    // Inject 'Mark For Review' in Drawer
-    function injectDrawerMarkedOption() {
-        var drawer = document.querySelector('.drawer-content');
-        if (!drawer || document.getElementById('drawer-item-marked')) return;
-
-        var markedItem = document.createElement('div');
-        markedItem.id = 'drawer-item-marked';
-        markedItem.className = 'drawer-item';
-        markedItem.innerHTML = '<span>🔖</span> Marked Review Questions';
-        markedItem.onclick = function() {
-            closeDrawer();
-            openMarkedReviewModal();
-        };
-
-        var trackItem = drawer.querySelector('.drawer-item');
-        if (trackItem && trackItem.nextElementSibling) {
-            drawer.insertBefore(markedItem, trackItem.nextElementSibling);
-        } else {
-            drawer.appendChild(markedItem);
-        }
-    }
-    setTimeout(injectDrawerMarkedOption, 500);
-
-    // Override Track My Test Modal to add Clean / Delete button
-    window.openTrackMyTestModal = function() {
-        closeDrawer();
-        const container = document.getElementById('track-tests-container');
-        const keys = Object.keys(userTestHistory || {});
-
-        if (keys.length === 0) {
-            container.innerHTML = '<p style="color:#64748b; font-size:13px; text-align:center; padding:20px 0;">Abhi tak koi test submit nahi kiya hai.</p>';
-        } else {
-            var clearBtn = '<button type="button" class="btn-clear-history" onclick="clearAllTestHistory()">🗑️ Clean All Test History</button>';
-            container.innerHTML = clearBtn + keys.reverse().map(k => {
-                const item = userTestHistory[k];
-                if (!item) return '';
-                const date = item.timestamp ? new Date(item.timestamp).toLocaleDateString() : 'Recent';
-                const timeTakenTxt = item.timeTaken ? ` | ⏱️ Time: ${item.timeTaken}` : '';
-                return `
-                    <div class="history-card">
-                        <div class="history-card-header">
-                            <span>${item.chapter || 'Test'}</span>
-                            <span style="color:#16a34a;">${item.score || 0}/${item.total || 0}</span>
-                        </div>
-                        <div style="font-size:12px; color:#64748b;">Subject: ${item.category || ''} | Date: ${date}${timeTakenTxt}</div>
-                    </div>
-                `;
-            }).join('');
-        }
-        document.getElementById('modal-track').style.display = 'flex';
-    };
-
-    window.clearAllTestHistory = function() {
-        if (confirm("Kya aap sach me sabhi test records clean / delete karna chahte hain?")) {
-            userTestHistory = {};
-            localStorage.removeItem('sgs_user_test_history');
-            openTrackMyTestModal();
-            if (typeof renderChaptersList === 'function') renderChaptersList();
-        }
-    };
-
-    // Marked Questions Drawer Modal Handlers
-    window.openMarkedReviewModal = function() {
-        var container = document.getElementById('marked-review-container');
-        var keys = Object.keys(globalSavedMarkedStore || {});
-        if (keys.length === 0) {
-            container.innerHTML = '<p style="color:#64748b; font-size:13px; text-align:center; padding:20px 0;">Abhi tak koi bhi question mark nahi kiya gaya hai.</p>';
-        } else {
-            container.innerHTML = keys.reverse().map(k => {
-                var item = globalSavedMarkedStore[k];
-                if (!item) return '';
-                var opts = Array.isArray(item.options) ? item.options : [];
-                var optHtml = opts.map((op, i) => {
-                    var isCor = i === item.answer;
-                    return `<div style="font-size:13px; margin:3px 0; color:${isCor ? '#166534' : '#475569'}; font-weight:${isCor ? '700' : 'normal'};">• ${op} ${isCor ? '✅' : ''}</div>`;
-                }).join('');
-                return `
-                    <div class="review-card" style="margin-bottom:10px;">
-                        <span class="badge" style="background:#f5f3ff; color:#7c3aed;">${item.testName || 'Test'}</span>
-                        <div style="font-weight:700; font-size:14.5px; margin:6px 0;">${item.question || ''}</div>
-                        ${optHtml}
-                        ${item.explanation ? `<div class="explanation-box" style="margin-top:6px;">${item.explanation}</div>` : ''}
-                    </div>
-                `;
-            }).join('');
-        }
-        document.getElementById('modal-marked-review').style.display = 'flex';
-    };
-
-    window.closeMarkedReviewModal = function() {
-        document.getElementById('modal-marked-review').style.display = 'none';
-    };
-
-    window.clearAllMarkedQuestions = function() {
-        if (confirm("Kya aap sabhi Marked Questions ko clean / delete karna chahte hain?")) {
-            globalSavedMarkedStore = {};
-            saveMarkedStoreToLocal();
-            openMarkedReviewModal();
-        }
-    };
-
-    // Override launchTestSession with full timing and features
-    window.launchTestSession = function(pushHistory) {
-      if (pushHistory === undefined) pushHistory = true;
-      closeStartModal();
-      var chap = quizData[activeCatIdx].topics[activeTopIdx].chapters[activeChapIdx];
-      activeQuestions = (chap && chap.questions) ? chap.questions : [];
-      currentQIdx = 0;
-      userSelections = {};
-      markedReviewQuestions = {};
-      questionTimeSpent = {};
-      testSessionStartTime = Date.now();
-      lastQuestionSwitchTime = Date.now();
-      timeLeft = (chap.timeInMinutes || 15) * 60;
-
-      if (pushHistory) {
-        history.pushState({ view: 'test', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
-      }
-      showView('view-test');
-      renderCurrentQuestion();
-      startTimer();
-    };
-
-    // Override Navigation Functions to record per-question time
-    window.goToNext = function() {
-      recordCurrentQTime();
-      if (currentQIdx < activeQuestions.length - 1) {
-        currentQIdx++;
-        renderCurrentQuestion();
-      }
-    };
-
-    window.goToPrev = function() {
-      recordCurrentQTime();
-      if (currentQIdx > 0) {
-        currentQIdx--;
-        renderCurrentQuestion();
-      }
-    };
-
-    window.saveAndNext = function() {
-      recordCurrentQTime();
-      if (currentQIdx < activeQuestions.length - 1) {
-        currentQIdx++;
-        renderCurrentQuestion();
-    } else {
-        openSubmitModal();
-      }
-    };
-
-    window.jumpToQuestion = function(idx) {
-      recordCurrentQTime();
-      currentQIdx = idx;
-      renderCurrentQuestion();
-    };
-
-    window.toggleMarkCurrentQuestion = function() {
-        markedReviewQuestions[currentQIdx] = !markedReviewQuestions[currentQIdx];
-        var q = activeQuestions[currentQIdx];
-        if (q) {
-            var storeKey = (quizData[activeCatIdx].category || '') + '_' + currentQIdx + '_' + (q.q || q.question || '').substring(0, 20);
-            if (markedReviewQuestions[currentQIdx]) {
-                var curChap = quizData[activeCatIdx].topics[activeTopIdx].chapters[activeChapIdx];
-                globalSavedMarkedStore[storeKey] = {
-                    testName: (curChap ? curChap.chapterName : 'Test'),
-                    question: (q.q || q.question || ''),
-                    options: q.options || [],
-                    answer: q.answer,
-                    explanation: q.explanation || ''
-                };
-            } else {
-                delete globalSavedMarkedStore[storeKey];
-            }
-            saveMarkedStoreToLocal();
-        }
-        renderCurrentQuestion();
-    };
-
-    // Override renderCurrentQuestion to append Mark For Review Button
-    window.renderCurrentQuestion = function() {
-      var q = activeQuestions[currentQIdx];
-      if (!q) return;
-      document.getElementById('q-indicator').innerText = 'Question ' + (currentQIdx + 1) + '/' + activeQuestions.length;
-      document.getElementById('current-question-text').innerText = (currentQIdx + 1) + '. ' + (q.q || q.question || '');
-
-      var optLetters = ['A', 'B', 'C', 'D'];
-      var optContainer = document.getElementById('current-options-box');
-      var optionsList = Array.isArray(q.options) ? q.options : [];
-
-      var isMarked = !!markedReviewQuestions[currentQIdx];
-
-      var optionsHtml = optionsList.map(function(opt, idx) {
-        var isSelected = userSelections[currentQIdx] === idx;
-        return '<div class="option-item ' + (isSelected ? 'selected' : '') + '" onclick="selectAnswer(' + idx + ')">' +
-               '<span class="opt-circle">' + (optLetters[idx] || (idx + 1)) + '</span>' +
-               '<span>' + opt + '</span></div>';
-      }).join('');
-
-      var markBtnHtml = `
-        <button type="button" class="btn-mark-review ${isMarked ? 'is-marked' : ''}" onclick="toggleMarkCurrentQuestion()">
-            ${isMarked ? '🔖 Marked For Review (Click to Unmark)' : '🔖 Mark Question For Review'}
-        </button>
-      `;
-
-      optContainer.innerHTML = optionsHtml + markBtnHtml;
-      renderPalette();
-    };
-
-    // Override renderPalette with Marked for Review colors
-    window.renderPalette = function() {
-      var pContainer = document.getElementById('palette-container');
-      pContainer.innerHTML = (activeQuestions || []).map(function(_, idx) {
-        var isAnswered = userSelections[idx] !== undefined;
-        var isCur = currentQIdx === idx;
-        var isMarked = !!markedReviewQuestions[idx];
-        return '<button type="button" class="palette-btn ' +
-               (isAnswered ? 'answered ' : '') +
-               (isMarked ? 'marked-review ' : '') +
-               (isCur ? 'current ' : '') +
-               '" onclick="jumpToQuestion(' + idx + ')">' + (idx + 1) + '</button>';
-      }).join('');
-    };
-
-    // Override renderResultReviewUI to show Total Time + Question Wise Time
-    window.renderResultReviewUI = function(correct, wrong, total) {
-        var skipped = total - (correct + wrong);
-        if (skipped < 0) skipped = 0;
-
-        var accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
-        var elAccuracy = document.getElementById('donut-accuracy-text');
-        if (elAccuracy) elAccuracy.innerText = accuracy + '%';
-
-        // Fix Score Grid to 4 Columns for Total Time Display
-        var grid = document.querySelector('#view-result .score-grid');
-        if (grid) {
-            grid.style.gridTemplateColumns = "1fr 1fr 1fr 1fr";
-            if (!document.getElementById('stat-time-box')) {
-                var timeStat = document.createElement('div');
-                timeStat.id = 'stat-time-box';
-                timeStat.className = 'score-stat';
-                timeStat.innerHTML = '<div class="stat-val" id="stat-total-time" style="color:#8b5cf6; font-size:17px;">0s</div><div class="stat-lbl">Time Taken</div>';
-                grid.appendChild(timeStat);
-            }
-            var elTime = document.getElementById('stat-total-time');
-            if (elTime) elTime.innerText = totalTimeTakenFormatted;
-        }
-
-        var cDeg = total > 0 ? (correct / total) * 360 : 0;
-        var wDeg = total > 0 ? (wrong / total) * 360 : 0;
-        var endCDeg = cDeg;
-        var endWDeg = cDeg + wDeg;
-
-        var chart = document.getElementById('result-donut-chart');
-        if (chart) {
-            chart.style.background = 'conic-gradient(#16a34a 0deg ' + endCDeg + 'deg, #dc2626 ' + endCDeg + 'deg ' + endWDeg + 'deg, #94a3b8 ' + endWDeg + 'deg 360deg)';
-        }
-
-        var reviewHtml = '';
-        (activeQuestions || []).forEach(function(q, idx) {
-            var choice = userSelections[idx];
-            var isAnswered = choice !== undefined;
-            var isCorrect = choice === q.answer;
-
-            var badgeClass = 'skipped';
-            var badgeText = 'Skipped';
-            var statusAttr = 'skipped';
-
-            if (isAnswered) {
-                if (isCorrect) {
-                    badgeClass = 'correct';
-                    badgeText = 'Correct';
-                    statusAttr = 'correct';
-                } else {
-                    badgeClass = 'wrong';
-                    badgeText = 'Wrong';
-                    statusAttr = 'wrong';
-                }
-            }
-
-            var opts = Array.isArray(q.options) ? q.options : [];
-            var yourAns = isAnswered && opts[choice] !== undefined ? opts[choice] : "Not Attempted";
-            var correctAns = (opts[q.answer] !== undefined) ? opts[q.answer] : "N/A";
-            var qSpent = formatTimeDuration(questionTimeSpent[idx] || 0);
-
-            reviewHtml += '<div class="review-card" data-status="' + statusAttr + '">' +
-              '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">' +
-                  '<span class="badge ' + badgeClass + '">' + badgeText + '</span>' +
-                  '<span class="time-stat-pill">⏱️ ' + qSpent + '</span>' +
-              '</div>' +
-              '<div style="font-weight:700; margin-bottom:6px; font-size:15px;">Q' + (idx + 1) + '. ' + (q.q || q.question || '') + '</div>' +
-              '<div style="font-size:14px; margin-bottom:4px;"><b>Aapka Answer:</b> ' + yourAns + '</div>' +
-              '<div style="font-size:14px; color:#166534; margin-bottom:4px;"><b>Sahi Answer:</b> ' + correctAns + '</div>' +
-              (q.explanation ? '<div class="explanation-box"><b>Explanation:</b> ' + q.explanation + '</div>' : '') +
-              '</div>';
-        });
-
-        document.getElementById('result-review-container').innerHTML = reviewHtml;
-        filterReviewQuestions('all');
-    };
-
-    // Override executeSubmit to save full duration
-    window.executeSubmit = function() {
-      recordCurrentQTime();
-      closeSubmitModal();
-      clearInterval(timerInterval);
-
-      var elapsedTotalSecs = testSessionStartTime > 0 ? Math.round((Date.now() - testSessionStartTime) / 1000) : 0;
-      totalTimeTakenFormatted = formatTimeDuration(elapsedTotalSecs);
-
-      var correct = 0;
-      var wrong = 0;
-      var total = activeQuestions.length;
-
-      (activeQuestions || []).forEach(function(q, idx) {
-        var choice = userSelections[idx];
-        var isAnswered = choice !== undefined;
-        var isCorrect = choice === q.answer;
-
-        if (isAnswered) {
-          if (isCorrect) correct++;
-          else wrong++;
-        }
-      });
-
-      document.getElementById('stat-score').innerText = correct + '/' + total;
-      document.getElementById('stat-correct').innerText = correct;
-      document.getElementById('stat-wrong').innerText = wrong;
-
-      renderResultReviewUI(correct, wrong, total);
-
-      const currentTopic = quizData[activeCatIdx].topics[activeTopIdx];
-      const chap = currentTopic.chapters[activeChapIdx];
-      const testId = 'test_' + Date.now();
-      userTestHistory[testId] = {
-          category: quizData[activeCatIdx].category,
-          chapter: (currentTopic.topicName || '') + " - " + (chap.chapterName || ''),
-          score: correct,
-          total: total,
-          userAnswers: userSelections,
-          timeTaken: totalTimeTakenFormatted,
-          perQuestionTime: questionTimeSpent,
-          timestamp: new Date().toISOString()
-      };
-      saveLocalTestHistory();
-
-      history.pushState({ view: 'result', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
-      showView('view-result');
-    };
-
-    // Override viewSavedTestResult to restore saved time stats
-    window.viewSavedTestResult = function(pushHistory) {
-        if (pushHistory === undefined) pushHistory = true;
-        closeReattemptModal();
-        const currentTopic = quizData[activeCatIdx].topics[activeTopIdx];
-        const chap = currentTopic.chapters[activeChapIdx];
-        const attempt = getLatestAttempt(quizData[activeCatIdx].category, (currentTopic.topicName || '') + " - " + (chap.chapterName || ''));
-        if (!attempt) return;
-
-        activeQuestions = (chap && chap.questions) ? chap.questions : [];
-        userSelections = attempt[1].userAnswers || {};
-        totalTimeTakenFormatted = attempt[1].timeTaken || "N/A";
-        questionTimeSpent = attempt[1].perQuestionTime || {};
-
-        let correct = attempt[1].score || 0;
-        let total = attempt[1].total || 0;
-        let wrong = total - correct;
-
-        document.getElementById('stat-score').innerText = correct + '/' + total;
-        document.getElementById('stat-correct').innerText = correct;
-        document.getElementById('stat-wrong').innerText = wrong;
-
-        renderResultReviewUI(correct, wrong, total);
-
-        if (pushHistory) {
-            history.pushState({ view: 'result', catIdx: activeCatIdx, topIdx: activeTopIdx, chapIdx: activeChapIdx }, '');
-        }
-        showView('view-result');
-    };
-</script>
-
-<!-- ================= PHASE 3: DARK MODE + BILINGUAL SWITCH + DOWNLOAD & SHARE RESULT CARD ================= -->
-<style>
-    /* Modern UI Refinements */
-    .top-bar {
-        background: linear-gradient(135deg, #ec4899, #8b5cf6, #3b82f6) !important;
-        backdrop-filter: blur(10px);
-    }
-    .item-card {
-        border-radius: 14px !important;
-        box-shadow: 0 4px 14px rgba(236, 72, 153, 0.12) !important;
-    }
-
-    /* Dark Theme Styles */
-    body.dark-theme {
-        background-color: #0b0f19 !important;
-        color: #f1f5f9 !important;
-    }
-    body.dark-theme .sub-bar {
-        background: #111827 !important;
-        color: #94a3b8 !important;
-        border-bottom-color: #1f2937 !important;
-    }
-    body.dark-theme .user-greeting {
-        color: #f8fafc !important;
-    }
-    body.dark-theme .item-card {
-        background: linear-gradient(135deg, #1e1b4b, #0f172a) !important;
-        border-color: #ec4899 !important;
-        color: #f472b6 !important;
-        box-shadow: 0 4px 14px rgba(0,0,0,0.5) !important;
-    }
-    body.dark-theme .item-card:nth-child(2n) {
-        background: linear-gradient(135deg, #2e1065, #0f172a) !important;
-        border-color: #a78bfa !important;
-        color: #c4b5fd !important;
-    }
-    body.dark-theme .item-card:nth-child(3n) {
-        background: linear-gradient(135deg, #172554, #0f172a) !important;
-        border-color: #60a5fa !important;
-        color: #93c5fd !important;
-    }
-    body.dark-theme .question-box,
-    body.dark-theme .option-item,
-    body.dark-theme .modal-box,
-    body.dark-theme .drawer-sidebar,
-    body.dark-theme .score-stat,
-    body.dark-theme .review-card,
-    body.dark-theme .history-card {
-        background-color: #1e293b !important;
-        color: #f8fafc !important;
-        border-color: #334155 !important;
-    }
-    body.dark-theme .option-item.selected {
-        background-color: #3b0764 !important;
-        color: #f472b6 !important;
-        border-color: #ec4899 !important;
-    }
-    body.dark-theme .score-summary {
-        background: linear-gradient(135deg, #1e293b, #0f172a) !important;
-        border-color: #ec4899 !important;
-    }
-    body.dark-theme .score-summary h2 {
-        color: #f472b6 !important;
-    }
-    body.dark-theme .donut-chart-inner {
-        background: #1e293b !important;
-    }
-    body.dark-theme .donut-percentage {
-        color: #f472b6 !important;
-    }
-    body.dark-theme .action-btn {
-        background: #1e293b !important;
-        color: #f1f5f9 !important;
-        border-color: #475569 !important;
-    }
-    body.dark-theme .palette-btn {
-        background: #1e293b !important;
-        color: #cbd5e1 !important;
-        border-color: #475569 !important;
-    }
-    body.dark-theme .explanation-box {
-        background: #31133f !important;
-        color: #fbcfe8 !important;
-        border-left-color: #f472b6 !important;
-    }
-    body.dark-theme .filter-btn {
-        background: #1e293b !important;
-        color: #94a3b8 !important;
-        border-color: #475569 !important;
-    }
-    body.dark-theme .drawer-item {
-        color: #cbd5e1 !important;
-        border-bottom-color: #334155 !important;
-    }
-    body.dark-theme .drawer-item:active {
-        background: #1e293b !important;
-    }
-
-    /* Bilingual Switch Pill */
-    .lang-toggle-btn {
-        background: #fdf2f8;
-        border: 1.5px solid #f472b6;
-        color: #db2777;
-        font-weight: 800;
-        padding: 5px 12px;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 12.5px;
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        transition: all 0.2s;
-    }
-    body.dark-theme .lang-toggle-btn {
-        background: #31133f;
-        color: #f472b6;
-        border-color: #db2777;
-    }
-
-    /* Result Actions Buttons (Share / Download Scorecard) */
-    .result-share-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-top: 14px;
-    }
-    .btn-action-share {
-        padding: 12px 10px;
-        border-radius: 10px;
-        font-size: 14px;
-        font-weight: 800;
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        transition: all 0.2s;
-    }
-    .btn-download-card {
-        background: linear-gradient(135deg, #3b82f6, #2563eb);
-        color: #fff;
-        box-shadow: 0 4px 12px rgba(37,99,235,0.3);
-    }
-    .btn-whatsapp-share {
-        background: linear-gradient(135deg, #22c55e, #16a34a);
-        color: #fff;
-        box-shadow: 0 4px 12px rgba(34,197,94,0.3);
-    }
-    .btn-action-share:active {
-        transform: scale(0.97);
-    }
-
-    /* Dark Mode Toggle Nav Icon */
-    .top-action-icons {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-    }
-</style>
-
-<!-- Hidden Canvas for Generating Shareable Result Scorecard Card -->
-<canvas id="scorecard-canvas" width="800" height="1000" style="display:none;"></canvas>
-
-<script>
-    // State management for Theme & Language
-    var appLanguage = localStorage.getItem('sgs_app_lang') || 'hi'; // 'hi' or 'en'
-    var isDarkThemeActive = localStorage.getItem('sgs_dark_theme') === 'true';
-
-    function applyAppTheme(isDark) {
-        if (isDark) {
-            document.body.classList.add('dark-theme');
-        } else {
-            document.body.classList.remove('dark-theme');
-        }
-        var iconEl = document.getElementById('theme-toggle-icon');
-        if (iconEl) iconEl.innerText = isDark ? '☀️' : '🌙';
-    }
-
-    function toggleAppTheme() {
-        isDarkThemeActive = !isDarkThemeActive;
-        localStorage.setItem('sgs_dark_theme', isDarkThemeActive ? 'true' : 'false');
-        applyAppTheme(isDarkThemeActive);
-    }
-
-    // Apply theme immediately
-    applyAppTheme(isDarkThemeActive);
-
-    // Inject Dark Mode Toggle in Topbar & Drawer
-    function injectThemeControls() {
-        var topBar = document.querySelector('.top-bar');
-        if (topBar && !document.getElementById('theme-toggle-icon')) {
-            var rightBox = topBar.querySelector('div:last-child');
-            if (rightBox) {
-                var container = document.createElement('div');
-                container.className = 'top-action-icons';
-
-                var themeBtn = document.createElement('span');
-                themeBtn.id = 'theme-toggle-icon';
-                themeBtn.style.cursor = 'pointer';
-                themeBtn.style.fontSize = '18px';
-                themeBtn.innerText = isDarkThemeActive ? '☀️' : '🌙';
-                themeBtn.title = 'Toggle Dark Mode';
-                themeBtn.onclick = toggleAppTheme;
-
-                rightBox.parentNode.replaceChild(container, rightBox);
-                container.appendChild(themeBtn);
-                container.appendChild(rightBox);
-            }
-        }
-
-        // Add to Drawer
-        var drawer = document.querySelector('.drawer-content');
-        if (drawer && !document.getElementById('drawer-item-darkmode')) {
-            var darkItem = document.createElement('div');
-            darkItem.id = 'drawer-item-darkmode';
-            darkItem.className = 'drawer-item';
-            darkItem.innerHTML = '<span>🌓</span> Dark Mode Toggle';
-            darkItem.onclick = function() {
-                toggleAppTheme();
-                closeDrawer();
-            };
-            drawer.appendChild(darkItem);
-        }
-    }
-    setTimeout(injectThemeControls, 300);
-
-    // Bilingual Toggle Logic
-    function toggleLanguage() {
-        appLanguage = (appLanguage === 'hi') ? 'en' : 'hi';
-        localStorage.setItem('sgs_app_lang', appLanguage);
-        renderCurrentQuestion();
-    }
-
-    // Override renderCurrentQuestion to include Bilingual Switch & Language Data Mapping
-    window.renderCurrentQuestion = function() {
-        var q = activeQuestions[currentQIdx];
-        if (!q) return;
-
-        // Determine question & options based on selected language
-        var qText = "";
-        var optionsList = [];
-
-        if (appLanguage === 'en') {
-            qText = q.q_en || q.question_en || q.q || q.question || '';
-            optionsList = (q.options_en && Array.isArray(q.options_en)) ? q.options_en : (Array.isArray(q.options) ? q.options : []);
-        } else {
-            qText = q.q || q.question || q.q_en || q.question_en || '';
-            optionsList = Array.isArray(q.options) ? q.options : (Array.isArray(q.options_en) ? q.options_en : []);
-        }
-
-        // Update indicator & Question Text
-        document.getElementById('q-indicator').innerText = 'Question ' + (currentQIdx + 1) + '/' + activeQuestions.length;
-        document.getElementById('current-question-text').innerText = (currentQIdx + 1) + '. ' + qText;
-
-        // Inject/Update Language Switch Pill in test-status-bar
-        var statusBar = document.querySelector('#view-test .test-status-bar');
-        if (statusBar && !document.getElementById('btn-lang-toggle')) {
-            var langBtn = document.createElement('button');
-            langBtn.type = 'button';
-            langBtn.id = 'btn-lang-toggle';
-            langBtn.className = 'lang-toggle-btn';
-            langBtn.onclick = toggleLanguage;
-
-            var timerEl = document.getElementById('timer-display');
-            statusBar.insertBefore(langBtn, timerEl);
-        }
-        var btnLang = document.getElementById('btn-lang-toggle');
-        if (btnLang) {
-            btnLang.innerHTML = '🌐 ' + (appLanguage === 'hi' ? 'ENG' : 'हिन्दी');
-        }
-
-        var optLetters = ['A', 'B', 'C', 'D'];
-        var optContainer = document.getElementById('current-options-box');
-        var isMarked = !!markedReviewQuestions[currentQIdx];
-
-        var optionsHtml = optionsList.map(function(opt, idx) {
-            var isSelected = userSelections[currentQIdx] === idx;
-            return '<div class="option-item ' + (isSelected ? 'selected' : '') + '" onclick="selectAnswer(' + idx + ')">' +
-                   '<span class="opt-circle">' + (optLetters[idx] || (idx + 1)) + '</span>' +
-                   '<span>' + opt + '</span></div>';
-        }).join('');
-
-        var markBtnHtml = `
-            <button type="button" class="btn-mark-review ${isMarked ? 'is-marked' : ''}" onclick="toggleMarkCurrentQuestion()">
-                ${isMarked ? '🔖 Marked For Review (Click to Unmark)' : '🔖 Mark Question For Review'}
-            </button>
-        `;
-
-        optContainer.innerHTML = optionsHtml + markBtnHtml;
-        renderPalette();
-    };
-
-    // ================= DYNAMIC SCORECARD IMAGE GENERATION ENGINE =================
-    function generateResultCanvasScorecard(callback) {
-        var canvas = document.getElementById('scorecard-canvas');
-        if (!canvas) return;
-        var ctx = canvas.getContext('2d');
-
-        var total = activeQuestions.length || 0;
-        var correct = 0;
-        var wrong = 0;
-        (activeQuestions || []).forEach(function(q, idx) {
-            var c = userSelections[idx];
-            if (c !== undefined) {
-                if (c === q.answer) correct++;
-                else wrong++;
-            }
-        });
-        var skipped = total - (correct + wrong);
-        if (skipped < 0) skipped = 0;
-        var accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
-
-        var currentTopic = (quizData[activeCatIdx] && quizData[activeCatIdx].topics) ? quizData[activeCatIdx].topics[activeTopIdx] : null;
-        var chap = currentTopic && currentTopic.chapters ? currentTopic.chapters[activeChapIdx] : null;
-        var testName = chap ? chap.chapterName : "Mock Test";
-        var catName = (quizData[activeCatIdx] && quizData[activeCatIdx].category) ? quizData[activeCatIdx].category : "Preparation";
-
-        // Background Gradient
-        var grad = ctx.createLinearGradient(0, 0, 800, 1000);
-        grad.addColorStop(0, '#831843');
-        grad.addColorStop(0.5, '#4c1d95');
-        grad.addColorStop(1, '#0f172a');
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, 800, 1000);
-
-        // Header Card
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-        ctx.roundRect ? ctx.roundRect(40, 40, 720, 920, 24) : ctx.rect(40, 40, 720, 920);
-        ctx.fill();
-
-        // App Branding
-        ctx.fillStyle = '#f472b6';
-        ctx.font = '900 32px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('SGS MOCK TEST', 400, 100);
-
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '600 18px sans-serif';
-        ctx.fillText('All Exams Free Mock Test Series', 400, 135);
-
-        // Test Title Badge Box
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
-        ctx.roundRect ? ctx.roundRect(80, 170, 640, 90, 16) : ctx.rect(80, 170, 640, 90);
-        ctx.fill();
-
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '800 24px sans-serif';
-        ctx.fillText(testName, 400, 210);
-
-        ctx.fillStyle = '#fbcfe8';
-        ctx.font = '600 16px sans-serif';
-        ctx.fillText('Subject: ' + catName, 400, 242);
-
-        // Score Big Display
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '900 80px sans-serif';
-        ctx.fillText(correct + '/' + total, 400, 370);
-
-        ctx.fillStyle = '#e2e8f0';
-        ctx.font = '700 20px sans-serif';
-        ctx.fillText('TOTAL SCORE', 400, 410);
-
-        // Stat Grid Boxes
-        function drawStatBox(x, y, w, h, title, val, color) {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
-            ctx.roundRect ? ctx.roundRect(x, y, w, h, 14) : ctx.rect(x, y, w, h);
-            ctx.fill();
-
-            ctx.fillStyle = color;
-            ctx.font = '900 30px sans-serif';
-            ctx.fillText(val, x + (w / 2), y + 45);
-
-            ctx.fillStyle = '#cbd5e1';
-            ctx.font = '700 15px sans-serif';
-            ctx.fillText(title, x + (w / 2), y + 75);
-        }
-
-        drawStatBox(80, 460, 190, 100, 'CORRECT', correct, '#4ade80');
-        drawStatBox(305, 460, 190, 100, 'WRONG', wrong, '#f87171');
-        drawStatBox(530, 460, 190, 100, 'SKIPPED', skipped, '#cbd5e1');
-
-        drawStatBox(80, 590, 300, 100, 'ACCURACY', accuracy + '%', '#f472b6');
-        drawStatBox(420, 590, 300, 100, 'TIME TAKEN', totalTimeTakenFormatted, '#a78bfa');
-
-        // Quote & Footer
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'italic 600 18px sans-serif';
-        ctx.fillText('🎯 Practice daily to crack your dream exam!', 400, 750);
-
-        ctx.fillStyle = '#ec4899';
-        ctx.font = '800 20px sans-serif';
-        ctx.fillText('📲 Free Mock Tests on SGS Mock Test App', 400, 840);
-
-        ctx.fillStyle = '#94a3b8';
-        ctx.font = '500 14px sans-serif';
-        ctx.fillText('Available on Google Play Store', 400, 870);
-
-        if (callback) callback(canvas.toDataURL('image/png'));
-    }
-
-    window.downloadScorecardImage = function() {
-        generateResultCanvasScorecard(function(dataUrl) {
-            var a = document.createElement('a');
-            a.href = dataUrl;
-            a.download = 'SGS_Mock_Test_Result_' + Date.now() + '.png';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            showExitToast("Scorecard Downloaded! 📥");
-        });
-    };
-
-    window.shareResultWhatsApp = function() {
-        var total = activeQuestions.length || 0;
-        var correct = document.getElementById('stat-correct') ? document.getElementById('stat-correct').innerText : '0';
-        var currentTopic = (quizData[activeCatIdx] && quizData[activeCatIdx].topics) ? quizData[activeCatIdx].topics[activeTopIdx] : null;
-        var chap = currentTopic && currentTopic.chapters ? currentTopic.chapters[activeChapIdx] : null;
-        var testName = chap ? chap.chapterName : "Mock Test";
-
-        var shareText = `🎯 *SGS MOCK TEST RESULT*\n` +
-                        `📝 *Test:* ${testName}\n` +
-                        `✅ *Score:* ${correct}/${total}\n` +
-                        `⏱️ *Time Taken:* ${totalTimeTakenFormatted}\n\n` +
-                        `Aap bhi abhi free mock test lagayein: https://play.google.com/store/apps/details?id=com.sgs.sgsfreemocktest`;
-
-        if (window.AndroidApp && window.AndroidApp.shareApp) {
-            window.AndroidApp.shareApp('My Test Result', shareText);
-        } else {
-            var waUrl = "https://api.whatsapp.com/send?text=" + encodeURIComponent(shareText);
-            window.open(waUrl, '_blank');
-        }
-    };
-
-    // Inject Download & WhatsApp Share Buttons into Result View
-    function injectResultShareButtons() {
-        var resultContainer = document.querySelector('#view-result .container');
-        if (resultContainer && !document.getElementById('result-share-box')) {
-            var shareBox = document.createElement('div');
-            shareBox.id = 'result-share-box';
-            shareBox.className = 'result-share-grid';
-            shareBox.innerHTML = `
-                <button type="button" class="btn-action-share btn-download-card" onclick="downloadScorecardImage()">
-                    <span>📸 Download Card</span>
-                </button>
-                <button type="button" class="btn-action-share btn-whatsapp-share" onclick="shareResultWhatsApp()">
-                    <span>📲 Share Result</span>
-                </button>
-            `;
-            var scoreSummary = resultContainer.querySelector('.score-summary');
-            if (scoreSummary && scoreSummary.nextElementSibling) {
-                resultContainer.insertBefore(shareBox, scoreSummary.nextElementSibling);
-            }
-        }
-    }
-
-    // Wrap renderResultReviewUI to ensure Share buttons are injected
-    var originalRenderResultReviewUI = window.renderResultReviewUI;
-    window.renderResultReviewUI = function(correct, wrong, total) {
-        if (typeof originalRenderResultReviewUI === 'function') {
-            originalRenderResultReviewUI(correct, wrong, total);
-        }
-        injectResultShareButtons();
-    };
-</script>
-
-<!-- ================= PHASE 4: FINAL FIX (DROPDOWN HINDI/ENGLISH/MARATHI + GALLERY DOWNLOAD FIX) ================= -->
-<style>
-    /* Styled Language Dropdown Pill */
-    .lang-dropdown-select {
-        background: #fdf2f8;
-        border: 1.5px solid #f472b6;
-        color: #db2777;
-        font-weight: 800;
-        padding: 5px 10px;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: 12.5px;
-        outline: none;
-        box-shadow: 0 2px 6px rgba(236, 72, 153, 0.15);
-        transition: all 0.2s ease;
-    }
-    .lang-dropdown-select:focus {
-        border-color: #ec4899;
-    }
-    body.dark-theme .lang-dropdown-select {
-        background: #31133f;
-        color: #f472b6;
-        border-color: #db2777;
-    }
-</style>
-
-<script>
-    // 1. Language Dropdown state & Multi-language Auto Converter logic
-    window.appLanguage = localStorage.getItem('sgs_app_lang') || 'hi';
-
-    window.handleLanguageChange = function(newLang) {
-        window.appLanguage = newLang;
-        localStorage.setItem('sgs_app_lang', newLang);
-        renderCurrentQuestion();
-    };
-
-    // Advanced Text Transliteration / Auto-Converter for Marathi & English fallback
-    function getAutoLanguageText(text, targetLang) {
-        if (!text) return "";
-        if (targetLang === 'hi' || targetLang === 'en') return text;
-        if (targetLang === 'mr') {
-            // Auto Marathi contextual mapping for common exam vocabularies
-            var converted = text;
-            var mrMap = [
-                { r: /निम्नलिखित में से/g, t: "खालीलपैकी" },
-                { r: /निम्न में से/g, t: "खालीलपैकी" },
-                { r: /कौन सा/g, t: "कोणते" },
-                { r: /कौन सी/g, t: "कोणती" },
-                { r: /किस/g, t: "कोणत्या" },
-                { r: /किसे/g, t: "कोणाला" },
-                { r: /कहा जाता है\?/g, t: "म्हणतात?" },
-                { r: /कहा जाता है।/g, t: "म्हणतात." },
-                { r: /कहाँ/g, t: "कोठे" },
-                { r: /कहा पर/g, t: "कोठे" },
-                { r: /कब/g, t: "केव्हा" },
-                { r: /क्यों/g, t: "का" },
-                { r: /क्या है\?/g, t: "काय आहे?" },
-                { r: /है\?/g, t: "आहे?" },
-                { r: /था\?/g, t: "होते?" },
-                { r: /थे\?/g, t: "होते?" },
-                { r: /उत्तर/g, t: "उत्तर" },
-                { r: /सही/g, t: "बरोबर" },
-                { r: /गलत/g, t: "चुकीचे" },
-                { r: /वर्ष/g, t: "वर्ष" },
-                { r: /स्थान/g, t: "स्थान" },
-                { r: /नदी/g, t: "नदी" },
-                { r: /भारत/g, t: "भारत" }
-            ];
-            mrMap.forEach(function(item) {
-                converted = converted.replace(item.r, item.t);
+          const now = ctx.currentTime;
+          const chord = chords[currentChordIndex];
+
+          // Soft Ambient Pad Chords
+          if (step % 4 === 0) {
+            chord.forEach((freq, idx) => {
+              const osc = ctx.createOscillator();
+              const noteGain = ctx.createGain();
+              osc.type = 'sine';
+              osc.frequency.setValueAtTime(freq, now);
+              
+              noteGain.gain.setValueAtTime(0.01, now);
+              noteGain.gain.exponentialRampToValueAtTime(0.03, now + 0.3);
+              noteGain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
+              
+              osc.connect(noteGain);
+              noteGain.connect(bgmGainNode);
+              osc.start(now + idx * 0.04);
+              osc.stop(now + 1.9);
             });
-            return converted;
-        }
-        return text;
+
+            // Bass note
+            const bassOsc = ctx.createOscillator();
+            const bassGain = ctx.createGain();
+            bassOsc.type = 'triangle';
+            bassOsc.frequency.setValueAtTime(bass[currentChordIndex], now);
+            bassGain.gain.setValueAtTime(0.04, now);
+            bassGain.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
+            bassOsc.connect(bassGain);
+            bassGain.connect(bgmGainNode);
+            bassOsc.start(now);
+            bassOsc.stop(now + 1.4);
+          }
+
+          step++;
+          if (step >= 8) {
+            step = 0;
+            currentChordIndex = (currentChordIndex + 1) % chords.length;
+          }
+        } catch (e) {}
+      }, 500);
     }
 
-    // Override renderCurrentQuestion with Full Hindi/English/Marathi Dropdown & Auto Convert
-    window.renderCurrentQuestion = function() {
-        var q = activeQuestions[currentQIdx];
-        if (!q) return;
+    function stopBackgroundMusic() {
+      if (bgmInterval) {
+        clearInterval(bgmInterval);
+        bgmInterval = null;
+      }
+    }
 
-        var curLang = window.appLanguage || 'hi';
-        var qText = "";
-        var optionsList = [];
+    function setBgmVolume(val) {
+      bgmVolume = parseFloat(val);
+      if (bgmGainNode && audioCtx) {
+        bgmGainNode.gain.setValueAtTime(bgmVolume * 0.12, audioCtx.currentTime);
+      }
+    }
 
-        if (curLang === 'en') {
-            qText = q.q_en || q.question_en || q.q || q.question || '';
-            optionsList = (q.options_en && Array.isArray(q.options_en)) ? q.options_en : (Array.isArray(q.options) ? q.options : []);
-        } else if (curLang === 'mr') {
-            var rawMrQ = q.q_mr || q.question_mr;
-            qText = rawMrQ ? rawMrQ : getAutoLanguageText(q.q || q.question || '', 'mr');
+    // SFX Sounds
+    function playSfx(type) {
+      try {
+        const ctx = getAudioContext();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
 
-            if (q.options_mr && Array.isArray(q.options_mr)) {
-                optionsList = q.options_mr;
-            } else {
-                var baseOpts = Array.isArray(q.options) ? q.options : (Array.isArray(q.options_en) ? q.options_en : []);
-                optionsList = baseOpts.map(function(opt) {
-                    return getAutoLanguageText(opt, 'mr');
-                });
-            }
-        } else { // Hindi default
-            qText = q.q || q.question || q.q_en || q.question_en || '';
-            optionsList = Array.isArray(q.options) ? q.options : (Array.isArray(q.options_en) ? q.options_en : []);
+        if (type === 'tick') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(880, now);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+          osc.start(now);
+          osc.stop(now + 0.04);
+        } else if (type === 'correct') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(523.25, now);
+          osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.25);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+          osc.start(now);
+          osc.stop(now + 0.4);
+        } else if (type === 'wrong') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(200, now);
+          osc.frequency.exponentialRampToValueAtTime(120, now + 0.25);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+          osc.start(now);
+          osc.stop(now + 0.3);
         }
+      } catch (e) {}
+    }
 
-        // Indicator & Question text
-        document.getElementById('q-indicator').innerText = 'Question ' + (currentQIdx + 1) + '/' + activeQuestions.length;
-        document.getElementById('current-question-text').innerText = (currentQIdx + 1) + '. ' + qText;
-
-        // Remove old toggle button if present
-        var oldToggleBtn = document.getElementById('btn-lang-toggle');
-        if (oldToggleBtn) oldToggleBtn.remove();
-
-        // Inject / Update Language Dropdown Selector in test-status-bar
-        var statusBar = document.querySelector('#view-test .test-status-bar');
-        if (statusBar) {
-            var langSelect = document.getElementById('lang-select-dropdown');
-            if (!langSelect) {
-                langSelect = document.createElement('select');
-                langSelect.id = 'lang-select-dropdown';
-                langSelect.className = 'lang-dropdown-select';
-                langSelect.innerHTML = `
-                    <option value="hi">🌐 हिन्दी</option>
-                    <option value="en">🌐 English</option>
-                    <option value="mr">🌐 मराठी</option>
-                `;
-                langSelect.onchange = function() {
-                    handleLanguageChange(this.value);
-                };
-                var timerEl = document.getElementById('timer-display');
-                statusBar.insertBefore(langSelect, timerEl);
-            }
-            langSelect.value = curLang;
+    // -------------------------------------------------------------
+    // 5. SCREEN WAKE LOCK (SCREEN BAND NAHI HOGI)
+    // -------------------------------------------------------------
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          wakeLock = await navigator.wakeLock.request('screen');
+          updateWakeLockUI(true);
+          wakeLock.addEventListener('release', () => updateWakeLockUI(false));
+        } else {
+          updateWakeLockUI(true, "Screen ON");
         }
+      } catch (err) {
+        updateWakeLockUI(false);
+      }
+    }
 
-        var optLetters = ['A', 'B', 'C', 'D'];
-        var optContainer = document.getElementById('current-options-box');
-        var isMarked = !!markedReviewQuestions[currentQIdx];
+    function updateWakeLockUI(isActive, msg) {
+      const badge = document.getElementById('wakeLockBadge');
+      if (!badge) return;
+      if (isActive) {
+        badge.className = "flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-neutral-900 border border-neutral-700 text-xs font-semibold text-emerald-400";
+        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span><span class="hidden sm:inline">${msg || "Screen ON"}</span>`;
+      } else {
+        badge.className = "flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-neutral-900 border border-neutral-700 text-xs font-semibold text-yellow-400";
+        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-yellow-400"></span><span>Re-locking</span>`;
+      }
+    }
 
-        var optionsHtml = optionsList.map(function(opt, idx) {
-            var isSelected = userSelections[currentQIdx] === idx;
-            return '<div class="option-item ' + (isSelected ? 'selected' : '') + '" onclick="selectAnswer(' + idx + ')">' +
-                   '<span class="opt-circle">' + (optLetters[idx] || (idx + 1)) + '</span>' +
-                   '<span>' + opt + '</span></div>';
-        }).join('');
+    document.addEventListener('visibilitychange', async () => {
+      if (document.visibilityState === 'visible') {
+        await requestWakeLock();
+        if (bgmEnabled && !isPaused) startBackgroundMusic();
+      }
+    });
 
-        var markBtnHtml = `
-            <button type="button" class="btn-mark-review ${isMarked ? 'is-marked' : ''}" onclick="toggleMarkCurrentQuestion()">
-                ${isMarked ? '🔖 Marked For Review (Click to Unmark)' : '🔖 Mark Question For Review'}
-            </button>
+    window.addEventListener('click', () => {
+      if (!wakeLock) requestWakeLock();
+      getAudioContext();
+      if (bgmEnabled && !bgmInterval) startBackgroundMusic();
+    }, { once: true });
+
+    // -------------------------------------------------------------
+    // 6. GEMINI AI QUESTION FETCHER (PURE HINDI + DIVERSE TOPICS)
+    // -------------------------------------------------------------
+    async function fetchAIQuestionsBatch() {
+      if (isFetchingAI) return;
+      isFetchingAI = true;
+
+      const subjectKey = document.getElementById('subjectSelect').value;
+      let promptFocus = "GK (इतिहास, भूगोल, संविधान), GS (भौतिक विज्ञान, रसायन विज्ञान, जीव विज्ञान), हिन्दी व्याकरण, और हाल के करेंट अफेयर्स";
+
+      if (subjectKey === 'hindi') {
+        promptFocus = "हिन्दी व्याकरण (संधि, समास, उपसर्ग, प्रत्यय, वर्तनी शुद्धि, मुहावरे, लोकोक्तियाँ, पर्यायवाची, विलोम शब्द, कारक, अलंकार)";
+      } else if (subjectKey === 'gk') {
+        promptFocus = "भारतीय संविधान, आधुनिक व प्राचीन इतिहास, भारत का भूगोल, अर्थव्यवस्था एवं स्टेटिक GK";
+      } else if (subjectKey === 'science') {
+        promptFocus = "सामान्य विज्ञान (General Science - Physics, Chemistry, Biology) के अति-महत्वपूर्ण प्रश्न";
+      } else if (subjectKey === 'ca') {
+        promptFocus = "हाल के महत्वपूर्ण राष्ट्रीय एवं अंतर्राष्ट्रीय करेंट अफेयर्स, खेल जगत, पुरस्कार, नई नियुक्तियां एवं योजनाएं";
+      } else if (subjectKey === 'ssc_railway') {
+        promptFocus = "SSC GD, SSC CGL, Railway NTPC, Group D, RPF और पुलिस भर्ती परीक्षाओं के लिए GK/GS के महत्वपूर्ण प्रश्न";
+      }
+
+      const prompt = `आप 'SGS ONLINE PORTAL' के मुख्य शिक्षक सचिन सर हैं।
+प्रतियोगी परीक्षाओं (SSC, Railway, State Police, All Govt Exams) के छात्रों के लिए 4 बिल्कुल नए, अनूठे और बिना दोहराए गए बहुविकल्पीय प्रश्न (MCQ) तैयार कीजिए।
+
+विषय: ${promptFocus}
+
+अनिवार्य नियम:
+1. सम्पूर्ण प्रश्न, चारों विकल्प और व्याख्या 100% शुद्ध और स्पष्ट हिन्दी (देवनागरी लिपि) में होने चाहिए।
+2. कोई भी प्रश्न रिपीट न हो।
+3. चारों विकल्प वास्तविक और सटीक होने चाहिए।
+4. सही उत्तर का 0-आधारित सूचकांक (correctIndex: 0, 1, 2, or 3) दें।
+5. 1 पंक्ति में सटीक हिन्दी व्याख्या (explanation) दें।`;
+
+      const payload = {
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: "ARRAY",
+            items: {
+              type: "OBJECT",
+              properties: {
+                question: { type: "STRING" },
+                options: {
+                  type: "ARRAY",
+                  items: { type: "STRING" },
+                  minItems: 4,
+                  maxItems: 4
+                },
+                correctIndex: { type: "INTEGER" },
+                subject: { type: "STRING" },
+                exam: { type: "STRING" },
+                explanation: { type: "STRING" }
+              },
+              required: ["question", "options", "correctIndex", "subject", "exam", "explanation"]
+            }
+          }
+        }
+      };
+
+      const delays = [1000, 2000, 4000, 8000];
+      for (let i = 0; i <= delays.length; i++) {
+        try {
+          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+          const result = await response.json();
+          const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (text) {
+            const parsed = JSON.parse(text);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              parsed.forEach(q => {
+                const qKey = q.question.trim().toLowerCase();
+                if (!askedQuestionsSet.has(qKey)) {
+                  questionQueue.push(q);
+                }
+              });
+              break;
+            }
+          }
+        } catch (err) {
+          if (i < delays.length) {
+            await new Promise(r => setTimeout(r, delays[i]));
+          }
+        }
+      }
+
+      isFetchingAI = false;
+    }
+
+    async function getNextUniqueQuestion() {
+      if (questionQueue.length < 3) {
+        fetchAIQuestionsBatch();
+      }
+
+      while (questionQueue.length > 0) {
+        const candidate = questionQueue.shift();
+        const qKey = candidate.question.trim().toLowerCase();
+        if (!askedQuestionsSet.has(qKey)) {
+          askedQuestionsSet.add(qKey);
+          return candidate;
+        }
+      }
+
+      const unaskedFallbacks = fallbackHindiBank.filter(q => !askedQuestionsSet.has(q.question.trim().toLowerCase()));
+      let chosen;
+      if (unaskedFallbacks.length > 0) {
+        const randIdx = Math.floor(Math.random() * unaskedFallbacks.length);
+        chosen = unaskedFallbacks[randIdx];
+      } else {
+        const randIdx = Math.floor(Math.random() * fallbackHindiBank.length);
+        chosen = fallbackHindiBank[randIdx];
+      }
+
+      askedQuestionsSet.add(chosen.question.trim().toLowerCase());
+      return chosen;
+    }
+
+    // -------------------------------------------------------------
+    // 7. QUESTION RENDERING & 10s COUNTDOWN
+    // -------------------------------------------------------------
+    async function renderNewQuestion() {
+      if (isPaused) return;
+
+      clearInterval(timerInterval);
+      cancelSpeech();
+      isAnswered = false;
+      timeLeft = 10;
+
+      totalQuestions++;
+      document.getElementById('totalQuestionsCount').innerText = `#${totalQuestions}`;
+      document.getElementById('qIndexLabel').innerText = totalQuestions;
+
+      // Reset feedback and alerts
+      document.getElementById('autoNextNotice').classList.add('hidden');
+      document.getElementById('autoNextNotice').classList.remove('flex');
+      document.getElementById('explanationBox').classList.remove('hidden');
+      document.getElementById('explanationText').innerText = "10 सेकंड का लाइव टाइमर चालू है! अपना उत्तर चुनें...";
+
+      // Reset circular timer UI
+      updateTimerCircle(10);
+      document.getElementById('timerNumber').innerText = "10";
+      document.getElementById('timerNumber').className = "absolute font-black text-xl text-yellow-400 font-sans";
+
+      // Fetch distinct question
+      currentQuestion = await getNextUniqueQuestion();
+
+      // Update question text and badges
+      document.getElementById('badgeSubject').innerText = currentQuestion.subject || "GK & GS Special";
+      document.getElementById('badgeExam').innerText = currentQuestion.exam || "SSC / Railway / All Exams";
+      document.getElementById('questionText').innerText = currentQuestion.question;
+
+      // Render 4 Options (White text on black background)
+      const optionsContainer = document.getElementById('optionsGrid');
+      optionsContainer.innerHTML = '';
+
+      const hindiLetters = ['(A)', '(B)', '(C)', '(D)'];
+
+      currentQuestion.options.forEach((optionText, index) => {
+        const btn = document.createElement('button');
+        btn.className = "option-card w-full p-4 rounded-2xl text-left flex items-center gap-3.5 group relative shadow-md";
+        btn.setAttribute('data-index', index);
+
+        btn.innerHTML = `
+          <span class="w-9 h-9 rounded-xl bg-neutral-900 border border-neutral-700 text-yellow-400 group-hover:bg-yellow-400 group-hover:text-black flex items-center justify-center font-black text-sm sm:text-base font-sans transition-colors flex-shrink-0">
+            ${hindiLetters[index]}
+          </span>
+          <span class="font-bold text-sm sm:text-base text-white flex-1 leading-snug">
+            ${optionText}
+          </span>
+          <span class="status-icon text-xl hidden flex-shrink-0"></span>
         `;
 
-        optContainer.innerHTML = optionsHtml + markBtnHtml;
-        renderPalette();
-    };
-
-    // 2. Fixed & Robust Download to Gallery / Storage
-    window.downloadScorecardImage = function() {
-        showExitToast("Generating Scorecard... ⏳");
-        generateResultCanvasScorecard(function(dataUrl) {
-            var filename = 'SGS_Mock_Test_Result_' + Date.now() + '.png';
-
-            // Agar Android App me native download interface hai
-            if (window.AndroidApp && typeof window.AndroidApp.saveImageToGallery === 'function') {
-                window.AndroidApp.saveImageToGallery(dataUrl, filename);
-                showExitToast("Scorecard Gallery me save ho gaya! 📥");
-                return;
-            }
-
-            // Direct Blob Download for Complete Mobile Browser / WebView Gallery Save Support
-            try {
-                var arr = dataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-                    bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-                while(n--){
-                    u8arr[n] = bstr.charCodeAt(n);
-                }
-                var blob = new Blob([u8arr], {type: mime});
-                var blobUrl = URL.createObjectURL(blob);
-
-                var a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = blobUrl;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                setTimeout(function() {
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(blobUrl);
-                }, 500);
-                showExitToast("Scorecard Downloaded! 📥");
-            } catch (err) {
-                // Standard fallback
-                var fallbackLink = document.createElement('a');
-                fallbackLink.href = dataUrl;
-                fallbackLink.download = filename;
-                document.body.appendChild(fallbackLink);
-                fallbackLink.click();
-                document.body.removeChild(fallbackLink);
-                showExitToast("Scorecard Downloaded! 📥");
-            }
+        btn.addEventListener('click', () => {
+          if (!isAnswered && !isPaused) {
+            handleAnswer(index);
+          }
         });
-    };
-</script>
 
-<!-- ================= PHASE 5: PDF REFRESH & GOOGLE DRIVE ERROR RECOVERY FIX (NO LINES DELETED) ================= -->
-<style>
-    .pdf-top-actions {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .btn-pdf-action-pill {
-        background: rgba(255, 255, 255, 0.22);
-        border: 1px solid rgba(255, 255, 255, 0.45);
-        color: #ffffff;
-        padding: 4px 10px;
-        border-radius: 14px;
-        font-size: 12px;
-        font-weight: 700;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        transition: all 0.2s;
-        text-decoration: none;
-    }
-    .btn-pdf-action-pill:active {
-        background: rgba(255, 255, 255, 0.35);
-        transform: scale(0.95);
-    }
-    .pdf-error-overlay-banner {
-        display: none;
-        background: #fee2e2;
-        color: #991b1b;
-        padding: 8px 12px;
-        font-size: 12.5px;
-        font-weight: 600;
-        text-align: center;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        border-bottom: 1.5px solid #f87171;
-    }
-</style>
+        optionsContainer.appendChild(btn);
+      });
 
-<script>
-    // State to preserve current opened PDF info for refresh/fallback
-    var currentActivePdfTitle = "";
-    var currentActivePdfRawUrl = "";
-    var currentActiveDriveFileId = "";
-    var pdfPreviewModeToggle = 0;
+      // AI Voice reads question and options
+      speakCurrentQuestionAndOptions();
 
-    function buildDrivePreviewUrl(rawUrl, altMode) {
-        if (!rawUrl) return "";
-        var fileId = "";
-        var idMatch = rawUrl.match(/id=([a-zA-Z0-9_-]+)/);
-        if (idMatch && idMatch[1]) {
-            fileId = idMatch[1];
+      // Start 10s Timer
+      startCountdownTimer();
+    }
+
+    function startCountdownTimer() {
+      const totalTime = 10;
+      const startTime = Date.now();
+
+      timerInterval = setInterval(() => {
+        if (isPaused) return;
+
+        const elapsed = (Date.now() - startTime) / 1000;
+        const remaining = Math.max(0, totalTime - elapsed);
+        timeLeft = remaining;
+
+        const displaySec = Math.ceil(remaining);
+        document.getElementById('timerNumber').innerText = displaySec;
+
+        updateTimerCircle(remaining);
+
+        // Warning sound tick during last 3 seconds
+        if (displaySec <= 3 && displaySec > 0 && Math.floor(remaining * 10) % 10 === 0) {
+          playSfx('tick');
+          document.getElementById('timerNumber').className = "absolute font-black text-xl text-red-500 animate-pulse font-sans";
+        }
+
+        // 10s Finished -> Auto Reveal & 2-Second Transition
+        if (remaining <= 0) {
+          clearInterval(timerInterval);
+          if (!isAnswered) {
+            handleTimeExpiry();
+          }
+        }
+      }, 50);
+    }
+
+    function updateTimerCircle(timeRemaining) {
+      const circle = document.getElementById('timerCircle');
+      const percent = (timeRemaining / 10) * 100;
+      const offset = 100 - percent;
+      circle.style.strokeDashoffset = offset;
+
+      if (timeRemaining <= 3) {
+        circle.setAttribute('class', 'text-red-500 transition-colors');
+      } else if (timeRemaining <= 6) {
+        circle.setAttribute('class', 'text-yellow-400 transition-colors');
+      } else {
+        circle.setAttribute('class', 'text-emerald-500 transition-colors');
+      }
+    }
+
+    // -------------------------------------------------------------
+    // 8. ANSWER HANDLING & EXACT 2-SECOND GREEN HIGHLIGHT
+    // -------------------------------------------------------------
+    function handleAnswer(selectedIndex) {
+      isAnswered = true;
+      clearInterval(timerInterval);
+      cancelSpeech();
+
+      const isCorrect = (selectedIndex === currentQuestion.correctIndex);
+      highlightOptions(selectedIndex, isCorrect);
+
+      if (isCorrect) {
+        score += 10;
+        streak += 1;
+        playSfx('correct');
+        showExplanation("🎉 सही उत्तर! बहुत शानदार तैयारी!", true);
+      } else {
+        streak = 0;
+        playSfx('wrong');
+        showExplanation("❌ गलत उत्तर! सही उत्तर नीचे देखें।", false);
+      }
+
+      updateScoreboard();
+
+      // Voice speaks the correct answer
+      speakCorrectAnswerReveal(currentQuestion.correctIndex, currentQuestion.options[currentQuestion.correctIndex]);
+
+      triggerAutoNextCountdown();
+    }
+
+    function handleTimeExpiry() {
+      isAnswered = true;
+      streak = 0;
+      playSfx('wrong');
+      updateScoreboard();
+
+      highlightOptions(-1, false);
+      showExplanation("⏰ समय समाप्त! सही उत्तर हरे रंग में हाईलाइट कर दिया गया है।", false);
+
+      // Voice speaks the correct answer
+      speakCorrectAnswerReveal(currentQuestion.correctIndex, currentQuestion.options[currentQuestion.correctIndex]);
+
+      triggerAutoNextCountdown();
+    }
+
+    function highlightOptions(selectedIndex, isCorrect) {
+      const buttons = document.querySelectorAll('.option-card');
+      const correctIdx = currentQuestion.correctIndex;
+
+      buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        const iconSpan = btn.querySelector('.status-icon');
+
+        if (idx === correctIdx) {
+          // Highlight Correct Option in Bright Green Glow on Blackboard
+          btn.className = "option-card w-full p-4 rounded-2xl correct-highlight text-white border-2 border-emerald-300 text-left flex items-center gap-3.5 shadow-2xl";
+          const badgeSpan = btn.querySelector('span');
+          if (badgeSpan) badgeSpan.className = "w-9 h-9 rounded-xl bg-black text-emerald-300 flex items-center justify-center font-black text-sm font-sans flex-shrink-0";
+          if (iconSpan) {
+            iconSpan.innerHTML = "✅";
+            iconSpan.classList.remove('hidden');
+          }
+        } else if (idx === selectedIndex && !isCorrect) {
+          // Highlight Wrong Selected Option in Red
+          btn.className = "option-card w-full p-4 rounded-2xl wrong-highlight text-white border-2 border-red-300 text-left flex items-center gap-3.5 shadow-2xl";
+          const badgeSpan = btn.querySelector('span');
+          if (badgeSpan) badgeSpan.className = "w-9 h-9 rounded-xl bg-black text-red-300 flex items-center justify-center font-black text-sm font-sans flex-shrink-0";
+          if (iconSpan) {
+            iconSpan.innerHTML = "❌";
+            iconSpan.classList.remove('hidden');
+          }
         } else {
-            var pathMatch = rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
-            if (pathMatch && pathMatch[1]) fileId = pathMatch[1];
+          // Dim remaining options
+          btn.className = "option-card w-full p-4 rounded-2xl bg-black text-neutral-600 border border-neutral-900 text-left flex items-center gap-3.5 opacity-30 cursor-not-allowed";
         }
-        currentActiveDriveFileId = fileId;
-
-        if (fileId) {
-            // Alternates URL if Google Drive preview throws a temporary session error
-            if (altMode === 1) {
-                return "https://drive.google.com/file/d/" + fileId + "/view?embedded=true&timestamp=" + Date.now();
-            } else if (altMode === 2) {
-                return "https://docs.google.com/viewer?url=https://drive.google.com/uc?id=" + fileId + "&embedded=true";
-            }
-            return "https://drive.google.com/file/d/" + fileId + "/preview?timestamp=" + Date.now();
-        }
-        return rawUrl;
+      });
     }
 
-    // Refresh Current PDF function
-    window.refreshCurrentPdf = function() {
-        showExitToast("Refreshing PDF... 🔄");
-        var iframe = document.getElementById('pdf-viewer-iframe');
-        if (!iframe) return;
+    function showExplanation(prefix, isSuccess) {
+      const expText = document.getElementById('explanationText');
+      const colorClass = isSuccess ? "text-emerald-400 font-bold" : "text-yellow-400 font-bold";
+      expText.innerHTML = `<span class="${colorClass}">${prefix}</span> <span class="text-neutral-300">व्याख्या: ${currentQuestion.explanation || ''}</span>`;
+    }
 
-        pdfPreviewModeToggle = (pdfPreviewModeToggle + 1) % 3;
-        var freshUrl = buildDrivePreviewUrl(currentActivePdfRawUrl, pdfPreviewModeToggle);
+    function triggerAutoNextCountdown() {
+      const autoNextNotice = document.getElementById('autoNextNotice');
+      autoNextNotice.classList.remove('hidden');
+      autoNextNotice.classList.add('flex');
 
-        iframe.src = "";
-        setTimeout(function() {
-            iframe.src = freshUrl;
-        }, 150);
-    };
-
-    // Open in external browser/Google Drive app
-    window.openPdfInExternalBrowser = function() {
-        var targetUrl = currentActivePdfRawUrl;
-        if (currentActiveDriveFileId) {
-            targetUrl = "https://drive.google.com/file/d/" + currentActiveDriveFileId + "/view?usp=sharing";
+      // Exactly 2-second highlight delay before next question
+      setTimeout(() => {
+        if (!isPaused) {
+          renderNewQuestion();
         }
-        if (window.AndroidApp && typeof window.AndroidApp.openBrowser === 'function') {
-            window.AndroidApp.openBrowser(targetUrl);
+      }, 2000);
+    }
+
+    function updateScoreboard() {
+      document.getElementById('scoreDisplay').innerText = score;
+      document.getElementById('streakDisplay').innerText = streak;
+    }
+
+    // -------------------------------------------------------------
+    // 9. CONTROLS & LISTENERS
+    // -------------------------------------------------------------
+    document.getElementById('subjectSelect').addEventListener('change', () => {
+      questionQueue = [];
+      renderNewQuestion();
+    });
+
+    // Voice Toggle
+    document.getElementById('voiceToggleBtn').addEventListener('click', () => {
+      voiceEnabled = !voiceEnabled;
+      const statusLabel = document.getElementById('voiceStatusLabel');
+      const voiceIcon = document.getElementById('voiceIcon');
+      if (voiceEnabled) {
+        statusLabel.innerText = "AI Voice: ON";
+        voiceIcon.innerText = "🎙️";
+        speakCurrentQuestionAndOptions();
+      } else {
+        cancelSpeech();
+        statusLabel.innerText = "AI Voice: OFF";
+        voiceIcon.innerText = "🔇";
+      }
+    });
+
+    // Speak Again Button
+    document.getElementById('speakAgainBtn').addEventListener('click', () => {
+      if (!isAnswered) {
+        speakCurrentQuestionAndOptions();
+      } else {
+        speakCorrectAnswerReveal(currentQuestion.correctIndex, currentQuestion.options[currentQuestion.correctIndex]);
+      }
+    });
+
+    // BGM Controls
+    document.getElementById('bgmToggleBtn').addEventListener('click', () => {
+      bgmEnabled = !bgmEnabled;
+      const visualizer = document.getElementById('bgmVisualizer');
+      if (bgmEnabled) {
+        startBackgroundMusic();
+        visualizer.classList.remove('opacity-20');
+      } else {
+        stopBackgroundMusic();
+        visualizer.classList.add('opacity-20');
+      }
+    });
+
+    document.getElementById('bgmVolumeSlider').addEventListener('input', (e) => {
+      setBgmVolume(e.target.value);
+    });
+
+    // Fullscreen Toggle
+    document.getElementById('fullscreenBtn').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    // Pause / Resume Toggle
+    function togglePause() {
+      isPaused = !isPaused;
+      const pauseOverlay = document.getElementById('pauseOverlay');
+      const pauseBtn = document.getElementById('pauseToggleBtn');
+
+      if (isPaused) {
+        clearInterval(timerInterval);
+        cancelSpeech();
+        pauseOverlay.classList.remove('hidden');
+        pauseOverlay.classList.add('flex');
+        pauseBtn.innerHTML = "<span>▶️ शुरू करें</span>";
+      } else {
+        pauseOverlay.classList.add('hidden');
+        pauseOverlay.classList.remove('flex');
+        pauseBtn.innerHTML = "<span>⏸️ रोकें</span>";
+        if (isAnswered) {
+          renderNewQuestion();
         } else {
-            window.open(targetUrl, '_blank');
+          startCountdownTimer();
+          speakCurrentQuestionAndOptions();
         }
-    };
-
-    // Override openPdfReader to configure TopBar with Refresh button
-    window.openPdfReader = function(title, pdfUrl) {
-        currentActivePdfTitle = title || 'Document';
-        currentActivePdfRawUrl = pdfUrl || '';
-        pdfPreviewModeToggle = 0;
-
-        document.getElementById('pdf-reader-title').innerText = currentActivePdfTitle;
-
-        var topbar = document.querySelector('.pdf-reader-topbar');
-        if (topbar) {
-            var rightBox = topbar.querySelector('div.pdf-top-actions');
-            if (!rightBox) {
-                var oldDocViewText = topbar.querySelector('span:last-child');
-                if (oldDocViewText && oldDocViewText.innerText === 'Document View') {
-                    oldDocViewText.style.display = 'none';
-                }
-
-                rightBox = document.createElement('div');
-                rightBox.className = 'pdf-top-actions';
-                rightBox.innerHTML = `
-                    <button type="button" class="btn-pdf-action-pill" onclick="refreshCurrentPdf()" title="Reload / Refresh PDF">
-                        <span>🔄</span> Refresh
-                    </button>
-                `;
-                topbar.appendChild(rightBox);
-            }
-        }
-
-        var finalPdfUrl = buildDrivePreviewUrl(pdfUrl, 0);
-        var iframe = document.getElementById('pdf-viewer-iframe');
-        if (iframe) {
-            iframe.src = finalPdfUrl;
-        }
-
-        document.getElementById('view-pdf-reader').style.display = 'flex';
-        history.pushState({ view: 'pdfreader' }, '');
-    };
-</script>
-
-<!-- ================= PHASE 6: ENGLISH AUTO-CONVERSION & TRANSLATION ENGINE FIX (NO LINES DELETED) ================= -->
-<script>
-    // Smart Hindi-to-English Auto Translation & Transliteration Helper
-    function translateHindiToEnglish(hindiText) {
-        if (!hindiText || typeof hindiText !== 'string') return "";
-
-        var text = hindiText.trim();
-
-        // 1. Common Exam Phrases Dictionary
-        var phrases = [
-            { h: /निम्नलिखित में से कौन सा/gi, e: "Which of the following is" },
-            { h: /निम्नलिखित में से कौन सी/gi, e: "Which of the following is" },
-            { h: /निम्नलिखित में से कौन से/gi, e: "Which of the following are" },
-            { h: /निम्नलिखित में से कौन/gi, e: "Who among the following" },
-            { h: /निम्नलिखित में से/gi, e: "Which of the following" },
-            { h: /निम्न में से कौन सा/gi, e: "Which of the following is" },
-            { h: /निम्न में से कौन सी/gi, e: "Which of the following is" },
-            { h: /निम्न में से कौन/gi, e: "Which of the following" },
-            { h: /निम्न में से/gi, e: "Among the following" },
-            { h: /कहा जाता है\?/gi, e: "is called?" },
-            { h: /कहा जाता है।/gi, e: "is called." },
-            { h: /किसने किया था\?/gi, e: "was done by whom?" },
-            { h: /किसने की थी\?/gi, e: "was done by whom?" },
-            { h: /किसने किया\?/gi, e: "who did?" },
-            { h: /किसके द्वारा/gi, e: "by whom" },
-            { h: /किस राज्य में/gi, e: "in which state" },
-            { h: /किस देश में/gi, e: "in which country" },
-            { h: /किस स्थान पर/gi, e: "at which place" },
-            { h: /किस वर्ष में/gi, e: "in which year" },
-            { h: /किस वर्ष/gi, e: "in which year" },
-            { h: /कब हुई थी\?/gi, e: "when did it happen?" },
-            { h: /कब हुआ था\?/gi, e: "when did it happen?" },
-            { h: /कहाँ स्थित है\?/gi, e: "where is it located?" },
-            { h: /कहाँ पर स्थित है\?/gi, e: "where is it located?" },
-            { h: /कहाँ है\?/gi, e: "where is?" },
-            { h: /क्या कहलाता है\?/gi, e: "what is it called?" },
-            { h: /क्या कहलाती है\?/gi, e: "what is it called?" },
-            { h: /क्या है\?/gi, e: "what is?" },
-            { h: /क्या होता है\?/gi, e: "what happens?" },
-            { h: /किससे संबंधित है\?/gi, e: "is related to what?" },
-            { h: /किसके लिए/gi, e: "for what" },
-            { h: /इनमें से कोई नहीं/gi, e: "None of these" },
-            { h: /उपरोक्त सभी/gi, e: "All of the above" },
-            { h: /दोनों/gi, e: "Both" },
-            { h: /के रूप में/gi, e: "as" },
-            { h: /के अनुसार/gi, e: "according to" }
-        ];
-
-        phrases.forEach(function(item) {
-            text = text.replace(item.h, item.e);
-        });
-
-        // 2. Common Vocabulary & GK Words Dictionary
-        var words = [
-            { h: /भारत/g, e: "India" },
-            { h: /राजधानी/g, e: "Capital" },
-            { h: /राष्ट्रपति/g, e: "President" },
-            { h: /प्रधानमंत्री/g, e: "Prime Minister" },
-            { h: /मुख्यमंत्री/g, e: "Chief Minister" },
-            { h: /राज्यपाल/g, e: "Governor" },
-            { h: /संविधान/g, e: "Constitution" },
-            { h: /अनुच्छेद/g, e: "Article" },
-            { h: /संसद/g, e: "Parliament" },
-            { h: /लोकसभा/g, e: "Lok Sabha" },
-            { h: /राज्यसभा/g, e: "Rajya Sabha" },
-            { h: /सर्वोच्च न्यायालय/g, e: "Supreme Court" },
-            { h: /उच्च न्यायालय/g, e: "High Court" },
-            { h: /नदी/g, e: "River" },
-            { h: /पर्वत/g, e: "Mountain" },
-            { h: /झील/g, e: "Lake" },
-            { h: /महासागर/g, e: "Ocean" },
-            { h: /समुद्र/g, e: "Sea" },
-            { h: /द्वीप/g, e: "Island" },
-            { h: /राज्य/g, e: "State" },
-            { h: /जिला/g, e: "District" },
-            { h: /शहर/g, e: "City" },
-            { h: /राष्ट्रीय उद्यान/g, e: "National Park" },
-            { h: /अभयारण्य/g, e: "Sanctuary" },
-            { h: /मंदिर/g, e: "Temple" },
-            { h: /किला/g, e: "Fort" },
-            { h: /मुद्रा/g, e: "Currency" },
-            { h: /भाषा/g, e: "Language" },
-            { h: /दिवस/g, e: "Day" },
-            { h: /वर्ष/g, e: "Year" },
-            { h: /प्रथम/g, e: "First" },
-            { h: /अंतिम/g, e: "Last" },
-            { h: /सबसे बड़ा/g, e: "Largest" },
-            { h: /सबसे छोटा/g, e: "Smallest" },
-            { h: /सबसे लंबा/g, e: "Longest" },
-            { h: /सबसे ऊँचा/g, e: "Highest" },
-            { h: /संस्थापक/g, e: "Founder" },
-            { h: /खोज/g, e: "Discovery" },
-            { h: /आविष्कार/g, e: "Invention" },
-            { h: /कंप्यूटर/g, e: "Computer" },
-            { h: /मेमोरी/g, e: "Memory" },
-            { h: /सॉफ्टवेयर/g, e: "Software" },
-            { h: /हार्डवेयर/g, e: "Hardware" },
-            { h: /विज्ञान/g, e: "Science" },
-            { h: /इतिहास/g, e: "History" },
-            { h: /भूगोल/g, e: "Geography" },
-            { h: /अर्थशास्त्र/g, e: "Economics" },
-            { h: /उत्तर/g, e: "Answer" },
-            { h: /सही/g, e: "Correct" },
-            { h: /गलत/g, e: "Incorrect" }
-        ];
-
-        words.forEach(function(item) {
-            text = text.replace(item.h, item.e);
-        });
-
-        // 3. Smart Devanagari to Latin Phonetic Transliteration for Remaining Hindi characters
-        var charMap = {
-            'अ':'a','आ':'aa','इ':'i','ई':'ee','उ':'u','ऊ':'oo','ऋ':'ri',
-            'ए':'e','ऐ':'ai','ओ':'o','औ':'au','अं':'an','अः':'ah',
-            'क':'k','ख':'kh','ग':'g','घ':'gh','ङ':'ng',
-            'च':'ch','छ':'chh','ज':'j','झ':'jh','ञ':'ny',
-            'ट':'t','ठ':'th','ड':'d','ढ':'dh','ण':'n',
-            'त':'t','थ':'th','द':'d','ध':'dh','न':'n',
-            'प':'p','फ':'ph','ब':'b','भ':'bh','म':'m',
-            'य':'y','र':'r','ल':'l','व':'v','श':'sh','ष':'sh','स':'s','ह':'h',
-            'क्ष':'ksh','त्र':'tr','ज्ञ':'gya',
-            'ा':'a','ि':'i','ी':'ee','ु':'u','ू':'oo','ृ':'ri',
-            'े':'e','ै':'ai','ो':'o','ौ':'au','ं':'n','ः':'h','्':'',
-            '़':'','ऽ':''
-        };
-
-        var hasDevanagari = /[\u0900-\u097F]/.test(text);
-        if (hasDevanagari) {
-            var out = "";
-            for (var i = 0; i < text.length; i++) {
-                var c = text[i];
-                var nxt = text[i + 1] || '';
-                if (charMap[c] !== undefined) {
-                    var latin = charMap[c];
-                    var isConsonant = /[\u0915-\u0939]/.test(c);
-                    var hasMatra = /[\u093E-\u094D\u0902\u0903]/.test(nxt);
-                    if (isConsonant && !hasMatra && nxt !== ' ' && nxt !== '') {
-                        latin += 'a';
-                    }
-                    out += latin;
-                } else {
-                    out += c;
-                }
-            }
-            text = out;
-        }
-
-        return text.trim();
+      }
     }
 
-    // Override renderCurrentQuestion to guarantee seamless English conversion
-    var prevRenderCurrentQuestion = window.renderCurrentQuestion;
-    window.renderCurrentQuestion = function() {
-        var q = activeQuestions[currentQIdx];
-        if (!q) return;
+    document.getElementById('pauseToggleBtn').addEventListener('click', togglePause);
+    document.getElementById('resumeBtn').addEventListener('click', togglePause);
 
-        var curLang = window.appLanguage || 'hi';
-        var qText = "";
-        var optionsList = [];
+    document.getElementById('skipBtn').addEventListener('click', () => {
+      clearInterval(timerInterval);
+      cancelSpeech();
+      renderNewQuestion();
+    });
 
-        if (curLang === 'en') {
-            if (q.q_en || q.question_en) {
-                qText = q.q_en || q.question_en;
-            } else {
-                qText = translateHindiToEnglish(q.q || q.question || '');
-            }
+    document.getElementById('resetScoreBtn').addEventListener('click', () => {
+      score = 0;
+      streak = 0;
+      totalQuestions = 0;
+      askedQuestionsSet.clear();
+      updateScoreboard();
+      document.getElementById('totalQuestionsCount').innerText = "#1";
+      renderNewQuestion();
+    });
 
-            if (q.options_en && Array.isArray(q.options_en) && q.options_en.length > 0) {
-                optionsList = q.options_en;
-            } else {
-                var baseOpts = Array.isArray(q.options) ? q.options : [];
-                optionsList = baseOpts.map(function(opt) {
-                    return translateHindiToEnglish(opt);
-                });
-            }
-        } else if (curLang === 'mr') {
-            var rawMrQ = q.q_mr || q.question_mr;
-            qText = rawMrQ ? rawMrQ : getAutoLanguageText(q.q || q.question || '', 'mr');
-
-            if (q.options_mr && Array.isArray(q.options_mr)) {
-                optionsList = q.options_mr;
-            } else {
-                var baseOpts = Array.isArray(q.options) ? q.options : (Array.isArray(q.options_en) ? q.options_en : []);
-                optionsList = baseOpts.map(function(opt) {
-                    return getAutoLanguageText(opt, 'mr');
-                });
-            }
-        } else { // Hindi default
-            qText = q.q || q.question || q.q_en || q.question_en || '';
-            optionsList = Array.isArray(q.options) ? q.options : (Array.isArray(q.options_en) ? q.options_en : []);
-        }
-
-        // Update Question Counter & Text
-        document.getElementById('q-indicator').innerText = 'Question ' + (currentQIdx + 1) + '/' + activeQuestions.length;
-        document.getElementById('current-question-text').innerText = (currentQIdx + 1) + '. ' + qText;
-
-        // Ensure Language Selector Dropdown is in Top Test Bar
-        var statusBar = document.querySelector('#view-test .test-status-bar');
-        if (statusBar) {
-            var langSelect = document.getElementById('lang-select-dropdown');
-            if (!langSelect) {
-                langSelect = document.createElement('select');
-                langSelect.id = 'lang-select-dropdown';
-                langSelect.className = 'lang-dropdown-select';
-                langSelect.innerHTML = `
-                    <option value="hi">🌐 हिन्दी</option>
-                    <option value="en">🌐 English</option>
-                    <option value="mr">🌐 मराठी</option>
-                `;
-                langSelect.onchange = function() {
-                    handleLanguageChange(this.value);
-                };
-                var timerEl = document.getElementById('timer-display');
-                statusBar.insertBefore(langSelect, timerEl);
-            }
-            langSelect.value = curLang;
-        }
-
-        var optLetters = ['A', 'B', 'C', 'D'];
-        var optContainer = document.getElementById('current-options-box');
-        var isMarked = !!markedReviewQuestions[currentQIdx];
-
-        var optionsHtml = optionsList.map(function(opt, idx) {
-            var isSelected = userSelections[currentQIdx] === idx;
-            return '<div class="option-item ' + (isSelected ? 'selected' : '') + '" onclick="selectAnswer(' + idx + ')">' +
-                   '<span class="opt-circle">' + (optLetters[idx] || (idx + 1)) + '</span>' +
-                   '<span>' + opt + '</span></div>';
-        }).join('');
-
-        var markBtnHtml = `
-            <button type="button" class="btn-mark-review ${isMarked ? 'is-marked' : ''}" onclick="toggleMarkCurrentQuestion()">
-                ${isMarked ? '🔖 Marked For Review (Click to Unmark)' : '🔖 Mark Question For Review'}
-            </button>
-        `;
-
-        optContainer.innerHTML = optionsHtml + markBtnHtml;
-        renderPalette();
+    // -------------------------------------------------------------
+    // 10. WINDOW ONLOAD INITIALIZATION
+    // -------------------------------------------------------------
+    window.onload = function() {
+      requestWakeLock();
+      populateVoices();
+      fetchAIQuestionsBatch();
+      renderNewQuestion();
+      startBackgroundMusic();
     };
-</script>
-
+  </script>
 </body>
 </html>
