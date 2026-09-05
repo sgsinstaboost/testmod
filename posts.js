@@ -400,6 +400,15 @@ if (googleBtnEl) {
     googleBtnEl.addEventListener('click', window.handleGoogleLogin);
 }
 
+const googleSignupBtnEl = document.getElementById('google-signup-btn');
+if (googleSignupBtnEl) {
+    googleSignupBtnEl.addEventListener('click', window.handleGoogleLogin);
+}
+
+window.addEventListener('triggerGoogleAuth', () => {
+    window.handleGoogleLogin();
+});
+
 window.switchTab = function(targetId) {
     document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
 
@@ -664,13 +673,13 @@ window.submitDepositToServer = async function() {
 
                     if (!isUsed) {
                         const hasAmount = rawMsg.includes(`rs.${numVal}`) ||
-                                         rawMsg.includes(`rs. ${numVal}`) ||
-                                         rawMsg.includes(`rs ${numVal}`) ||
-                                         rawMsg.includes(`rs.${floatVal}`) ||
-                                         rawMsg.includes(`rs ${floatVal}`) ||
-                                         rawMsg.includes(`₹${numVal}`) ||
-                                         rawMsg.includes(`₹${floatVal}`) ||
-                                         rawMsg.includes(`${numVal}`);
+                                          rawMsg.includes(`rs. ${numVal}`) ||
+                                          rawMsg.includes(`rs ${numVal}`) ||
+                                          rawMsg.includes(`rs.${floatVal}`) ||
+                                          rawMsg.includes(`rs ${floatVal}`) ||
+                                          rawMsg.includes(`₹${numVal}`) ||
+                                          rawMsg.includes(`₹${floatVal}`) ||
+                                          rawMsg.includes(`${numVal}`);
 
                         const nameParts = cleanNameInput.split(' ').filter(p => p.length >= 2);
                         const hasName = rawMsg.includes(cleanNameInput) ||
