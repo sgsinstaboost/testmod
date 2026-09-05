@@ -442,7 +442,7 @@
                 <span>REFER OUR PANEL AND EARN COMMISSION</span>
             </div>
             <div>
-                <button onclick="document.getElementById('tab-btn-refer').click()" class="bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-[10px] font-extrabold uppercase px-3 py-1 rounded-md text-white shadow-md transition">Click Here</button>
+                <button onclick="document.getElementById('drawer-tab-btn-refer') ? document.getElementById('drawer-tab-btn-refer').click() : window.switchTab('refer')" class="bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-[10px] font-extrabold uppercase px-3 py-1 rounded-md text-white shadow-md transition">Click Here</button>
             </div>
         </div>
 
@@ -481,7 +481,7 @@
                         <p class="text-[11px] text-pink-100 opacity-90 font-mono">Account Balance</p>
                     </div>
                 </div>
-                <button onclick="document.getElementById('tab-btn-addfunds').click()" class="bg-black/30 hover:bg-black/50 text-[10px] font-bold py-1.5 px-3 rounded-xl border border-white/20 transition whitespace-nowrap">
+                <button onclick="document.getElementById('drawer-tab-btn-addfunds') ? document.getElementById('drawer-tab-btn-addfunds').click() : window.switchTab('addfunds')" class="bg-black/30 hover:bg-black/50 text-[10px] font-bold py-1.5 px-3 rounded-xl border border-white/20 transition whitespace-nowrap">
                     Add Funds
                 </button>
             </div>
@@ -509,40 +509,18 @@
 
     <div class="flex flex-1 flex-col lg:flex-row max-w-7xl w-full mx-auto p-4 md:p-6 gap-6">
 
-        <aside class="hidden lg:flex lg:w-64 flex-col gap-2 shrink-0 border-r border-white/10 pr-6">
-            <button id="tab-btn-dashboard" class="text-left p-3.5 rounded-2xl flex items-center space-x-3 font-semibold transition tab-btn glass-panel-active text-white">
-                <i class="fa-solid fa-circle-plus text-rose-300"></i><span>New Order Hub</span>
-            </button>
-            <button id="tab-btn-myorders" class="text-left p-3.5 rounded-2xl flex items-center space-x-3 font-medium transition text-pink-100 hover:text-white hover:bg-white/10 tab-btn">
-                <i class="fa-solid fa-folder-open text-sky-300"></i><span>Order Logs</span>
-            </button>
-            <button id="tab-btn-addfunds" class="text-left p-3.5 rounded-2xl flex items-center space-x-3 font-medium transition text-pink-100 hover:text-white hover:bg-white/10 tab-btn">
-                <i class="fa-solid fa-wallet text-emerald-300"></i><span>Settle Wallet</span>
-            </button>
-            <button id="tab-btn-refer" class="text-left p-3.5 rounded-2xl flex items-center space-x-3 font-medium transition text-pink-100 hover:text-white hover:bg-white/10 tab-btn">
-                <i class="fa-solid fa-gift text-amber-300"></i><span>Affiliate Program</span>
-            </button>
-
-            <div class="my-4 border-t border-white/10"></div>
-
-            <button id="btn-desktop-main" class="text-left p-3 rounded-xl flex items-center space-x-3 text-xs text-pink-100 hover:text-white hover:bg-white/5 transition">
-                <i class="fa-solid fa-globe text-blue-300"></i><span>Main Website</span>
-            </button>
-            <button id="btn-desktop-security" class="text-left p-3 rounded-xl flex items-center space-x-3 text-xs text-pink-100 hover:text-white hover:bg-white/5 transition">
-                <i class="fa-solid fa-shield-halved text-emerald-300"></i><span>Security Directives</span>
-            </button>
-            <button id="btn-desktop-refund" class="text-left p-3 rounded-xl flex items-center space-x-3 text-xs text-pink-100 hover:text-white hover:bg-white/5 transition">
-                <i class="fa-solid fa-arrow-rotate-left text-amber-300"></i><span>Refund Policies</span>
-            </button>
-            <button id="btn-desktop-faq" class="text-left p-3 rounded-xl flex items-center space-x-3 text-xs text-pink-100 hover:text-white hover:bg-white/5 transition">
-                <i class="fa-solid fa-circle-question text-sky-300"></i><span>Knowledge Base / FAQ</span>
-            </button>
-            <button id="btn-desktop-about" class="text-left p-3 rounded-xl flex items-center space-x-3 text-xs text-pink-100 hover:text-white hover:bg-white/5 transition">
-                <i class="fa-solid fa-address-card text-purple-300"></i><span>About Developer</span>
-            </button>
-            <button id="btn-desktop-contact" class="text-left p-3 rounded-xl flex items-center space-x-3 text-xs text-pink-100 hover:text-white hover:bg-white/5 transition">
-                <i class="fa-brands fa-whatsapp text-emerald-300"></i><span>24/7 Desk Contact</span>
-            </button>
+        <!-- ASIDE / HOMESCREEN SIDEBAR REMOVED/HIDDEN TO CLEAN UP HOME SCREEN (KEEPING BUTTONS ONLY IN DRAWER) -->
+        <aside class="hidden shrink-0 pr-6">
+            <button id="tab-btn-dashboard" class="hidden"></button>
+            <button id="tab-btn-myorders" class="hidden"></button>
+            <button id="tab-btn-addfunds" class="hidden"></button>
+            <button id="tab-btn-refer" class="hidden"></button>
+            <button id="btn-desktop-main" class="hidden"></button>
+            <button id="btn-desktop-security" class="hidden"></button>
+            <button id="btn-desktop-refund" class="hidden"></button>
+            <button id="btn-desktop-faq" class="hidden"></button>
+            <button id="btn-desktop-about" class="hidden"></button>
+            <button id="btn-desktop-contact" class="hidden"></button>
         </aside>
 
         <!-- Drawer Profile Side Panel -->
@@ -1479,10 +1457,7 @@
                 const el = document.getElementById(btn.id);
                 if (el) {
                     el.addEventListener('click', () => {
-                        const targetBtn = document.getElementById(`tab-btn-${btn.target}`);
-                        if (targetBtn) {
-                            targetBtn.click();
-                        } else if (typeof window.switchTab === 'function') {
+                        if (typeof window.switchTab === 'function') {
                             window.switchTab(btn.target);
                         }
                         const drawer = document.getElementById('sideDrawer');
