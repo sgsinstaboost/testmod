@@ -1,1238 +1,1449 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SGS ONLINE PORTAL - Live Quiz Blackboard by Sachin Sir</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Tiro+Devanagari+Hindi:ital@0;1&family=Yantramanav:wght@500;700;900&display=swap" rel="stylesheet">
-  
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            hindi: ['"Yantramanav"', '"Tiro Devanagari Hindi"', 'sans-serif'],
-            sans: ['"Plus Jakarta Sans"', '"Yantramanav"', 'sans-serif']
-          },
-          colors: {
-            chalkYellow: '#fde047',
-            chalkGreen: '#22c55e',
-            boardBlack: '#000000'
-          },
-          animation: {
-            'glow-green': 'greenGlow 0.8s ease-in-out infinite alternate',
-            'live-blink': 'pulse 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
-          },
-          keyframes: {
-            greenGlow: {
-              '0%': { boxShadow: '0 0 10px rgba(34, 197, 94, 0.4)', transform: 'scale(1)' },
-              '100%': { boxShadow: '0 0 25px rgba(34, 197, 94, 0.9)', transform: 'scale(1.02)' }
-            }
-          }
-        }
-      }
-    }
-  </script>
+    <meta name="google-site-verification" content="n6gutNuaXm4jPFef6_Yxsfz5UcDynkGHi86Py-8IH-0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>SGS Premium SMM Engine - Enterprise Hub</title>
 
-  <style>
-    body {
-      background-color: #000000;
-      color: #ffffff;
-    }
-    .blackboard-frame {
-      background-color: #000000;
-      border: 2px solid #262626;
-      box-shadow: 0 0 50px -10px rgba(0,0,0,0.9), inset 0 0 80px rgba(255,255,255,0.02);
-    }
-    .option-card {
-      background-color: #0d0d0d;
-      border: 1.5px solid #2d2d2d;
-      color: #ffffff;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .option-card:hover:not(:disabled) {
-      border-color: #fde047;
-      background-color: #171717;
-      transform: translateY(-2px);
-    }
-    .correct-highlight {
-      background-color: #15803d !important;
-      border-color: #4ade80 !important;
-      color: #ffffff !important;
-      animation: greenGlow 0.7s ease-in-out infinite alternate;
-    }
-    .wrong-highlight {
-      background-color: #991b1b !important;
-      border-color: #f87171 !important;
-      color: #ffffff !important;
-    }
-    #timerCircle {
-      transition: stroke-dashoffset 0.08s linear, stroke 0.3s ease;
-    }
-    .eq-bar {
-      width: 3px;
-      background-color: #fde047;
-      border-radius: 2px;
-      animation: eqAnimation 0.8s ease-in-out infinite alternate;
-    }
-    .eq-bar:nth-child(1) { height: 12px; animation-delay: 0.1s; }
-    .eq-bar:nth-child(2) { height: 18px; animation-delay: 0.3s; }
-    .eq-bar:nth-child(3) { height: 9px; animation-delay: 0.2s; }
-    .eq-bar:nth-child(4) { height: 15px; animation-delay: 0.4s; }
-    @keyframes eqAnimation {
-      0% { height: 3px; }
-      100% { height: 18px; }
-    }
-    @keyframes tickerScroll {
-      0% { transform: translateX(100%); }
-      100% { transform: translateX(-100%); }
-    }
-    .live-ticker-track {
-      display: inline-block;
-      white-space: nowrap;
-      animation: tickerScroll 28s linear infinite;
-    }
-  </style>
-</head>
-<body class="bg-black text-white min-h-screen flex flex-col font-hindi selection:bg-yellow-400 selection:text-black">
+    <!-- Tailwind CSS Integration -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Iconographies -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Premium Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-  <header class="border-b border-neutral-800 bg-black/95 sticky top-0 z-50 px-3 sm:px-6 py-2.5 shadow-xl">
-    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-2">
-      
-      <!-- Left: Logo & Portal Title -->
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-xl bg-yellow-400 text-black flex items-center justify-center font-black text-xl shadow-lg shadow-yellow-500/20">
-          🎓
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <h1 class="font-black text-lg sm:text-2xl tracking-wider text-yellow-400 uppercase font-sans">
-              SGS ONLINE PORTAL
-            </h1>
-            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-red-600 text-white text-[11px] font-black tracking-widest uppercase">
-              <span class="w-1.5 h-1.5 rounded-full bg-white animate-live-blink"></span> LIVE
-            </span>
-            <span class="hidden md:inline-flex items-center px-2 py-0.5 rounded bg-neutral-900 border border-neutral-700 text-[10px] text-emerald-400 font-mono" id="streamSessionTag">
-              ID: SGS-LIVE
-            </span>
-          </div>
-          <p class="text-[11px] sm:text-xs text-neutral-400 font-medium">
-            🔴 100% प्रामाणिक Mock Test: GK • GS • हिन्दी व्याकरण • करेंट अफेयर्स (By Sachin Sir)
-          </p>
-        </div>
-      </div>
-
-      <!-- Right: Voice Profile, BGM, and WakeLock Controls -->
-      <div class="flex items-center gap-2 sm:gap-3 flex-wrap">
-        
-        <!-- By Sachin Sir Badge -->
-        <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-neutral-900 border border-neutral-700 shadow">
-          <div class="w-7 h-7 rounded-full bg-yellow-400 text-black flex items-center justify-center font-black text-xs">
-            👨‍🏫
-          </div>
-          <div class="text-left leading-tight">
-            <div class="text-[9px] uppercase font-bold text-yellow-400 tracking-wider font-sans">Instructor</div>
-            <div class="text-xs sm:text-sm font-black text-white tracking-tight font-sans">By Sachin Sir</div>
-          </div>
-        </div>
-
-        <!-- AI Voice Selector Dropdown (Multiple Indian Voices) -->
-        <div class="flex items-center gap-1.5 bg-neutral-900 border border-neutral-700 px-2 py-1 rounded-xl">
-          <span class="text-xs">🎙️</span>
-          <select id="voiceProfileSelect" class="bg-transparent text-yellow-300 font-bold text-xs focus:outline-none cursor-pointer" title="AI वॉइस चयन करें">
-            <option value="teacher_female" class="bg-neutral-900 text-white">👩‍🏫 भारतीय शिक्षिका (Female)</option>
-            <option value="teacher_male" class="bg-neutral-900 text-white">👨‍🏫 सचिन सर आवाज़ (Male)</option>
-            <option value="young_female" class="bg-neutral-900 text-white">👧 युवा आवाज़ (Young Female)</option>
-            <option value="deep_male" class="bg-neutral-900 text-white">🎙️ गंभीर शिक्षक (Deep Male)</option>
-            <option value="standard" class="bg-neutral-900 text-white">🤖 मानक आवाज़ (Standard)</option>
-          </select>
-        </div>
-
-        <!-- AI Voice Speech Toggle Button -->
-        <button id="voiceToggleBtn" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-xs font-bold text-yellow-300 border border-neutral-700 transition" title="AI वॉइस चालू/बंद">
-          <span id="voiceIcon">🔊</span>
-          <span id="voiceStatusLabel">Voice: ON</span>
-        </button>
-
-        <!-- Copyright Free BGM Toggle -->
-        <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-neutral-900 border border-neutral-700">
-          <button id="bgmToggleBtn" class="flex items-center gap-1.5 text-xs font-bold text-yellow-400 hover:text-yellow-300 transition" title="म्यूजिक चालू/बंद (100% No-Copyright)">
-            <div id="bgmVisualizer" class="flex items-end gap-0.5 h-4">
-              <div class="eq-bar"></div>
-              <div class="eq-bar"></div>
-              <div class="eq-bar"></div>
-              <div class="eq-bar"></div>
-            </div>
-            <span class="hidden md:inline">BGM</span>
-          </button>
-          <input id="bgmVolumeSlider" type="range" min="0" max="1" step="0.05" value="0.25" class="w-12 sm:w-16 h-1.5 bg-neutral-700 rounded appearance-none cursor-pointer accent-yellow-400" title="वॉल्यूम">
-        </div>
-
-        <!-- Always-On Screen Lock Status -->
-        <div id="wakeLockBadge" title="स्क्रीन बंद नहीं होगी" class="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-neutral-900 border border-neutral-700 text-xs font-semibold text-emerald-400">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-          <span class="hidden sm:inline">Screen ON</span>
-        </div>
-
-        <!-- Fullscreen Button -->
-        <button id="fullscreenBtn" class="p-2 rounded-xl bg-neutral-900 hover:bg-neutral-800 text-neutral-300 border border-neutral-700 transition" title="फुल स्क्रीन">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <main class="flex-1 max-w-5xl w-full mx-auto p-3 sm:p-5 flex flex-col justify-center items-center">
-
-    <!-- Category Filter & Score Stats -->
-    <div class="w-full mb-3 flex flex-wrap items-center justify-between gap-3 bg-neutral-950 border border-neutral-800 p-3 rounded-2xl">
-      <div class="flex items-center gap-2 flex-wrap">
-        <span class="text-xs font-bold text-yellow-400">📚 विषय:</span>
-        <select id="subjectSelect" class="bg-neutral-900 text-yellow-300 font-bold text-xs sm:text-sm rounded-xl px-3 py-1.5 border border-neutral-700 focus:outline-none focus:border-yellow-400 cursor-pointer">
-          <option value="mixed">🔥 मिक्स लाइव टेस्ट (GK + GS + हिन्दी + करेंट अफेयर्स)</option>
-          <option value="gk">🏛️ सामान्य ज्ञान (GK - इतिहास, भूगोल, संविधान)</option>
-          <option value="science">🔬 सामान्य विज्ञान (GS - Physics, Chemistry, Biology)</option>
-          <option value="hindi">📖 हिन्दी व्याकरण (संधि, समास, वर्तनी, मुहावरे)</option>
-          <option value="ca">📰 करेंट अफेयर्स (Current Affairs)</option>
-          <option value="ssc_railway">🚆 SSC GD / Railway / Police Special</option>
-        </select>
-      </div>
-
-      <div class="flex items-center gap-3 sm:gap-5 text-xs sm:text-sm font-bold">
-        <div class="flex items-center gap-1.5 text-neutral-300">
-          <span class="text-neutral-500">अंक (Score):</span>
-          <span id="scoreDisplay" class="text-emerald-400 font-black text-base">0</span>
-        </div>
-        <div class="flex items-center gap-1.5 text-yellow-400">
-          <span>🔥 स्ट्रीक:</span>
-          <span id="streakDisplay" class="font-black text-base">0</span>
-        </div>
-        <div class="flex items-center gap-1.5 text-neutral-400">
-          <span>प्रश्न:</span>
-          <span id="totalQuestionsCount" class="text-white font-black text-base">#1</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- BLACKBOARD CARD -->
-    <div class="w-full blackboard-frame rounded-3xl p-5 sm:p-8 shadow-2xl relative overflow-hidden flex flex-col min-h-[470px] justify-between">
-      <!-- Top Card Bar: Subject Badges & Timer -->
-      <div class="flex items-center justify-between border-b border-neutral-800 pb-3 mb-2">
-        <div class="flex items-center gap-2 flex-wrap">
-          <span id="badgeSubject" class="px-3 py-1 bg-yellow-400/10 border border-yellow-400/30 text-yellow-400 text-xs sm:text-sm font-bold rounded-xl">
-            सामान्य ज्ञान (GK)
-          </span>
-          <span id="badgeExam" class="px-3 py-1 bg-neutral-900 border border-neutral-700 text-neutral-300 text-xs font-semibold rounded-xl">
-            SSC / Railway / All Exams
-          </span>
-          <span class="px-2 py-0.5 bg-emerald-950/60 border border-emerald-500/40 text-emerald-400 text-[11px] font-bold rounded-lg flex items-center gap-1">
-            <span>🛡️ 100% Verified</span>
-          </span>
-          <span id="speakingIndicator" class="hidden items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-yellow-400/20 text-yellow-300 text-xs font-bold animate-pulse">
-            <span class="w-2 h-2 rounded-full bg-yellow-400 animate-ping"></span>
-            <span>🗣️ AI प्रश्न पढ़ रहा है...</span>
-          </span>
-        </div>
-
-        <!-- 10s Circular Timer -->
-        <div class="flex items-center gap-2">
-          <div class="text-right hidden sm:block">
-            <div id="timerStatusLabel" class="text-[10px] uppercase font-bold text-yellow-400/80">सुने / 10s समय</div>
-            <div id="timerSubtext" class="text-xs font-bold text-yellow-400">10 सेकंड</div>
-          </div>
-          <div class="relative w-14 h-14 flex items-center justify-center">
-            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-              <path class="text-neutral-800" stroke-width="3" stroke="currentColor" fill="none"
-                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-              <path id="timerCircle" class="text-yellow-400" stroke-dasharray="100, 100" stroke-dashoffset="0" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none"
-                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-            </svg>
-            <span id="timerNumber" class="absolute font-black text-xl text-yellow-400 font-sans">10</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- QUESTION TEXT: BRIGHT YELLOW IN DEVANAGARI BOLD -->
-      <div class="my-auto py-3 sm:py-5">
-        <div class="text-xs font-black text-yellow-500/80 mb-1.5 tracking-wider uppercase">
-          प्र० <span id="qIndexLabel">1</span>.
-        </div>
-        <h2 id="questionText" class="text-xl sm:text-2xl md:text-3xl font-black text-chalkYellow tracking-wide leading-relaxed text-left">
-          प्रश्न लोड हो रहा है...
-        </h2>
-      </div>
-
-      <!-- 4 OPTIONS GRID: CRISP WHITE TEXT ON BLACKBOARD -->
-      <div id="optionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 my-3">
-        <!-- Buttons injected dynamically -->
-      </div>
-
-      <!-- Live Feedback & 2-Second Next Alert Bar -->
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-2.5 pt-3 border-t border-neutral-800 text-xs sm:text-sm">
-        <div id="explanationBox" class="flex items-start gap-2 text-neutral-300 font-medium w-full sm:w-auto">
-          <span class="inline-block w-2.5 h-2.5 rounded-full bg-yellow-400 animate-pulse mt-1 flex-shrink-0"></span>
-          <span id="explanationText" class="leading-snug">10 सेकंड का लाइव टाइमर चालू है! सही विकल्प चुनें...</span>
-        </div>
-
-        <div id="autoNextNotice" class="hidden text-yellow-400 font-bold items-center gap-2 bg-neutral-900 px-3 py-1.5 rounded-xl border border-yellow-500/40 flex-shrink-0">
-          <span>⚡ अगला प्रश्न 2 सेकंड में आ रहा है...</span>
-          <div class="w-4 h-4 border-2 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
-        </div>
-      </div>
-
-      <!-- Live Pause Overlay -->
-      <div id="pauseOverlay" class="absolute inset-0 bg-black/95 backdrop-blur-md hidden flex-col items-center justify-center p-6 text-center z-30">
-        <div class="w-16 h-16 rounded-2xl bg-yellow-400/20 text-yellow-400 flex items-center justify-center text-3xl mb-3 border border-yellow-400/30">
-          ⏸️
-        </div>
-        <h3 class="text-2xl font-black text-white mb-2">लाइव क्लास रुकी हुई है (Paused)</h3>
-        <p class="text-neutral-400 max-w-sm mb-5 text-sm">प्रैक्टिस दोबारा शुरू करने के लिए नीचे 'Resume' बटन दबाएं।</p>
-        <button id="resumeBtn" class="px-7 py-3 bg-yellow-400 hover:bg-yellow-300 text-black font-black rounded-xl shadow-xl transition transform active:scale-95">
-          ▶ फिर से शुरू करें (Resume)
-        </button>
-      </div>
-
-    </div>
-
-    <!-- YouTube Live Stream Bottom Ticker -->
-    <div class="w-full mt-3 bg-neutral-950 border border-neutral-800/80 rounded-xl px-3 py-2 overflow-hidden flex items-center shadow">
-      <div class="bg-red-600 text-white font-black text-[10px] px-2 py-0.5 rounded-md uppercase tracking-wider mr-2 flex-shrink-0">
-        🔴 LIVE INFO
-      </div>
-      <div class="overflow-hidden relative w-full text-xs text-neutral-300 font-medium">
-        <div class="live-ticker-track">
-          ✦ SGS ONLINE PORTAL • By Sachin Sir ✦ Daily Live Mock Test ✦ SSC GD, CGL, Railway NTPC & Police Bharti ✦ 100% NCERT & Official Exam Board Verified ✦ Live Chat me apna answer zaroor dein! ✦
-        </div>
-      </div>
-    </div>
-
-    <!-- Quick Action Controls -->
-    <div class="w-full max-w-lg mt-3 flex items-center justify-center gap-2.5 sm:gap-3 flex-wrap">
-      <button id="speakAgainBtn" class="py-2 px-3 bg-neutral-900 hover:bg-neutral-800 text-yellow-300 text-xs sm:text-sm font-bold rounded-xl border border-neutral-700 transition flex items-center gap-1.5" title="प्रश्न दोबारा बोलें">
-        <span>🗣️ दोबारा बोलें</span>
-      </button>
-      <button id="pauseToggleBtn" class="py-2 px-3 bg-neutral-900 hover:bg-neutral-800 text-neutral-200 text-xs sm:text-sm font-bold rounded-xl border border-neutral-700 transition flex items-center gap-1.5">
-        <span>⏸️ रोकें</span>
-      </button>
-      <button id="skipBtn" class="py-2 px-3 bg-neutral-900 hover:bg-neutral-800 text-yellow-400 text-xs sm:text-sm font-bold rounded-xl border border-neutral-700 transition flex items-center gap-1.5">
-        <span>⏩ अगला प्रश्न (Skip)</span>
-      </button>
-      <button id="resetScoreBtn" class="py-2 px-3 bg-neutral-900 hover:bg-red-950/60 text-red-400 text-xs sm:text-sm font-bold rounded-xl border border-neutral-700 transition flex items-center gap-1">
-        <span>🔄 रीसेट</span>
-      </button>
-    </div>
-
-    <!-- YouTube Monetization & Safe Content Tip -->
-    <div class="mt-3 text-center">
-      <p class="text-[11px] text-neutral-500">
-        🛡️ <strong>YouTube Safe & Verified:</strong> 100% Authentic NCERT Verified Questions • Zero Copyright Sound Synthesizer • Anti-Reused Stream Design
-      </p>
-    </div>
-
-  </main>
-
-  <script>
-    const apiKey = ""; // Gemini API runtime key
-
-    let currentQuestion = null;
-    let timerInterval = null;
-    let timeLeft = 10;
-    let isAnswered = false;
-    let isPaused = false;
-    let voiceEnabled = true;
-    let isSpeaking = false;
-    let selectedVoiceProfile = "teacher_female";
-    let bgmEnabled = true;
-    let bgmVolume = 0.25;
-
-    let score = 0;
-    let streak = 0;
-    let totalQuestions = 0;
-
-    const askedQuestionsSet = new Set();
-    const askedTopicsRegistry = [];
-    let questionQueue = [];
-    let isFetchingAI = false;
-    let wakeLock = null;
-
-    const subTopicsList = [
-      "भारतीय संविधान एवं मौलिक अधिकार",
-      "सिंधु घाटी सभ्यता व मौर्य साम्राज्य",
-      "भारत की प्रमुख नदियां, पर्वत व झीलें",
-      "जीव विज्ञान: मानव शरीर क्रिया विज्ञान व विटामिन्स",
-      "भौतिक विज्ञान: ध्वनि, प्रकाश, गुरुत्वाकर्षण",
-      "रसायन विज्ञान: प्रमुख अम्ल, क्षार व धातुएं",
-      "हिन्दी व्याकरण: संधि, समास, वर्तनी शुद्धि, मुहावरे",
-      "प्रसिद्ध पुस्तकें, लेखक, राष्ट्रीय उद्यान व पुरस्कार",
-      "हाल के महत्वपूर्ण राष्ट्रीय व अंतर्राष्ट्रीय करेंट अफेयर्स"
-    ];
-
-    const fallbackHindiBank = [
-      {
-        question: "भारतीय संविधान की प्रारूप समिति (Drafting Committee) के अध्यक्ष कौन थे?",
-        options: ["डॉ. भीमराव अंबेडकर", "पंडित जवाहरलाल नेहरू", "डॉ. राजेंद्र प्रसाद", "सरदार वल्लभभाई पटेल"],
-        correctIndex: 0,
-        subject: "भारतीय संविधान (Polity)",
-        exam: "SSC / Railway / All Exams",
-        explanation: "डॉ. भीमराव अंबेडकर प्रारूप समिति के अध्यक्ष थे और उन्हें संविधान का जनक कहा जाता है।"
-      },
-      {
-        question: "मानव शरीर में रक्त का शुद्धिकरण (Purification of Blood) किस अंग में होता है?",
-        options: ["फेफड़े (Lungs)", "हृदय (Heart)", "वृक्क (Kidney)", "यकृत (Liver)"],
-        correctIndex: 2,
-        subject: "सामान्य विज्ञान (GS)",
-        exam: "SSC GD / Railway",
-        explanation: "वृक्क (Kidney) रक्त में से अपशिष्ट पदार्थों को छानकर मूत्र के रूप में अलग करता है।"
-      },
-      {
-        question: "हिन्दी व्याकरण में 'पवन' शब्द का सही संधि-विच्छेद क्या होगा?",
-        options: ["प + वन", "पो + अन", "पौ + अन", "पा + वन"],
-        correctIndex: 1,
-        subject: "हिन्दी व्याकरण",
-        exam: "Police / SSC GD / UPSSSC",
-        explanation: "पो + अन = पवन (अयादि स्वर संधि के नियमानुसार ओ + अ = अव बनता है)।"
-      },
-      {
-        question: "सूर्य के प्रकाश को पृथ्वी तक पहुँचने में लगभग कितना समय लगता है?",
-        options: ["5 मिनट 20 सेकंड", "8 मिनट 20 सेकंड", "10 मिनट 10 सेकंड", "6 मिनट 30 सेकंड"],
-        correctIndex: 1,
-        subject: "भौतिक विज्ञान / भूगोल",
-        exam: "Railway NTPC / SSC",
-        explanation: "सूर्य के प्रकाश को पृथ्वी तक पहुँचने में लगभग 8 मिनट 20 सेकंड (500 सेकंड) का समय लगता है।"
-      },
-      {
-        question: "भारत में 'राष्ट्रीय युवा दिवस' प्रत्येक वर्ष किस तिथि को मनाया जाता है?",
-        options: ["10 जनवरी", "12 जनवरी", "15 जनवरी", "23 जनवरी"],
-        correctIndex: 1,
-        subject: "स्टेटिक GK / दिवस",
-        exam: "All Govt Exams",
-        explanation: "स्वामी विवेकानंद जी की जयंती के उपलक्ष्य में प्रतिवर्ष 12 जनवरी को राष्ट्रीय युवा दिवस मनाया जाता है।"
-      },
-      {
-        question: "निम्नलिखित में से 'अमृत' शब्द का सही पर्यायवाची शब्द कौन सा है?",
-        options: ["सुधा", "पावक", "व्योम", "वारि"],
-        correctIndex: 0,
-        subject: "हिन्दी व्याकरण",
-        exam: "SSC GD / All State Exams",
-        explanation: "अमृत के प्रमुख पर्यायवाची शब्द सुधा, पीयूष, सोम और अमिय हैं।"
-      },
-      {
-        question: "ध्वनि की गति (Speed of Sound) सबसे अधिक किस माध्यम में होती है?",
-        options: ["हवा में (Air)", "पानी में (Water)", "ठोस इस्पात में (Solid Steel)", "निर्वात में (Vacuum)"],
-        correctIndex: 2,
-        subject: "सामान्य विज्ञान (GS)",
-        exam: "Railway Group D / SSC",
-        explanation: "ठोस माध्यमों (जैसे इस्पात) में ध्वनि की चाल सर्वाधिक लगभग 5960 मीटर/सेकंड होती है।"
-      },
-      {
-        question: "भारत का सबसे ऊँचा बांध 'टिहरी बांध' किस नदी पर निर्मित है?",
-        options: ["भागीरथी नदी", "नर्मदा नदी", "महानदी", "कावेरी नदी"],
-        correctIndex: 0,
-        subject: "भारत का भूगोल (GK)",
-        exam: "SSC / Railway / State Police",
-        explanation: "टिहरी बांध उत्तराखंड राज्य में भागीरथी नदी पर स्थित भारत का सबसे ऊँचा बांध है।"
-      }
-    ];
-
-    function normalizeQuestionKey(text) {
-      if (!text) return "";
-      return text.toLowerCase().replace(/[^\u0900-\u097F\w]/g, '').trim();
-    }
-
-    async function fetchAIQuestionsBatch() {
-      if (isFetchingAI) return;
-      isFetchingAI = true;
-
-      const subjectKey = document.getElementById('subjectSelect').value;
-      const randomSubTopic = subTopicsList[Math.floor(Math.random() * subTopicsList.length)];
-      const seedKey = `${Date.now()}_${Math.floor(Math.random() * 999999)}`;
-
-      let promptFocus = `विविध विषय जैसे: ${randomSubTopic}`;
-
-      if (subjectKey === 'hindi') {
-        promptFocus = "हिन्दी व्याकरण (संधि, समास, उपसर्ग, प्रत्यय, वर्तनी शुद्धि, मुहावरे, लोकोक्तियाँ, पर्यायवाची, विलोम शब्द, कारक, अलंकार)";
-      } else if (subjectKey === 'gk') {
-        promptFocus = `भारतीय संविधान, इतिहास, भूगोल, अर्थव्यवस्था, स्टेटिक GK (विशेष फोकस: ${randomSubTopic})`;
-      } else if (subjectKey === 'science') {
-        promptFocus = "सामान्य विज्ञान (General Science - Physics, Chemistry, Biology) के अति-महत्वपूर्ण प्रश्न";
-      } else if (subjectKey === 'ca') {
-        promptFocus = "हाल के महत्वपूर्ण राष्ट्रीय एवं अंतर्राष्ट्रीय करेंट अफेयर्स, खेल जगत, पुरस्कार, नई नियुक्तियां एवं योजनाएं";
-      } else if (subjectKey === 'ssc_railway') {
-        promptFocus = `SSC GD, SSC CGL, Railway NTPC, Group D, RPF और पुलिस भर्ती परीक्षाओं के लिए GK/GS के महत्वपूर्ण प्रश्न (फोकस: ${randomSubTopic})`;
-      }
-
-      const recentSamples = askedTopicsRegistry.slice(-6).join(" | ");
-
-      const prompt = `आप 'SGS ONLINE PORTAL' के मुख्य शिक्षक सचिन सर हैं और NCERT / UPSC / SSC परीक्षा नियामक आयोग के वरिष्ठ विषय-विशेषज्ञ हैं।
-
-प्रतियोगी परीक्षाओं के छात्रों के लिए 4 बिल्कुल नए, 100% प्रामाणिक, अकादमिक रूप से सिद्ध एवं त्रुटिहीन बहुविकल्पीय प्रश्न (MCQ) तैयार करें।
-
-विषय: ${promptFocus}
-सत्र रैंडम सीड: ${seedKey}
-पूर्व पूछे गए प्रश्नों से पूर्णतः भिन्न रखें: [${recentSamples || "कोई नहीं"}]
-
-अति-अनिवार्य अकादमिक एवं सत्यता नियम (Strict Accuracy Rules):
-1. शून्य त्रुटि नीति (Zero Error Policy): प्रत्येक प्रश्न का तथ्य, चारों विकल्प और 'correctIndex' 100% अकादमिक रूप से प्रमाणित व सत्य होना चाहिए।
-2. correctIndex (0, 1, 2, or 3) अनिवार्य रूप से उसी विकल्प को इंगित करे जो पूर्णतः निर्विवाद और सही हो।
-3. सम्पूर्ण प्रश्न, चारों विकल्प और 1 पंक्ति का प्रामाणिक स्पष्टीकरण शुद्ध हिन्दी (देवनागरी लिपि) में हो।
-4. कोई भी प्रश्न पूर्व में पूछे गए प्रश्नों जैसा न हो। प्रत्येक प्रश्न 100% नया, दुर्लभ और परीक्षा-उपयोगी हो।
-5. संक्षिप्त व्याख्या में मानक संदर्भ अवश्य स्पष्ट करें।`;
-
-      const payload = {
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          responseMimeType: "application/json",
-          responseSchema: {
-            type: "ARRAY",
-            items: {
-              type: "OBJECT",
-              properties: {
-                question: { type: "STRING" },
-                options: {
-                  type: "ARRAY",
-                  items: { type: "STRING" },
-                  minItems: 4,
-                  maxItems: 4
-                },
-                correctIndex: { type: "INTEGER" },
-                subject: { type: "STRING" },
-                exam: { type: "STRING" },
-                explanation: { type: "STRING" }
-              },
-              required: ["question", "options", "correctIndex", "subject", "exam", "explanation"]
-            }
-          }
-        }
-      };
-
-      const delays = [1000, 2000, 4000];
-      for (let i = 0; i <= delays.length; i++) {
-        try {
-          const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-          });
-
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-          const result = await response.json();
-          const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (text) {
-            const parsed = JSON.parse(text);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              parsed.forEach(q => {
-                const normKey = normalizeQuestionKey(q.question);
-                if (normKey && !askedQuestionsSet.has(normKey)) {
-                  questionQueue.push(q);
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    boxShadow: {
+                        'glow-rose': '0 0 30px rgba(244, 63, 94, 0.25)',
+                        'glow-emerald': '0 0 30px rgba(16, 185, 129, 0.25)',
+                        'glow-purple': '0 0 30px rgba(168, 85, 247, 0.25)',
+                        'glow-amber': '0 0 30px rgba(245, 158, 11, 0.25)',
+                    }
                 }
-              });
-              break;
             }
-          }
-        } catch (err) {
-          if (i < delays.length) {
-            await new Promise(r => setTimeout(r, delays[i]));
-          }
         }
-      }
+    </script>
 
-      isFetchingAI = false;
-    }
-
-    async function getNextUniqueQuestion() {
-      if (questionQueue.length < 3) {
-        fetchAIQuestionsBatch();
-      }
-
-      while (questionQueue.length > 0) {
-        const candidate = questionQueue.shift();
-        const normKey = normalizeQuestionKey(candidate.question);
-        // Ensure candidate has valid question and 4 real options (not dummy placeholders)
-        if (candidate && candidate.options && candidate.options.length === 4 && 
-            !candidate.options[0].startsWith("विकल्प (") &&
-            normKey && !askedQuestionsSet.has(normKey)) {
-          askedQuestionsSet.add(normKey);
-          askedTopicsRegistry.push(candidate.question.substring(0, 30));
-          return candidate;
+    <style>
+        /* Mobile Single-Finger Smooth Touch Scrolling Optimization */
+        html {
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            scroll-behavior: smooth;
         }
-      }
 
-      const unaskedFallbacks = fallbackHindiBank.filter(q => {
-        const key = normalizeQuestionKey(q.question);
-        return !askedQuestionsSet.has(key);
-      });
-
-      if (unaskedFallbacks.length > 0) {
-        const randIdx = Math.floor(Math.random() * unaskedFallbacks.length);
-        const chosen = unaskedFallbacks[randIdx];
-        const normKey = normalizeQuestionKey(chosen.question);
-        askedQuestionsSet.add(normKey);
-        askedTopicsRegistry.push(chosen.question.substring(0, 30));
-        return chosen;
-      }
-
-      // If all questions are visited once, reset set and serve with random choice
-      askedQuestionsSet.clear();
-      const fallbackItem = fallbackHindiBank[Math.floor(Math.random() * fallbackHindiBank.length)];
-      return fallbackItem;
-    }
-
-    let availableVoices = [];
-
-    function populateVoices() {
-      if (!('speechSynthesis' in window)) return;
-      availableVoices = window.speechSynthesis.getVoices();
-    }
-
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.onvoiceschanged = populateVoices;
-      populateVoices();
-    }
-
-    function getVoiceForProfile(profile) {
-      if (!availableVoices.length) populateVoices();
-      
-      const hindiVoices = availableVoices.filter(v => v.lang && (v.lang.includes('hi') || v.lang.includes('HI')));
-      const indianVoices = availableVoices.filter(v => v.lang && (v.lang.includes('IN') || v.lang.includes('in')));
-
-      let chosenVoice = null;
-      let pitch = 1.0;
-      let rate = 0.98;
-
-      if (profile === 'teacher_female') {
-        chosenVoice = hindiVoices.find(v => v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('swara') || v.name.toLowerCase().includes('kalpana')) ||
-                      indianVoices.find(v => v.name.toLowerCase().includes('female') || v.name.toLowerCase().includes('heera') || v.name.toLowerCase().includes('zira')) ||
-                      hindiVoices[0] || indianVoices[0] || availableVoices[0];
-        pitch = 1.15;
-        rate = 0.98;
-      } else if (profile === 'teacher_male') {
-        chosenVoice = hindiVoices.find(v => v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('madhav') || v.name.toLowerCase().includes('hemant')) ||
-                      indianVoices.find(v => v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('ravi') || v.name.toLowerCase().includes('prabhat')) ||
-                      hindiVoices[0] || indianVoices[0] || availableVoices[0];
-        pitch = 0.95;
-        rate = 0.95;
-      } else if (profile === 'young_female') {
-        chosenVoice = hindiVoices.find(v => v.name.toLowerCase().includes('female')) || hindiVoices[0] || indianVoices[0] || availableVoices[0];
-        pitch = 1.35;
-        rate = 1.05;
-      } else if (profile === 'deep_male') {
-        chosenVoice = hindiVoices.find(v => v.name.toLowerCase().includes('male')) || hindiVoices[0] || indianVoices[0] || availableVoices[0];
-        pitch = 0.78;
-        rate = 0.92;
-      } else {
-        chosenVoice = hindiVoices[0] || indianVoices[0] || availableVoices[0];
-        pitch = 1.0;
-        rate = 1.0;
-      }
-
-      return { voice: chosenVoice, pitch, rate };
-    }
-
-    function cancelSpeech() {
-      isSpeaking = false;
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-      }
-      const indicator = document.getElementById('speakingIndicator');
-      if (indicator) {
-        indicator.classList.add('hidden');
-        indicator.classList.remove('inline-flex');
-      }
-    }
-
-    function speakFullText(text, onComplete) {
-      if (!voiceEnabled || !('speechSynthesis' in window)) {
-        if (onComplete) onComplete();
-        return;
-      }
-
-      cancelSpeech();
-      isSpeaking = true;
-
-      const indicator = document.getElementById('speakingIndicator');
-      if (indicator) {
-        indicator.classList.remove('hidden');
-        indicator.classList.add('inline-flex');
-      }
-
-      const utterance = new SpeechSynthesisUtterance(text);
-      const profileSettings = getVoiceForProfile(selectedVoiceProfile);
-      
-      if (profileSettings.voice) {
-        utterance.voice = profileSettings.voice;
-      }
-      utterance.lang = 'hi-IN';
-      utterance.pitch = profileSettings.pitch;
-      utterance.rate = profileSettings.rate;
-
-      let finished = false;
-      const finishHandler = () => {
-        if (finished) return;
-        finished = true;
-        isSpeaking = false;
-        if (indicator) {
-          indicator.classList.add('hidden');
-          indicator.classList.remove('inline-flex');
+        body {
+            overflow-x: hidden;
+            background: linear-gradient(180deg, #4c00b0 0%, #7b009a 30%, #a8117a 65%, #c8236d 100%) !important;
+            background-attachment: fixed !important;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            -webkit-overflow-scrolling: touch;
+            min-height: 100vh;
+            color: #ffffff;
         }
-        if (onComplete) onComplete();
-      };
 
-      utterance.onend = finishHandler;
-      utterance.onerror = finishHandler;
-
-      window.speechSynthesis.speak(utterance);
-    }
-
-    function speakCurrentQuestionAndOptions(onFinishedSpeaking) {
-      if (!currentQuestion) {
-        if (onFinishedSpeaking) onFinishedSpeaking();
-        return;
-      }
-
-      if (!voiceEnabled) {
-        if (onFinishedSpeaking) onFinishedSpeaking();
-        return;
-      }
-
-      const lettersHindi = ["ए", "बी", "सी", "डी"];
-      let speechScript = `प्रश्न संख्या ${totalQuestions}. ${currentQuestion.question}. `;
-      currentQuestion.options.forEach((opt, idx) => {
-        speechScript += `ऑप्शन ${lettersHindi[idx]}: ${opt}. `;
-      });
-      speechScript += `आपका 10 सेकंड का समय शुरू होता है अब!`;
-
-      speakFullText(speechScript, onFinishedSpeaking);
-    }
-
-    function speakCorrectAnswerReveal(correctIdx, optionText) {
-      if (!voiceEnabled) return;
-      const lettersHindi = ["ए", "बी", "सी", "डी"];
-      const revealSpeech = `समय समाप्त! सही उत्तर है ऑप्शन ${lettersHindi[correctIdx]}: ${optionText}`;
-      speakFullText(revealSpeech, null);
-    }
-
-    let audioCtx = null;
-    let bgmInterval = null;
-    let bgmGainNode = null;
-    let currentChordIndex = 0;
-
-    function getAudioContext() {
-      if (!audioCtx) {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (AudioContext) {
-          audioCtx = new AudioContext();
+        .overflow-y-auto, .overflow-auto, main, #authContainer, #adminCoreConsole, #aiMessagesStream, #legalModalOverlay, #adminUserDetailModalOverlay {
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: auto;
         }
-      }
-      if (audioCtx && audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
-      return audioCtx;
-    }
 
-    const chords = [
-      [261.63, 329.63, 392.00, 493.88], // Cmaj7
-      [220.00, 261.63, 329.63, 392.00], // Am7
-      [174.61, 220.00, 261.63, 329.63], // Fmaj7
-      [196.00, 246.94, 293.66, 349.23]  // G7
-    ];
-    const bass = [130.81, 110.00, 87.31, 98.00];
+        /* Glassmorphic Paneling */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.12) !important;
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        }
 
-    function startBackgroundMusic() {
-      if (bgmInterval || !bgmEnabled) return;
-      const ctx = getAudioContext();
-      if (!ctx) return;
+        .glass-panel-active {
+            border: 1px solid rgba(255, 255, 255, 0.4) !important;
+            background: rgba(255, 255, 255, 0.25) !important;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25);
+        }
 
-      if (!bgmGainNode) {
-        bgmGainNode = ctx.createGain();
-        bgmGainNode.gain.setValueAtTime(bgmVolume * 0.12, ctx.currentTime);
-        bgmGainNode.connect(ctx.destination);
-      }
+        /* New Vibrant Panel Theme Form Styling */
+        #tab-dashboard .xl\:col-span-2.glass-panel {
+            background: #ffffff !important;
+            color: #1e293b !important;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.35) !important;
+            border: none !important;
+        }
 
-      let step = 0;
-      bgmInterval = setInterval(() => {
-        if (!bgmEnabled || isPaused) return;
-        try {
-          const now = ctx.currentTime;
-          const chord = chords[currentChordIndex];
+        #tab-dashboard .xl\:col-span-2.glass-panel label {
+            color: #475569 !important;
+        }
 
-          if (step % 4 === 0) {
-            chord.forEach((freq, idx) => {
-              const osc = ctx.createOscillator();
-              const noteGain = ctx.createGain();
-              osc.type = 'sine';
-              osc.frequency.setValueAtTime(freq, now);
-              noteGain.gain.setValueAtTime(0.01, now);
-              noteGain.gain.exponentialRampToValueAtTime(0.03, now + 0.3);
-              noteGain.gain.exponentialRampToValueAtTime(0.001, now + 1.8);
-              osc.connect(noteGain);
-              noteGain.connect(bgmGainNode);
-              osc.start(now + idx * 0.04);
-              osc.stop(now + 1.9);
+        #tab-dashboard .xl\:col-span-2.glass-panel h2 {
+            color: #0f172a !important;
+        }
+
+        #tab-dashboard .xl\:col-span-2.glass-panel select,
+        #tab-dashboard .xl\:col-span-2.glass-panel input {
+            background-color: #f1f5f9 !important;
+            border: 1px solid #cbd5e1 !important;
+            color: #0f172a !important;
+        }
+
+        #tab-dashboard .xl\:col-span-2.glass-panel select option {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+        }
+
+        #tab-dashboard .xl\:col-span-2.glass-panel #costDisplayBox {
+            background-color: #f8fafc !important;
+            border-color: #e2e8f0 !important;
+        }
+
+        #tab-dashboard .xl\:col-span-2.glass-panel #costDisplayBox span,
+        #tab-dashboard .xl\:col-span-2.glass-panel #costDisplayBox p {
+            color: #475569 !important;
+        }
+
+        #tab-dashboard .xl\:col-span-2.glass-panel #costDisplayBox #calculatedCostText {
+            color: #e11d48 !important;
+        }
+
+        /* Notice Box in Tab Dashboard matching screenshot */
+        #tab-dashboard .xl\:grid-cols-3 > .space-y-6 > .glass-panel {
+            background: #ffffff !important;
+            color: #334155 !important;
+            border: none !important;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.35) !important;
+        }
+        #tab-dashboard .xl\:grid-cols-3 > .space-y-6 > .glass-panel h3 {
+            color: #0f172a !important;
+        }
+        #tab-dashboard .xl\:grid-cols-3 > .space-y-6 > .glass-panel span,
+        #tab-dashboard .xl\:grid-cols-3 > .space-y-6 > .glass-panel div {
+            color: #334155 !important;
+        }
+
+        /* Top 3 Stat Cards Styling */
+        .stat-card-gradient {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.85) 0%, rgba(217, 70, 239, 0.85) 100%) !important;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+        }
+
+        .vip-badge-pill {
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Premium Visual Gradients */
+        .vip-gradient-text {
+            background: linear-gradient(135deg, #fef08a 0%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .premium-emerald-text {
+            background: linear-gradient(135deg, #34d399 0%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Hide Scrollbars */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 99px;
+        }
+
+        @keyframes pulse-slow {
+            0%, 100% { opacity: 0.15; transform: scale(1); }
+            50% { opacity: 0.35; transform: scale(1.08); }
+        }
+        .animate-pulse-slow {
+            animation: pulse-slow 6s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="font-sans min-h-screen flex flex-col antialiased selection:bg-rose-500 selection:text-white pb-24 lg:pb-0">
+
+<!-- Global Fullscreen Data Loading Overlay -->
+<div id="globalLoadingScreen" class="fixed inset-0 bg-[#030712] z-[9999] flex flex-col items-center justify-center transition-opacity duration-300">
+    <div class="relative flex items-center justify-center">
+        <div class="w-16 h-16 border-4 border-rose-500/20 border-t-rose-500 rounded-full animate-spin"></div>
+        <i class="fa-solid fa-bolt text-rose-500 text-xl absolute animate-pulse"></i>
+    </div>
+    <p class="mt-4 text-xs font-mono text-slate-400 uppercase tracking-widest animate-pulse">Synchronizing Node Data...</p>
+</div>
+
+<!-- Ambient Glow Effects -->
+<div class="fixed -top-40 -left-40 w-80 h-80 bg-pink-500/20 rounded-full blur-[100px] pointer-events-none z-0 animate-pulse-slow"></div>
+<div class="fixed top-1/2 -right-40 w-80 h-80 bg-purple-500/20 rounded-full blur-[100px] pointer-events-none z-0 animate-pulse-slow" style="animation-delay: 2s;"></div>
+
+<!-- Top Level Realtime Banner -->
+<div id="topSuccessBanner" class="hidden bg-emerald-950/95 backdrop-blur-md text-emerald-300 font-medium text-xs sm:text-sm px-6 py-4 text-center sticky top-0 z-50 shadow-glow-emerald border-b border-emerald-500/30 flex items-center justify-center space-x-3 transition-all duration-300">
+        <span class="flex h-2.5 w-2.5 relative">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+        </span>
+    <i class="fa-solid fa-circle-check text-emerald-400 animate-pulse"></i>
+    <span id="bannerNotificationText" class="font-mono">Pipeline Transmitting Logs...</span>
+</div>
+
+<!-- Toast Notifications Container -->
+<div id="toastContainer" class="fixed top-4 right-4 left-4 sm:left-auto sm:right-6 z-50 flex flex-col gap-2 max-w-sm"></div>
+
+<div id="authContainer" class="fixed inset-0 bg-[#0a0118]/90 backdrop-blur-xl z-50 flex items-center justify-center p-4 overflow-y-auto">
+    <div class="glass-panel p-6 sm:p-8 rounded-[32px] w-full max-w-md shadow-2xl relative overflow-hidden transition-all duration-300 bg-slate-900/80">
+        <div class="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-amber-400 via-rose-500 to-purple-500"></div>
+
+        <div class="text-center mb-6">
+            <div class="inline-flex items-center space-x-2 bg-white/10 border border-white/20 px-3.5 py-1.5 rounded-full text-[10px] text-yellow-300 font-bold tracking-widest mb-3 uppercase">
+                <i class="fa-solid fa-shield-halved animate-pulse"></i>
+                <span>Secure Node Handshake</span>
+            </div>
+            <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-white mb-1.5">
+                <span class="vip-gradient-text">SGS INSTABOOST</span>
+            </h1>
+            <p id="authSubTitle" class="text-[9px] text-pink-200 font-mono tracking-wider uppercase">Live Database Identity Validation Gateway</p>
+        </div>
+
+        <!-- Login Form view -->
+        <div id="loginForm" class="space-y-4">
+
+            <!-- GOOGLE SIGN-IN BUTTON -->
+            <button id="google-login-btn" type="button" class="w-full py-3 bg-white hover:bg-slate-100 text-slate-800 font-bold text-xs tracking-wide rounded-2xl shadow-md transition active:scale-[0.98] flex items-center justify-center space-x-3 border border-slate-200">
+                <svg class="w-4 h-4" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                </svg>
+                <span>Continue with Google</span>
+            </button>
+
+            <!-- OR DIVIDER -->
+            <div class="flex items-center my-3">
+                <div class="flex-grow border-t border-white/10"></div>
+                <span class="px-3 text-[10px] text-pink-200/60 uppercase font-mono tracking-widest">OR</span>
+                <div class="flex-grow border-t border-white/10"></div>
+            </div>
+
+            <div>
+                <label class="block text-[10px] uppercase font-bold text-pink-200 mb-1.5 tracking-wider">Email Address</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-pink-300"><i class="fa-solid fa-envelope text-sm"></i></span>
+                    <input type="email" id="loginEmail" placeholder="Enter your email address" class="w-full bg-black/40 pl-10 pr-4 py-3 rounded-2xl border border-white/20 focus:outline-none focus:border-rose-400 text-white text-sm font-semibold transition placeholder:text-pink-300/50 focus:ring-1 focus:ring-rose-400">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-[10px] uppercase font-bold text-pink-200 mb-1.5 tracking-wider">Password</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-pink-300"><i class="fa-solid fa-lock text-sm"></i></span>
+                    <input type="password" id="loginPass" placeholder="••••••••" class="w-full bg-black/40 pl-10 pr-11 py-3 rounded-2xl border border-white/20 focus:outline-none focus:border-rose-400 text-white text-sm font-semibold transition placeholder:text-pink-300/50 focus:ring-1 focus:ring-rose-400">
+                    <button type="button" id="toggleLoginPassBtn" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-pink-300 hover:text-white transition focus:outline-none">
+                        <i class="fa-solid fa-eye text-sm" id="toggleLoginPassIcon"></i>
+                    </button>
+                </div>
+                <!-- Reset Password link right below password input -->
+                <div class="flex justify-end pt-1.5">
+                    <span id="trigger-forgot-btn" class="text-xs text-pink-200 hover:text-white cursor-pointer transition font-medium">Reset Password</span>
+                </div>
+            </div>
+
+            <!-- "I am not a robot" Captcha Box -->
+            <div class="p-3 bg-black/40 border border-white/10 rounded-2xl flex items-center justify-between shadow-inner">
+                <div class="flex items-center space-x-3">
+                    <input type="checkbox" id="login-robot-check" class="w-5 h-5 rounded border-white/20 bg-black/50 text-rose-500 focus:ring-rose-500 focus:ring-offset-slate-900 cursor-pointer">
+                    <label for="login-robot-check" class="text-xs font-semibold text-white select-none cursor-pointer">I'm not a robot</label>
+                </div>
+                <div class="flex flex-col items-center justify-center opacity-80">
+                    <i class="fa-solid fa-shield-cat text-rose-400 text-base"></i>
+                    <span class="text-[8px] text-pink-200 font-mono">reCAPTCHA</span>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-1">
+                <div class="flex items-center">
+                    <input id="remember-me" type="checkbox" checked class="h-4 w-4 rounded border-white/20 bg-black/50 text-rose-500 focus:ring-rose-500">
+                    <label for="remember-me" class="ml-2 block text-xs text-pink-200">Keep safe profile cached</label>
+                </div>
+            </div>
+
+            <div class="pt-2">
+                <button id="login-submit-btn" type="button" class="w-full py-3.5 bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 hover:from-rose-500 hover:to-purple-500 text-white font-extrabold uppercase text-xs tracking-widest rounded-2xl shadow-xl transition active:scale-[0.98] flex items-center justify-center space-x-2">
+                    <span id="login-btn-text">Login</span>
+                </button>
+            </div>
+
+            <p class="text-xs text-center text-pink-100 mt-4">Unregistered Node? <span id="trigger-signup-btn" class="text-yellow-300 font-bold cursor-pointer hover:underline">Create New Account</span></p>
+
+            <!-- Footer Legal Policy Links on Login Page -->
+            <div class="mt-4 pt-3 border-t border-white/10 flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-[10px] text-pink-200/70 font-mono">
+                <span class="hover:text-white cursor-pointer underline" id="btn-show-privacy-login">Privacy Policy</span>
+                <span>•</span>
+                <span class="hover:text-white cursor-pointer underline" id="btn-show-terms-login">Terms of Agreement</span>
+                <span>•</span>
+                <span class="hover:text-white cursor-pointer underline" id="btn-show-refund-login">Refund Policy</span>
+                <span>•</span>
+                <span class="hover:text-white cursor-pointer underline" id="btn-show-faq-login">FAQ</span>
+                <span>•</span>
+                <span class="hover:text-white cursor-pointer underline" id="btn-show-about-login">About Us</span>
+                <span>•</span>
+                <span class="hover:text-white cursor-pointer underline" id="btn-show-contact-login">Contact Us</span>
+            </div>
+        </div>
+
+        <!-- Signup Form view -->
+        <div id="signupForm" class="space-y-4 hidden">
+
+            <!-- GOOGLE SIGN-UP BUTTON -->
+            <button id="google-signup-btn" type="button" class="w-full py-3 bg-white hover:bg-slate-100 text-slate-800 font-bold text-xs tracking-wide rounded-2xl shadow-md transition active:scale-[0.98] flex items-center justify-center space-x-3 border border-slate-200">
+                <svg class="w-4 h-4" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                </svg>
+                <span>Sign up with Google</span>
+            </button>
+
+            <div class="flex items-center my-3">
+                <div class="flex-grow border-t border-white/10"></div>
+                <span class="px-3 text-[10px] text-pink-200/60 uppercase font-mono tracking-widest">OR</span>
+                <div class="flex-grow border-t border-white/10"></div>
+            </div>
+
+            <div>
+                <label class="block text-[10px] uppercase font-bold text-pink-200 mb-1.5 tracking-wider">Email Address</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-pink-300"><i class="fa-solid fa-envelope text-sm"></i></span>
+                    <input type="email" id="registerEmail" placeholder="Enter registration email" class="w-full bg-black/40 pl-10 pr-4 py-3 rounded-2xl border border-white/20 focus:outline-none focus:border-rose-400 text-white text-sm font-semibold transition placeholder:text-pink-300/50 focus:ring-1 focus:ring-rose-400">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-[10px] uppercase font-bold text-pink-200 mb-1.5 tracking-wider">Password</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-pink-300"><i class="fa-solid fa-lock text-sm"></i></span>
+                    <input type="password" id="registerPass" placeholder="Min 6 characters required" class="w-full bg-black/40 pl-10 pr-11 py-3 rounded-2xl border border-white/20 focus:outline-none focus:border-rose-400 text-white text-sm font-semibold transition placeholder:text-pink-300/50 focus:ring-1 focus:ring-rose-400">
+                    <button type="button" id="toggleRegPassBtn" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-pink-300 hover:text-white transition focus:outline-none">
+                        <i class="fa-solid fa-eye text-sm" id="toggleRegPassIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-[10px] uppercase font-bold text-pink-200 mb-1.5 tracking-wider">Re-enter Password</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-pink-300"><i class="fa-solid fa-shield-halved text-sm"></i></span>
+                    <input type="password" id="registerConfirmPass" placeholder="Re-enter password to confirm" class="w-full bg-black/40 pl-10 pr-11 py-3 rounded-2xl border border-white/20 focus:outline-none focus:border-rose-400 text-white text-sm font-semibold transition placeholder:text-pink-300/50 focus:ring-1 focus:ring-rose-400">
+                    <button type="button" id="toggleRegConfirmPassBtn" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-pink-300 hover:text-white transition focus:outline-none">
+                        <i class="fa-solid fa-eye text-sm" id="toggleRegConfirmPassIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-[10px] uppercase font-bold text-pink-200 mb-1.5 tracking-wider">Referral Code (Optional)</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-pink-300"><i class="fa-solid fa-ticket text-sm"></i></span>
+                    <input type="text" id="registerRefCode" placeholder="Ex: SGS-8A3B2C" class="w-full bg-black/40 pl-10 pr-4 py-3 rounded-2xl border border-white/20 focus:outline-none focus:border-rose-400 text-white text-sm font-mono uppercase transition placeholder:text-pink-300/50 focus:ring-1 focus:ring-rose-400">
+                </div>
+            </div>
+
+            <div class="text-[11px] text-pink-100 leading-relaxed bg-black/40 p-3 rounded-xl border border-white/10 flex items-start space-x-2">
+                <input type="checkbox" id="agree-terms" checked class="mt-0.5 rounded bg-black/50 border-white/20 text-rose-500 focus:ring-rose-500">
+                <label for="agree-terms">I authorize the secure <span class="text-yellow-300 cursor-pointer underline" id="btn-show-privacy">Privacy Mandate</span> and <span class="text-yellow-300 cursor-pointer underline" id="btn-show-terms">Terms of Agreement</span>.</label>
+            </div>
+
+            <button id="register-submit-btn" type="button" class="w-full py-3.5 bg-gradient-to-r from-amber-500 via-rose-600 to-purple-600 hover:from-amber-400 hover:to-purple-500 text-white font-extrabold uppercase text-xs tracking-widest rounded-2xl shadow-xl transition active:scale-[0.98] flex items-center justify-center space-x-2">
+                <span id="register-btn-text">Create Account</span>
+            </button>
+            <p class="text-xs text-center text-pink-100">Already registered? <span id="trigger-login-btn" class="text-yellow-300 font-bold cursor-pointer hover:underline">Already registered? Login</span></p>
+        </div>
+
+        <!-- Forgot Password Form view -->
+        <div id="forgotForm" class="space-y-4 hidden">
+            <div>
+                <label class="block text-[10px] uppercase font-bold text-pink-200 mb-1.5 tracking-wider">Recovery Target Email</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-pink-300"><i class="fa-solid fa-paper-plane text-sm"></i></span>
+                    <input type="email" id="forgotEmail" placeholder="Enter registered email address" class="w-full bg-black/40 pl-10 pr-4 py-3 rounded-2xl border border-white/20 focus:outline-none focus:border-rose-400 text-white text-sm font-semibold transition placeholder:text-pink-300/50 focus:ring-1 focus:ring-rose-400">
+                </div>
+            </div>
+            <button id="reset-submit-btn" type="button" class="w-full py-3.5 bg-purple-600 hover:bg-purple-500 text-white font-bold uppercase text-xs tracking-widest rounded-2xl transition shadow-glow-purple active:scale-[0.98] flex items-center justify-center space-x-2">
+                <span id="reset-btn-text">Transmit Recovery Token</span>
+            </button>
+            <p class="text-xs text-center text-pink-100"><span id="trigger-login-btn-2" class="text-pink-200 hover:text-white cursor-pointer underline font-medium font-mono">Return to Gateway Access</span></p>
+        </div>
+
+        <div class="mt-6 pt-5 border-t border-white/10 flex items-center justify-between text-[10px] text-pink-200/80 font-mono">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-emerald-400 animate-pulse"></i> 256-BIT SSL SECURE</span>
+            <span>SYSTEM VERSION: v6.0</span>
+        </div>
+    </div>
+</div>
+
+<div id="appContainer" class="hidden flex-col min-h-screen relative z-10 pb-16 lg:pb-0">
+    <div class="bg-black/40 backdrop-blur-md border-b border-white/10 px-4 py-1.5 text-[9px] text-pink-200 font-mono tracking-widest flex items-center justify-between overflow-x-auto whitespace-nowrap select-none">
+        <div class="flex items-center space-x-2">
+                <span class="flex h-1.5 w-1.5 relative">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                </span>
+            <span>LIVE AUTH HANDSHAKE COMPLETED SECURELY</span>
+        </div>
+        <div class="hidden sm:flex items-center space-x-4">
+            <span>LATENCY: 8ms</span>
+            <span>ENC: AES-256</span>
+        </div>
+    </div>
+
+    <!-- Header bar matching top bar controls -->
+    <header class="bg-white/10 backdrop-blur-xl sticky top-0 z-40 border-b border-white/10 px-4 md:px-8 py-3.5 flex justify-between items-center shadow-lg">
+        <div class="flex items-center space-x-3">
+            <button id="drawer-toggle-btn" class="text-white hover:text-yellow-300 p-2.5 hover:bg-white/10 rounded-xl border border-white/10 transition">
+                <i class="fa-solid fa-bars text-base sm:text-lg"></i>
+            </button>
+            <span class="text-base sm:text-lg font-black tracking-tight text-white flex items-center space-x-2">
+                <span class="vip-gradient-text font-black">SGS INSTABOOST</span>
+            </span>
+        </div>
+
+        <div class="flex items-center space-x-3">
+            <div class="bg-white/20 border border-white/30 backdrop-blur-md px-3 sm:px-4 py-1.5 rounded-xl flex items-center space-x-2">
+                <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="text-[9px] uppercase font-bold tracking-wider text-pink-100 hidden sm:inline font-mono">Balance:</span>
+                <span class="text-xs sm:text-sm font-black tracking-wide text-white">₹<span id="userBalance">0.00</span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- NEW SCREENSHOT LAYOUT HEADER SECTION: TOP STATS & BANNERS -->
+    <div class="max-w-7xl w-full mx-auto px-4 md:px-6 pt-6 space-y-4">
+        <!-- Center Banner Announcement -->
+        <div class="text-center space-y-1.5">
+            <div class="inline-flex items-center gap-2 bg-black/20 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/20 text-xs font-bold text-yellow-300 shadow-md">
+                <i class="fa-solid fa-gift"></i>
+                <span>REFER OUR PANEL AND EARN COMMISSION</span>
+            </div>
+            <div>
+                <button onclick="document.getElementById('tab-btn-refer').click()" class="bg-gradient-to-r from-red-500 to-rose-600 hover:from-red-600 hover:to-rose-700 text-[10px] font-extrabold uppercase px-3 py-1 rounded-md text-white shadow-md transition">Click Here</button>
+            </div>
+        </div>
+
+        <!-- 3 Feature Stat Cards from Image -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Card 1: User / Account info -->
+            <div class="stat-card-gradient p-5 rounded-2xl flex items-center space-x-4 shadow-xl text-white">
+                <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-2xl shadow-inner shrink-0">
+                    <i class="fa-solid fa-user-check"></i>
+                </div>
+                <div class="overflow-hidden">
+                    <h4 class="font-extrabold text-sm sm:text-base truncate tracking-tight" id="topUserDisplay">User Account</h4>
+                    <p class="text-[11px] text-pink-100 opacity-90 font-mono">Welcome to SMM Engine!</p>
+                </div>
+            </div>
+
+            <!-- Card 2: Spent / Dynamic Tracker -->
+            <div class="stat-card-gradient p-5 rounded-2xl flex items-center space-x-4 shadow-xl text-white">
+                <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-2xl shadow-inner shrink-0">
+                    <i class="fa-solid fa-sack-dollar"></i>
+                </div>
+                <div>
+                    <h4 class="font-black text-lg sm:text-xl tracking-tight">Active Engine</h4>
+                    <p class="text-[11px] text-pink-100 opacity-90 font-mono">Live Automated Nodes</p>
+                </div>
+            </div>
+
+            <!-- Card 3: Account Balance & Click to Add Funds -->
+            <div class="stat-card-gradient p-5 rounded-2xl flex items-center justify-between shadow-xl text-white">
+                <div class="flex items-center space-x-4">
+                    <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-2xl shadow-inner shrink-0 font-bold font-mono">
+                        ₹
+                    </div>
+                    <div>
+                        <h4 class="font-black text-lg sm:text-xl tracking-tight">₹<span id="userBalance2">0.00</span></h4>
+                        <p class="text-[11px] text-pink-100 opacity-90 font-mono">Account Balance</p>
+                    </div>
+                </div>
+                <button onclick="document.getElementById('tab-btn-addfunds').click()" class="bg-black/30 hover:bg-black/50 text-[10px] font-bold py-1.5 px-3 rounded-xl border border-white/20 transition whitespace-nowrap">
+                    Add Funds
+                </button>
+            </div>
+        </div>
+
+        <!-- Center AI Support CTA & WhatsApp Announcement Bar -->
+        <div class="text-center space-y-2 pt-2">
+            <p class="text-xs sm:text-sm font-bold text-white drop-shadow flex items-center justify-center gap-1.5">
+                <i class="fa-solid fa-headset text-yellow-300"></i> Want 24*7 Instant Support?
+            </p>
+            <p class="text-[11px] text-pink-100 font-mono">Direct WhatsApp Support for Instant Activation</p>
+            <div>
+                <button onclick="window.triggerEncryptedWhatsApp()" class="bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-black text-xs px-5 py-2 rounded-xl shadow-lg transition active:scale-95">
+                    Click Here For Activation
+                </button>
+            </div>
+            <div class="pt-1">
+                <button onclick="window.triggerEncryptedWhatsApp()" class="bg-emerald-500 hover:bg-emerald-400 text-white font-extrabold text-[11px] uppercase tracking-wider px-6 py-2 rounded-xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2 mx-auto">
+                    <i class="fa-brands fa-whatsapp text-sm"></i>
+                    <span>CLICK HERE TO JOIN WHATSAPP COMMUNITY</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-1 flex-col lg:flex-row max-w-7xl w-full mx-auto p-4 md:p-6 gap-6">
+
+        <aside class="hidden lg:flex lg:w-64 flex-col gap-2 shrink-0 border-r border-white/10 pr-6">
+            <button id="tab-btn-dashboard" class="text-left p-3.5 rounded-2xl flex items-center space-x-3 font-semibold transition tab-btn glass-panel-active text-white">
+                <i class="fa-solid fa-circle-plus text-rose-300"></i><span>New Order Hub</span>
+            </button>
+            <button id="tab-btn-myorders" class="text-left p-3.5 rounded-2xl flex items-center space-x-3 font-medium transition text-pink-100 hover:text-white hover:bg-white/10 tab-btn">
+                <i class="fa-solid fa-folder-open text-sky-300"></i><span>Order Logs</span>
+            </button>
+            <button id="tab-btn-addfunds" class="text-left p-3.5 rounded-2xl flex items-center space-x-3 font-medium transition text-pink-100 hover:text-white hover:bg-white/10 tab-btn">
+                <i class="fa-solid fa-wallet text-emerald-300"></i><span>Settle Wallet</span>
+            </button>
+            <button id="tab-btn-refer" class="text-left p-3.5 rounded-2xl flex items-center space-x-3 font-medium transition text-pink-100 hover:text-white hover:bg-white/10 tab-btn">
+                <i class="fa-solid fa-gift text-amber-300"></i><span>Affiliate Program</span>
+            </button>
+
+            <div class="my-4 border-t border-white/10"></div>
+
+            <button id="btn-desktop-main" class="text-left p-3 rounded-xl flex items-center space-x-3 text-xs text-pink-100 hover:text-white hover:bg-white/5 transition">
+                <i class="fa-solid fa-globe text-blue-300"></i><span>Main Website</span>
+            </button>
+            <button id="btn-desktop-security" class="text-left p-3 rounded-xl flex items-center space-x-3 text-xs text-pink-100 hover:text-white hover:bg-white/5 transition">
+                <i class="fa-solid fa-shield-halved text-emerald-300"></i><span>Security Directives</span>
+            </button>
+            <button id="btn-desktop-refund" class="text-left p-3 rounded-xl flex items-center space-x-3 text-xs text-pink-100 hover:text-white hover:bg-white/5 transition">
+                <i class="fa-solid fa-arrow-rotate-left text-amber-300"></i><span>Refund Policies</span>
+            </button>
+            <button id="btn-desktop-faq" class="text-left p-3 rounded-xl flex items-center space-x-3 text-xs text-pink-100 hover:text-white hover:bg-white/5 transition">
+                <i class="fa-solid fa-circle-question text-sky-300"></i><span>Knowledge Base / FAQ</span>
+            </button>
+            <button id="btn-desktop-about" class="text-left p-3 rounded-xl flex items-center space-x-3 text-xs text-pink-100 hover:text-white hover:bg-white/5 transition">
+                <i class="fa-solid fa-address-card text-purple-300"></i><span>About Developer</span>
+            </button>
+            <button id="btn-desktop-contact" class="text-left p-3 rounded-xl flex items-center space-x-3 text-xs text-pink-100 hover:text-white hover:bg-white/5 transition">
+                <i class="fa-brands fa-whatsapp text-emerald-300"></i><span>24/7 Desk Contact</span>
+            </button>
+        </aside>
+
+        <!-- Drawer Profile Side Panel -->
+        <div id="sideDrawer" class="fixed inset-y-0 left-0 w-80 bg-[#16002c] border-r border-white/10 z-50 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl overflow-y-auto">
+            <div class="p-6 border-b border-white/10 bg-black/30 flex items-center justify-between">
+                <div class="flex items-center space-x-3 overflow-hidden">
+                    <img id="drawerUserLogo" src="https://api.dicebear.com/7.x/bottts/svg?seed=SGS" class="w-12 h-12 rounded-2xl bg-slate-900 p-1 border border-pink-500/30 shadow-md" alt="User Vector">
+                    <div class="overflow-hidden">
+                        <p class="text-[9px] uppercase font-mono tracking-widest text-pink-400 font-bold">Secure Instance</p>
+                        <p id="drawerUserIdentity" class="text-xs text-slate-200 font-mono truncate font-semibold">Loading Profile...</p>
+                    </div>
+                </div>
+                <button id="drawer-close-btn" class="text-pink-200 hover:text-white p-1.5 hover:bg-white/10 rounded-lg transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div class="p-6 flex-1 flex flex-col justify-between">
+                <div class="space-y-6">
+                    <div class="bg-black/40 p-4 rounded-2xl border border-white/10 space-y-3">
+                        <p class="text-xs uppercase font-bold tracking-wider text-pink-200">Auditing Compliance</p>
+                        <div class="flex items-center text-xs text-pink-100 gap-2">
+                            <i class="fa-solid fa-circle-check text-emerald-400"></i>
+                            <span>No Tracker Policy Engaged</span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <p class="text-[10px] uppercase font-mono text-pink-300 tracking-wider">Compliance & Directives</p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button id="drawer-refund-btn" class="py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs text-white flex items-center justify-center space-x-1.5 transition">
+                                <i class="fa-solid fa-rotate-left text-amber-400"></i><span>Refunds</span>
+                            </button>
+                            <button id="drawer-faq-btn" class="py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs text-white flex items-center justify-center space-x-1.5 transition">
+                                <i class="fa-solid fa-circle-question text-sky-400"></i><span>FAQ</span>
+                            </button>
+                            <button id="drawer-about-btn" class="py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs text-white flex items-center justify-center space-x-1.5 transition">
+                                <i class="fa-solid fa-info-circle text-purple-400"></i><span>About</span>
+                            </button>
+                            <button id="drawer-contact-btn" class="py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs text-white flex items-center justify-center space-x-1.5 transition">
+                                <i class="fa-brands fa-whatsapp text-emerald-400"></i><span>Contact</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <p class="text-[10px] uppercase font-mono text-pink-300 tracking-wider">Social Channels</p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button id="btn-insta-social" class="py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs text-white flex items-center justify-center space-x-1.5 transition">
+                                <i class="fa-brands fa-instagram text-pink-400"></i><span>Instagram</span>
+                            </button>
+                            <button id="btn-yt-social" class="py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs text-white flex items-center justify-center space-x-1.5 transition">
+                                <i class="fa-brands fa-youtube text-red-400"></i><span>YouTube</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button id="drawerAdminLink" class="w-full text-left p-3.5 rounded-xl flex items-center space-x-3 bg-purple-500/20 hover:bg-purple-500/30 text-purple-200 border border-purple-500/30 font-bold hidden shadow-glow-purple transition">
+                        <i class="fa-solid fa-user-shield text-purple-400"></i><span>Admin Command Center</span>
+                    </button>
+                </div>
+
+                <div class="space-y-4 pt-6">
+                    <button id="drawer-logout-btn" class="w-full py-3.5 bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/30 text-rose-200 hover:text-white font-bold tracking-widest uppercase text-xs rounded-xl flex items-center justify-center space-x-2 transition active:scale-[0.98]">
+                        <i class="fa-solid fa-power-off text-rose-400"></i>
+                        <span>Terminate Active Session</span>
+                    </button>
+
+                    <div class="flex items-center justify-between text-[10px] text-pink-300/80 font-mono px-1">
+                        <span class="hover:underline cursor-pointer" id="btn-show-privacy-2">Privacy Policy</span>
+                        <span class="hover:underline cursor-pointer" id="btn-show-terms-2">Terms-of-Agreement</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="drawerOverlay" class="fixed inset-0 bg-[#0a0118]/80 z-40 hidden backdrop-blur-md transition-all duration-300"></div>
+
+        <main class="flex-1 space-y-6 z-10 pb-6">
+            <!-- TAB 1: NEW SMM ORDER HUB (CLEAN WHITE THEME AS PER SCREENSHOT) -->
+            <section id="tab-dashboard" class="space-y-6 tab-content">
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                    <div class="xl:col-span-2 glass-panel p-6 sm:p-8 rounded-[28px] space-y-5 relative shadow-2xl">
+                        
+                        <!-- Platform Filter Badges from Image -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 border-b border-slate-200 pb-4">
+                            <button type="button" onclick="document.getElementById('categorySelect').value='views'; document.getElementById('categorySelect').dispatchEvent(new Event('change'))" class="py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center justify-center gap-2 transition">
+                                <i class="fa-brands fa-instagram text-pink-600"></i> Instagram
+                            </button>
+                            <button type="button" onclick="document.getElementById('categorySelect').value='youtube_views'; document.getElementById('categorySelect').dispatchEvent(new Event('change'))" class="py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center justify-center gap-2 transition">
+                                <i class="fa-brands fa-youtube text-red-600"></i> YouTube
+                            </button>
+                            <button type="button" onclick="document.getElementById('categorySelect').value='facebook_views'; document.getElementById('categorySelect').dispatchEvent(new Event('change'))" class="py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center justify-center gap-2 transition">
+                                <i class="fa-brands fa-facebook text-blue-600"></i> Facebook
+                            </button>
+                            <button type="button" onclick="document.getElementById('categorySelect').value='likes'; document.getElementById('categorySelect').dispatchEvent(new Event('change'))" class="py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold flex items-center justify-center gap-2 transition">
+                                <i class="fa-solid fa-bolt text-amber-500"></i> Popular
+                            </button>
+                        </div>
+
+                        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                            <h2 class="text-base sm:text-lg font-bold text-slate-800 flex items-center space-x-2">
+                                <i class="fa-solid fa-cart-shopping text-purple-600"></i>
+                                <span>NEW DISPATCH ORDER</span>
+                            </h2>
+                            <span class="text-[10px] text-slate-500 font-mono bg-slate-100 px-3 py-1 rounded-full border border-slate-200">AUTOMATED ENGINE</span>
+                        </div>
+
+                        <div class="space-y-4.5">
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold tracking-widest text-slate-600 mb-2">Category</label>
+                                <select id="categorySelect" class="w-full bg-slate-50 p-3.5 sm:p-4 rounded-2xl border border-slate-300 focus:outline-none focus:border-purple-600 text-slate-800 text-sm font-semibold transition">
+                                    <option value="views">🎬 Instagram Reels Views</option>
+                                    <option value="likes">❤️ Instagram Premium Likes</option>
+                                    <option value="followers">👥 Instagram Real Followers</option>
+                                    <option value="youtube_views">▶️ Youtube Shorts Views</option>
+                                    <option value="youtube_view">▶️ Youtube Long Views</option>
+                                    <option value="youtube_like">❤️ Youtube Likes</option>
+                                    <option value="subscriber">❤️ Youtube Subscribers</option>
+                                    <option value="youtube_comment">💬 Youtube comments</option>
+                                    <option value="facebook_views">🎬 Facebook Views</option>
+                                    <option value="facebook_like">❤️ Facebook Likes</option>
+                                    <option value="facebook_followers">🎬 Facebook Followers</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold tracking-widest text-slate-600 mb-2">Service</label>
+                                <select id="serviceSelect" class="w-full bg-slate-50 p-3.5 sm:p-4 rounded-2xl border border-slate-300 focus:outline-none focus:border-purple-600 text-slate-800 text-xs font-semibold transition leading-relaxed">
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold tracking-widest text-slate-600 mb-2">Link</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400"><i class="fa-solid fa-link text-sm"></i></span>
+                                    <input type="url" id="targetOrderLink" placeholder="https://www.instagram.com/reel/..." class="w-full bg-slate-50 pl-10 pr-4 py-3.5 sm:py-4 rounded-2xl border border-slate-300 focus:outline-none focus:border-purple-600 text-slate-800 text-sm font-mono transition">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold tracking-widest text-slate-600 mb-2">Quantity</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400"><i class="fa-solid fa-arrow-up-9-1 text-sm"></i></span>
+                                    <input type="number" id="targetOrderQty" placeholder="Min: 100 - Max: 500,000" class="w-full bg-slate-50 pl-10 pr-4 py-3.5 sm:py-4 rounded-2xl border border-slate-300 focus:outline-none focus:border-purple-600 text-slate-800 text-sm font-bold transition">
+                                </div>
+                            </div>
+
+                            <div id="costDisplayBox" class="bg-slate-50 border border-slate-200 p-4 rounded-2xl flex justify-between items-center">
+                                <div>
+                                    <span class="text-[10px] uppercase tracking-wider font-bold text-slate-500 font-mono">Charge</span>
+                                    <p class="text-[9px] text-slate-400 font-mono mt-0.5">Charged in Indian Rupees (INR)</p>
+                                </div>
+                                <span class="text-xl sm:text-2xl font-black text-rose-600 tracking-tight">₹<span id="calculatedCostText">0.00</span></span>
+                            </div>
+
+                            <button id="submit-order-pipeline-btn" class="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 hover:from-purple-500 hover:to-rose-500 text-white font-extrabold uppercase tracking-widest text-xs shadow-xl active:scale-[0.98] transition flex items-center justify-center space-x-2">
+                                <span>SUBMIT ORDER</span>
+                                <i class="fa-solid fa-paper-plane animate-pulse"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right Column Info Box matching screenshot -->
+                    <div class="space-y-6">
+                        <div class="glass-panel p-6 rounded-[28px] relative overflow-hidden shadow-2xl space-y-4">
+                            <div class="border-b border-slate-200 pb-3">
+                                <a href="javascript:void(0)" onclick="window.triggerEncryptedWhatsApp()" class="text-xs font-bold text-purple-700 hover:underline flex items-center gap-1.5">
+                                    <i class="fa-brands fa-whatsapp text-emerald-500 text-base"></i>
+                                    <span>Click Here to Join Our WhatsApp Community For Daily Updates</span>
+                                </a>
+                            </div>
+
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Most of the SMM Panels have poor customer support, but we focus on our users. You will get instant replies on our WhatsApp desk.
+                            </p>
+
+                            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs space-y-1.5">
+                                <p class="font-bold text-slate-800">Why choose our SMM Engine?</p>
+                                <p class="text-slate-600 text-[11px]">Best quality services at affordable rates directly managed by high-speed execution APIs.</p>
+                            </div>
+
+                            <div class="pt-2 border-t border-slate-200 flex items-center justify-between text-xs font-mono">
+                                <span class="text-slate-500">Support Line:</span>
+                                <a href="javascript:void(0)" onclick="window.triggerEncryptedWhatsApp()" class="text-emerald-600 font-bold hover:underline flex items-center gap-1">
+                                    <i class="fa-brands fa-whatsapp"></i> Chat Support
+                                </a>
+                            </div>
+
+                            <div class="bg-purple-50 border border-purple-200 p-3 rounded-2xl flex items-center justify-between">
+                                <span class="flex items-center gap-2 text-xs font-semibold text-purple-900"><span class="h-2 w-2 bg-emerald-500 rounded-full animate-pulse"></span> Service Pipeline</span>
+                                <span class="text-xs font-mono text-purple-700 font-bold">ONLINE 100%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: MY ORDERS LEDGER -->
+            <section id="tab-myorders" class="space-y-6 tab-content hidden">
+                <div class="glass-panel p-5 sm:p-7 rounded-[32px] shadow-xl">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-white/10 pb-4 mb-4">
+                        <div>
+                            <h2 class="text-base sm:text-lg font-bold text-yellow-300 uppercase tracking-wider flex items-center space-x-2">
+                                <i class="fa-solid fa-folder-open"></i>
+                                <span>Engine Dispatch Ledger</span>
+                            </h2>
+                            <p class="text-xs text-pink-200 font-mono mt-0.5">Real-time order execution logs synced from server</p>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                            <tr class="border-b border-white/10 text-[10px] uppercase font-mono tracking-wider text-pink-200 bg-black/30">
+                                <th class="p-3 rounded-l-xl">ID</th>
+                                <th class="p-3">Date</th>
+                                <th class="p-3">Link</th>
+                                <th class="p-3 font-mono">Charge</th>
+                                <th class="p-3 font-mono">Start count</th>
+                                <th class="p-3 font-mono">Quantity</th>
+                                <th class="p-3">Service</th>
+                                <th class="p-3 rounded-r-xl">Status</th>
+                            </tr>
+                            </thead>
+                            <tbody id="myOrdersTableStream" class="text-xs font-semibold divide-y divide-white/10">
+                            <tr>
+                                <td colspan="8" class="p-12 text-center text-pink-200 italic font-mono">
+                                    No verified transaction nodes tracked on this account chain.
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: ADD DEPOSIT FUNDS CENTER -->
+            <section id="tab-addfunds" class="space-y-6 tab-content hidden">
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                    <div class="xl:col-span-2 glass-panel p-5 sm:p-7 rounded-[32px] space-y-5">
+                        <div class="border-b border-white/10 pb-3">
+                            <h2 class="text-base sm:text-lg font-bold text-emerald-300 uppercase tracking-wider flex items-center space-x-2">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <span>Wallet Settlement Clearance</span>
+                            </h2>
+                            <p class="text-xs text-pink-200 font-mono mt-0.5">Initialize and settle transactions via instant UPI QR</p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-pink-100 mb-2 tracking-wider">A. Specify Desired Amount (₹)</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-pink-300"><i class="fa-solid fa-indian-rupee-sign text-sm"></i></span>
+                                    <input type="number" id="fundAmount" placeholder="Enter INR value (Ex: 500)" class="w-full bg-black/40 pl-10 pr-4 py-3.5 sm:py-4 rounded-2xl border border-white/20 focus:outline-none focus:border-emerald-400 text-white text-sm font-bold transition">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-pink-100 mb-2 tracking-wider">B. Sender Name / PhonePe UPI Name</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-pink-300"><i class="fa-solid fa-user text-sm"></i></span>
+                                    <input type="text" id="utrInput" placeholder="Enter Your Name" class="w-full bg-black/40 pl-10 pr-4 py-3.5 sm:py-4 rounded-2xl border border-white/20 focus:outline-none focus:border-emerald-400 text-white text-sm font-semibold transition">
+                                </div>
+                                <p class="text-[9px] text-pink-200 font-mono mt-2 leading-relaxed">Apne PhonePe/Bank account me likha Sender Name .</p>
+                            </div>
+
+                            <button id="submit-deposit-btn" class="w-full py-4 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-600 hover:from-emerald-500 hover:to-teal-500 text-white font-extrabold uppercase tracking-widest text-xs rounded-2xl shadow-glow-emerald transition active:scale-[0.98]">
+                                Submit Payments
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel p-6 rounded-[32px] flex flex-col items-center justify-center text-center space-y-4">
+                        <h3 class="text-xs uppercase font-black tracking-widest text-pink-100">Secure QR Matrix</h3>
+
+                        <div id="qrPrompt" class="text-pink-200 text-xs px-6 py-12 border border-dashed border-white/20 rounded-2xl w-full">
+                            <i class="fa-solid fa-qrcode text-4xl mb-3 text-pink-300 animate-pulse"></i>
+                            <p class="font-mono">Input a valid numerical currency amount in the left panel to invoke the UPI QR Vector.</p>
+                        </div>
+
+                        <div id="qrMatrixContainer" class="hidden p-3 bg-white rounded-2xl relative shadow-2xl">
+                            <img id="secureQrImg" src="" class="w-44 h-44 mx-auto" alt="UPI QR">
+                        </div>
+
+                        <div id="qrDataSummary" class="mt-2 text-[10px] font-mono font-bold bg-black/40 px-3.5 py-2 rounded-xl border border-white/10 text-emerald-300 hidden"></div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 sm:p-7 rounded-[32px]">
+                    <h3 class="text-xs font-black uppercase text-pink-100 tracking-wider mb-3">
+                        <i class="fa-solid fa-clock-history mr-1.5 text-emerald-400"></i>
+                        <span>Account Settle Ledger Records</span>
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead>
+                            <tr class="text-pink-200 border-b border-white/10 text-[10px] font-mono uppercase bg-black/30">
+                                <th class="p-3">Value</th>
+                                <th class="p-3">Sender / UTR Ref</th>
+                                <th class="p-3">Status</th>
+                            </tr>
+                            </thead>
+                            <tbody id="userLedgerRows" class="text-xs divide-y divide-white/10">
+                            <tr>
+                                <td colspan="3" class="p-6 text-center text-pink-200 italic font-mono">No tracking sessions deployed inside active profile.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: REFERRAL AFFILIATE CENTER -->
+            <section id="tab-refer" class="tab-content hidden max-w-xl mx-auto">
+                <div class="glass-panel p-6 sm:p-8 rounded-[32px] text-center space-y-5 relative overflow-hidden">
+                    <div class="w-16 h-16 bg-amber-500/20 text-yellow-300 rounded-full flex items-center justify-center mx-auto text-2xl border border-white/20 shadow-glow-rose">
+                        <i class="fa-solid fa-gift animate-bounce"></i>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h2 class="text-xl sm:text-2xl font-black uppercase tracking-tight text-white">Refer & Earn Capital</h2>
+                        <p class="text-xs text-pink-100 max-w-md mx-auto leading-relaxed">
+                            Share your platform node link or referral code. Upon successful verification of their first deposit, your wallet balance increases by a random reward of <span class="text-yellow-300 font-bold">₹1.00 to ₹2.00</span> automatically.
+                        </p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <!-- Referral Code Card -->
+                        <div class="bg-black/40 p-3.5 rounded-2xl border border-white/10 flex items-center justify-between gap-3">
+                            <div class="text-left">
+                                <span class="text-[9px] uppercase font-mono text-pink-200 block">Your Referral Code</span>
+                                <span id="referCode" class="text-sm font-extrabold font-mono text-yellow-300 select-all">SGS-LOADING</span>
+                            </div>
+                            <button id="btn-copy-ref-code" class="bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-bold px-4 py-2 rounded-xl text-xs whitespace-nowrap tracking-wider uppercase transition active:scale-[0.98]">
+                                Copy Code
+                            </button>
+                        </div>
+
+                        <!-- Referral Link Card -->
+                        <div class="bg-black/40 p-3.5 rounded-2xl border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
+                            <div class="text-left overflow-hidden w-full sm:w-auto">
+                                <span class="text-[9px] uppercase font-mono text-pink-200 block">Your Node Link</span>
+                                <span id="referLink" class="text-xs font-mono text-white select-all overflow-hidden text-left truncate block">https://sgsboost.net/ref?id=loading</span>
+                            </div>
+                            <button id="btn-copy-ref" class="w-full sm:w-auto bg-yellow-400 hover:bg-yellow-300 text-slate-900 font-extrabold px-5 py-2 rounded-xl text-xs whitespace-nowrap tracking-wider uppercase transition active:scale-[0.98]">
+                                Copy Link
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation Menu -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#16002c]/95 border-t border-white/10 backdrop-blur-lg z-40 flex justify-around items-center py-2.5 px-3 shadow-[0_-10px_35px_rgba(0,0,0,0.6)]">
+        <button id="mbtn-dashboard" class="flex flex-col items-center justify-center space-y-1 text-pink-200 hover:text-white transition active:scale-90 focus:outline-none mobile-nav-btn">
+            <i class="fa-solid fa-circle-plus text-lg"></i>
+            <span class="text-[9px] font-bold tracking-wider uppercase">Order</span>
+        </button>
+        <button id="mbtn-myorders" class="flex flex-col items-center justify-center space-y-1 text-pink-200 hover:text-white transition active:scale-90 focus:outline-none mobile-nav-btn">
+            <i class="fa-solid fa-list-ul text-lg"></i>
+            <span class="text-[9px] font-bold tracking-wider uppercase">Logs</span>
+        </button>
+        <button id="mbtn-addfunds" class="flex flex-col items-center justify-center space-y-1 text-pink-200 hover:text-white transition active:scale-90 focus:outline-none mobile-nav-btn">
+            <i class="fa-solid fa-wallet text-lg"></i>
+            <span class="text-[9px] font-bold tracking-wider uppercase">Deposit</span>
+        </button>
+        <button id="mbtn-refer" class="flex flex-col items-center justify-center space-y-1 text-pink-200 hover:text-white transition active:scale-90 focus:outline-none mobile-nav-btn">
+            <i class="fa-solid fa-gift text-lg"></i>
+            <span class="text-[9px] font-bold tracking-wider uppercase">Earn</span>
+        </button>
+    </nav>
+
+    <footer class="hidden lg:block mt-auto border-t border-white/10 bg-black/30 py-5 px-8">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-[10px] text-pink-200/80 font-mono">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-shield text-emerald-400"></i>
+                <span>SGS PLATFORM ARCHITECTURE • SECURE SHA-256 COMPLIANCE PROTOCOLS</span>
+            </div>
+            <div class="flex items-center gap-4 flex-wrap">
+                <span class="hover:text-white cursor-pointer" id="btn-show-privacy-3">Privacy Policy</span>
+                <span class="hover:text-white cursor-pointer" id="btn-show-terms-3">Terms-of-Agreement</span>
+                <span class="hover:text-white cursor-pointer" id="btn-show-refund-3">Refund Policy</span>
+                <span class="hover:text-white cursor-pointer" id="btn-show-faq-3">FAQ</span>
+                <span class="hover:text-white cursor-pointer" id="btn-show-about-3">About Us</span>
+                <span class="hover:text-white cursor-pointer" id="btn-show-contact-3">Contact Support</span>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Admin Console Dashboard overlay -->
+<div id="adminCoreConsole" class="fixed inset-0 bg-[#0a0118] hidden flex-col z-50 overflow-y-auto">
+    <header class="bg-[#16002c] border-b border-purple-500/30 p-4 sm:p-5 flex justify-between items-center shadow-lg sticky top-0 z-10">
+        <div class="flex items-center space-x-3">
+                <span class="flex h-2 w-2 relative">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+                </span>
+            <span class="font-extrabold text-purple-300 text-[11px] sm:text-xs tracking-widest uppercase font-mono"><i class="fa-solid fa-terminal mr-2"></i>ADMIN COMMAND CENTER</span>
+        </div>
+        <div class="flex items-center space-x-2">
+            <button id="admin-logout-btn" class="bg-rose-600 hover:bg-rose-500 border border-rose-500/40 px-3.5 py-1.5 rounded-xl text-xs font-bold text-white transition flex items-center space-x-1.5"><i class="fa-solid fa-power-off"></i><span>Logout</span></button>
+            <button id="admin-close-btn" class="bg-slate-900 hover:bg-slate-800 border border-slate-800 px-3.5 py-1.5 rounded-xl text-xs font-bold text-slate-300 transition">Close Console</button>
+        </div>
+    </header>
+
+    <div class="p-4 sm:p-6 md:p-8 max-w-7xl mx-auto w-full flex-1 space-y-6">
+        <!-- Admin Tabs Navigation -->
+        <div class="flex items-center space-x-3 border-b border-white/10 pb-3">
+            <button id="admin-tab-deposits-btn" class="bg-purple-600 text-white font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition shadow-glow-purple">
+                <i class="fa-solid fa-receipt mr-1.5"></i> Deposits Audit Queue
+            </button>
+            <button id="admin-tab-users-btn" class="bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 font-bold px-4 py-2 rounded-xl text-xs uppercase tracking-wider transition">
+                <i class="fa-solid fa-users mr-1.5"></i> User Details Directory
+            </button>
+        </div>
+
+        <!-- Section 1: Deposits Audit -->
+        <div id="adminDepositsSection" class="space-y-4">
+            <h3 class="text-xs font-black tracking-widest text-purple-300 uppercase font-mono">Pending Clearance Reports</h3>
+            <div class="glass-panel rounded-2xl overflow-hidden shadow-glow-purple border-purple-500/20">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-black/40 text-pink-200 uppercase font-mono text-[9px] border-b border-white/10">
+                        <tr>
+                            <th class="p-3 sm:p-4">User Email</th>
+                            <th class="p-3 sm:p-4">Current Bal</th>
+                            <th class="p-3 sm:p-4">Deposit Value</th>
+                            <th class="p-3 sm:p-4">UTR Reference</th>
+                            <th class="p-3 sm:p-4 text-right">Verification Triggers</th>
+                        </tr>
+                        </thead>
+                        <tbody id="adminPipelineStream" class="text-xs font-mono divide-y divide-white/10">
+                        <tr>
+                            <td colspan="5" class="p-12 text-center text-pink-200 italic font-mono">No clearance pipeline metrics captured inside system database.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Registered Users Directory -->
+        <div id="adminUsersSection" class="space-y-4 hidden">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                <h3 class="text-xs font-black tracking-widest text-purple-300 uppercase font-mono">User Email & Live Balances</h3>
+                <div class="relative w-full sm:w-72">
+                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 text-xs"><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" id="adminUserSearchInput" placeholder="Filter by Email address or UID..." class="w-full bg-black/40 pl-9 pr-3 py-2 rounded-xl border border-white/20 text-xs text-white focus:outline-none focus:border-purple-400 font-mono">
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-2xl overflow-hidden border-purple-500/20">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-black/40 text-pink-200 uppercase font-mono text-[9px] border-b border-white/10">
+                        <tr>
+                            <th class="p-3 sm:p-4">User Identifier & UID</th>
+                            <th class="p-3 sm:p-4 text-center">Provider</th>
+                            <th class="p-3 sm:p-4">Created</th>
+                            <th class="p-3 sm:p-4">Last Active</th>
+                            <th class="p-3 sm:p-4">Live Balance</th>
+                            <th class="p-3 sm:p-4 text-right">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody id="adminUsersStream" class="text-xs font-mono divide-y divide-white/10">
+                        <tr>
+                            <td colspan="6" class="p-12 text-center text-pink-200 italic">Loading user directory...</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Admin View User Data Modal -->
+<div id="adminUserDetailModalOverlay" class="fixed inset-0 bg-[#0a0118]/95 z-[120] hidden items-center justify-center p-4 backdrop-blur-md">
+    <div class="glass-panel max-w-4xl w-full rounded-[32px] p-5 sm:p-7 space-y-5 relative max-h-[90vh] overflow-y-auto border-purple-500/30 shadow-2xl">
+        <div class="flex items-center justify-between border-b border-white/10 pb-3 sticky top-0 bg-[#16002c]/90 backdrop-blur-md z-10 pt-1">
+            <div>
+                <h3 class="text-sm sm:text-base font-black uppercase text-purple-300 tracking-wider flex items-center space-x-2">
+                    <i class="fa-solid fa-user-gear text-purple-400"></i>
+                    <span>User Account Deep Audit</span>
+                </h3>
+                <p id="modalUserEmailTitle" class="text-xs font-mono text-pink-200 mt-0.5">Loading...</p>
+            </div>
+            <button type="button" onclick="window.closeAdminUserDetailModal()" class="text-pink-200 hover:text-white p-1.5 hover:bg-white/10 rounded-xl transition">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+        </div>
+
+        <!-- User Quick Metrics Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs">
+            <div class="bg-black/40 p-3 rounded-2xl border border-white/10">
+                <span class="text-[9px] uppercase text-pink-300 font-bold block">User UID</span>
+                <span id="modalUserUID" class="text-yellow-300 font-extrabold text-sm">#----</span>
+            </div>
+            <div class="bg-black/40 p-3 rounded-2xl border border-white/10">
+                <span class="text-[9px] uppercase text-pink-300 font-bold block">Wallet Balance</span>
+                <span id="modalUserWallet" class="text-emerald-400 font-extrabold text-sm">₹0.00</span>
+            </div>
+            <div class="bg-black/40 p-3 rounded-2xl border border-white/10">
+                <span class="text-[9px] uppercase text-pink-300 font-bold block">Auth Provider</span>
+                <span id="modalUserProvider" class="text-sky-300 font-bold">Email/Pass</span>
+            </div>
+            <div class="bg-black/40 p-3 rounded-2xl border border-white/10">
+                <span class="text-[9px] uppercase text-pink-300 font-bold block">Qualified Refers</span>
+                <span id="modalUserRefers" class="text-purple-300 font-bold">0</span>
+            </div>
+        </div>
+
+        <!-- User Orders Logs -->
+        <div class="space-y-3">
+            <h4 class="text-xs font-black uppercase text-pink-100 font-mono flex items-center space-x-2">
+                <i class="fa-solid fa-box-archive text-sky-400"></i>
+                <span>Submitted Orders History</span>
+            </h4>
+            <div class="glass-panel rounded-2xl overflow-hidden border-white/10">
+                <div class="overflow-x-auto max-h-60 overflow-y-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-black/40 text-pink-200 uppercase font-mono text-[9px] border-b border-white/10 sticky top-0">
+                        <tr>
+                            <th class="p-2.5">Order ID</th>
+                            <th class="p-2.5">Service</th>
+                            <th class="p-2.5">Qty</th>
+                            <th class="p-2.5">Cost</th>
+                            <th class="p-2.5">Target Link</th>
+                            <th class="p-2.5">Status</th>
+                        </tr>
+                        </thead>
+                        <tbody id="modalUserOrdersStream" class="text-xs font-mono divide-y divide-white/10">
+                        <tr>
+                            <td colspan="6" class="p-6 text-center text-pink-200 italic">No orders logged for this user.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Transactions Logs -->
+        <div class="space-y-3 pt-2">
+            <h4 class="text-xs font-black uppercase text-pink-100 font-mono flex items-center space-x-2">
+                <i class="fa-solid fa-receipt text-emerald-400"></i>
+                <span>Wallet Deposit Requests</span>
+            </h4>
+            <div class="glass-panel rounded-2xl overflow-hidden border-white/10">
+                <div class="overflow-x-auto max-h-48 overflow-y-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-black/40 text-pink-200 uppercase font-mono text-[9px] border-b border-white/10 sticky top-0">
+                        <tr>
+                            <th class="p-2.5">Amount</th>
+                            <th class="p-2.5">UTR Reference</th>
+                            <th class="p-2.5">Status</th>
+                        </tr>
+                        </thead>
+                        <tbody id="modalUserTxStream" class="text-xs font-mono divide-y divide-white/10">
+                        <tr>
+                            <td colspan="3" class="p-6 text-center text-pink-200 italic">No deposit records found.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-2 border-t border-white/10 flex justify-end">
+            <button type="button" onclick="window.closeAdminUserDetailModal()" class="px-5 py-2 bg-white/10 hover:bg-white/20 text-xs font-bold text-white rounded-xl transition">Close Audit Window</button>
+        </div>
+    </div>
+</div>
+
+<!-- Confirm Delete User Custom Modal -->
+<div id="deleteUserModalOverlay" class="fixed inset-0 bg-[#0a0118]/90 z-[60] hidden items-center justify-center p-4 backdrop-blur-md">
+    <div class="glass-panel max-w-md w-full rounded-[28px] p-6 space-y-4 border-rose-500/30 shadow-2xl relative">
+        <div class="flex items-center space-x-3 text-rose-400">
+            <i class="fa-solid fa-triangle-exclamation text-2xl animate-bounce"></i>
+            <h3 class="text-base font-extrabold uppercase tracking-wider text-white">Confirm Permanent Deletion</h3>
+        </div>
+        <p class="text-xs text-pink-100 font-mono leading-relaxed">
+            Are you sure you want to permanently delete user <span id="deleteTargetUserEmail" class="text-yellow-300 font-bold"></span> from Firebase Realtime Database?
+        </p>
+        <p class="text-[10px] text-pink-200/70 font-mono">This action will erase all wallet balance and account data permanently.</p>
+        <div class="flex justify-end space-x-3 pt-3 border-t border-white/10">
+            <button id="cancelDeleteUserBtn" class="px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/10 text-xs font-bold text-white rounded-xl transition">Cancel</button>
+            <button id="confirmDeleteUserBtn" class="px-4 py-2 bg-rose-600 hover:bg-rose-500 text-xs font-bold text-white uppercase tracking-wider rounded-xl transition shadow-glow-rose">Yes, Remove User</button>
+        </div>
+    </div>
+</div>
+
+<!-- Floating WhatsApp Button (Matches Bottom Right Floating Icon in Image) -->
+<div class="fixed bottom-24 lg:bottom-6 right-4 sm:right-6 z-40 flex items-center gap-2">
+    <!-- SGS AI Support Desk Widget -->
+    <button id="aiWidgetToggle" class="bg-gradient-to-tr from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white w-11 h-11 sm:w-12 sm:h-12 rounded-full shadow-xl flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 relative group focus:outline-none">
+        <span class="absolute -top-0.5 -right-0.5 h-3 w-3 bg-emerald-400 rounded-full border-2 border-slate-950 animate-pulse"></span>
+        <i class="fa-solid fa-headset text-base sm:text-lg group-hover:rotate-12 transition"></i>
+    </button>
+
+    <!-- Floating WhatsApp Instant Button -->
+    <button onclick="window.triggerEncryptedWhatsApp()" class="bg-emerald-500 hover:bg-emerald-400 text-white w-12 h-12 sm:w-14 sm:h-14 rounded-full shadow-2xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 focus:outline-none">
+        <i class="fa-brands fa-whatsapp text-2xl sm:text-3xl"></i>
+    </button>
+
+    <div id="aiSupportWidget" class="hidden absolute bottom-16 sm:bottom-18 right-0 w-80 sm:w-96 max-w-[calc(100vw-2rem)] h-[440px] sm:h-[500px] glass-panel rounded-[28px] shadow-glow-purple flex-col overflow-hidden transition-all duration-300 z-50 bg-slate-900/95">
+        <div class="bg-[#16002c] p-4 border-b border-white/10 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-8.5 h-8.5 bg-rose-500/20 border border-rose-500/30 rounded-xl flex items-center justify-center text-rose-300 font-bold text-sm">
+                    <i class="fa-solid fa-robot animate-pulse"></i>
+                </div>
+                <div>
+                    <h4 class="text-xs font-bold text-white tracking-wide">SGS AI Support Assistant</h4>
+                    <span class="text-[8px] text-emerald-400 font-mono flex items-center gap-1">
+                            <span class="h-1 w-1 bg-emerald-400 rounded-full animate-ping"></span>
+                            Online SLA Secured
+                        </span>
+                </div>
+            </div>
+            <button id="ai-widget-close-btn" class="text-pink-200 hover:text-white text-sm p-1.5 hover:bg-white/10 rounded-lg transition"><i class="fa-solid fa-chevron-down text-xs"></i></button>
+        </div>
+
+        <div id="aiMessagesStream" class="flex-1 p-4 overflow-y-auto space-y-4 text-[11px] sm:text-xs font-mono bg-black/40">
+            <div class="flex items-start space-x-2.5">
+                <div class="w-6 h-6 bg-rose-500/20 rounded-lg flex items-center justify-center text-rose-300 text-[9px] shrink-0 font-bold">AI</div>
+                <div class="bg-white/10 border border-white/10 p-3 rounded-2xl rounded-tl-none max-w-[80%] text-white leading-relaxed">
+                    Secure hello connection! I am <span class="text-yellow-300 font-bold">SGS AI</span>. How can I assist you with SMM dispatches, balance settlement reports, or system validations today?
+                </div>
+            </div>
+        </div>
+
+        <div class="p-2.5 bg-[#16002c] border-t border-white/10 flex items-center gap-2">
+            <input type="text" id="aiUserInput" placeholder="Type support question..." class="flex-1 bg-black/40 border border-white/20 focus:outline-none focus:border-rose-400 rounded-xl px-3 py-2.5 text-xs text-white placeholder:text-pink-200/50 font-mono">
+            <button id="ai-send-btn" class="w-9 h-9 bg-rose-600 hover:bg-rose-500 text-white rounded-xl flex items-center justify-center transition shrink-0 active:scale-95">
+                <i class="fa-solid fa-paper-plane text-[11px]"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Dynamic Policy Modal Overlay -->
+<div id="legalModalOverlay" class="fixed inset-0 bg-[#0a0118]/90 z-[100] hidden items-center justify-center p-4 backdrop-blur-md">
+    <div class="glass-panel max-w-2xl w-full rounded-[32px] p-5 sm:p-7 space-y-5 relative max-h-[85vh] overflow-y-auto border-white/20 shadow-2xl bg-slate-900/90">
+        <div class="flex items-center justify-between border-b border-white/10 pb-3 sticky top-0 bg-[#16002c]/90 backdrop-blur-md z-10 pt-1">
+            <h3 id="legalModalTitle" class="text-sm sm:text-base font-black uppercase text-white tracking-wider flex items-center space-x-2"></h3>
+            <button id="legal-close-btn" class="text-pink-200 hover:text-white p-1 hover:bg-white/10 rounded-lg transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+        </div>
+        <div id="legalModalContent" class="text-xs text-pink-100 leading-relaxed space-y-4 font-sans">
+        </div>
+        <div class="pt-3 border-t border-white/10 flex justify-end sticky bottom-0 bg-[#16002c]/90 backdrop-blur-md pb-1">
+            <button id="legal-acknowledge-btn" class="px-5 py-2 bg-gradient-to-r from-rose-600 to-amber-500 hover:from-rose-500 hover:to-amber-400 text-[10px] font-bold text-white uppercase tracking-widest rounded-xl transition shadow-md">Acknowledge & Accept</button>
+        </div>
+    </div>
+</div>
+
+<!-- Complete Embedded Policy Engine & Encrypted WhatsApp Router -->
+<script>
+    // WhatsApp Support Number Encrypted Handshake
+    (function () {
+        // Obfuscated Base64 Byte Array for Support Desk 9117080169 with country code 91
+        const _secSeq = [57, 49, 57, 49, 49, 55, 48, 56, 48, 49, 54, 57];
+        window.getSecuredDeskNum = function() {
+            return _secSeq.map(c => String.fromCharCode(c)).join('');
+        };
+
+        window.triggerEncryptedWhatsApp = function() {
+            const target = window.getSecuredDeskNum();
+            const msg = encodeURIComponent("Hello Sachin, I need support regarding SGS Instaboost.");
+            window.open(`https://api.whatsapp.com/send?phone=${target}&text=${msg}`, '_blank');
+        };
+
+        const policies = {
+            privacy: {
+                title: '<i class="fa-solid fa-shield-halved text-emerald-400"></i><span>Privacy Policy & Data Security</span>',
+                html: `
+                    <div class="space-y-4 text-xs text-pink-100 leading-relaxed">
+                        <div class="bg-emerald-500/20 border border-emerald-500/30 p-3 rounded-2xl text-emerald-300 text-[11px] font-mono">
+                            <strong>Google Play Developer Policy Standard:</strong> Fully Compliant with User Data Protection, Transparent Access, and Encryption Mandates.
+                        </div>
+                        <p><strong>Last Updated:</strong> August 2026</p>
+                        <p>Welcome to <strong>SGS Instaboost</strong> (managed by Sachin Kumar, Ara, Bhojpur, Bihar - 802165). We respect your privacy and are committed to safeguarding the personal data you share with us.</p>
+
+                        <h4 class="text-sm font-bold text-white uppercase font-mono tracking-wider pt-2 border-t border-white/10">1. Data We Access & Collect</h4>
+                        <p>When you access or authenticate with SGS Instaboost, we collect minimal data essential to deliver automated digital services:</p>
+                        <ul class="list-disc pl-5 space-y-1 text-pink-200 font-mono text-[11px]">
+                            <li><strong>Identity & Account Info:</strong> Email Address and UID provided securely upon verification.</li>
+                            <li><strong>Profile & Verification Data:</strong> User account balances, transaction references (UPI sender name/UTR), and unique referral identifiers.</li>
+                            <li><strong>Service Dispatches:</strong> Destination links and numerical quantities requested for processing.</li>
+                            <li><strong>Technical Diagnostics:</strong> Device network state and error logs solely used for latency optimization and security verification.</li>
+                        </ul>
+
+                        <h4 class="text-sm font-bold text-white uppercase font-mono tracking-wider pt-2 border-t border-white/10">2. Purpose of Data Utilization</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-pink-200 font-mono text-[11px]">
+                            <li>To authenticate identity and maintain persistent, tamper-proof user sessions.</li>
+                            <li>To track orders, calculate dynamic balances, and credit referral rewards.</li>
+                            <li>To deliver round-the-clock customer support and fraud prevention.</li>
+                        </ul>
+
+                        <h4 class="text-sm font-bold text-white uppercase font-mono tracking-wider pt-2 border-t border-white/10">3. Ironclad Security & Zero Third-Party Sale</h4>
+                        <p>We do <strong>NOT</strong> sell, rent, monetize, or disclose your personal data to external advertisers. All transmissions are protected with industry-standard <strong>256-bit SSL / AES TLS encryption</strong> directly synced to Google Firebase infrastructure.</p>
+
+                        <h4 class="text-sm font-bold text-white uppercase font-mono tracking-wider pt-2 border-t border-white/10">4. Account & Data Deletion Compliance</h4>
+                        <p>In accordance with Google Play's Account Deletion Policy, any user may request complete purging of their account and associated data. Email our verification officer at <span class="text-yellow-300 font-mono font-bold">contactsgsinstaboost@gmail.com</span> with subject <em>"Delete My Account"</em>, and your records will be irreversibly erased within 7 business days.</p>
+                    </div>
+                `
+            },
+            terms: {
+                title: '<i class="fa-solid fa-file-contract text-amber-400"></i><span>Terms of Agreement</span>',
+                html: `
+                    <div class="space-y-4 text-xs text-pink-100 leading-relaxed">
+                        <p><strong>Last Updated:</strong> August 2026</p>
+                        <p>By creating an account or accessing the SGS Instaboost platform, you acknowledge and agree to the following terms and operating conditions:</p>
+
+                        <h4 class="text-sm font-bold text-white uppercase font-mono tracking-wider pt-2 border-t border-white/10">1. Account Integrity</h4>
+                        <p>Users are solely responsible for maintaining the confidentiality of their credentials and session tokens. Multiple account abuse or automated bot exploitation will lead to immediate account suspension.</p>
+
+                        <h4 class="text-sm font-bold text-white uppercase font-mono tracking-wider pt-2 border-t border-white/10">2. Usage Rules</h4>
+                        <p>You agree not to submit fraudulent UPI references, submit malicious links, or attempt unauthorized reverse engineering of backend dispatch APIs.</p>
+
+                        <h4 class="text-sm font-bold text-white uppercase font-mono tracking-wider pt-2 border-t border-white/10">3. Service Modifications</h4>
+                        <p>Platform rates, server packages, and execution speeds are dynamic and subject to updates based on underlying node availability.</p>
+                    </div>
+                `
+            },
+            refund: {
+                title: '<i class="fa-solid fa-arrow-rotate-left text-amber-400"></i><span>Refund & Settlement Policy</span>',
+                html: `
+                    <div class="space-y-4 text-xs text-pink-100 leading-relaxed">
+                        <p>We aim for 100% transparency in our automated billing and wallet settlement processes.</p>
+
+                        <h4 class="text-sm font-bold text-white uppercase font-mono tracking-wider pt-2 border-t border-white/10">1. Order Executions</h4>
+                        <p>Once a service pipeline dispatch is initialized to the designated link, the action cannot be revoked or canceled mid-flight.</p>
+
+                        <h4 class="text-sm font-bold text-white uppercase font-mono tracking-wider pt-2 border-t border-white/10">2. Refund Eligibility</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-pink-200 font-mono text-[11px]">
+                            <li><strong>Failed System Nodes:</strong> If a dispatch completely fails due to server error, the full deduction is credited back to your account wallet automatically.</li>
+                            <li><strong>Duplicate Deposits:</strong> If a UPI deposit is deducted twice due to banking gateway latency, the excess amount is reconciled within 24-48 hours upon verification.</li>
+                        </ul>
+
+                        <h4 class="text-sm font-bold text-white uppercase font-mono tracking-wider pt-2 border-t border-white/10">3. Resolution Request</h4>
+                        <p>Submit your order ID or payment UTR to our official support email or WhatsApp channel for rapid review.</p>
+                    </div>
+                `
+            },
+            faq: {
+                title: '<i class="fa-solid fa-circle-question text-sky-400"></i><span>Frequently Asked Questions</span>',
+                html: `
+                    <div class="space-y-3 text-xs text-pink-100">
+                        <div class="bg-black/40 p-3.5 rounded-2xl border border-white/10">
+                            <p class="font-bold text-white text-xs mb-1">Q: How do I access 24/7 technical support?</p>
+                            <p class="text-pink-200 text-[11px]">A: You can open the Contact Us section or click the WhatsApp support button to reach our active support desk instantly at any time.</p>
+                        </div>
+                        <div class="bg-black/40 p-3.5 rounded-2xl border border-white/10">
+                            <p class="font-bold text-white text-xs mb-1">Q: How does the affiliate referral system credit funds?</p>
+                            <p class="text-pink-200 text-[11px]">A: When a referee joins via your node link/code and successfully completes their first wallet deposit, a random reward between ₹1.00 to ₹2.00 is credited straight to your balance.</p>
+                        </div>
+                        <div class="bg-black/40 p-3.5 rounded-2xl border border-white/10">
+                            <p class="font-bold text-white text-xs mb-1">Q: Is my login account information safe?</p>
+                            <p class="text-pink-200 text-[11px]">A: Yes. All user data is secured with end-to-end database security rules and encrypted endpoints.</p>
+                        </div>
+                    </div>
+                `
+            },
+            about: {
+                title: '<i class="fa-solid fa-address-card text-purple-400"></i><span>About Developer & Organization</span>',
+                html: `
+                    <div class="space-y-4 text-xs text-pink-100 leading-relaxed">
+                        <p><strong>SGS Instaboost</strong> is a specialized, high-performance social utility and digital engine designed for seamless platform management and instant automated order pipelines.</p>
+
+                        <div class="bg-black/40 p-4 rounded-2xl border border-white/10 space-y-2">
+                            <h4 class="text-xs font-black uppercase text-yellow-300 font-mono tracking-wider">Entity Verification</h4>
+                            <p><strong>Lead Architect & Developer:</strong> Sachin Kumar</p>
+                            <p><strong>Operating Region:</strong> Ara, Bhojpur, Bihar, PIN - 802165, India</p>
+                            <p><strong>Primary Operations:</strong> SGS Instaboost Technology & SMM Architecture</p>
+                            <p><strong>Platform Status:</strong> Verified Active Production Instance</p>
+                        </div>
+                    </div>
+                `
+            },
+            contact: {
+                title: '<i class="fa-brands fa-whatsapp text-emerald-400"></i><span>Official 24/7 Support Desk</span>',
+                html: `
+                    <div class="space-y-4 text-xs text-pink-100 leading-relaxed">
+                        <p>Need urgent assistance with order status, API keys, or manual wallet top-up validation? Reach out through our official lines:</p>
+
+                        <div class="bg-black/40 p-4 rounded-2xl border border-white/10 space-y-3">
+                            <div>
+                                <span class="text-[10px] uppercase font-mono text-pink-300 block font-bold">Email Communication</span>
+                                <a href="mailto:contactsgsinstaboost@gmail.com" class="text-yellow-300 hover:underline font-mono font-bold">contactsgsinstaboost@gmail.com</a>
+                            </div>
+                            <div>
+                                <span class="text-[10px] uppercase font-mono text-pink-300 block font-bold">Registered Office</span>
+                                <p class="text-white font-mono">Ara - Bhojpur, Bihar - 802165, India</p>
+                            </div>
+                            <div>
+                                <span class="text-[10px] uppercase font-mono text-pink-300 block font-bold">Service Availability</span>
+                                <span class="inline-flex items-center gap-1.5 text-emerald-400 font-mono text-[11px]">
+                                    <span class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span> 24/7/365 Direct Support Active
+                                </span>
+                            </div>
+
+                            <div class="pt-2">
+                                <button onclick="window.triggerEncryptedWhatsApp()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold uppercase tracking-wider text-xs rounded-xl flex items-center justify-center space-x-2 transition shadow-glow-emerald">
+                                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                                    <span>Connect with 24/7 WhatsApp Support</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `
+            }
+        };
+
+        function showLegalModal(type) {
+            const data = policies[type];
+            if (!data) return;
+            const modal = document.getElementById('legalModalOverlay');
+            const title = document.getElementById('legalModalTitle');
+            const content = document.getElementById('legalModalContent');
+            if (modal && title && content) {
+                title.innerHTML = data.title;
+                content.innerHTML = data.html;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        function hideLegalModal() {
+            const modal = document.getElementById('legalModalOverlay');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const closeBtn = document.getElementById('legal-close-btn');
+            const ackBtn = document.getElementById('legal-acknowledge-btn');
+            if (closeBtn) closeBtn.addEventListener('click', hideLegalModal);
+            if (ackBtn) ackBtn.addEventListener('click', hideLegalModal);
+
+            const mappings = [
+                { ids: ['btn-show-privacy', 'btn-show-privacy-login', 'btn-show-privacy-2', 'btn-show-privacy-3', 'btn-desktop-security'], type: 'privacy' },
+                { ids: ['btn-show-terms', 'btn-show-terms-login', 'btn-show-terms-2', 'btn-show-terms-3'], type: 'terms' },
+                { ids: ['btn-show-refund-login', 'drawer-refund-btn', 'btn-desktop-refund', 'btn-show-refund-3'], type: 'refund' },
+                { ids: ['btn-show-faq-login', 'drawer-faq-btn', 'btn-desktop-faq', 'btn-show-faq-3'], type: 'faq' },
+                { ids: ['btn-show-about-login', 'drawer-about-btn', 'btn-desktop-about', 'btn-show-about-3'], type: 'about' },
+                { ids: ['btn-show-contact-login', 'drawer-contact-btn', 'btn-desktop-contact', 'btn-show-contact-3'], type: 'contact' }
+            ];
+
+            mappings.forEach(map => {
+                map.ids.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        el.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            showLegalModal(map.type);
+                        });
+                    }
+                });
             });
 
-            const bassOsc = ctx.createOscillator();
-            const bassGain = ctx.createGain();
-            bassOsc.type = 'triangle';
-            bassOsc.frequency.setValueAtTime(bass[currentChordIndex], now);
-            bassGain.gain.setValueAtTime(0.04, now);
-            bassGain.gain.exponentialRampToValueAtTime(0.001, now + 1.4);
-            bassOsc.connect(bassGain);
-            bassGain.connect(bgmGainNode);
-            bassOsc.start(now);
-            bassOsc.stop(now + 1.4);
-          }
+            // Mirror balance to top header card
+            const bal1 = document.getElementById('userBalance');
+            const bal2 = document.getElementById('userBalance2');
+            if (bal1 && bal2) {
+                const observer = new MutationObserver(() => {
+                    bal2.innerText = bal1.innerText;
+                });
+                observer.observe(bal1, { childList: true, characterData: true, subtree: true });
+            }
 
-          step++;
-          if (step >= 8) {
-            step = 0;
-            currentChordIndex = (currentChordIndex + 1) % chords.length;
-          }
-        } catch (e) {}
-      }, 500);
-    }
+            // Sync user email/id into top header card
+            const drawerId = document.getElementById('drawerUserIdentity');
+            const topUser = document.getElementById('topUserDisplay');
+            if (drawerId && topUser) {
+                const obsId = new MutationObserver(() => {
+                    if (drawerId.innerText && !drawerId.innerText.includes('Loading')) {
+                        topUser.innerText = drawerId.innerText;
+                    }
+                });
+                obsId.observe(drawerId, { childList: true, characterData: true, subtree: true });
+            }
 
-    function stopBackgroundMusic() {
-      if (bgmInterval) {
-        clearInterval(bgmInterval);
-        bgmInterval = null;
-      }
-    }
-
-    function setBgmVolume(val) {
-      bgmVolume = parseFloat(val);
-      if (bgmGainNode && audioCtx) {
-        bgmGainNode.gain.setValueAtTime(bgmVolume * 0.12, audioCtx.currentTime);
-      }
-    }
-
-    function playSfx(type) {
-      try {
-        const ctx = getAudioContext();
-        if (!ctx) return;
-        const now = ctx.currentTime;
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-
-        if (type === 'tick') {
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(880, now);
-          gain.gain.setValueAtTime(0.08, now);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
-          osc.start(now);
-          osc.stop(now + 0.04);
-        } else if (type === 'correct') {
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(523.25, now);
-          osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.25);
-          gain.gain.setValueAtTime(0.2, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
-          osc.start(now);
-          osc.stop(now + 0.4);
-        } else if (type === 'wrong') {
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(200, now);
-          osc.frequency.exponentialRampToValueAtTime(120, now + 0.25);
-          gain.gain.setValueAtTime(0.2, now);
-          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-          osc.start(now);
-          osc.stop(now + 0.3);
-        }
-      } catch (e) {}
-    }
-
-    async function requestWakeLock() {
-      try {
-        if ('wakeLock' in navigator) {
-          wakeLock = await navigator.wakeLock.request('screen');
-          updateWakeLockUI(true);
-          wakeLock.addEventListener('release', () => updateWakeLockUI(false));
-        } else {
-          updateWakeLockUI(true, "Screen ON");
-        }
-      } catch (err) {
-        updateWakeLockUI(false);
-      }
-    }
-
-    function updateWakeLockUI(isActive, msg) {
-      const badge = document.getElementById('wakeLockBadge');
-      if (!badge) return;
-      if (isActive) {
-        badge.className = "flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-neutral-900 border border-neutral-700 text-xs font-semibold text-emerald-400";
-        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span><span class="hidden sm:inline">${msg || "Screen ON"}</span>`;
-      } else {
-        badge.className = "flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-neutral-900 border border-neutral-700 text-xs font-semibold text-yellow-400";
-        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-yellow-400"></span><span>Re-locking</span>`;
-      }
-    }
-
-    document.addEventListener('visibilitychange', async () => {
-      if (document.visibilityState === 'visible') {
-        await requestWakeLock();
-        if (bgmEnabled && !isPaused) startBackgroundMusic();
-      }
-    });
-
-    window.addEventListener('click', () => {
-      if (!wakeLock) requestWakeLock();
-      getAudioContext();
-      if (bgmEnabled && !bgmInterval) startBackgroundMusic();
-    }, { once: true });
-
-    async function renderNewQuestion() {
-      if (isPaused) return;
-
-      clearInterval(timerInterval);
-      cancelSpeech();
-      isAnswered = false;
-      timeLeft = 10;
-
-      totalQuestions++;
-      document.getElementById('totalQuestionsCount').innerText = `#${totalQuestions}`;
-      document.getElementById('qIndexLabel').innerText = totalQuestions;
-
-      document.getElementById('autoNextNotice').classList.add('hidden');
-      document.getElementById('autoNextNotice').classList.remove('flex');
-      document.getElementById('explanationBox').classList.remove('hidden');
-      document.getElementById('explanationText').innerText = voiceEnabled 
-        ? "🎙️ AI शिक्षक प्रश्न पढ़ रहे हैं... समाप्त होने पर 10s टाइमर शुरू होगा!"
-        : "10 सेकंड का लाइव टाइमर चालू है! अपना उत्तर चुनें...";
-
-      updateTimerCircle(10);
-      document.getElementById('timerNumber').innerText = "10";
-      document.getElementById('timerNumber').className = "absolute font-black text-xl text-yellow-400 font-sans";
-      document.getElementById('timerStatusLabel').innerText = voiceEnabled ? "AI पढ़ रहा है..." : "समय शेष";
-      document.getElementById('timerSubtext').innerText = "10 सेकंड";
-
-      currentQuestion = await getNextUniqueQuestion();
-
-      // Update Teacher's Live Teleprompter in Header
-      const hindiLetters = ['(A)', '(B)', '(C)', '(D)'];
-      const correctLetter = hindiLetters[currentQuestion.correctIndex] || '(A)';
-      const correctOptionFull = currentQuestion.options[currentQuestion.correctIndex] || '';
-      const teacherKeyElem = document.getElementById('teacherKeyDisplay');
-      if (teacherKeyElem) {
-        teacherKeyElem.innerHTML = `<span class="text-yellow-400 font-bold">${correctLetter}</span> <span class="text-emerald-300 font-semibold truncate max-w-[130px] sm:max-w-[200px] inline-block align-bottom">${correctOptionFull}</span>`;
-      }
-
-      document.getElementById('badgeSubject').innerText = currentQuestion.subject || "GK & GS Special";
-      document.getElementById('badgeExam').innerText = currentQuestion.exam || "SSC / Railway / All Exams";
-      document.getElementById('questionText').innerText = currentQuestion.question;
-
-      const optionsContainer = document.getElementById('optionsGrid');
-      optionsContainer.innerHTML = '';
-
-      currentQuestion.options.forEach((optionText, index) => {
-        const btn = document.createElement('button');
-        btn.className = "option-card w-full p-4 rounded-2xl text-left flex items-center gap-3.5 group relative shadow-md";
-        btn.setAttribute('data-index', index);
-
-        btn.innerHTML = `
-          <span class="w-9 h-9 rounded-xl bg-neutral-900 border border-neutral-700 text-yellow-400 group-hover:bg-yellow-400 group-hover:text-black flex items-center justify-center font-black text-sm sm:text-base font-sans transition-colors flex-shrink-0">
-            ${hindiLetters[index]}
-          </span>
-          <span class="font-bold text-sm sm:text-base text-white flex-1 leading-snug">
-            ${optionText}
-          </span>
-          <span class="status-icon text-xl hidden flex-shrink-0"></span>
-        `;
-
-        btn.addEventListener('click', () => {
-          if (!isAnswered && !isPaused) {
-            handleAnswer(index);
-          }
+            // Bind Google Auth triggers for posts.js integration
+            const gLoginBtn = document.getElementById('google-login-btn');
+            const gSignupBtn = document.getElementById('google-signup-btn');
+            const handleGoogleAuth = () => {
+                if (window.signInWithGoogle) {
+                    window.signInWithGoogle();
+                } else {
+                    const event = new CustomEvent('triggerGoogleAuth');
+                    window.dispatchEvent(event);
+                }
+            };
+            if (gLoginBtn) gLoginBtn.addEventListener('click', handleGoogleAuth);
+            if (gSignupBtn) gSignupBtn.addEventListener('click', handleGoogleAuth);
         });
+    })();
+</script>
 
-        optionsContainer.appendChild(btn);
-      });
-
-      if (voiceEnabled) {
-        speakCurrentQuestionAndOptions(() => {
-          if (!isAnswered && !isPaused) {
-            document.getElementById('timerStatusLabel').innerText = "समय शेष";
-            document.getElementById('explanationText').innerText = "⚡ 10 सेकंड का लाइव टाइमर शुरू हो गया है! सही विकल्प चुनें...";
-            startCountdownTimer();
-          }
-        });
-      } else {
-        startCountdownTimer();
-      }
-    }
-
-    function startCountdownTimer() {
-      clearInterval(timerInterval);
-      const totalTime = 10;
-      const startTime = Date.now();
-      timeLeft = 10;
-      document.getElementById('timerStatusLabel').innerText = "समय शेष";
-
-      timerInterval = setInterval(() => {
-        if (isPaused) return;
-
-        const elapsed = (Date.now() - startTime) / 1000;
-        const remaining = Math.max(0, totalTime - elapsed);
-        timeLeft = remaining;
-
-        const displaySec = Math.ceil(remaining);
-        document.getElementById('timerNumber').innerText = displaySec;
-
-        updateTimerCircle(remaining);
-
-        if (displaySec <= 3 && displaySec > 0 && Math.floor(remaining * 10) % 10 === 0) {
-          playSfx('tick');
-          document.getElementById('timerNumber').className = "absolute font-black text-xl text-red-500 animate-pulse font-sans";
-        }
-
-        if (remaining <= 0) {
-          clearInterval(timerInterval);
-          if (!isAnswered) {
-            handleTimeExpiry();
-          }
-        }
-      }, 50);
-    }
-
-    function updateTimerCircle(timeRemaining) {
-      const circle = document.getElementById('timerCircle');
-      const percent = (timeRemaining / 10) * 100;
-      const offset = 100 - percent;
-      circle.style.strokeDashoffset = offset;
-
-      if (timeRemaining <= 3) {
-        circle.setAttribute('class', 'text-red-500 transition-colors');
-      } else if (timeRemaining <= 6) {
-        circle.setAttribute('class', 'text-yellow-400 transition-colors');
-      } else {
-        circle.setAttribute('class', 'text-emerald-500 transition-colors');
-      }
-    }
-
-    function handleAnswer(selectedIndex) {
-      isAnswered = true;
-      clearInterval(timerInterval);
-      cancelSpeech();
-
-      const isCorrect = (selectedIndex === currentQuestion.correctIndex);
-      highlightOptions(selectedIndex, isCorrect);
-
-      if (isCorrect) {
-        score += 10;
-        streak += 1;
-        playSfx('correct');
-        showExplanation("🎉 सही उत्तर! बहुत शानदार तैयारी!", true);
-      } else {
-        streak = 0;
-        playSfx('wrong');
-        showExplanation("❌ गलत उत्तर! सही उत्तर नीचे देखें।", false);
-      }
-
-      updateScoreboard();
-      speakCorrectAnswerReveal(currentQuestion.correctIndex, currentQuestion.options[currentQuestion.correctIndex]);
-      triggerAutoNextCountdown();
-    }
-
-    function handleTimeExpiry() {
-      isAnswered = true;
-      streak = 0;
-      playSfx('wrong');
-      updateScoreboard();
-
-      highlightOptions(-1, false);
-      showExplanation("⏰ समय समाप्त! सही उत्तर हरे रंग में हाईलाइट कर दिया गया है।", false);
-
-      speakCorrectAnswerReveal(currentQuestion.correctIndex, currentQuestion.options[currentQuestion.correctIndex]);
-      triggerAutoNextCountdown();
-    }
-
-    function highlightOptions(selectedIndex, isCorrect) {
-      const buttons = document.querySelectorAll('.option-card');
-      const correctIdx = currentQuestion.correctIndex;
-
-      buttons.forEach((btn, idx) => {
-        btn.disabled = true;
-        const iconSpan = btn.querySelector('.status-icon');
-
-        if (idx === correctIdx) {
-          btn.className = "option-card w-full p-4 rounded-2xl correct-highlight text-white border-2 border-emerald-300 text-left flex items-center gap-3.5 shadow-2xl";
-          const badgeSpan = btn.querySelector('span');
-          if (badgeSpan) badgeSpan.className = "w-9 h-9 rounded-xl bg-black text-emerald-300 flex items-center justify-center font-black text-sm font-sans flex-shrink-0";
-          if (iconSpan) {
-            iconSpan.innerHTML = "✅";
-            iconSpan.classList.remove('hidden');
-          }
-        } else if (idx === selectedIndex && !isCorrect) {
-          btn.className = "option-card w-full p-4 rounded-2xl wrong-highlight text-white border-2 border-red-300 text-left flex items-center gap-3.5 shadow-2xl";
-          const badgeSpan = btn.querySelector('span');
-          if (badgeSpan) badgeSpan.className = "w-9 h-9 rounded-xl bg-black text-red-300 flex items-center justify-center font-black text-sm font-sans flex-shrink-0";
-          if (iconSpan) {
-            iconSpan.innerHTML = "❌";
-            iconSpan.classList.remove('hidden');
-          }
-        } else {
-          btn.className = "option-card w-full p-4 rounded-2xl bg-black text-neutral-600 border border-neutral-900 text-left flex items-center gap-3.5 opacity-30 cursor-not-allowed";
-        }
-      });
-    }
-
-    function showExplanation(prefix, isSuccess) {
-      const expText = document.getElementById('explanationText');
-      const colorClass = isSuccess ? "text-emerald-400 font-bold" : "text-yellow-400 font-bold";
-      expText.innerHTML = `<span class="${colorClass}">${prefix}</span> <span class="text-neutral-300">व्याख्या: ${currentQuestion.explanation || ''}</span>`;
-    }
-
-    function triggerAutoNextCountdown() {
-      const autoNextNotice = document.getElementById('autoNextNotice');
-      autoNextNotice.classList.remove('hidden');
-      autoNextNotice.classList.add('flex');
-
-      setTimeout(() => {
-        if (!isPaused) {
-          renderNewQuestion();
-        }
-      }, 2000);
-    }
-
-    function updateScoreboard() {
-      document.getElementById('scoreDisplay').innerText = score;
-      document.getElementById('streakDisplay').innerText = streak;
-    }
-
-    document.getElementById('subjectSelect').addEventListener('change', () => {
-      questionQueue = [];
-      renderNewQuestion();
-    });
-
-    document.getElementById('voiceProfileSelect').addEventListener('change', (e) => {
-      selectedVoiceProfile = e.target.value;
-      if (!isAnswered && voiceEnabled) {
-        speakCurrentQuestionAndOptions(() => {
-          if (!isAnswered && !isPaused) startCountdownTimer();
-        });
-      }
-    });
-
-    document.getElementById('voiceToggleBtn').addEventListener('click', () => {
-      voiceEnabled = !voiceEnabled;
-      const statusLabel = document.getElementById('voiceStatusLabel');
-      const voiceIcon = document.getElementById('voiceIcon');
-      if (voiceEnabled) {
-        statusLabel.innerText = "Voice: ON";
-        voiceIcon.innerText = "🔊";
-        if (!isAnswered) {
-          speakCurrentQuestionAndOptions(() => {
-            if (!isAnswered && !isPaused) startCountdownTimer();
-          });
-        }
-      } else {
-        cancelSpeech();
-        statusLabel.innerText = "Voice: OFF";
-        voiceIcon.innerText = "🔇";
-        if (!isAnswered && timerInterval === null) {
-          startCountdownTimer();
-        }
-      }
-    });
-
-    document.getElementById('speakAgainBtn').addEventListener('click', () => {
-      if (!isAnswered) {
-        clearInterval(timerInterval);
-        document.getElementById('timerNumber').innerText = "10";
-        updateTimerCircle(10);
-        speakCurrentQuestionAndOptions(() => {
-          if (!isAnswered && !isPaused) startCountdownTimer();
-        });
-      } else {
-        speakCorrectAnswerReveal(currentQuestion.correctIndex, currentQuestion.options[currentQuestion.correctIndex]);
-      }
-    });
-
-    document.getElementById('bgmToggleBtn').addEventListener('click', () => {
-      bgmEnabled = !bgmEnabled;
-      const visualizer = document.getElementById('bgmVisualizer');
-      if (bgmEnabled) {
-        startBackgroundMusic();
-        visualizer.classList.remove('opacity-20');
-      } else {
-        stopBackgroundMusic();
-        visualizer.classList.add('opacity-20');
-      }
-    });
-
-    document.getElementById('bgmVolumeSlider').addEventListener('input', (e) => {
-      setBgmVolume(e.target.value);
-    });
-
-    document.getElementById('fullscreenBtn').addEventListener('click', () => {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      } else {
-        document.exitFullscreen();
-      }
-    });
-
-    function togglePause() {
-      isPaused = !isPaused;
-      const pauseOverlay = document.getElementById('pauseOverlay');
-      const pauseBtn = document.getElementById('pauseToggleBtn');
-
-      if (isPaused) {
-        clearInterval(timerInterval);
-        cancelSpeech();
-        pauseOverlay.classList.remove('hidden');
-        pauseOverlay.classList.add('flex');
-        pauseBtn.innerHTML = "<span>▶️ शुरू करें</span>";
-      } else {
-        pauseOverlay.classList.add('hidden');
-        pauseOverlay.classList.remove('flex');
-        pauseBtn.innerHTML = "<span>⏸️ रोकें</span>";
-        if (isAnswered) {
-          renderNewQuestion();
-        } else {
-          speakCurrentQuestionAndOptions(() => {
-            if (!isAnswered && !isPaused) startCountdownTimer();
-          });
-        }
-      }
-    }
-
-    document.getElementById('pauseToggleBtn').addEventListener('click', togglePause);
-    document.getElementById('resumeBtn').addEventListener('click', togglePause);
-
-    document.getElementById('skipBtn').addEventListener('click', () => {
-      clearInterval(timerInterval);
-      cancelSpeech();
-      renderNewQuestion();
-    });
-
-    document.getElementById('resetScoreBtn').addEventListener('click', () => {
-      score = 0;
-      streak = 0;
-      totalQuestions = 0;
-      askedQuestionsSet.clear();
-      updateScoreboard();
-      document.getElementById('totalQuestionsCount').innerText = "#1";
-      renderNewQuestion();
-    });
-
-    window.onload = function() {
-      const randomSessionNum = Math.floor(1000 + Math.random() * 9000);
-      const tag = document.getElementById('streamSessionTag');
-      if (tag) tag.innerText = `ID: SGS-LIVE-${randomSessionNum}`;
-
-      requestWakeLock();
-      populateVoices();
-      fetchAIQuestionsBatch();
-      renderNewQuestion();
-      startBackgroundMusic();
-    };
-  </script>
+<!-- LINKING POSTS.JS -->
+<script type="module" src="posts.js"></script>
 </body>
 </html>
