@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment Verifying | SGS ONLINE SERVICE</title>
+  <script>
+    // GitHub Pages 404 Catch: URL aur Parameters ko read karke wapas index.html par bhej do
+    (function() {
+      var currentSearch = window.location.search;
+      var currentHash = window.location.hash;
+
+      // Agar direct URL query me payment data hai ya general return hai
+      var targetUrl = "/" + (currentSearch ? currentSearch : "?payment=success") + currentHash;
+      window.location.replace(targetUrl);
+    })();
+  </script>
+</head>
+<body style="font-family: sans-serif; text-align: center; padding: 50px; background-color: #fff7ed;">
+  <h2 style="color: #ea580c;">Payment Received!</h2>
+  <p>Verifying transaction and generating your official receipt...</p>
+</body>
+</html>
