@@ -20,6 +20,7 @@ const ALL_POSTS = [
   {
     id: "internship-application-01",
     title: "Internship Application Online Form",
+    price: 230,
     category: "Internship",
     description: "Internship ke liye apni personal, academic aur application details bharein.",
     tags: [
@@ -148,6 +149,7 @@ const ALL_POSTS = [
   {
     id: "rtps-caste-02",
     title: "Bihar RTPS Caste Certificate (जाति प्रमाण पत्र)",
+    price: 30,
     category: "Certificates (Jati/Aaya/Niwas)",
     description: "Caste Certificate apply karne ke liye niche details bharein aur documents upload karein.",
     tags: [
@@ -231,6 +233,7 @@ const ALL_POSTS = [
   {
     id: "rtps-income-03",
     title: "Bihar RTPS Income Certificate (आय प्रमाण पत्र)",
+    price: 30,
     category: "Certificates (Jati/Aaya/Niwas)",
     description: "Income Certificate online form bharein aur required documents upload karein.",
     tags: [
@@ -313,6 +316,7 @@ const ALL_POSTS = [
   {
     id: "rtps-residence-04",
     title: "Bihar RTPS Residence Certificate (निवास प्रमाण पत्र)",
+    price: 30,
     category: "Certificates (Jati/Aaya/Niwas)",
     description: "Niwas Praman Patra ke liye form fill karein aur documents upload karein.",
     qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D30%26cu%3DINR&size=200&format=png",
@@ -383,6 +387,7 @@ const ALL_POSTS = [
   {
     id: "vksu-exam-form-all-sem",
     title: "VKSU Exam Form All Semester",
+    price: 630,
     category: "STD College",
     description: "Veer Kunwar Singh University exam form fill up assistance for all semesters (Sem 1 to Sem 8).",
     tags: [
@@ -429,6 +434,7 @@ const ALL_POSTS = [
   {
     id: "rtps-combo-06",
     title: "Bihar RTPS Combo Service (जाति, आय एवं निवास प्रमाण पत्र एक साथ बनवाएं)",
+    price: 90,
     category: "Certificates (Jati/Aaya/Niwas)",
     description: "जाति, आय एवं निवास प्रमाण पत्र एक साथ ऑनलाइन आवेदन करने के लिए अपनी पूरी डिटेल्स भरें।",
     qrImageUrl: "https://quickchart.io/qr?text=upi%3A%2F%2Fpay%3Fpa%3DQ341013270%2540ybl%26pn%3DSGS%2520ONLINE%2520SERVICE%26am%3D90%26cu%3DINR&size=200&format=png",
@@ -530,6 +536,7 @@ const ALL_POSTS = [
   {
     id: "vksu-admission-sem5-All-session-07",
     title: "VKSU Online Admission Form (Semester 1st to 8th)",
+    price: 30,
     category: "College Admission",
     description: "Veer Kunwar Singh University, Session 2024-2028 Online Admission Form fill up assistance.",
     tags: [
@@ -602,6 +609,7 @@ const ALL_POSTS = [
   {
     id: "Government-Forms-08",
     title: "Bihar Character Certificate (चरित्र प्रमाण पत्र)",
+    price: 40,
     category: "Government Forms",
     description: "Character Certificate online apply karne ke liye niche details bharein aur documents upload karein.",
     tags: [
@@ -657,6 +665,7 @@ const ALL_POSTS = [
   {
     id: "internship-120hr-09",
     title: "Intership 120 Hour Complete",
+    price: 100,
     category: "Internship",
     description: "Internship 120 Hour Complete hone par apne details bharein aur form submit karein.",
     tags: [
@@ -698,6 +707,7 @@ const ALL_POSTS = [
   {
     id: "pan-card-apply-10",
     title: "New PAN Card / Correction Online Form",
+    price: 200,
     category: "Government Forms",
     description: "New PAN Card apply karne ya correction ke liye niche apne details bharein.",
     tags: [
@@ -745,6 +755,7 @@ const ALL_POSTS = [
   {
     id: "pms-scholarship-2026-2027-11",
     title: "PMS scholarship 2026-2027",
+    price: 101,
     category: "Scholarship",
     description: "Post Matric Scholarship 2026-2027 online application form fill up assistance.",
     tags: [
