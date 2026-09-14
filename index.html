@@ -123,6 +123,38 @@
     .candidate-info { display: flex; align-items: center; gap: 8px; font-size: 13px; }
     .avatar-icon { width: 32px; height: 32px; border-radius: 50%; background: #94a3b8; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; }
 
+    /* Section Navigation Bar */
+    .ssc-section-bar {
+      background: #e2e8f0;
+      display: flex;
+      gap: 2px;
+      padding: 6px 15px 0 15px;
+      border-bottom: 2px solid #cbd5e1;
+      overflow-x: auto;
+    }
+    .section-tab-btn {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-bottom: none;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: bold;
+      color: #475569;
+      cursor: pointer;
+      border-radius: 4px 4px 0 0;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .section-tab-btn:hover {
+      background: #e0e7ff;
+      color: #1e3a8a;
+    }
+    .section-tab-btn.active {
+      background: #1e3a8a;
+      color: #ffffff;
+      border-color: #1e3a8a;
+    }
+
     .exam-container { display: flex; flex: 1; height: calc(100vh - 50px); overflow: hidden; }
     .exam-left {
       flex: 3.2; display: flex; flex-direction: column; justify-content: space-between;
@@ -429,6 +461,9 @@
         </div>
       </div>
     </div>
+
+    <!-- Section Navigation Bar Added Below Header -->
+    <div class="ssc-section-bar" id="exam-section-bar"></div>
 
     <div class="exam-container">
       <div class="exam-left">
