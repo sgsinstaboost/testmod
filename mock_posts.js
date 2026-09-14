@@ -8,8 +8,8 @@ const fullMockData = {
       name: "SSC GD All India Live Mocks",
       tests: [
         {
-          id: "ssc_gd_full_mock_2",
-          name: "SSC GD Full Mock Test - 2 (PYQ & Hard Level)",
+          id: "ssc_gd_full_mock_1",
+          name: "SSC GD Full Mock Test - 1 (PYQ & Hard Level)",
           timeMinutes: 60,
           questions: [
             // =========================================================================
@@ -509,6 +509,11 @@ const fullMockData = {
             }
           ]
         }
+
+
+
+
+        
       ]
     }
   ]
