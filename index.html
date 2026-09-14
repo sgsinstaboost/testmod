@@ -8,7 +8,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; }
     body { background-color: #f1f5f9; color: #1e293b; min-height: 100vh; }
 
-    /* Normal Site Header (Centered Title + Left Drawer Icon) */
+    /* Centered Header with Left Drawer */
     #main-header {
       background: #1e3a8a; color: #fff; padding: 12px 20px;
       display: flex; justify-content: space-between; align-items: center;
@@ -28,7 +28,15 @@
     .badge { background: #3b82f6; padding: 4px 10px; border-radius: 12px; font-size: 13px; }
     .main-wrap { max-width: 1050px; margin: 25px auto; padding: 0 15px; }
 
-    /* Left Navigation Drawer */
+    /* Section Separator Headers on Home */
+    .section-title {
+      font-size: 20px; font-weight: bold; color: #1e3a8a;
+      display: flex; align-items: center; gap: 8px;
+      margin-top: 25px; margin-bottom: 5px; border-bottom: 2px solid #cbd5e1; padding-bottom: 6px;
+    }
+    .section-sub { font-size: 13px; color: #64748b; margin-bottom: 15px; }
+
+    /* Left Drawer */
     .drawer-overlay {
       position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5);
       z-index: 10001; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
@@ -53,11 +61,11 @@
     .drawer-item {
       display: flex; align-items: center; gap: 12px; padding: 12px 16px;
       border-radius: 8px; color: #1e293b; font-weight: bold; font-size: 15px;
-      cursor: pointer; text-decoration: none; transition: background 0.2s, color 0.2s;
+      cursor: pointer; transition: background 0.2s, color 0.2s;
     }
     .drawer-item:hover { background: #eff6ff; color: #2563eb; }
 
-    /* Dashboard Cards */
+    /* Grid Cards */
     .breadcrumb {
       background: #e2e8f0; padding: 10px 16px; border-radius: 6px;
       margin-bottom: 20px; font-size: 14px;
@@ -65,7 +73,7 @@
     .breadcrumb span { color: #2563eb; cursor: pointer; }
     .grid-container {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 18px; margin-top: 15px;
+      gap: 18px;
     }
     .card {
       background: white; border-radius: 8px; padding: 20px; cursor: pointer;
@@ -73,6 +81,7 @@
       transition: border-color 0.2s, box-shadow 0.2s;
     }
     .card:hover { border-color: #2563eb; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    .card-mock-accent { border-top: 4px solid #f97316; }
     .card h3 { font-size: 18px; color: #1e3a8a; margin-bottom: 6px; }
     .card p { font-size: 13px; color: #64748b; }
     .attempt-badge {
@@ -99,9 +108,7 @@
       border: none; cursor: pointer; text-align: center;
     }
 
-    /* ====================================================
-       REAL SSC GD EXAM INTERFACE (FULL SCREEN LOOK)
-    ==================================================== */
+    /* Real SSC GD Exam Interface */
     #view-arena {
       display: flex; flex-direction: column; height: 100vh; width: 100vw;
       position: fixed; top: 0; left: 0; background: #fff; z-index: 9999;
@@ -184,9 +191,7 @@
       font-size: 15px; font-weight: bold; border: none; border-radius: 4px; cursor: pointer; margin-top: 10px;
     }
 
-    /* ====================================================
-       RESULT DASHBOARD (Pie Chart + Filters + Review)
-    ==================================================== */
+    /* Result Dashboard */
     .pie-chart {
       width: 140px; height: 140px; border-radius: 50%;
       background: conic-gradient(
@@ -268,7 +273,7 @@
 </head>
 <body>
 
-  <!-- NORMAL SITE HEADER (HAMBURGER + CENTERED TITLE + BADGE) -->
+  <!-- NORMAL SITE HEADER -->
   <header id="main-header">
     <button class="drawer-toggle-btn" onclick="toggleDrawer(true)" title="Menu">☰</button>
     <div class="header-center-title" onclick="navigateTo('view-home')">SGS MOCK TEST</div>
@@ -291,11 +296,19 @@
 
   <div class="main-wrap" id="main-content-wrap">
 
-    <!-- 1. SUBJECTS SELECTION (HOME) -->
+    <!-- 1. HOME SCREEN (2 SECTIONS: SUBJECT WISE & FULL MOCK TEST) -->
     <div id="view-home">
-      <h2>Select Subject</h2>
-      <p style="color: #64748b; margin-top: 4px;">Apna vishay chunein aur practice shuru karein:</p>
+      <!-- Section 1 Header -->
+      <div class="section-title">📚 Subject / Chapter Wise Tests</div>
+      <p class="section-sub">Apne specific subjects aur chapters ki chapter-wise practice karein:</p>
       <div class="grid-container" id="subject-grid"></div>
+
+      <!-- Section 2 Header -->
+      <div class="section-title" style="margin-top: 40px; color: #ea580c; border-color: #fdba74;">
+        🏆 FULL MOCK TEST
+      </div>
+      <p class="section-sub">Full syllabus complete mock tests real exam timer ke sath:</p>
+      <div class="grid-container" id="full-mock-grid"></div>
     </div>
 
     <!-- 2. CHAPTER SELECTION -->
@@ -303,18 +316,18 @@
       <div class="breadcrumb">
         <span onclick="navigateTo('view-home')">Home</span> &gt; <b id="bc-subject"></b>
       </div>
-      <h2 id="chap-page-title"></h2>
+      <h2 id="chap-page-title" style="margin-bottom: 15px;"></h2>
       <div class="grid-container" id="chapter-grid"></div>
     </div>
 
-    <!-- 3. TESTS LIST (Test 1, Test 2...) -->
+    <!-- 3. TESTS LIST SCREEN -->
     <div id="view-tests" class="hidden">
       <div class="breadcrumb">
         <span onclick="navigateTo('view-home')">Home</span> &gt; 
-        <span onclick="openSubject(currentSubKey)" id="bc-sub-link"></span> &gt; 
+        <span id="bc-sub-link"></span> &gt; 
         <b id="bc-chapter"></b>
       </div>
-      <h2 id="tests-page-title"></h2>
+      <h2 id="tests-page-title" style="margin-bottom: 15px;"></h2>
       <div class="grid-container" id="tests-grid"></div>
     </div>
 
@@ -390,7 +403,7 @@
     </div>
   </div>
 
-  <!-- MODAL 2: HOME PAGE EXIT CONFIRMATION (CENTER POPUP) -->
+  <!-- MODAL 2: HOME PAGE EXIT CONFIRMATION -->
   <div id="exit-modal" class="modal-overlay hidden">
     <div class="modal-box">
       <div style="font-size: 40px; margin-bottom: 10px;">⚠️</div>
@@ -462,595 +475,13 @@
     </div>
   </div>
 
-  <script>
-    // Drawer Controller
-    function toggleDrawer(open) {
-      const overlay = document.getElementById("drawer-overlay");
-      const panel = document.getElementById("drawer-panel");
-      if (open) {
-        overlay.classList.add("active");
-        panel.classList.add("active");
-      } else {
-        overlay.classList.remove("active");
-        panel.classList.remove("active");
-      }
-    }
-
-    function drawerGoHome() {
-      toggleDrawer(false);
-      navigateTo("view-home");
-    }
-
-    // Database
-    const testData = {
-      "hindi": {
-        title: "सामान्य हिंदी (Hindi)",
-        chapters: {
-          "samas": {
-            title: "समास (Samas)",
-            tests: {
-              "samas_1": {
-                name: "Samas - Test 1",
-                timeMinutes: 5,
-                questions: [
-                  { 
-                    q: "'यथाशक्ति' में कौन सा समास है?", 
-                    options: ["तत्पुरुष समास", "अव्ययीभाव समास", "द्विगु समास", "कर्मधारय समास"], 
-                    ans: 1,
-                    exp: "यथाशक्ति का विग्रह 'शक्ति के अनुसार' होता है। इसमें पहला पद 'यथा' एक अव्यय है, इसलिए यहाँ 'अव्ययीभाव समास' है।" 
-                  },
-                  { 
-                    q: "'चौराहा' में कौन सा समास है?", 
-                    options: ["द्विगु समास", "द्वन्द्व समास", "बहुव्रीहि समास", "तत्पुरुष समास"], 
-                    ans: 0,
-                    exp: "चौराहा का विग्रह 'चार राहों का समाहार' होता है। जिस समास का पहला पद संख्यावाचक (संख्या बताने वाला) हो, वह 'द्विगु समास' कहलाता है।" 
-                  },
-                  { 
-                    q: "'दशानन' में कौन सा समास है?", 
-                    options: ["तत्पुरुष समास", "कर्मधारय समास", "बहुव्रीहि समास", "द्विगु समास"], 
-                    ans: 2,
-                    exp: "दशानन का अर्थ 'दस हैं आनन (मुख) जिसके अर्थात् रावण' होता है। यहाँ दोनों पद मिलकर किसी तीसरे विशेष अर्थ (रावण) की ओर संकेत कर रहे हैं, इसलिए 'बहुव्रीहि समास' है।" 
-                  }
-                ]
-              },
-              "samas_2": {
-                name: "Samas - Test 2",
-                timeMinutes: 5,
-                questions: [
-                  { 
-                    q: "'राजपुत्र' का सही समास विग्रह क्या होगा?", 
-                    options: ["राजा और पुत्र", "राजा का पुत्र", "राज का पुत्र", "राजा के लिए पुत्र"], 
-                    ans: 1,
-                    exp: "'राजपुत्र' संबंध तत्पुरुष समास का उदाहरण है। इसका सही विग्रह 'राजा का पुत्र' होता है।" 
-                  },
-                  { 
-                    q: "'माता-पिता' में कौन सा समास है?", 
-                    options: ["द्विगु", "कर्मधारय", "द्वन्द्व", "अव्ययीभाव"], 
-                    ans: 2,
-                    exp: "'माता-पिता' का विग्रह 'माता और पिता' होता है। जिस समास में दोनों पद प्रधान हों और बीच में योजक चिह्न या 'और' आए, वह 'द्वन्द्व समास' होता है।" 
-                  }
-                ]
-              }
-            }
-          },
-          "sandhi": {
-            title: "संधि (Sandhi)",
-            tests: {
-              "sandhi_1": {
-                name: "Sandhi - Test 1",
-                timeMinutes: 5,
-                questions: [
-                  { 
-                    q: "'हिमालय' का सही संधि विच्छेद क्या होगा?", 
-                    options: ["हिम + आलय", "हिमा + लय", "हिम् + आलय", "हेम + आलय"], 
-                    ans: 0,
-                    exp: "'हिम + आलय' में अ + आ मिलकर 'आ' बन जाता है। यह 'दीर्घ स्वर संधि' का उदाहरण है।" 
-                  },
-                  { 
-                    q: "'सूर्योदय' का संधि विच्छेद क्या है?", 
-                    options: ["सूर्य + उदय", "सूर्या + उदय", "सूर्य + दय", "सूर्यो + दय"], 
-                    ans: 0,
-                    exp: "'सूर्य + उदय' में अ + उ मिलकर 'ओ' बन जाता है। यह 'गुण स्वर संधि' का नियम है।" 
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "maths": {
-        title: "गणित (Mathematics)",
-        chapters: {
-          "percentage": {
-            title: "प्रतिशत (Percentage)",
-            tests: {
-              "math_1": {
-                name: "Percentage - Test 1",
-                timeMinutes: 5,
-                questions: [
-                  { 
-                    q: "250 का 20% कितना होगा?", 
-                    options: ["40", "50", "60", "25"], 
-                    ans: 1,
-                    exp: "हल: (250 × 20) / 100 = 5000 / 100 = 50. अतः सही उत्तर 50 है।" 
-                  },
-                  { 
-                    q: "यदि किसी संख्या का 10%, 40 है, तो वह संख्या क्या है?", 
-                    options: ["400", "200", "300", "500"], 
-                    ans: 0,
-                    exp: "माना संख्या X है। X × (10/100) = 40 => X = 40 × 10 = 400." 
-                  }
-                ]
-              }
-            }
-          }
-        }
-      }
-    };
-
-    // Global State
-    let currentSubKey = null;
-    let currentChapKey = null;
-    let currentTestKey = null;
-    let activeQuestions = [];
-    let currentQIdx = 0;
-    let qStatus = {};
-    let userAnswers = {};
-    let timerInterval = null;
-    let timeLeft = 0;
-
-    let timeSpentPerQ = {}; 
-    let qTimeInterval = null;
-
-    let userHistory = {}; 
-    let currentReviewDataset = [];
-    let isCurrentTestReattempt = false;
-    let currentActiveView = 'view-home';
-
-    function formatSeconds(secs) {
-      let m = Math.floor(secs / 60);
-      let s = secs % 60;
-      return `${m < 10 ? '0' + m : m}:${s < 10 ? '0' + s : s}`;
-    }
-
-    function navigateTo(viewId, pushState = true) {
-      if (pushState) {
-        history.pushState({ page: viewId, sub: currentSubKey, chap: currentChapKey, test: currentTestKey }, "");
-      }
-      renderView(viewId);
-    }
-
-    function renderView(viewId) {
-      currentActiveView = viewId;
-      ["view-home", "view-chapters", "view-tests", "view-result"].forEach(id => {
-        document.getElementById(id).classList.add("hidden");
-      });
-      document.getElementById("view-arena").classList.add("hidden");
-      document.getElementById("main-header").classList.remove("hidden");
-      document.getElementById("main-content-wrap").classList.remove("hidden");
-
-      if (viewId === "view-arena") {
-        document.getElementById("main-header").classList.add("hidden");
-        document.getElementById("main-content-wrap").classList.add("hidden");
-        document.getElementById("view-arena").classList.remove("hidden");
-      } else {
-        document.getElementById(viewId).classList.remove("hidden");
-      }
-    }
-
-    window.addEventListener("popstate", function (e) {
-      if (currentActiveView === "view-arena") {
-        const leave = confirm("Exam progress me hai! Agar aap back jayenge toh test cancel ho sakta hai. Kya aap sure hain?");
-        if (!leave) {
-          history.pushState({ page: "view-arena" }, "");
-          return;
-        }
-        clearInterval(timerInterval);
-        clearInterval(qTimeInterval);
-      }
-
-      if (!e.state || e.state.page === "view-home") {
-        if (currentActiveView === "view-home") {
-          document.getElementById("exit-modal").classList.remove("hidden");
-          history.pushState({ page: "view-home" }, "");
-          return;
-        } else {
-          renderView("view-home");
-          return;
-        }
-      }
-
-      currentSubKey = e.state.sub || currentSubKey;
-      currentChapKey = e.state.chap || currentChapKey;
-      currentTestKey = e.state.test || currentTestKey;
-      renderView(e.state.page);
-    });
-
-    function closeExitModal() {
-      document.getElementById("exit-modal").classList.add("hidden");
-    }
-
-    function confirmExitApp() {
-      closeExitModal();
-      window.history.go(-2);
-      window.close();
-    }
-
-    function renderSubjects() {
-      const container = document.getElementById("subject-grid");
-      container.innerHTML = "";
-      Object.keys(testData).forEach(sKey => {
-        const sub = testData[sKey];
-        container.innerHTML += `
-          <div class="card" onclick="openSubject('${sKey}')">
-            <h3>📘 ${sub.title}</h3>
-            <p>${Object.keys(sub.chapters).length} Chapters Uplabdh</p>
-          </div>
-        `;
-      });
-    }
-
-    function openSubject(sKey) {
-      currentSubKey = sKey;
-      const sub = testData[sKey];
-      document.getElementById("bc-subject").innerText = sub.title;
-      document.getElementById("chap-page-title").innerText = sub.title;
-
-      const container = document.getElementById("chapter-grid");
-      container.innerHTML = "";
-      Object.keys(sub.chapters).forEach(cKey => {
-        const chap = sub.chapters[cKey];
-        container.innerHTML += `
-          <div class="card" onclick="openChapter('${cKey}')">
-            <h3>📂 ${chap.title}</h3>
-            <p>${Object.keys(chap.tests).length} Mock Tests</p>
-          </div>
-        `;
-      });
-      navigateTo("view-chapters");
-    }
-
-    function openChapter(cKey) {
-      currentChapKey = cKey;
-      const sub = testData[currentSubKey];
-      const chap = sub.chapters[cKey];
-
-      document.getElementById("bc-sub-link").innerText = sub.title;
-      document.getElementById("bc-chapter").innerText = chap.title;
-      document.getElementById("tests-page-title").innerText = `${chap.title} - Tests`;
-
-      const container = document.getElementById("tests-grid");
-      container.innerHTML = "";
-      Object.keys(chap.tests).forEach(tKey => {
-        const test = chap.tests[tKey];
-        const isAttempted = !!userHistory[tKey];
-
-        container.innerHTML += `
-          <div class="card" onclick="handleTestCardClick('${tKey}')">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-              <h3>📝 ${test.name}</h3>
-              ${isAttempted ? `<span class="attempt-badge">Attempted ✅</span>` : ''}
-            </div>
-            <p>Questions: ${test.questions.length} | Time: ${test.timeMinutes} Min</p>
-            <button class="btn-ssc ${isAttempted ? 'btn-clear' : 'btn-save-next'}" style="margin-top: 12px; width: 100%;">
-              ${isAttempted ? 'View Options' : 'Start Exam'}
-            </button>
-          </div>
-        `;
-      });
-      navigateTo("view-tests");
-    }
-
-    function backToTests() {
-      openChapter(currentChapKey);
-    }
-
-    function handleTestCardClick(tKey) {
-      currentTestKey = tKey;
-      if (userHistory[tKey]) {
-        document.getElementById("action-modal").classList.remove("hidden");
-      } else {
-        confirmStartExam(false);
-      }
-    }
-
-    function closeModal() {
-      document.getElementById("action-modal").classList.add("hidden");
-    }
-
-    function viewSavedResult() {
-      closeModal();
-      showResultDashboard();
-    }
-
-    function confirmStartExam(isReattempt) {
-      closeModal();
-      isCurrentTestReattempt = isReattempt;
-      const test = testData[currentSubKey].chapters[currentChapKey].tests[currentTestKey];
-      activeQuestions = test.questions;
-      currentQIdx = 0;
-      userAnswers = {};
-      qStatus = {};
-      timeSpentPerQ = {};
-
-      activeQuestions.forEach((_, i) => { 
-        qStatus[i] = "not-visited"; 
-        timeSpentPerQ[i] = 0;
-      });
-      qStatus[0] = "not-answered";
-
-      document.getElementById("exam-title-text").innerText = `${test.name} - Official Mock Portal`;
-      timeLeft = (test.timeMinutes || 5) * 60;
-
-      navigateTo("view-arena");
-      loadQuestion(0);
-      startTimer();
-      startQuestionTimer();
-    }
-
-    function loadQuestion(idx) {
-      currentQIdx = idx;
-      if (qStatus[idx] === "not-visited") qStatus[idx] = "not-answered";
-
-      const q = activeQuestions[idx];
-      document.getElementById("q-label").innerText = `Question No. ${idx + 1}`;
-      document.getElementById("q-text").innerText = q.q;
-      document.getElementById("q-time-spent").innerText = formatSeconds(timeSpentPerQ[currentQIdx]);
-
-      const optsBox = document.getElementById("options-box");
-      optsBox.innerHTML = "";
-      q.options.forEach((opt, oIdx) => {
-        const isChecked = userAnswers[idx] === oIdx ? "checked" : "";
-        optsBox.innerHTML += `
-          <label>
-            <input type="radio" name="opt" value="${oIdx}" ${isChecked}>
-            <span>${opt}</span>
-          </label>
-        `;
-      });
-      renderPalette();
-    }
-
-    function startQuestionTimer() {
-      clearInterval(qTimeInterval);
-      qTimeInterval = setInterval(() => {
-        if (currentActiveView === 'view-arena') {
-          timeSpentPerQ[currentQIdx] = (timeSpentPerQ[currentQIdx] || 0) + 1;
-          const display = document.getElementById("q-time-spent");
-          if (display) {
-            display.innerText = formatSeconds(timeSpentPerQ[currentQIdx]);
-          }
-        }
-      }, 1000);
-    }
-
-    function saveAndNext() {
-      const selected = document.querySelector('input[name="opt"]:checked');
-      if (selected) {
-        userAnswers[currentQIdx] = parseInt(selected.value);
-        qStatus[currentQIdx] = "answered";
-      } else {
-        if (qStatus[currentQIdx] !== "review") qStatus[currentQIdx] = "not-answered";
-      }
-      goToNext();
-    }
-
-    function markForReview() {
-      const selected = document.querySelector('input[name="opt"]:checked');
-      if (selected) userAnswers[currentQIdx] = parseInt(selected.value);
-      qStatus[currentQIdx] = "review";
-      goToNext();
-    }
-
-    function clearResponse() {
-      const selected = document.querySelector('input[name="opt"]:checked');
-      if (selected) selected.checked = false;
-      delete userAnswers[currentQIdx];
-      qStatus[currentQIdx] = "not-answered";
-      renderPalette();
-    }
-
-    function prevQuestion() {
-      if (currentQIdx > 0) loadQuestion(currentQIdx - 1);
-    }
-
-    function goToNext() {
-      if (currentQIdx < activeQuestions.length - 1) {
-        loadQuestion(currentQIdx + 1);
-      } else {
-        renderPalette();
-        setTimeout(() => {
-          submitTest("Yeh aakhiri sawal tha! Kya aap apna Test Submit karna chahte hain?");
-        }, 150);
-      }
-    }
-
-    function renderPalette() {
-      const grid = document.getElementById("palette-grid");
-      grid.innerHTML = "";
-      activeQuestions.forEach((_, idx) => {
-        let cls = "p-btn " + qStatus[idx];
-        if (idx === currentQIdx) cls += " current";
-        grid.innerHTML += `<div class="${cls}" onclick="loadQuestion(${idx})">${idx + 1}</div>`;
-      });
-    }
-
-    function startTimer() {
-      clearInterval(timerInterval);
-      timerInterval = setInterval(() => {
-        if (timeLeft <= 0) {
-          clearInterval(timerInterval);
-          clearInterval(qTimeInterval);
-          submitTest("Time khatam ho gaya! Test automatically submit ho raha hai.");
-          return;
-        }
-        timeLeft--;
-        document.getElementById("timer-count").innerText = formatSeconds(timeLeft);
-      }, 1000);
-    }
-
-    function submitTest(customMessage) {
-      const alertMsg = customMessage || "Kya aap sach me exam submit karna chahte hain?";
-      if (!confirm(alertMsg)) return;
-      
-      clearInterval(timerInterval);
-      clearInterval(qTimeInterval);
-
-      let right = 0, wrong = 0, skip = 0;
-      let details = [];
-
-      activeQuestions.forEach((q, idx) => {
-        const userAns = userAnswers[idx];
-        let status = "skipped";
-
-        if (userAns !== undefined) {
-          if (userAns === q.ans) {
-            right++; status = "right";
-          } else {
-            wrong++; status = "wrong";
-          }
-        } else {
-          skip++;
-        }
-
-        details.push({
-          q: q.q,
-          options: q.options,
-          correct: q.ans,
-          userAns: userAns,
-          status: status,
-          exp: q.exp || "Is sawal ki vyakhya uplabdh nahi hai.",
-          timeSpent: timeSpentPerQ[idx] || 0
-        });
-      });
-
-      const marks = (right * 2) - (wrong * 0.5);
-      const outcome = {
-        total: activeQuestions.length,
-        right, wrong, skip, marks,
-        details: details
-      };
-
-      if (!userHistory[currentTestKey]) {
-        userHistory[currentTestKey] = { first: outcome, hasReattempted: false };
-      } else if (isCurrentTestReattempt) {
-        userHistory[currentTestKey].latest = outcome;
-        userHistory[currentTestKey].hasReattempted = true;
-      }
-
-      showResultDashboard();
-    }
-
-    function showResultDashboard() {
-      navigateTo("view-result");
-      const record = userHistory[currentTestKey];
-      const reattemptBtn = document.getElementById("tab-attempt-latest");
-
-      if (record && record.hasReattempted) {
-        reattemptBtn.classList.remove("hidden");
-        switchResultTab('latest');
-      } else {
-        reattemptBtn.classList.add("hidden");
-        switchResultTab('first');
-      }
-    }
-
-    function switchResultTab(type) {
-      const btn1 = document.getElementById("tab-attempt-1");
-      const btnLatest = document.getElementById("tab-attempt-latest");
-
-      if (type === 'first') {
-        btn1.className = "tab-btn tab-active";
-        btnLatest.className = "tab-btn tab-inactive";
-      } else {
-        btnLatest.className = "tab-btn tab-active";
-        btn1.className = "tab-btn tab-inactive";
-      }
-
-      const data = (type === 'first') ? userHistory[currentTestKey].first : userHistory[currentTestKey].latest;
-      document.getElementById("stat-right").innerText = data.right;
-      document.getElementById("stat-wrong").innerText = data.wrong;
-      document.getElementById("stat-skip").innerText = data.skip;
-      document.getElementById("graph-score").innerText = `${data.right}/${data.total}`;
-      document.getElementById("total-marks-label").innerText = `${data.marks} pts`;
-
-      let correctPct = (data.right / data.total) * 100;
-      let wrongPct = (data.wrong / data.total) * 100;
-
-      const pie = document.getElementById("result-pie");
-      pie.style.setProperty("--correct-pct", `${correctPct}%`);
-      pie.style.setProperty("--wrong-pct", `${wrongPct}%`);
-
-      currentReviewDataset = data.details;
-      filterQuestions('all');
-    }
-
-    function filterQuestions(filterType) {
-      document.querySelectorAll(".pill-btn").forEach(btn => {
-        btn.className = "pill-btn pill-inactive";
-      });
-      document.getElementById(`flt-${filterType}`).className = "pill-btn pill-active";
-
-      const container = document.getElementById("review-container");
-      container.innerHTML = "";
-
-      let filtered = currentReviewDataset;
-      if (filterType !== 'all') {
-        filtered = currentReviewDataset.filter(item => item.status === filterType);
-      }
-
-      if (filtered.length === 0) {
-        container.innerHTML = `<p style="color: #64748b; text-align: center; padding: 20px;">Koi question nahi hai is category me.</p>`;
-        return;
-      }
-
-      filtered.forEach((item, i) => {
-        let badgeColor = "#475569", badgeText = "Skipped", borderLeft = "#94a3b8";
-        if (item.status === 'right') { badgeColor = "#16a34a"; badgeText = "Correct (+2)"; borderLeft = "#16a34a"; }
-        if (item.status === 'wrong') { badgeColor = "#dc2626"; badgeText = "Incorrect (-0.5)"; borderLeft = "#dc2626"; }
-
-        let optsHtml = "";
-        item.options.forEach((opt, oIdx) => {
-          let style = "background: #fff; border: 1px solid #e2e8f0;";
-          let icon = "";
-
-          if (oIdx === item.correct) {
-            style = "background: #dcfce7; border: 1px solid #86efac; color: #166534; font-weight: bold;";
-            icon = "✔️ (Correct Answer)";
-          } else if (oIdx === item.userAns && item.status === 'wrong') {
-            style = "background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; font-weight: bold;";
-            icon = "✖️ (Your Answer)";
-          }
-
-          optsHtml += `<div class="review-opt" style="${style}">${oIdx + 1}. ${opt} ${icon}</div>`;
-        });
-
-        container.innerHTML += `
-          <div class="review-item" style="border-left-color: ${borderLeft};">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
-              <strong style="font-size: 15px; color: #0f172a;">${item.q}</strong>
-              <div style="text-align: right;">
-                <span style="font-size: 12px; font-weight: bold; color: ${badgeColor};">${badgeText}</span>
-                <div style="font-size: 11px; color: #0284c7; font-weight: bold; margin-top: 3px;">⏱️ Time Taken: ${item.timeSpent}s</div>
-              </div>
-            </div>
-            <div>${optsHtml}</div>
-            <div class="explanation-box">
-              <div class="explanation-title">📘 व्याख्या (Detailed Solution):</div>
-              <div>${item.exp}</div>
-            </div>
-          </div>
-        `;
-      });
-    }
-
-    function downloadResultPDF() {
-      window.print();
-    }
-
-    // App Initialization
-    history.replaceState({ page: 'view-home' }, "");
-    renderSubjects();
-  </script>
+  <!-- SCRIPT FILES (ALL POSTS LINKED BEFORE APP.JS) -->
+  <script src="hindi_posts.js"></script>
+  <script src="maths_posts.js"></script>
+  <script src="reasoning_posts.js"></script>
+  <script src="gk_posts.js"></script>
+  <script src="gs_posts.js"></script>
+  <script src="mock_posts.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
