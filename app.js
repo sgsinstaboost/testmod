@@ -21,6 +21,10 @@ let currentReviewDataset = [];
 let isCurrentTestReattempt = false;
 let currentActiveView = 'view-home';
 
+// Section Management State
+let testSections = [];
+let activeSectionIndex = 0;
+
 function formatSeconds(secs) {
   let m = Math.floor(secs / 60);
   let s = secs % 60;
@@ -265,14 +269,84 @@ function confirmStartExam(isReattempt) {
   document.getElementById("exam-title-text").innerText = `${currentTestObj.name} - Official Mock Portal`;
   timeLeft = (currentTestObj.timeMinutes || 5) * 60;
 
+  // Setup Sections if test has multiple parts (e.g. 80 questions SSC GD)
+  setupSections();
+
   navigateTo("view-arena");
   loadQuestion(0);
   startTimer();
   startQuestionTimer();
 }
 
+// Setup Section Tabs
+function setupSections() {
+  const sectionBar = document.getElementById("exam-section-bar");
+  if (!sectionBar) return;
+  sectionBar.innerHTML = "";
+
+  if (activeQuestions.length === 80) {
+    // 80 questions SSC GD Standard: 4 sections of 20 questions each
+    testSections = [
+      { name: "Part A : Reasoning", startIdx: 0, endIdx: 19 },
+      { name: "Part B : General Knowledge", startIdx: 20, endIdx: 39 },
+      { name: "Part C : Elementary Maths", startIdx: 40, endIdx: 59 },
+      { name: "Part D : Hindi", startIdx: 60, endIdx: 79 }
+    ];
+    sectionBar.style.display = "flex";
+
+    testSections.forEach((sec, idx) => {
+      sectionBar.innerHTML += `
+        <button class="section-tab-btn ${idx === 0 ? 'active' : ''}" id="sec-tab-${idx}" onclick="jumpToSection(${idx})">
+          ${sec.name}
+        </button>
+      `;
+    });
+  } else {
+    // Single topic or chapter test (hide bar)
+    testSections = [];
+    sectionBar.style.display = "none";
+  }
+}
+
+// Jump to specific section on tab click
+function jumpToSection(secIndex) {
+  if (!testSections[secIndex]) return;
+  activeSectionIndex = secIndex;
+  updateSectionTabsUI();
+  loadQuestion(testSections[secIndex].startIdx);
+}
+
+function updateSectionTabsUI() {
+  if (testSections.length === 0) return;
+  testSections.forEach((_, idx) => {
+    const tab = document.getElementById(`sec-tab-${idx}`);
+    if (tab) {
+      if (idx === activeSectionIndex) {
+        tab.classList.add("active");
+      } else {
+        tab.classList.remove("active");
+      }
+    }
+  });
+}
+
+function checkActiveSectionOnQuestionChange(idx) {
+  if (testSections.length === 0) return;
+  for (let i = 0; i < testSections.length; i++) {
+    if (idx >= testSections[i].startIdx && idx <= testSections[i].endIdx) {
+      if (activeSectionIndex !== i) {
+        activeSectionIndex = i;
+        updateSectionTabsUI();
+      }
+      break;
+    }
+  }
+}
+
 function loadQuestion(idx) {
   currentQIdx = idx;
+  checkActiveSectionOnQuestionChange(idx);
+
   if (qStatus[idx] === "not-visited") qStatus[idx] = "not-answered";
 
   const q = activeQuestions[idx];
